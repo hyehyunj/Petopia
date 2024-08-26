@@ -41,6 +41,7 @@
     <string name="memory_example_text">asdfasdfasdfasdfasdfasdfaaasasdfasdfasdfasdfasdfasdfdsdf</string>
     <string name="memory_feed_title">OO이와 추억 모아보기</string>
     <string name="memory_list_title">oo이와 추억 모음</string>
+    <string name="memory_list_rv_title">질문질문질문?</string>
 
 
     <!--  Letter : 레터에서 사용되는 String  -->
