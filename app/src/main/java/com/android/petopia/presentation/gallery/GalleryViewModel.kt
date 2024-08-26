@@ -13,16 +13,10 @@ import com.android.petopia.data.GalleryRepositoryImpl
 class GalleryViewModel (private val galleryRepository: GalleryRepository) :
         ViewModel() {
 
-        //갤러리
+            //갤러리 리스트
         private val _galleryListLiveData = MutableLiveData<List<GalleryModel>>()
         val galleryListLiveData: LiveData<List<GalleryModel>> = _galleryListLiveData
         private val galleryList: MutableList<GalleryModel> = _galleryListLiveData.value?.toMutableList() ?: mutableListOf()
-
-    //갤러리 불러오는 함수
-    fun addGalleryList(title: String) {
-        galleryList.add(GalleryModel(title))
-        _galleryListLiveData.value = galleryList
-    }
 
         //갤러리 불러오는 함수
         fun getGalleryList(context: Context) {
@@ -39,7 +33,7 @@ class GalleryViewModel (private val galleryRepository: GalleryRepository) :
             extras: CreationExtras
         ): T {
 
-            return GalleryViewModel(
+            return GallerySharedViewModel(
                 repository
             ) as T
         }
