@@ -21,7 +21,6 @@
     <string name="common_name">이름</string>
 
 
-
     <!--  SignUp : 회원가입에서 사용되는 String -->
 
 
@@ -50,9 +49,7 @@
     <!--  Gallery : 갤러리에서 사용되는 String  -->
 
 
-
     <!--  Setting : 설정에서 사용되는 String  -->
-
 
 
 </resources>
