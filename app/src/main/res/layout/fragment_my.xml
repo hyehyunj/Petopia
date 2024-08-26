@@ -1,14 +1,313 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.my.MyFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/my_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/my_iv_guardian"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="보호자"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/my_tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="name"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@+id/my_iv_guardian"
+                app:layout_constraintStart_toStartOf="@+id/my_iv_guardian"
+                app:layout_constraintTop_toBottomOf="@+id/my_iv_guardian" />
+
+
+            <ImageView
+                android:id="@+id/my_iv_setting"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="50dp"
+                android:src="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_name" />
+
+            <TextView
+                android:id="@+id/my_tv_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="환경설정"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/my_iv_setting"
+                app:layout_constraintStart_toEndOf="@+id/my_iv_setting"
+                app:layout_constraintTop_toTopOf="@+id/my_iv_setting" />
+
+            <TextView
+                android:id="@+id/my_tv_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="알림설정"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_setting"
+                app:layout_constraintTop_toBottomOf="@id/my_iv_setting" />
+
+            <RadioGroup
+                android:id="@+id/my_rg_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/img_my_rg_alert_bg"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/my_tv_alert"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/my_tv_alert">
+
+                <RadioButton
+                    android:id="@+id/my_rb_alert_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_my_rb_alert_bg"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="on"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/my_rb_alert_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_my_rb_alert_bg"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="off"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/my_tv_music"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="음악설정"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_alert"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_alert" />
+
+            <RadioGroup
+                android:id="@+id/my_rg_music"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/img_my_rg_alert_bg"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/my_tv_music"
+                app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"
+                app:layout_constraintTop_toTopOf="@+id/my_tv_music">
+
+                <RadioButton
+                    android:id="@+id/my_rb_music_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_my_rb_alert_bg"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="on"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/my_rb_music_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_my_rb_alert_bg"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="off"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/my_tv_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="테마설정"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_setting"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_music" />
+
+            <RadioGroup
+                android:id="@+id/my_rg_theme"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/img_my_rg_alert_bg"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/my_tv_theme"
+                app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"
+                app:layout_constraintTop_toTopOf="@+id/my_tv_theme">
+
+                <RadioButton
+                    android:id="@+id/my_rb_theme_on"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_my_rb_alert_bg"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="on"
+                    android:textColor="@color/white" />
+
+                <RadioButton
+                    android:id="@+id/my_rb_theme_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sel_my_rb_alert_bg"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="off"
+                    android:textColor="@color/white" />
+            </RadioGroup>
+
+
+
+            <ImageView
+                android:id="@+id/my_iv_account"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="50dp"
+                android:src="@color/black"
+                app:layout_constraintStart_toStartOf="@+id/my_iv_setting"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_theme" />
+
+            <TextView
+                android:id="@+id/my_tv_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="계정관리"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/my_iv_account"
+                app:layout_constraintStart_toEndOf="@+id/my_iv_account"
+                app:layout_constraintTop_toTopOf="@+id/my_iv_account" />
+
+            <TextView
+                android:id="@+id/my_tv_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="내 정보 수정"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_account"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_account" />
+
+            <TextView
+                android:id="@+id/my_tv_withdraw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="계정 삭제"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_edit"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_edit" />
+
+
+            <ImageView
+                android:id="@+id/my_iv_information"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="50dp"
+                android:src="@color/black"
+                app:layout_constraintStart_toStartOf="@+id/my_iv_account"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_withdraw" />
+
+            <TextView
+                android:id="@+id/my_tv_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="이용문의"
+                android:textSize="16dp"
+                app:layout_constraintBottom_toBottomOf="@+id/my_iv_information"
+                app:layout_constraintStart_toEndOf="@+id/my_iv_information"
+                app:layout_constraintTop_toTopOf="@+id/my_iv_information" />
+
+            <TextView
+                android:id="@+id/my_tv_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="가이드 보기"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_information"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_information" />
+
+            <TextView
+                android:id="@+id/my_tv_question_frequency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="자주묻는 질문"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_guide"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_guide" />
+
+            <TextView
+                android:id="@+id/my_tv_question_direct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="1:1 문의"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_question_frequency"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_question_frequency" />
+
+            <TextView
+                android:id="@+id/my_tv_terms"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="이용약관"
+                android:textSize="20dp"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_question_direct"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_question_direct" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
