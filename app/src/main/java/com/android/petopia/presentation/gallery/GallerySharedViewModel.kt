@@ -14,14 +14,14 @@ import com.android.petopia.data.GalleryRepositoryImpl
 class GallerySharedViewModel (private val galleryRepository: GalleryRepository) :
         ViewModel() {
 
-    //모드 : "ADD" 추가, "EDIT" 편집, "" 읽기전용(기본값)
-    private val _layoutModeLiveData = MutableLiveData("")
+    //모드 : "ADD" 추가, "EDIT" 편집, "READ" 읽기전용(기본값)
+    private val _layoutModeLiveData = MutableLiveData("READ")
     val layoutModeLiveData: LiveData<String> = _layoutModeLiveData
 
     //선택된 사진 : 현재 보고있는 사진
     private val _currentPhotoLiveData = MutableLiveData<GalleryModel>()
     val currentPhotoLiveData: LiveData<GalleryModel> = _currentPhotoLiveData
-    val newPhoto: GalleryModel? = _currentPhotoLiveData.value
+    lateinit var newPhoto: GalleryModel
 
     //진입경로에 따라 레이아웃 모드를 변경해주는 함수
     fun changeLayoutMode(layoutMode: String) {
@@ -34,13 +34,12 @@ class GallerySharedViewModel (private val galleryRepository: GalleryRepository) 
     }
 
     fun considerNewPhoto(titleImage: String) {
-        newPhoto?.copy(titleImage = titleImage)
+        newPhoto = GalleryModel(titleImage = titleImage, "", "")
     }
 
     fun updateNewPhoto(titleText: String, date: String) {
+        _currentPhotoLiveData.value = newPhoto?.copy(titleText = titleText, date = date)
 
-        newPhoto?.copy(titleText = titleText, date = date)
-        _currentPhotoLiveData.value = newPhoto!!
     }
 }
 

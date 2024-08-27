@@ -27,6 +27,7 @@ class PhotoFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
             if (uri != null) {
                 binding.photoIvTitle.setImageURI(uri)
+                sharedViewModel.considerNewPhoto(uri.toString())
             }
         }
 
@@ -42,9 +43,8 @@ class PhotoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //갤러리에서 선택한 버튼에 따라 레이아웃 변경
+        //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-            Log.d("포토","${sharedViewModel.layoutModeLiveData.value}")
 
             if (it == "ADD" || it == "EDIT") {
                 addOrEditMode(
@@ -68,10 +68,8 @@ class PhotoFragment : Fragment() {
 
     }
 
-    //추가 or 편집모드 함수 : 레이아웃을 입력가능한 모드로 변경해준다.
+    //추가 or 편집모드 함수 : 레이아웃을 입력가능한 모드로 구성한다.
     private fun addOrEditMode(layoutMode: String, item: GalleryModel) {
-        Log.d("모드 활성화","${sharedViewModel.layoutModeLiveData.value}")
-        binding.photoTvTitle.isVisible = false
         if (layoutMode == "EDIT") {
             binding.apply {
                 photoIvTitle.setImageURI(item.titleImage.toUri())
@@ -79,13 +77,14 @@ class PhotoFragment : Fragment() {
                 photoTvCalendar.text = item.date
             }
         }
-
         binding.apply {
+            photoTvTitle.isVisible = false
+            photoEtTitle.isVisible = true
+            //사진 클릭이벤트 : 사용자의 갤러리에서 사진 업로드
             photoIvTitle.setOnClickListener {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-                sharedViewModel.considerNewPhoto(binding.photoIvTitle.toString())
             }
-            photoEtTitle.isVisible = true
+            //달력 클릭이벤트 : 사진 날짜 업로드
             photoTvCalendar.setOnClickListener {
                     val calendar = Calendar.getInstance()
                     val year = calendar.get(Calendar.YEAR)
@@ -97,22 +96,15 @@ class PhotoFragment : Fragment() {
                     val picker = DatePickerDialog(requireContext(), listener, year, month, day)
                     picker.show()
             }
-
-
+            //완료버튼 : 새로운 사진 등록 또는 변경
             photoTvEdit.apply {
-                text = "finish"
+                text = "완료"
                 setOnClickListener {
-
-
-                    Log.d("새사진", "${binding.photoEtTitle.text}")
-                    Log.d("새사진", "${binding.photoTvCalendar.text}")
-
                     sharedViewModel.updateNewPhoto(
                         binding.photoEtTitle.text.toString(),
                         binding.photoTvCalendar.text.toString()
                     )
-
-                    sharedViewModel.currentPhotoLiveData.value?.let { it1 -> readOnlyMode(it1) }
+                    sharedViewModel.changeLayoutMode("READ")
                 }
             }
         }
@@ -123,6 +115,9 @@ class PhotoFragment : Fragment() {
         private fun readOnlyMode(item: GalleryModel) {
             binding.apply {
                 photoEtTitle.isVisible = false
+                photoIvTitle.setImageURI(item.titleImage.toUri())
+                photoEtTitle.setText(item.titleText)
+                photoTvCalendar.text = item.date
                 photoTvTitle.apply {
                     isVisible = true
                     text = item.titleText
@@ -131,7 +126,13 @@ class PhotoFragment : Fragment() {
                     isVisible = true
                     text = item.date
                 }
-                photoTvEdit.text = "finish"
+                //수정버튼 : 현재사진 수정
+                photoTvEdit.apply {
+                    text = "수정"
+                    setOnClickListener {
+                        sharedViewModel.changeLayoutMode("EDIT")
+                    }
+                }
             }
         }
 
