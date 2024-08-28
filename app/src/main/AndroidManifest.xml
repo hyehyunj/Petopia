@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Petopia"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.signin.SigninActivity"
+            android:name=".presentation.register.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.MainActivity"
