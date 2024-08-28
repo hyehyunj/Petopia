@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.ActivityMainBinding
+import com.android.petopia.presentation.dialog.DialogFragment
+import com.android.petopia.presentation.gallery.PhotoFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
@@ -52,10 +54,25 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
+
     }
 
 
+    //이 3줄 추가하면 다이얼로그! 버튼이벤트.setOnClickListener {
+    //        (activity as MainActivity).showDialog()
+    //    }
+//다이얼로그 띄우는 함수
+    fun showDialog() {
+        DialogFragment().show(supportFragmentManager, "DIALOG_FRAGMENT")
 
+
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.main_signin_container, DialogFragment()
+//            )
+//            .setReorderingAllowed(true)
+//            .addToBackStack(null)
+//            .commit()
+    }
 
 
 }

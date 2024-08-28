@@ -17,7 +17,7 @@ class GalleryRecyclerViewAdapter(
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<GalleryModel>() {
             override fun areItemsTheSame(oldItem: GalleryModel, newItem: GalleryModel): Boolean {
-                return oldItem.titleImage == newItem.titleImage
+                return oldItem.uId == newItem.uId
             }
 
             override fun areContentsTheSame(oldItem: GalleryModel, newItem: GalleryModel): Boolean {

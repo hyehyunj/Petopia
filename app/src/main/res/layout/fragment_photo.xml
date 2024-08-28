@@ -5,11 +5,6 @@
     android:id="@+id/photo_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#77000000"
-    android:paddingTop="100dp"
-    android:paddingBottom="100dp"
-    android:paddingStart="10dp"
-    android:paddingEnd="10dp"
     android:gravity="center"
     tools:context=".presentation.gallery.PhotoFragment">
 
@@ -77,16 +72,6 @@
             app:layout_constraintEnd_toEndOf="@+id/photo_et_title"
             app:layout_constraintStart_toStartOf="@+id/photo_et_title" />
 
-        <TextView
-            android:id="@+id/photo_tv_all"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="전체보기"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/photo_tv_exit"
-            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/photo_tv_edit"
