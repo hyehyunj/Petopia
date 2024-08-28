@@ -25,6 +25,14 @@
 
 
     <!--  SignIn : 로그인에서 사용되는 String  -->
+    <string name="signin_id_search">아이디 찾기</string>
+    <string name="signin_password_search">비밀번호 찾기</string>
+    <string name="signup">회원가입</string>
+    <string name="signin_btn_login">로그인</string>
+    <string name="signin_autologin_guide">로그인할 방법을 선택하세요.</string>
+    <string name="signin_by_google">Google로 로그인</string>
+    <string name="signin_by_kakao">KakaoTalk으로 로그인</string>
+    <string name="signin_by_naver">Naver로 로그인</string>
 
 
     <!--  Main : 메인에서 사용되는 String  -->
@@ -42,6 +50,7 @@
     <string name="memory_list_title">메모리즈</string>
     <string name="memory_list_rv_title">질문질문질문?</string>
     <string name="memory_question_title">Today\'s Memory</string>
+
 
 
     <!--  Letter : 레터에서 사용되는 String  -->
