@@ -39,8 +39,9 @@
     <!--  Memory : 메모리에서 사용되는 String  -->
     <string name="memory_example_text">asdfasdfasdfasdfasdfasdfaaasasdfasdfasdfasdfasdfasdfdsdf</string>
     <string name="memory_feed_title">OO이와 추억 모아보기</string>
-    <string name="memory_list_title">oo이와 추억 모음</string>
+    <string name="memory_list_title">메모리즈</string>
     <string name="memory_list_rv_title">질문질문질문?</string>
+    <string name="memory_question_title">Today\'s Memory</string>
 
 
     <!--  Letter : 레터에서 사용되는 String  -->
