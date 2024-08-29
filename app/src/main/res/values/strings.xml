@@ -29,6 +29,10 @@
     <string name="signup_email">이메일</string>
     <string name="signup_btn_complete">완료</string>
     <string name="signup_btn_cancel">취소</string>
+    <string name="signup_agree_all">[필수] 만 14세 이상이며 모두 동의 합니다.</string>
+    <string name="signup_terms">이용약관</string>
+    <string name="signup_read_all"><u>전체보기</u></string>
+    <string name="signup_personal_info_term">개인정보 수집 및 이용 동의</string>
 
     <!--  SignIn : 로그인에서 사용되는 String  -->
     <string name="signin_id_search">아이디 찾기</string>
