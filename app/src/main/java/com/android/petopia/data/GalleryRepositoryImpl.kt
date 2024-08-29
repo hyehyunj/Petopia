@@ -4,11 +4,19 @@ import android.content.Context
 import com.android.petopia.presentation.gallery.GalleryRepository
 
 
-class GalleryRepositoryImpl(private val galleryModel: List<GalleryModel>) :
+class GalleryRepositoryImpl :
     GalleryRepository {
-    override fun getGalleryList(context: Context, galleryList: List<GalleryModel>): List<GalleryModel> {
+    override fun updateGalleryList(context: Context, galleryList: List<GalleryModel>): List<GalleryModel> {
         GalleryDataSource.getGalleryDataSource().saveGalleryList(context,galleryList)
-        GalleryDataSource.getGalleryDataSource().loadGalleryList(context)
-        return galleryModel
+        val updateGalleryList = GalleryDataSource.getGalleryDataSource().loadGalleryList(context)
+        return updateGalleryList
+    }
+
+    override fun updateGalleryList(context: Context, photo: GalleryModel): List<GalleryModel> {
+
+        val mutableList = GalleryDataSource.getGalleryDataSource().loadGalleryList(context).toMutableList()
+        val index = mutableList.indexOf(mutableList.find{ it.titleImage == photo.titleImage })
+if(index == -1) mutableList.add(photo) else mutableList[index] = photo
+        return mutableList.toList()
     }
 }

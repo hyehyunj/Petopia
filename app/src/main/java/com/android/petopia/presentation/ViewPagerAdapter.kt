@@ -10,7 +10,7 @@ import com.android.petopia.presentation.my.MyFragment
 
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    private val fragments = listOf(HomeFragment(), GalleryFragment(), MyFragment())
+    private val fragments = listOf(HomeFragment(), CommunityFragment(), GalleryFragment())
 
     override fun getItemCount(): Int {
         return fragments.size

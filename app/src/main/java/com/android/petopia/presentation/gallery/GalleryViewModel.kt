@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.android.petopia.data.GalleryDataSource
 import com.android.petopia.data.GalleryModel
 import com.android.petopia.data.GalleryRepositoryImpl
 
@@ -20,20 +19,25 @@ class GalleryViewModel (private val galleryRepository: GalleryRepository) :
 
         //갤러리 불러오는 함수
         fun getGalleryList(context: Context) {
-            galleryRepository.getGalleryList(context, _galleryListLiveData.value ?: listOf())
+            galleryRepository.updateGalleryList(context, _galleryListLiveData.value ?: listOf())
                     }
-                }
+
+    }
+
+
+
+
 
 
     class GalleryViewModelFactory(context: Context) : ViewModelProvider.Factory {
 
-        private val repository = GalleryRepositoryImpl(GalleryDataSource.getGalleryDataSource().loadGalleryList(context))
+        private val repository = GalleryRepositoryImpl()
         override fun <T : ViewModel> create(
             modelClass: Class<T>,
             extras: CreationExtras
         ): T {
 
-            return GallerySharedViewModel(
+            return GalleryViewModel(
                 repository
             ) as T
         }

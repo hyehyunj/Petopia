@@ -1,4 +1,4 @@
-package com.android.petopia.presentation.setting
+package com.android.petopia.presentation.my
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
