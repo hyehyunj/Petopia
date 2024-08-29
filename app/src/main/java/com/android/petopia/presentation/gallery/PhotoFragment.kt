@@ -52,7 +52,7 @@ class PhotoFragment : DialogFragment() {
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
             if (it == "ADD" || it == "EDIT") {//추가 or 편집모드
                 addOrEditMode(
-                    it, sharedViewModel.currentPhotoLiveData.value ?: GalleryModel("","","")
+                    it, sharedViewModel.currentPhotoLiveData.value ?: GalleryModel("","","", 0)
                 )
                 }
              else {//읽기전용모드

@@ -1,5 +1,6 @@
 package com.android.petopia.presentation.gallery
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,7 @@ class GallerySharedViewModel :
 
 
     //갤러리 리스트
-    private val _galleryListLiveData = MutableLiveData<List<GalleryModel>>()
+    private val _galleryListLiveData = MutableLiveData<List<GalleryModel>>(listOf())
     val galleryListLiveData: LiveData<List<GalleryModel>> = _galleryListLiveData
     private val galleryList: MutableList<GalleryModel> =
         _galleryListLiveData.value?.toMutableList() ?: mutableListOf()
@@ -40,31 +41,27 @@ class GallerySharedViewModel :
     }
 
     //선택된 사진을 업데이트해주는 함수
-    fun updateCurrentPhoto(photo: GalleryModel, index: Int) {
-        _currentPhotoLiveData.value = photo
-        if (_layoutModeLiveData.value == "EDIT") _currentPhotoLiveData.value =
-            photo.copy(index = index)
+    fun updateCurrentPhoto(photo: GalleryModel, position: Int) {
+        _currentPhotoLiveData.value = photo.copy(index = position)
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 정보를 담는 함수
     fun considerNewPhoto(titleImage: String) {
-        when (_layoutModeLiveData.value) {
-            "ADD" ->
-                newPhoto = GalleryModel(
+        newPhoto = GalleryModel(
                     titleImage = titleImage,
                     "",
-                    "",
+                    ""
                 )
-            "EDIT" ->
-                newPhoto =
-                    _currentPhotoLiveData.value?.copy(
-                        titleImage = titleImage
-                    ) ?:  GalleryModel(
-                        titleImage = titleImage,
-                        "",
-                        "",
-                    )
-        }
+        if(_layoutModeLiveData.value == "EDIT") newPhoto =
+            _currentPhotoLiveData.value?.copy(
+                titleImage = titleImage) ?: GalleryModel(
+                titleImage = titleImage,
+                "",
+                "",
+                _currentPhotoLiveData.value?.index ?: 0
+
+            )
+
 
     }
 
@@ -77,7 +74,7 @@ class GallerySharedViewModel :
                         titleText = titleText,
                         date = date
                     )
-                galleryList.add(_currentPhotoLiveData.value!!)
+                galleryList.add(0,_currentPhotoLiveData.value!!)
             }
 
             "EDIT" -> {

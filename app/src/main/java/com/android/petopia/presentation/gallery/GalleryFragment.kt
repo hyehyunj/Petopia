@@ -1,5 +1,6 @@
 package com.android.petopia.presentation.gallery
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -49,13 +50,14 @@ class GalleryFragment : Fragment() {
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
 
         //삭제버튼 클릭이벤트
         binding.galleryIvRemove.setOnClickListener {
-            Log.d("삭제버튼 클릭", "")
+
             galleryRecyclerViewAdapter.appearCheckBox(true)
         }
 
@@ -71,8 +73,9 @@ class GalleryFragment : Fragment() {
         }
 
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
-
-            galleryRecyclerViewAdapter.notifyItemInserted(0)
+            Log.d("갤러리 변경감지", "${gallerySharedViewModel.galleryListLiveData.value}")
+            galleryRecyclerViewAdapter.updateList(it)
+//            galleryRecyclerViewAdapter.notifyDataSetChanged()
             }
 
 
@@ -81,11 +84,12 @@ class GalleryFragment : Fragment() {
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
     private fun initAdapter() {
         galleryRecyclerViewAdapter = GalleryRecyclerViewAdapter(
-            gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
+            gallerySharedViewModel.galleryListLiveData.value!!,
             itemClickListener = { item, position ->
+                Log.d("갤러리 변경감지", "${position}")
+                gallerySharedViewModel.updateCurrentPhoto(item, position)
                 gallerySharedViewModel.changeLayoutMode("Read")
                 showPhoto()
-                gallerySharedViewModel.updateCurrentPhoto(item, position)
             }, itemLongClickListener = { item, position -> })
         binding.galleryRv.adapter = galleryRecyclerViewAdapter
         binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 2)

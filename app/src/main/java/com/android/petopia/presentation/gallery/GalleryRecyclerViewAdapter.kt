@@ -12,7 +12,7 @@ import com.android.petopia.data.GalleryModel
 import com.android.petopia.databinding.RecyclerviewGalleryHolderBinding
 
 class GalleryRecyclerViewAdapter(
-    private val item: List<GalleryModel>,
+    private var item: List<GalleryModel>,
     private val itemClickListener: (item: GalleryModel, position: Int) -> Unit,
     private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit
 ) : RecyclerView.Adapter<GalleryRecyclerViewAdapter.Holder>() {
@@ -20,6 +20,12 @@ class GalleryRecyclerViewAdapter(
         private const val TAG = "Adapter"
     }
     private var removeMode = false
+
+    fun updateList(galleryList: List<GalleryModel>){
+        item = galleryList
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding =
@@ -57,6 +63,7 @@ class GalleryRecyclerViewAdapter(
             }
 }
         }
+
 
     fun appearCheckBox(removeMode: Boolean) {
         this.removeMode = removeMode
