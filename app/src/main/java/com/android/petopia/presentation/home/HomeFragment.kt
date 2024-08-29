@@ -1,15 +1,22 @@
 package com.android.petopia.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.android.petopia.R
-
+import com.android.petopia.databinding.FragmentHomeBinding
+import com.google.firebase.Firebase
+import com.google.firebase.database.database
 
 
 class HomeFragment : Fragment() {
+
+    private val binding by lazy {
+        FragmentHomeBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +28,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+
+        return binding.root
     }
 
 
