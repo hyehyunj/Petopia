@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.petopia.R
 import com.android.petopia.data.GalleryModel
 import com.android.petopia.databinding.FragmentPhotoBinding
 
@@ -93,7 +91,9 @@ class PhotoFragment : DialogFragment() {
             }
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
             photoTvCalendar.setOnClickListener {
-                    val calendar = Calendar.getInstance()
+                Log.d("현재 인덱스는", "${sharedViewModel.currentPhotoLiveData.value?.index}")
+
+                val calendar = Calendar.getInstance()
                     val year = calendar.get(Calendar.YEAR)
                     val month = calendar.get(Calendar.MONTH)
                     val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -107,9 +107,10 @@ class PhotoFragment : DialogFragment() {
             photoTvEdit.apply {
                 text = "완료"
                 setOnClickListener {
-                    sharedViewModel.updateNewPhoto(
+                    sharedViewModel.updateNewGallery(
                         binding.photoEtTitle.text.toString(),
                         binding.photoTvCalendar.text.toString(),
+                        item.index
                     )
                     Log.d("포토에서는", "${sharedViewModel.galleryListLiveData.value}")
                     sharedViewModel.changeLayoutMode("READ")
@@ -156,7 +157,7 @@ private fun initDialog() {
     val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
     val deviceWidth = size.x
     params?.width = (deviceWidth * 0.9).toInt()
-    params?.height = (deviceWidth * 1.2).toInt()
+    params?.height = (deviceWidth * 1.4).toInt()
     dialog?.window?.attributes = params as WindowManager.LayoutParams
     dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 }
