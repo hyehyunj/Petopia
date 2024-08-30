@@ -21,13 +21,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentDialogBinding
 import com.android.petopia.databinding.FragmentGalleryBinding
+import com.android.petopia.databinding.FragmentGuidAppearanceDialogBinding
 import com.android.petopia.presentation.gallery.GallerySharedViewModel
 import com.android.petopia.presentation.home.HomeSharedViewModel
 
 //다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
 class GuideAppearanceDialogFragment : DialogFragment() {
-    private val _binding: FragmentDialogBinding by lazy {
-        FragmentDialogBinding.inflate(layoutInflater)
+    private val _binding: FragmentGuidAppearanceDialogBinding by lazy {
+        FragmentGuidAppearanceDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
     private lateinit var sharedViewModel: HomeSharedViewModel

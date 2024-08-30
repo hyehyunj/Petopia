@@ -40,12 +40,9 @@ class GuideFragment : Fragment() {
     ): View? {
 
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
-            Log.d("페이지번호는","${guideViewModel.guidePageNumberLiveData.value}")
            guideViewModel.makeGuideModel()
         }
         guideViewModel.guideModelLiveData.observe(viewLifecycleOwner) {
-            Log.d("가이드는","${guideViewModel.guideModelLiveData.value}")
-
             binding.guideTvStory.text = guideViewModel.guideModelLiveData.value?.guideStory
             binding.guideTvProgressText.text = guideViewModel.guideModelLiveData.value?.progressText
 
@@ -62,6 +59,9 @@ class GuideFragment : Fragment() {
 
         return binding.root
     }
+
+    //
+
 
 
 }
