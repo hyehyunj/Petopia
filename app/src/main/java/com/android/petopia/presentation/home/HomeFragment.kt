@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomeBinding
+import com.android.petopia.presentation.gallery.PhotoFragment
 import com.android.petopia.presentation.memory.MemoryFragment
 import com.google.firebase.Firebase
 import com.google.firebase.database.database
@@ -44,11 +45,11 @@ class HomeFragment : Fragment() {
 //        transaction.replace(R.id.home_layout, MemoryFragment())
 //        transaction.addToBackStack(null)
 //        transaction.commit()
-        childFragmentManager.beginTransaction()
-            .replace(R.id.home_layout, MemoryFragment())
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+
+        MemoryFragment().show(childFragmentManager, "MEMORY_FRAGMENT")
+
+
+
     }
 
 

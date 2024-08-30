@@ -5,20 +5,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.android.petopia.data.Memory
 import com.android.petopia.data.MemoryModel
 import com.android.petopia.presentation.memory.repository.MemoryRepository
 
-class MemoryViewModel(private val memoryRepository: MemoryRepository) : ViewModel() {
+class MemoryViewModel : ViewModel() {
 
-    private val _memoryListLiveData = MutableLiveData<List<MemoryModel>>()
-    val memoryListLiveData: LiveData<List<MemoryModel>> = _memoryListLiveData
+    private val _memoryListLiveData = MutableLiveData<List<Memory>>()
+    val memoryListLiveData: LiveData<List<Memory>> = _memoryListLiveData
 
-    private val memoryItems = mutableListOf<MemoryModel>()
+    private val memoryItems = mutableListOf<Memory>()
 
 
-
-    fun addMemoryList(memory: MemoryModel) {
-        val newMemory = MemoryModel(memory.memoryTitle, memory.memoryDate, memory.memoryContent)
+    fun addMemoryList(memory: Memory) {
+        val newMemory = Memory(memory.title, memory.content, memory.writer)
         memoryItems.add(newMemory)
         _memoryListLiveData.value = memoryItems.toList()
     }

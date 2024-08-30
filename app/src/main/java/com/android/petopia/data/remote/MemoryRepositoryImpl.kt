@@ -16,7 +16,7 @@ class MemoryRepositoryImpl: MemoryRepository {
 
     override suspend fun createMemory(memory: Memory) {
         reference.child(memory.key).setValue(memory)
-    }
+    } //db저장
 
     override suspend fun selectMemoryList(user: UserModel): MutableList<Memory> {
         return suspendCancellableCoroutine { continuation ->
