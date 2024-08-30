@@ -29,15 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_tv_name_pet" />
 
-
-    <ImageView
-        android:id="@+id/btn_to_memory"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@color/skyblue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/home_iv_gallery"
         android:layout_width="50dp"
@@ -57,10 +48,23 @@
         app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
 
 
+    <TextView
+        android:id="@+id/home_tv_guide"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:background="@color/skyblue"
+        android:text="guide"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/home_iv_pet"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginTop="200dp"
         android:background="@color/skyblue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

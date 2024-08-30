@@ -65,7 +65,7 @@
         android:layout_margin="24dp"
         android:background="@color/black"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@+id/home_memory_bridge_iv_arrow_under"/>
 
     <ImageView
         android:id="@+id/home_memory_bridge_iv_arrow_under"
