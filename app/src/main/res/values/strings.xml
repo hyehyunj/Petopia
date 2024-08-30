@@ -5,6 +5,10 @@
 
     <!--  Common : 공통적으로 사용되는 String   -->
 
+    <string name="common_petopia">펫토피아</string>
+    <string name="common_memory_bridge">메모리브릿지</string>
+    <string name="common_earth">지구</string>
+
     <string name="common_home">홈</string>
     <string name="common_community">커뮤니티</string>
     <string name="common_my">마이</string>

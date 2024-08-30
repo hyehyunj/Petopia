@@ -41,18 +41,18 @@ class SigninFragment : Fragment() {
             val userInputPassword = binding.etSigninPassword.text.toString()
 
 
-            if (registerViewModel.validateSignin(userInputId, userInputPassword)) {
-                //로그인 성공
-                Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+//            if (registerViewModel.validateSignin(userInputId, userInputPassword)) {
+//                //로그인 성공
+//                Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
                 //메인화면으로 이동
                 val intent = Intent(requireContext(), MainActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()
 
-            } else {
-                //로그인 실패
-                Toast.makeText(requireContext(), "로그인 실패", Toast.LENGTH_SHORT).show()
-            }
+//            } else {
+//                //로그인 실패
+//                Toast.makeText(requireContext(), "로그인 실패", Toast.LENGTH_SHORT).show()
+//            }
         }
 
         //회원가입 누르면 회원가입 프래그먼트로 이동

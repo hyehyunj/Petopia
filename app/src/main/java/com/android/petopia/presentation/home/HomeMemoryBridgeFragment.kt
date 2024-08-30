@@ -1,42 +1,38 @@
 package com.android.petopia.presentation.home
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.petopia.R
-import com.android.petopia.databinding.FragmentHomeBinding
-import com.android.petopia.presentation.gallery.PhotoFragment
+import androidx.fragment.app.Fragment
+import com.android.petopia.databinding.FragmentHomeMemoryBridgeBinding
 import com.android.petopia.presentation.memory.MemoryFragment
-import com.google.firebase.Firebase
-import com.google.firebase.database.database
 
+class HomeMemoryBridgeFragment : Fragment() {
 
-class HomeFragment : Fragment() {
-
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private val _binding: FragmentHomeMemoryBridgeBinding by lazy {
+        FragmentHomeMemoryBridgeBinding.inflate(layoutInflater)
     }
+    private val binding get() = _binding
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnToMemory.setOnClickListener {
+
+
+        //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
+        binding.homeMemoryBridgeTvMemoryBtn.setOnClickListener {
             setMemoryFragment()
         }
+
+
     }
 
 
@@ -47,7 +43,6 @@ class HomeFragment : Fragment() {
 //        transaction.commit()
 
         MemoryFragment().show(childFragmentManager, "MEMORY_FRAGMENT")
-
 
 
     }

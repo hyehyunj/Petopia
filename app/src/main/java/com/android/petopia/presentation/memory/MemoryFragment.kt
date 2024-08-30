@@ -1,11 +1,11 @@
 package com.android.petopia.presentation.memory
 
+
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,22 +13,14 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.android.petopia.R
 import com.android.petopia.data.Memory
-import com.android.petopia.data.MemoryModel
-import com.android.petopia.data.MemoryReposirotyImpl
 import com.android.petopia.data.UserModel
 import com.android.petopia.data.remote.MemoryRepository
 import com.android.petopia.data.remote.MemoryRepositoryImpl
-import com.android.petopia.databinding.FragmentHomeBinding
-import com.android.petopia.databinding.FragmentLetterBinding
 import com.android.petopia.databinding.FragmentMemoryBinding
 import com.android.petopia.presentation.MainActivity
-import com.android.petopia.presentation.gallery.PhotoFragment
-import com.android.petopia.presentation.home.HomeSharedViewModel
 import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
 import com.android.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
@@ -120,6 +112,9 @@ class MemoryFragment : DialogFragment() {
         binding.rvMemoryList.adapter = listRecyclerViewAdapter
         binding.rvMemoryList.layoutManager = GridLayoutManager(requireContext(), 1)
     }
+
+
+
 
     private fun initDialog() {
         val windowManager =

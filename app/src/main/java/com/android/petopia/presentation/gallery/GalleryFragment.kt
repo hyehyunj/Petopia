@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -76,9 +77,9 @@ class GalleryFragment : Fragment() {
             Log.d("갤러리 변경감지", "${gallerySharedViewModel.galleryListLiveData.value}")
             galleryRecyclerViewAdapter.updateList(it)
 //            galleryRecyclerViewAdapter.notifyDataSetChanged()
-            }
+        }
 
-
+//        btnBackListener()
     }
 
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
@@ -112,6 +113,17 @@ class GalleryFragment : Fragment() {
 
     }
 
+    //뒤로가기 버튼 함수 : 홈프래그먼트로 돌아간다.
+    private fun btnBackListener() {
+        requireActivity().onBackPressedDispatcher.addCallback(object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                parentFragmentManager.beginTransaction()
+                    .remove(this@GalleryFragment)
+                    .commit()
+            }
+        })
+    }
 
     override fun onResume() {
         super.onResume()
