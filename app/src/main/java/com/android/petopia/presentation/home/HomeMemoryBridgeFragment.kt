@@ -1,13 +1,11 @@
 package com.android.petopia.presentation.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.petopia.R
+import androidx.fragment.app.Fragment
 import com.android.petopia.databinding.FragmentHomeMemoryBridgeBinding
-import com.android.petopia.databinding.FragmentHomePetopiaBinding
 import com.android.petopia.presentation.memory.MemoryFragment
 
 class HomeMemoryBridgeFragment : Fragment() {

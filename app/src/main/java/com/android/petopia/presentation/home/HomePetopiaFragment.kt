@@ -1,20 +1,15 @@
 package com.android.petopia.presentation.home
 
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomePetopiaBinding
-import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.gallery.GalleryFragment
+import com.android.petopia.presentation.guide.GuideFragment
 import com.android.petopia.presentation.letter.LetterFragment
-import com.android.petopia.presentation.memory.MemoryFragment
 
 
 class HomePetopiaFragment : Fragment() {
@@ -43,8 +38,8 @@ class HomePetopiaFragment : Fragment() {
         }
 
         //버튼 클릭이벤트 : 클릭시 가이드 시작
-        binding.homeIvGallery.setOnClickListener {
-            showGalleryFragment()
+        binding.homeTvGuide.setOnClickListener {
+            showGuideFragment()
         }
 
         //편지버튼 클릭이벤트 : 클릭시 편지함 이동
@@ -62,10 +57,10 @@ class HomePetopiaFragment : Fragment() {
     private fun showGalleryFragment() {
         childFragmentManager.beginTransaction()
             .replace(
-                R.id.home_petopia_container, GalleryFragment(),"a"
+                R.id.home_petopia_container, GalleryFragment()
             )
             .setReorderingAllowed(true)
-            .addToBackStack("a")
+            .addToBackStack(null)
             .commit()
 
         //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
@@ -78,6 +73,17 @@ class HomePetopiaFragment : Fragment() {
 //            .addToBackStack("BACK_PETOPIA")
 //            .commitAllowingStateLoss()
     }
+
+    private fun showGuideFragment() {
+        childFragmentManager.beginTransaction()
+            .replace(
+                R.id.home_petopia_container, GuideFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun showLetterFragment() {
         LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
 

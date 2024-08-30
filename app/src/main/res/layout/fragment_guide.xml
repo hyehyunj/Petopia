@@ -16,9 +16,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/main_toolbar"
-        layout="@layout/toolbar" />
+<!--    <include-->
+<!--        android:id="@+id/main_toolbar"-->
+<!--        layout="@layout/toolbar" />-->
 
     <TextView
         android:id="@+id/guide_tv_progress_text"
