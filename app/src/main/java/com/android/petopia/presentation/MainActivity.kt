@@ -3,6 +3,7 @@ package com.android.petopia.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.android.petopia.R
 import com.android.petopia.databinding.ActivityMainBinding
 import com.android.petopia.presentation.dialog.DialogFragment
@@ -38,19 +39,19 @@ class MainActivity : AppCompatActivity() {
         val viewPager = binding.mainViewPager
         val mainViewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = mainViewPagerAdapter
-
+        viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
         TabLayoutMediator(binding.mainTabLayout, binding.mainViewPager) { tab, position ->
             when (position) {
                 0 -> {
-                    tab.text = getString(R.string.common_home)
+                    tab.text = getString(R.string.common_petopia)
                 }
 
                 1 -> {
-                    tab.text = getString(R.string.common_community)
+                    tab.text = getString(R.string.common_memory_bridge)
                 }
 
                 2 -> {
-                    tab.text = getString(R.string.common_my)
+                    tab.text = getString(R.string.common_earth)
                 }
             }
         }.attach()
