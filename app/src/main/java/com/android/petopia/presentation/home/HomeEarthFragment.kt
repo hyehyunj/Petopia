@@ -7,9 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomeEarthBinding
-import com.android.petopia.databinding.FragmentHomeMemoryBridgeBinding
 import com.android.petopia.presentation.community.CommunityFragment
-import com.android.petopia.presentation.gallery.GalleryFragment
 
 class HomeEarthFragment : Fragment() {
     private val _binding: FragmentHomeEarthBinding by lazy {
@@ -27,31 +25,39 @@ class HomeEarthFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initlayout()
+        onClickListener()
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    private fun initlayout()
-    {
-        binding.homeEarthIvSetting.setOnClickListener {
+
+        onClickListener()
+    }
+
+
+    private fun onClickListener() {
+        //설정버튼 클릭이벤트 : 클릭시 설정 이동
+
+        binding.homeEarthIvMy.setOnClickListener {
 
         }
+
+        //버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
+
         binding.homeEarthIvCloudLeft.setOnClickListener {
 
         }
+
+        //메모리버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
+
         binding.homeEarthIvCloudRight.setOnClickListener {
 
         }
+
+        //메모리버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.home_earth_container, CommunityFragment())
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
         }
-
-
     }
-
-}
+    }

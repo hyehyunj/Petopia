@@ -113,6 +113,9 @@ class MemoryFragment : DialogFragment() {
         binding.rvMemoryList.layoutManager = GridLayoutManager(requireContext(), 1)
     }
 
+
+
+
     private fun initDialog() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager

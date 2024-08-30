@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/home_earth_iv_setting"
+        android:id="@+id/home_earth_iv_my"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="16dp"
@@ -52,7 +52,7 @@
         android:layout_height="50dp"
         android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/home_earth_iv_community"
-        app:layout_constraintEnd_toEndOf="@+id/home_earth_iv_setting"/>
+        app:layout_constraintEnd_toEndOf="@+id/home_earth_iv_my"/>
 
     <FrameLayout
         android:id="@+id/home_earth_container"

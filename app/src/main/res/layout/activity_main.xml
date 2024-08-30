@@ -42,7 +42,7 @@
         app:tabTextColor="@color/white" />
 
     <FrameLayout
-        android:id="@+id/main_signin_container"
+        android:id="@+id/main_sub_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

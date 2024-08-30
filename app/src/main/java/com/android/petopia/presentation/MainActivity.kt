@@ -1,6 +1,7 @@
 package com.android.petopia.presentation
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -55,7 +56,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
-
     }
 
 
@@ -74,6 +74,8 @@ class MainActivity : AppCompatActivity() {
 //            .addToBackStack(null)
 //            .commit()
     }
+
+
 
 
 }
