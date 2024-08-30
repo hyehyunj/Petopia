@@ -1,44 +1,27 @@
-package com.android.petopia.presentation.dialog
+package com.android.petopia.presentation.guide
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.view.Display
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.view.WindowManager
-import android.view.WindowMetrics
-import android.widget.LinearLayout
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.petopia.R
-import com.android.petopia.databinding.FragmentDialogBinding
-import com.android.petopia.databinding.FragmentGalleryBinding
-import com.android.petopia.databinding.FragmentGuidNameDialogBinding
-import com.android.petopia.presentation.gallery.GallerySharedViewModel
+import com.android.petopia.databinding.FragmentGuideRelationDialogBinding
 import com.android.petopia.presentation.home.HomeSharedViewModel
 
 //다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
-class GuideNameDialogFragment : DialogFragment() {
-    private val _binding: FragmentGuidNameDialogBinding by lazy {
-        FragmentGuidNameDialogBinding.inflate(layoutInflater)
+class GuideRelationDialogFragment : DialogFragment() {
+    private val _binding: FragmentGuideRelationDialogBinding by lazy {
+        FragmentGuideRelationDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
     private lateinit var sharedViewModel: HomeSharedViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

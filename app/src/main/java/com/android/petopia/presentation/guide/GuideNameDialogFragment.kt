@@ -1,37 +1,27 @@
-package com.android.petopia.presentation.dialog
+package com.android.petopia.presentation.guide
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.view.Display
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.view.WindowManager
-import android.view.WindowMetrics
-import android.widget.LinearLayout
-import androidx.core.graphics.drawable.toDrawable
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.petopia.R
-import com.android.petopia.databinding.FragmentDialogBinding
-import com.android.petopia.databinding.FragmentGalleryBinding
-import com.android.petopia.databinding.FragmentGuidRelationDialogBinding
-import com.android.petopia.presentation.gallery.GallerySharedViewModel
-import com.android.petopia.presentation.home.HomeSharedViewModel
+import com.android.petopia.databinding.FragmentGuideNameDialogBinding
 
-//다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
-class GuideRelationDialogFragment : DialogFragment() {
-    private val _binding: FragmentGuidRelationDialogBinding by lazy {
-        FragmentGuidRelationDialogBinding.inflate(layoutInflater)
+//가이드 반려동물 이름 다이얼로그 프래그먼트 : 가이드 진행 중 반려동물 이름을 입력받을 때 사용되는 다이얼로그
+class GuideNameDialogFragment : DialogFragment() {
+    private val _binding: FragmentGuideNameDialogBinding by lazy {
+        FragmentGuideNameDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var sharedViewModel: HomeSharedViewModel
+    private lateinit var guideSharedViewModel: GuideViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -45,19 +35,27 @@ class GuideRelationDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        sharedViewModel = ViewModelProvider(requireActivity()).get(HomeSharedViewModel::class.java)
-
-        binding.dialogTvAction.setOnClickListener {}
-
-
-        //취소버튼 클릭이벤트
-        binding.dialogTvCancel.setOnClickListener {
-            dismiss()
-        }
-
-
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        guideSharedViewModel = ViewModelProvider(requireParentFragment()).get(GuideViewModel::class.java)
+
+        Log.d("네임은", "${guideSharedViewModel.guidePageNumberLiveData.value}")
+
+        binding.dialogNameTvComplete.setOnClickListener {
+
+           if(binding.dialogNameEt.text.isBlank()) Toast.makeText(requireContext(),"이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+
+               else {guideSharedViewModel.setPetName(binding.dialogNameEt.text.toString())
+            Log.d("바뀝니다", "${guideSharedViewModel.guidePageNumberLiveData.value}")
+            dismiss()}
+
+        }
+    }
+
 
 
     override fun onResume() {
@@ -74,7 +72,7 @@ class GuideRelationDialogFragment : DialogFragment() {
         size.y
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
-        params?.width = (deviceWidth * 0.9).toInt()
+        params?.width = (deviceWidth * 0.8).toInt()
         params?.height = (deviceWidth * 0.5).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

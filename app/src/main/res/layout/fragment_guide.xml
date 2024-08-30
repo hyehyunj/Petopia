@@ -16,9 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <include-->
-<!--        android:id="@+id/main_toolbar"-->
-<!--        layout="@layout/toolbar" />-->
+<!-- om-->
 
     <TextView
         android:id="@+id/guide_tv_progress_text"
@@ -54,7 +52,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="160dp"
-        android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -64,10 +61,10 @@
         android:id="@+id/guide_tv_story"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
         android:text="text"
         android:gravity="center"
         android:textColor="@color/white"
+        android:background="@drawable/bg_translucent_black_guide_story"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

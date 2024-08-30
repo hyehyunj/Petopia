@@ -1,62 +1,81 @@
-package com.android.petopia.presentation.dialog
+package com.android.petopia.presentation.guide
 
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.view.Display
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.view.WindowManager
-import android.view.WindowMetrics
-import android.widget.LinearLayout
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.petopia.R
-import com.android.petopia.databinding.FragmentDialogBinding
-import com.android.petopia.databinding.FragmentGalleryBinding
-import com.android.petopia.databinding.FragmentGuidAppearanceDialogBinding
-import com.android.petopia.presentation.gallery.GallerySharedViewModel
-import com.android.petopia.presentation.home.HomeSharedViewModel
+import androidx.recyclerview.widget.GridLayoutManager
+import com.android.petopia.databinding.FragmentGuideAppearanceDialogBinding
 
 //다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
 class GuideAppearanceDialogFragment : DialogFragment() {
-    private val _binding: FragmentGuidAppearanceDialogBinding by lazy {
-        FragmentGuidAppearanceDialogBinding.inflate(layoutInflater)
+    private val _binding: FragmentGuideAppearanceDialogBinding by lazy {
+        FragmentGuideAppearanceDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var sharedViewModel: HomeSharedViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-
-
-    }
+    private lateinit var guideSharedViewModel: GuideViewModel
+    private lateinit var guideAppearanceDialogRecyclerViewAdapter: GuideAppearanceDialogRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        guideSharedViewModel =
+            ViewModelProvider(requireParentFragment()).get(GuideViewModel::class.java)
 
-        sharedViewModel = ViewModelProvider(requireActivity()).get(HomeSharedViewModel::class.java)
+        initAdapter()
 
-        binding.dialogTvAction.setOnClickListener {}
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
 
-        //취소버튼 클릭이벤트
-        binding.dialogTvCancel.setOnClickListener {
-            dismiss()
+        guideSharedViewModel.appearanceLiveData.observe(viewLifecycleOwner) {
+            guideSharedViewModel.changeBreed()
+        }
+
+        guideSharedViewModel.breedListLiveData.observe(viewLifecycleOwner) {
+initAdapter()
+        }
+
+        binding.guideAppearanceDialogTvDog.setOnClickListener {
+            guideSharedViewModel.changeAppearance("DOG")
+            Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
+        }
+        binding.guideAppearanceDialogTvCat.setOnClickListener {
+            guideSharedViewModel.changeAppearance("CAT")
+            Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
         }
 
 
-        return binding.root
+        binding.guideAppearanceDialogTvComplete.setOnClickListener {
+            guideSharedViewModel.guideButtonClickListener("NEXT")
+            dismiss()
+        }
+
+    }
+
+
+    //어댑터 초기화 함수 : 클릭된 종 대분류에 따라 소분류를 리사이클러뷰로 보여주는 함수
+    private fun initAdapter() {
+        guideAppearanceDialogRecyclerViewAdapter = GuideAppearanceDialogRecyclerViewAdapter(
+            guideSharedViewModel.breedListLiveData.value ?: listOf(),
+            itemClickListener = { item ->
+                guideSharedViewModel.setPetAppearance(item)
+            })
+        binding.guideAppearanceDialogRv.adapter = guideAppearanceDialogRecyclerViewAdapter
+        binding.guideAppearanceDialogRv.layoutManager = GridLayoutManager(requireContext(), 3)
     }
 
 
@@ -74,8 +93,9 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         size.y
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
+        val deviceHeight = size.y
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 0.5).toInt()
+        params?.height = (deviceHeight * 0.7).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 //        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
@@ -104,5 +124,8 @@ class GuideAppearanceDialogFragment : DialogFragment() {
 //            }
     }
 
-
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        requireParentFragment().onResume()
+    }
 }

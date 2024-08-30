@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomePetopiaBinding
@@ -82,6 +83,15 @@ class HomePetopiaFragment : Fragment() {
             .setReorderingAllowed(true)
             .addToBackStack(null)
             .commit()
+        binding.apply {
+            homeTvNameUser.isVisible = false
+            homeTvNamePet.isVisible = false
+            homeIvPet.isVisible = false
+            homeIvArrowUnder.isVisible = false
+            homeIvGallery.isVisible = false
+            homeIvLetter.isVisible = false
+            homeTvGuide.isVisible = false
+        }
     }
 
     private fun showLetterFragment() {

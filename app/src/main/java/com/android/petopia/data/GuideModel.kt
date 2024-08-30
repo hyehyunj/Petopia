@@ -9,4 +9,9 @@ data class GuideModel(
     val dialog : Int
 )
 
+data class PetModel(
+    val petName : String,
+    val petAppearance : String,
+    val petRelation : Int
+)
 
