@@ -15,7 +15,7 @@ class MemoryRepositoryImpl: MemoryRepository {
     private val reference = FirebaseReference.reference.child(Table.MEMORY.tableName)
 
     override suspend fun createMemory(memory: Memory) {
-        reference.push().setValue(memory)
+        reference.child(memory.key).setValue(memory)
     }
 
     override suspend fun selectMemoryList(user: UserModel): MutableList<Memory> {
@@ -28,12 +28,17 @@ class MemoryRepositoryImpl: MemoryRepository {
                     val result = task.result
 
                     for (child in result.children) {
+
+                        Log.i("MemoryRepository", "child's key = ${child.key}")
+
                         val hashMap = child.value as HashMap<*,*>
                         val gson = Gson()
                         val toJson = gson.toJson(hashMap)
                         val selectedMemory = gson.fromJson(toJson, Memory::class.java)
+                        selectedMemory.key = child.key.toString()
                         memoryList.add(selectedMemory)
                     }
+                    memoryList.sortByDescending { it.createdDate }
                     continuation.resume(memoryList)
                     return@addOnCompleteListener
                 } else {
@@ -46,10 +51,10 @@ class MemoryRepositoryImpl: MemoryRepository {
     }
 
     override suspend fun updateMemory(memory: Memory) {
-        TODO("Not yet implemented")
+        reference.child(memory.key).setValue(memory)
     }
 
-    override suspend fun deleteMemory(memoryIndex: Int) {
-        TODO("Not yet implemented")
+    override suspend fun deleteMemory(memoryKey: String) {
+        reference.child(memoryKey).removeValue()
     }
 }

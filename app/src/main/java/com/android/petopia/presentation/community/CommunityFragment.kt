@@ -103,10 +103,11 @@ class CommunityFragment : Fragment() {
 //            memoryRepository.createMemory(memory3)
 
             val memoryList = memoryRepository.selectMemoryList(user2)
-
-            for (memory in memoryList) {
-                Log.i("CommunityFragment", "${memory}")
-            }
+//            memoryList.sortByDescending { it.createdDate }
+//
+//            for (memory in memoryList) {
+//                Log.i("CommunityFragment", "${memory}")
+//            }
 
         }
 

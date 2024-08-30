@@ -43,6 +43,6 @@ class SignRepositoryImpl: SignRepository {
     }
 
     override suspend  fun updateUser(user: UserModel) {
-
+        reference.child(user.id).setValue(user)
     }
 }
