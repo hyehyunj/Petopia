@@ -11,7 +11,8 @@ import com.android.petopia.presentation.home.HomePetopiaFragment
 
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), HomeEarthFragment())
+//    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), HomeEarthFragment())
+    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), CommunityFragment())
 
     override fun getItemCount(): Int {
         return fragments.size
