@@ -1,5 +1,6 @@
 package com.android.petopia.presentation.gallery
 
+import android.net.Uri
 import android.util.Log
 import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
@@ -26,6 +27,7 @@ class GallerySharedViewModel :
 
     //선택된 사진 : 현재 보고있는 사진
     private val _currentPhotoLiveData = MutableLiveData<GalleryModel>()
+
     val currentPhotoLiveData: LiveData<GalleryModel> = _currentPhotoLiveData
 
     //새로운 사진 : 임시 사진 데이터, 완료시 선택된 사진의 값으로 교체된다.
@@ -38,6 +40,7 @@ class GallerySharedViewModel :
     //진입경로에 따라 레이아웃 모드를 변경해주는 함수
     fun changeLayoutMode(layoutMode: String) {
         _layoutModeLiveData.value = layoutMode
+        _currentPhotoLiveData.value = GalleryModel(listOf(),"","",0)
     }
 
     //선택된 사진을 업데이트해주는 함수
@@ -46,7 +49,7 @@ class GallerySharedViewModel :
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 정보를 담는 함수
-    fun considerNewPhoto(titleImage: String) {
+    fun considerNewPhoto(titleImage: List<Uri>) {
         newPhoto = GalleryModel(
             titleImage = titleImage,
             "",
@@ -59,7 +62,6 @@ class GallerySharedViewModel :
                 "",
                 "",
                 _currentPhotoLiveData.value?.index ?: 0
-
             )
 
 

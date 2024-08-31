@@ -56,13 +56,15 @@ class HomePetopiaFragment : Fragment() {
 
 
     private fun showGalleryFragment() {
-        childFragmentManager.beginTransaction()
-            .replace(
-                R.id.home_petopia_container, GalleryFragment()
-            )
-            .setReorderingAllowed(true)
-            .addToBackStack(null)
-            .commit()
+        GalleryFragment().show(childFragmentManager, "G_FRAGMENT")
+
+//        childFragmentManager.beginTransaction()
+//            .replace(
+//                R.id.home_petopia_container, GalleryFragment()
+//            )
+//            .setReorderingAllowed(true)
+//            .addToBackStack(null)
+//            .commit()
 
         //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
     // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)

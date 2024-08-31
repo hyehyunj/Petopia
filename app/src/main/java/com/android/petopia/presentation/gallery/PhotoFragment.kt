@@ -6,12 +6,14 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
@@ -29,12 +31,14 @@ class PhotoFragment : DialogFragment() {
     private val binding get() = _binding
     private lateinit var sharedViewModel: GallerySharedViewModel
     private val pickMedia =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) {
-                binding.photoIvTitle.setImageURI(uri)
-                sharedViewModel.considerNewPhoto(uri.toString())
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(6)) { uri ->
+            if (uri.isNotEmpty()) {
+                binding.photoIvTitle.setImageURI(uri[0])
+                sharedViewModel.considerNewPhoto(uri)
             }
         }
+
+    val uriList = ArrayList<Uri>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,9 +55,11 @@ class PhotoFragment : DialogFragment() {
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
             if (it == "ADD" || it == "EDIT") {//추가 or 편집모드
-                addOrEditMode(
-                    it, sharedViewModel.currentPhotoLiveData.value ?: GalleryModel("","","", 0)
-                )
+                sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+                    addOrEditMode(
+                        it, currentPhoto
+                    )
+                }
                 }
              else {//읽기전용모드
                 sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
@@ -77,7 +83,7 @@ class PhotoFragment : DialogFragment() {
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
             binding.apply {
-                photoIvTitle.setImageURI(item.titleImage.toUri())
+                photoIvTitle.setImageURI(item.titleImage[0])
                 photoEtTitle.setText(item.titleText)
                 photoTvCalendar.text = item.date
             }
@@ -87,6 +93,12 @@ class PhotoFragment : DialogFragment() {
             photoEtTitle.isVisible = true
             //사진 클릭이벤트 : 사용자의 갤러리에서 선택한 사진으로 사진을 업로드
             photoIvTitle.setOnClickListener {
+//                if (uriList.count() == 6) {
+//                    Toast.makeText(requireContext(),"최대 6장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show()
+//                    return@setOnClickListener
+//                }
+
+
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
@@ -124,7 +136,7 @@ class PhotoFragment : DialogFragment() {
         private fun readOnlyMode(item: GalleryModel) {
             binding.apply {
                 photoEtTitle.isVisible = false
-                photoIvTitle.setImageURI(item.titleImage.toUri())
+                photoIvTitle.setImageURI(item.titleImage[0])
                 photoTvTitle.apply {
                     isVisible = true
                     text = item.titleText

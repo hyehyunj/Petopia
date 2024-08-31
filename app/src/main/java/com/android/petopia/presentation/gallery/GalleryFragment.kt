@@ -2,12 +2,16 @@ package com.android.petopia.presentation.gallery
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -18,7 +22,7 @@ import com.android.petopia.databinding.FragmentGalleryBinding
 import com.android.petopia.presentation.MainActivity
 
 
-class GalleryFragment : Fragment() {
+class GalleryFragment : DialogFragment() {
     private lateinit var galleryRecyclerViewAdapter: GalleryRecyclerViewAdapter
     private val _binding: FragmentGalleryBinding by lazy {
         FragmentGalleryBinding.inflate(layoutInflater)
@@ -29,19 +33,6 @@ class GalleryFragment : Fragment() {
     }
     private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
 
-//    private lateinit var homeSharedViewModel : HomeSharedViewModel
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,8 +41,6 @@ class GalleryFragment : Fragment() {
         return binding.root
     }
 
-
-    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -78,7 +67,7 @@ class GalleryFragment : Fragment() {
             galleryRecyclerViewAdapter.updateList(it)
 //            galleryRecyclerViewAdapter.notifyDataSetChanged()
         }
-
+        initDialog()
 //        btnBackListener()
     }
 
@@ -114,20 +103,32 @@ class GalleryFragment : Fragment() {
     }
 
     //뒤로가기 버튼 함수 : 홈프래그먼트로 돌아간다.
-    private fun btnBackListener() {
-        requireActivity().onBackPressedDispatcher.addCallback(object :
-            OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                parentFragmentManager.beginTransaction()
-                    .remove(this@GalleryFragment)
-                    .commit()
-            }
-        })
-    }
+//    private fun btnBackListener() {
+//        requireActivity().onBackPressedDispatcher.addCallback(object :
+//            OnBackPressedCallback(true) {
+//            override fun handleOnBackPressed() {
+//                parentFragmentManager.beginTransaction()
+//                    .remove(this@GalleryFragment)
+//                    .commit()
+//            }
+//        })
+//    }
 
-    override fun onResume() {
-        super.onResume()
+    private fun initDialog() {
+        val windowManager =
+            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
 
+        val size = Point()
+        display.getSize(size)
+        size.x
+        size.y
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        params?.width = (deviceWidth * 0.9).toInt()
+        params?.height = (deviceWidth * 1.4).toInt()
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
 }

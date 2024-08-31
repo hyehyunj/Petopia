@@ -51,7 +51,7 @@ class GalleryRecyclerViewAdapter(
         fun bind(item: GalleryModel, position: Int) {
 
             binding.apply {
-                galleryHolderIvTitle.setImageURI(item.titleImage.toUri())
+                galleryHolderIvTitle.setImageURI(item.titleImage[0])
                 galleryHolderTvTitle.text = item.titleText
                 galleryHolder.setOnClickListener {
                     itemClickListener(item, position)
