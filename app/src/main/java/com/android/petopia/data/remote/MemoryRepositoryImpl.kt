@@ -26,7 +26,6 @@ class MemoryRepositoryImpl: MemoryRepository {
 
                 if(task.isSuccessful) {
                     val result = task.result
-
                     for (child in result.children) {
 
                         Log.i("MemoryRepository", "child's key = ${child.key}")

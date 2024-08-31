@@ -47,20 +47,20 @@ class GallerySharedViewModel :
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 정보를 담는 함수
     fun considerNewPhoto(titleImage: String) {
-        newPhoto = GalleryModel(
-            titleImage = titleImage,
-            "",
-            ""
-        )
-        if(_layoutModeLiveData.value == "EDIT") newPhoto =
-            _currentPhotoLiveData.value?.copy(
-                titleImage = titleImage) ?: GalleryModel(
-                titleImage = titleImage,
-                "",
-                "",
-                _currentPhotoLiveData.value?.index ?: 0
-
-            )
+//        newPhoto = GalleryModel(
+//            titleImage = titleImage,
+//            "",
+//            ""
+//        )
+//        if(_layoutModeLiveData.value == "EDIT") newPhoto =
+//            _currentPhotoLiveData.value?.copy(
+//                titleImage = titleImage) ?: GalleryModel(
+//                titleImage = titleImage,
+//                "",
+//                "",
+////                _currentPhotoLiveData.value?.index ?: 0
+//
+//            )
 
 
     }
@@ -72,7 +72,7 @@ class GallerySharedViewModel :
                 _currentPhotoLiveData.value =
                     newPhoto.copy(
                         titleText = titleText,
-                        date = date
+//                        date = date
                     )
                 galleryList.add(0,_currentPhotoLiveData.value!!)
             }
@@ -80,7 +80,7 @@ class GallerySharedViewModel :
             "EDIT" -> {
                 _currentPhotoLiveData.value = newPhoto.copy(
                     titleText = titleText,
-                    date = date
+//                    date = date
                 )
                 galleryList[index] = _currentPhotoLiveData.value!!
 

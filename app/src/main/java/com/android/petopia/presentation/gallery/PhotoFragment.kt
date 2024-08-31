@@ -51,9 +51,9 @@ class PhotoFragment : DialogFragment() {
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
             if (it == "ADD" || it == "EDIT") {//추가 or 편집모드
-                addOrEditMode(
-                    it, sharedViewModel.currentPhotoLiveData.value ?: GalleryModel("","","", 0)
-                )
+//                addOrEditMode(
+//                    it, sharedViewModel.currentPhotoLiveData.value ?: GalleryModel("","","", 0)
+//                )
                 }
              else {//읽기전용모드
                 sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
@@ -79,7 +79,7 @@ class PhotoFragment : DialogFragment() {
             binding.apply {
                 photoIvTitle.setImageURI(item.titleImage.toUri())
                 photoEtTitle.setText(item.titleText)
-                photoTvCalendar.text = item.date
+//                photoTvCalendar.text = item.date
             }
         }
         binding.apply {
@@ -131,7 +131,7 @@ class PhotoFragment : DialogFragment() {
                 }
                 photoTvCalendar.apply {
                     isVisible = true
-                    text = item.date
+//                    text = item.date
                     isClickable = false
                 }
                 //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.

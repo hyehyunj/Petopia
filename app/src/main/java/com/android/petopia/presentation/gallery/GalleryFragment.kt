@@ -69,9 +69,9 @@ class GalleryFragment : Fragment() {
             showPhoto()
         }
 
-        gallerySharedViewModel.currentPhotoLiveData.observe(viewLifecycleOwner) {
-            galleryRecyclerViewAdapter.notifyItemChanged(it.index)
-        }
+//        gallerySharedViewModel.currentPhotoLiveData.observe(viewLifecycleOwner) {
+//            galleryRecyclerViewAdapter.notifyItemChanged(it.uId)
+//        }
 
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
             Log.d("갤러리 변경감지", "${gallerySharedViewModel.galleryListLiveData.value}")
