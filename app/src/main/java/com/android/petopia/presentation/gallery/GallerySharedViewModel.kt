@@ -1,13 +1,10 @@
 package com.android.petopia.presentation.gallery
 
 import android.net.Uri
-import android.util.Log
-import android.view.animation.AnimationUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.petopia.data.GalleryModel
-import com.bumptech.glide.Glide
 
 //갤러리와 포토의 공유 뷰모델
 //class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
@@ -49,6 +46,7 @@ class GallerySharedViewModel :
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 정보를 담는 함수
+
     fun considerNewPhoto(titleImage: List<Uri>) {
         newPhoto = GalleryModel(
             titleImage = titleImage,
@@ -63,8 +61,6 @@ class GallerySharedViewModel :
                 "",
                 _currentPhotoLiveData.value?.index ?: 0
             )
-
-
     }
 
     //현재 사진을 새 사진으로 교체하는 함수
@@ -74,7 +70,7 @@ class GallerySharedViewModel :
                 _currentPhotoLiveData.value =
                     newPhoto.copy(
                         titleText = titleText,
-                        date = date
+//                        date = date
                     )
                 galleryList.add(0,_currentPhotoLiveData.value!!)
             }
@@ -82,7 +78,7 @@ class GallerySharedViewModel :
             "EDIT" -> {
                 _currentPhotoLiveData.value = newPhoto.copy(
                     titleText = titleText,
-                    date = date
+//                    date = date
                 )
                 galleryList[index] = _currentPhotoLiveData.value!!
 

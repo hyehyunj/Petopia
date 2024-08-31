@@ -60,6 +60,7 @@ class PhotoFragment : DialogFragment() {
                         it, currentPhoto
                     )
                 }
+
                 }
              else {//읽기전용모드
                 sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
@@ -85,7 +86,7 @@ class PhotoFragment : DialogFragment() {
             binding.apply {
                 photoIvTitle.setImageURI(item.titleImage[0])
                 photoEtTitle.setText(item.titleText)
-                photoTvCalendar.text = item.date
+//                photoTvCalendar.text = item.date
             }
         }
         binding.apply {
@@ -143,7 +144,7 @@ class PhotoFragment : DialogFragment() {
                 }
                 photoTvCalendar.apply {
                     isVisible = true
-                    text = item.date
+//                    text = item.date
                     isClickable = false
                 }
                 //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
