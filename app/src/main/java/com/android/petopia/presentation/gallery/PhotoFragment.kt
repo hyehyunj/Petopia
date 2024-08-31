@@ -38,8 +38,6 @@ class PhotoFragment : DialogFragment() {
             }
         }
 
-    val uriList = ArrayList<Uri>()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,6 +52,7 @@ class PhotoFragment : DialogFragment() {
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
+            Log.d("현재모드","${sharedViewModel.layoutModeLiveData.value}")
             if (it == "ADD" || it == "EDIT") {//추가 or 편집모드
                 sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
                     addOrEditMode(
@@ -81,10 +80,12 @@ class PhotoFragment : DialogFragment() {
 
     //추가 or 편집모드 함수 : 레이아웃을 입력가능한 모드로 구성한다.
     private fun addOrEditMode(layoutMode: String, item: GalleryModel) {
+        Log.d("사진추가할래","")
+
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
             binding.apply {
-                photoIvTitle.setImageURI(item.titleImage[0])
+                photoIvTitle.setImageURI(item.imageUris[0].toUri())
                 photoEtTitle.setText(item.titleText)
 //                photoTvCalendar.text = item.date
             }
@@ -98,8 +99,6 @@ class PhotoFragment : DialogFragment() {
 //                    Toast.makeText(requireContext(),"최대 6장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show()
 //                    return@setOnClickListener
 //                }
-
-
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
@@ -137,7 +136,7 @@ class PhotoFragment : DialogFragment() {
         private fun readOnlyMode(item: GalleryModel) {
             binding.apply {
                 photoEtTitle.isVisible = false
-                photoIvTitle.setImageURI(item.titleImage[0])
+                photoIvTitle.setImageURI(item.imageUris[0].toUri())
                 photoTvTitle.apply {
                     isVisible = true
                     text = item.titleText
@@ -169,8 +168,8 @@ private fun initDialog() {
     size.y
     val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
     val deviceWidth = size.x
-    params?.width = (deviceWidth * 0.9).toInt()
-    params?.height = (deviceWidth * 1.4).toInt()
+    params?.width = (deviceWidth * 0.8).toInt()
+    params?.height = (deviceWidth * 1.2).toInt()
     dialog?.window?.attributes = params as WindowManager.LayoutParams
     dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 }

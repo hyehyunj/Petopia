@@ -5,82 +5,93 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.petopia.data.GalleryModel
+import com.android.petopia.data.UserModel
 
 //갤러리와 포토의 공유 뷰모델
 //class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 //    ViewModel() {
 class GallerySharedViewModel :
     ViewModel() {
+
     //갤러리 리스트
     private val _galleryListLiveData = MutableLiveData<List<GalleryModel>>(listOf())
     val galleryListLiveData: LiveData<List<GalleryModel>> = _galleryListLiveData
     private val galleryList: MutableList<GalleryModel> =
         _galleryListLiveData.value?.toMutableList() ?: mutableListOf()
 
+    //삭제할 사진 : 임시 사진 휴지통, 완료시 휴지통의 사진들을 제거한다.
+    private lateinit var removePhoto: List<GalleryModel>
+
+
+
+
 
     //모드 : "ADD" 추가, "EDIT" 편집, "READ" 읽기전용(기본값)
     private val _layoutModeLiveData = MutableLiveData("READ")
     val layoutModeLiveData: LiveData<String> = _layoutModeLiveData
 
-    //선택된 사진 : 현재 보고있는 사진
-    private val _currentPhotoLiveData = MutableLiveData<GalleryModel>()
 
-    val currentPhotoLiveData: LiveData<GalleryModel> = _currentPhotoLiveData
 
-    //새로운 사진 : 임시 사진 데이터, 완료시 선택된 사진의 값으로 교체된다.
-    private lateinit var newPhoto: GalleryModel
 
-    //삭제할 사진 : 임시 사진 휴지통, 완료시 휴지통의 사진들을 제거한다.
-    private lateinit var removePhoto: List<GalleryModel>
+
+    //현재 보고있는 사진 : uri.toString() 갤러리 사진 단일 또는 다수
+    private val _currentPhotoListLiveData = MutableLiveData<GalleryModel>()
+    val currentPhotoLiveData: LiveData<GalleryModel> = _currentPhotoListLiveData
+
+    //새로운 사진 : 임시 저장 데이터, 완료시 선택된 사진의 값으로 교체된다.
+    private lateinit var newPhotoList: GalleryModel
+
 
 
     //진입경로에 따라 레이아웃 모드를 변경해주는 함수
     fun changeLayoutMode(layoutMode: String) {
         _layoutModeLiveData.value = layoutMode
-        _currentPhotoLiveData.value = GalleryModel(listOf(),"","",0)
+        if(layoutMode == "ADD") {
+            newPhotoList = GalleryModel(
+                "", UserModel(), 0, 0, imageUris = mutableListOf()
+            )
+            _currentPhotoListLiveData.value = newPhotoList
+        }
     }
 
     //선택된 사진을 업데이트해주는 함수
-    fun updateCurrentPhoto(photo: GalleryModel, position: Int) {
-        _currentPhotoLiveData.value = photo.copy(index = position)
+    fun updateCurrentGalleryList(photoList: GalleryModel, position: Int) {
+        _currentPhotoListLiveData.value = photoList.copy(index = position)
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 정보를 담는 함수
-
-    fun considerNewPhoto(titleImage: List<Uri>) {
-        newPhoto = GalleryModel(
-            titleImage = titleImage,
-            "",
-            ""
-        )
-        if(_layoutModeLiveData.value == "EDIT") newPhoto =
-            _currentPhotoLiveData.value?.copy(
-                titleImage = titleImage) ?: GalleryModel(
-                titleImage = titleImage,
-                "",
-                "",
-                _currentPhotoLiveData.value?.index ?: 0
-            )
+    fun considerNewPhoto(uriList: List<Uri>) {
+        val photoList = mutableListOf<String>()
+        uriList.forEach { photoList.add(it.toString()) }
+        when (_layoutModeLiveData.value) {
+            "ADD" -> newPhotoList = newPhotoList.copy(imageUris = photoList)
+            "EDIT" -> newPhotoList =
+                _currentPhotoListLiveData.value?.copy(
+                    imageUris = photoList
+                ) ?: GalleryModel(
+                    "", UserModel(), 0, 0, imageUris = photoList
+                )
+        }
     }
 
     //현재 사진을 새 사진으로 교체하는 함수
     fun updateNewGallery(titleText: String, date: String, index: Int) {
         when (_layoutModeLiveData.value) {
             "ADD" -> {
-                _currentPhotoLiveData.value =
-                    newPhoto.copy(
+                _currentPhotoListLiveData.value =
+                    newPhotoList.copy(
                         titleText = titleText,
 //                        date = date
                     )
-                galleryList.add(0,_currentPhotoLiveData.value!!)
+                galleryList.add(0, _currentPhotoListLiveData.value!!)
             }
 
             "EDIT" -> {
-                _currentPhotoLiveData.value = newPhoto.copy(
+                _currentPhotoListLiveData.value = newPhotoList.copy(
                     titleText = titleText,
 //                    date = date
                 )
-                galleryList[index] = _currentPhotoLiveData.value!!
+                galleryList[index] = _currentPhotoListLiveData.value!!
 
             }
         }

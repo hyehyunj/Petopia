@@ -12,11 +12,11 @@ class GalleryRepositoryImpl :
         return updateGalleryList
     }
 
-    override fun updateGalleryList(context: Context, photo: GalleryModel): List<GalleryModel> {
-
-        val mutableList = GalleryDataSource.getGalleryDataSource().loadGalleryList(context).toMutableList()
-        val index = mutableList.indexOf(mutableList.find{ it.titleImage == photo.titleImage })
-if(index == -1) mutableList.add(photo) else mutableList[index] = photo
-        return mutableList.toList()
-    }
+//    override fun updateGalleryList(context: Context, photo: GalleryModel): List<GalleryModel> {
+//
+//        val mutableList = GalleryDataSource.getGalleryDataSource().loadGalleryList(context).toMutableList()
+//        val index = mutableList.indexOf(mutableList.find{ it.titleImage == photo.titleImage })
+//if(index == -1) mutableList.add(photo) else mutableList[index] = photo
+//        return mutableList.toList()
+//    }
 }

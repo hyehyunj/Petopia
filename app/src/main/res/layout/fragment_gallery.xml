@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_outline_square"
+    android:background="@drawable/bg_gallery"
     tools:context=".presentation.gallery.GalleryFragment">
 
     <ImageView
-        android:id="@+id/gallery_iv_main"
+        android:id="@+id/gallery_iv_back"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="16dp"

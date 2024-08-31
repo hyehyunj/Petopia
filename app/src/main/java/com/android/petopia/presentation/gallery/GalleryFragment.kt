@@ -1,25 +1,19 @@
 package com.android.petopia.presentation.gallery
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.android.petopia.R
-import com.android.petopia.data.GalleryModel
 import com.android.petopia.databinding.FragmentGalleryBinding
-import com.android.petopia.presentation.MainActivity
 
 
 class GalleryFragment : DialogFragment() {
@@ -45,13 +39,17 @@ class GalleryFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        //뒤로가기 버튼 클릭이벤트
+        binding.galleryIvBack.setOnClickListener {
+            dismiss()
+        }
+
         //삭제버튼 클릭이벤트
         binding.galleryIvRemove.setOnClickListener {
 
             galleryRecyclerViewAdapter.appearCheckBox(true)
         }
 
-        binding.galleryIvMain.setOnClickListener {}
 //추가버튼 클릭이벤트 : 상세페이지로 이동
         binding.galleryIvAdd.setOnClickListener {
             gallerySharedViewModel.changeLayoutMode("ADD")
@@ -71,13 +69,14 @@ class GalleryFragment : DialogFragment() {
 //        btnBackListener()
     }
 
+
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
     private fun initAdapter() {
         galleryRecyclerViewAdapter = GalleryRecyclerViewAdapter(
             gallerySharedViewModel.galleryListLiveData.value!!,
             itemClickListener = { item, position ->
                 Log.d("갤러리 변경감지", "${position}")
-                gallerySharedViewModel.updateCurrentPhoto(item, position)
+                gallerySharedViewModel.updateCurrentGalleryList(item, position)
                 gallerySharedViewModel.changeLayoutMode("Read")
                 showPhoto()
             }, itemLongClickListener = { item, position -> })
@@ -126,7 +125,7 @@ class GalleryFragment : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 1.4).toInt()
+        params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
