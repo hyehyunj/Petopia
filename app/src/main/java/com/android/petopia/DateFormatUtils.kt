@@ -6,6 +6,7 @@ object DateFormatUtils {
 
     val letterFormat = SimpleDateFormat("yyyy년 MM월 dd일")
     val postFormat = SimpleDateFormat("yyyy.MM.dd")
+    val imageFormat = SimpleDateFormat("yyyyMMdd")
 
     fun convertToLetterFormat(milliSeconds: Long): String {
         return letterFormat.format(milliSeconds)
@@ -13,6 +14,10 @@ object DateFormatUtils {
 
     fun convertToPostFormat(milliSeconds: Long): String {
         return postFormat.format(milliSeconds)
+    }
+
+    fun convertToImageFormat(milliSeconds: Long): String {
+        return imageFormat.format(milliSeconds)
     }
 
 }
