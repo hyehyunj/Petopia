@@ -35,10 +35,6 @@ class MemoryFragment : DialogFragment() {
 
     //private lateinit var homeSharedViewModel: HomeSharedViewModel
 
-    private val memoryRepository: MemoryRepository by lazy {
-        MemoryRepositoryImpl()
-    }
-
     private lateinit var memoryViewModel: MemoryViewModel
 
     override fun onCreateView(
@@ -62,25 +58,35 @@ class MemoryFragment : DialogFragment() {
         initDialog()
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
-        //가상데이터
 
-        //1. MemoryViewModel -> Memory 로 변경하기
+        val memoryRepository = MemoryRepositoryImpl()
+        val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
+
         memoryViewModel =
-            ViewModelProvider(requireParentFragment()).get(MemoryViewModel::class.java)
-        memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) {
-            listRecyclerViewAdapter.submitList(it)
+            ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
+
+        memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
+            listRecyclerViewAdapter.submitList(memoryList)
         }
 
-        val user1 = UserModel("id1", "password1", "name1", "nickname1", "email1@gmail.com")
+        binding.btnAnswer.setOnClickListener {
 
-        val memoryList = listOf(
-            Memory("title1", "content1", user1)
-        )
-        memoryList.forEach {
-            memoryViewModel.addMemoryList(it)
+            setMemoryWriteFragment() // 메모리 작성 프래그먼트 이동
+
+//            val user1 = UserModel("id1", "password1", "name1", "nickname1", "email1@gmail.com")
+//            //유저는 로그인한 유저의 정보를 로그인 할때 받아와야함
+//
+//            val memoryList = listOf(
+//                Memory("title1", "content1", user1)
+//            )
+//            memoryList.forEach {
+//                memoryViewModel.addMemoryList(it)
+//            }
+//
+//            listRecyclerViewAdapter.submitList(memoryList)
+
         }
 
-        listRecyclerViewAdapter.submitList(memoryList)
 
         binding.btnMemoryExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -114,8 +120,6 @@ class MemoryFragment : DialogFragment() {
     }
 
 
-
-
     private fun initDialog() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -134,5 +138,8 @@ class MemoryFragment : DialogFragment() {
     }
 
 
+    private fun setMemoryWriteFragment() {
+        MemoryWriteFragment().show(childFragmentManager, "MEMORY_WRITE_FRAGMENT")
+    }
 
 }
