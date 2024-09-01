@@ -29,7 +29,6 @@ class MemoryFragment : DialogFragment() {
 
     private var _binding: FragmentMemoryBinding? = null
     private val binding get() = _binding!!
-//    private var memoryList = mutableListOf<Memory>()
 
     private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
 
@@ -43,10 +42,6 @@ class MemoryFragment : DialogFragment() {
     ): View {
         _binding = FragmentMemoryBinding.inflate(inflater, container, false)
 
-//        val memoryRepository =
-//            MemoryReposirotyImpl(memoryViewModel.memoryListLiveData.value ?: listOf())
-//        val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
-//        memoryViewModel = ViewModelProvider(this, factory).get(MemoryViewModel::class.java)
 
         return binding.root
     }

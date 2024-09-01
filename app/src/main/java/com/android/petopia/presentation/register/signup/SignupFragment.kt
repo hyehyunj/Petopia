@@ -7,10 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.android.petopia.R
+import com.android.petopia.data.UserModel
+import com.android.petopia.data.remote.SignRepositoryImpl
 import com.android.petopia.databinding.FragmentSignupBinding
 import com.android.petopia.presentation.register.RegisterViewModel
 import com.android.petopia.presentation.register.signin.SigninFragment
+import kotlinx.coroutines.launch
 
 
 class SignupFragment : Fragment() {
@@ -18,7 +22,9 @@ class SignupFragment : Fragment() {
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
 
-    private val registerViewModel: RegisterViewModel by activityViewModels()
+    private val registerViewModel: RegisterViewModel by activityViewModels {
+        RegisterViewModel.RegisterViewModelFactory(SignRepositoryImpl())
+    }
 
     private lateinit var userNickname: String
     private lateinit var userId: String
@@ -141,19 +147,19 @@ class SignupFragment : Fragment() {
     }
 
     private fun usersignindata() {
-        registerViewModel.setUserData(
-            userNickname,
-            userId,
-            userPassword,
-            userPasswordCheck,
-            userEmail
+        val user = UserModel(
+            id = userId,
+            password = userPassword,
+            name = userNickname,
+            email = userEmail
         )
-        Toast.makeText(requireContext(), "회원가입 완료", Toast.LENGTH_SHORT).show()
-
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.register_fragment_container, SigninFragment())
-            .addToBackStack(null)
-            .commit()
+        lifecycleScope.launch {
+            registerViewModel.createUser(user)
+            Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.register_fragment_container, SigninFragment())
+                .addToBackStack(null)
+                .commit()
+        }
     }
-
 }
