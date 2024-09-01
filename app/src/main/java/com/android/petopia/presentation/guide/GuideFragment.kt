@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.android.petopia.databinding.FragmentGuideBinding
 import com.android.petopia.databinding.ToastBinding
@@ -42,7 +43,15 @@ class GuideFragment : Fragment() {
         guideViewModel.guideModelLiveData.observe(viewLifecycleOwner) {
 
             binding.guideTvStory.text = guideViewModel.guideModelLiveData.value?.guideStory
+
+            //상단진행문구
+            if(guideViewModel.guidePageNumberLiveData.value!! < 8)
             binding.guideTvProgressText.text = guideViewModel.guideModelLiveData.value?.progressText
+            else binding.apply { guideTvProgressText.isVisible = false
+            guideIvProgressBar.isVisible = false
+
+            }
+           //다이얼로그
             when (guideViewModel.guideModelLiveData.value?.dialog) {
                 0 -> GuideNameDialogFragment().apply {
                     isCancelable = false
@@ -72,7 +81,7 @@ class GuideFragment : Fragment() {
     }
 
 
-    fun showToastMessage() {
+    private fun showToastMessage() {
         val toastBinding = ToastBinding.inflate(layoutInflater)
         toastBinding.run {
             val toastOnCreateView = Toast(requireActivity())

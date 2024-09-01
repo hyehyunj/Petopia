@@ -10,10 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.android.petopia.R
 import com.android.petopia.databinding.FragmentGuideNameDialogBinding
+import io.github.muddz.styleabletoast.StyleableToast
 
 //가이드 반려동물 이름 다이얼로그 프래그먼트 : 가이드 진행 중 반려동물 이름을 입력받을 때 사용되는 다이얼로그
 class GuideNameDialogFragment : DialogFragment() {
@@ -56,9 +57,9 @@ class GuideNameDialogFragment : DialogFragment() {
         //완료버튼 클릭이벤트
         binding.dialogNameTvComplete.setOnClickListener {
 
-           if(binding.dialogNameEt.text.isBlank()) Toast.makeText(requireContext(),"이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+           if(binding.dialogNameEt.text.isBlank()) StyleableToast.makeText(requireActivity(), "이름을 입력해주세요", R.style.toast_custom).show()
 
-               else {guideSharedViewModel.setPetName(binding.dialogNameEt.text.toString())
+           else {guideSharedViewModel.setPetName(binding.dialogNameEt.text.toString())
             Log.d("바뀝니다", "${guideSharedViewModel.guidePageNumberLiveData.value}")
             dismiss()}
 
@@ -110,6 +111,9 @@ class GuideNameDialogFragment : DialogFragment() {
 //                window?.setLayout(x, y)
 //            }
     }
+
+
+
 
 
 }

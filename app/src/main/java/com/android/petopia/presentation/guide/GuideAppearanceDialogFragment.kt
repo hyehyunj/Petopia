@@ -41,6 +41,12 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+        //이전으로버튼 클릭이벤트
+        binding.guideAppearanceDialogTvBack.setOnClickListener {
+            guideSharedViewModel.guideButtonClickListener("BACK")
+            dismiss()
+        }
+
         guideSharedViewModel.appearanceLiveData.observe(viewLifecycleOwner) {
             guideSharedViewModel.changeBreed()
         }
