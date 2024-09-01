@@ -153,6 +153,7 @@ class SignupFragment : Fragment() {
             name = userNickname,
             email = userEmail
         )
+
         lifecycleScope.launch {
             registerViewModel.createUser(user)
             Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()

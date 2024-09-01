@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -65,9 +66,7 @@ class MemoryWriteFragment : DialogFragment() {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
-
     }
-
 
     private fun initDialog() {
         val windowManager =
@@ -87,12 +86,20 @@ class MemoryWriteFragment : DialogFragment() {
     }
 
     private fun saveData() {
-        val title = binding.tvMemoryWriteQuestion.toString()
-        val content = binding.etMemoryWriteContent.toString()
-        val memory = Memory(title, content, UserModel())
+        val title = binding.tvMemoryWriteQuestion.text.toString()
+        val content = binding.etMemoryWriteContent.text.toString()
 
+        Log.d("MemoryWriteFragment", "제목: $title, 내용: $content")
+        // 여기서 작성한 데이터를 받아서 memoryFragment의 리사이클러뷰에 전달해야함
+        if (title.isNotEmpty() && content.isNotEmpty()) {
+            val memory = Memory(title, content, UserModel())
+            memoryViewModel.addMemoryList(memory)
 
-        memoryViewModel.addMemoryList(memory)
+            (parentFragment as? MemoryFragment)?.onMemorySaved(memory)
+        } else {
+            Log.d("MemoryWriteFragment", "제목 또는 내용이 비어있습니다.")
+        }
+
 
     }
 
