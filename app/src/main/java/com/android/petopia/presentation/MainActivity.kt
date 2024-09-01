@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var mainSharedViewModel: MainSharedViewModel
+    private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +65,8 @@ class MainActivity : AppCompatActivity() {
     //    }
 //다이얼로그 띄우는 함수
     fun showDialog() {
+        mainDialogSharedViewModel = ViewModelProvider(this)[MainDialogSharedViewModel::class.java]
+//        mainDialogSharedViewModel.updateDialogMode(mode)
         DialogFragment().show(supportFragmentManager, "DIALOG_FRAGMENT")
 
 

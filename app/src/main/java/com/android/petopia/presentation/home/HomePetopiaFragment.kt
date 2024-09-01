@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomePetopiaBinding
 import com.android.petopia.presentation.gallery.GalleryFragment
+import com.android.petopia.presentation.guide.GuideCancelDialogFragment
 import com.android.petopia.presentation.guide.GuideFragment
+import com.android.petopia.presentation.guide.GuideViewModel
 import com.android.petopia.presentation.letter.LetterFragment
 
 
@@ -18,9 +21,8 @@ class HomePetopiaFragment : Fragment() {
         FragmentHomePetopiaBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val homePetopiaViewModel by viewModels<HomePetopiaGuideSharedViewModel>()
+
 
 
     override fun onCreateView(
@@ -33,12 +35,23 @@ class HomePetopiaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //버튼 클릭이벤트 : 클릭시 갤러리 이동
+        homePetopiaButtonClickListener()
+        guideDataObserver()
+
+
+
+
+
+    }
+
+    //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
+    private fun homePetopiaButtonClickListener() {
+        //갤러리버튼 클릭이벤트 : 클릭시 갤러리 이동
         binding.homeIvGallery.setOnClickListener {
             showGalleryFragment()
         }
 
-        //버튼 클릭이벤트 : 클릭시 가이드 시작
+        //가이드 버튼 클릭이벤트 : 클릭시 가이드 시작
         binding.homeTvGuide.setOnClickListener {
             showGuideFragment()
         }
@@ -47,13 +60,47 @@ class HomePetopiaFragment : Fragment() {
         binding.homeIvLetter.setOnClickListener {
             showLetterFragment()
         }
-
-
-
-
-
     }
 
+    //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
+    private fun guideDataObserver() {
+        //가이드 상태 변화감지 : 가이드 상태에 따라 화면구성 변경
+        homePetopiaViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                "NONE" -> binding.apply {
+                        homeTvNameUser.isVisible = false
+                        homeTvNamePet.isVisible = false
+                        homeIvPet.isVisible = false
+                        homeIvArrowUnder.isVisible = false
+                        homeIvGallery.isVisible = false
+                        homeIvLetter.isVisible = false
+                        homeTvGuide.isVisible = true
+                    }
+                "ESSENTIAL" -> binding.apply {
+                    homeTvGuide.isVisible = false
+                }
+                     "DONE" -> binding.apply {
+                homeTvNameUser.isVisible = true
+                homeTvNamePet.isVisible = true
+                homeIvPet.isVisible = true
+                homeIvArrowUnder.isVisible = true
+                homeIvGallery.isVisible = true
+                homeIvLetter.isVisible = true
+                homeTvGuide.isVisible = false
+            }
+                "OPTIONAL" -> binding.apply {
+                    homeTvNameUser.isVisible = true
+                    homeTvNamePet.isVisible = true
+                    homeIvPet.isVisible = true
+                    homeIvArrowUnder.isVisible = false
+                    homeIvGallery.isVisible = false
+                    homeIvLetter.isVisible = false
+                }
+
+
+            }
+        }
+}
 
     private fun showGalleryFragment() {
         GalleryFragment().show(childFragmentManager, "G_FRAGMENT")
@@ -78,6 +125,7 @@ class HomePetopiaFragment : Fragment() {
     }
 
     private fun showGuideFragment() {
+        homePetopiaViewModel.updateGuideState("ESSENTIAL")
         childFragmentManager.beginTransaction()
             .replace(
                 R.id.home_petopia_container, GuideFragment()
@@ -85,23 +133,12 @@ class HomePetopiaFragment : Fragment() {
             .setReorderingAllowed(true)
             .addToBackStack(null)
             .commit()
-        binding.apply {
-            homeTvNameUser.isVisible = false
-            homeTvNamePet.isVisible = false
-            homeIvPet.isVisible = false
-            homeIvArrowUnder.isVisible = false
-            homeIvGallery.isVisible = false
-            homeIvLetter.isVisible = false
-            homeTvGuide.isVisible = false
-        }
+
     }
 
-    fun showPet() {
-        binding.apply {
-            homeTvNameUser.isVisible = true
-            homeTvNamePet.isVisible = true
-            homeIvPet.isVisible = true
-        }
+    fun cancelGuide() {
+        GuideCancelDialogFragment().show(childFragmentManager, "GUIDE_CANCEL_DIALOG_FRAGMENT")
+
     }
 
 

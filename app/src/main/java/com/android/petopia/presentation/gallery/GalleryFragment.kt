@@ -22,10 +22,10 @@ class GalleryFragment : DialogFragment() {
         FragmentGalleryBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private val galleryViewModel by viewModels<GalleryViewModel> {
-        GalleryViewModelFactory(requireContext())
+    private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
+        GallerySharedViewModelFactory()
     }
-    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
+//    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +42,7 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-
+        gallerySharedViewModel.loadGalleryList()
 
 
         initDialog()

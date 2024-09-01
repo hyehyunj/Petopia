@@ -22,6 +22,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.data.GalleryModel
 import com.android.petopia.databinding.FragmentPhotoBinding
+import java.time.LocalDateTime
 
 //포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
 class PhotoFragment : DialogFragment() {
@@ -91,6 +92,7 @@ class PhotoFragment : DialogFragment() {
             }
         }
         binding.apply {
+
             photoTvTitle.isVisible = false
             photoEtTitle.isVisible = true
             //사진 클릭이벤트 : 사용자의 갤러리에서 선택한 사진으로 사진을 업로드
@@ -110,9 +112,10 @@ class PhotoFragment : DialogFragment() {
                     val month = calendar.get(Calendar.MONTH)
                     val day = calendar.get(Calendar.DAY_OF_MONTH)
                     val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
-                        binding.photoTvCalendar.text = "${yy}년 ${mm + 1}월 ${dd}일"
+                        binding.photoTvCalendar.text = "${yy}. ${mm + 1}. ${dd}."
                     }
-                    val picker = DatePickerDialog(requireContext(), listener, year, month, day)
+                    sharedViewModel.considerNewPhoto(LocalDateTime.of(year, month + 1, day, 0, 0, 0))
+                val picker = DatePickerDialog(requireContext(), listener, year, month, day)
                     picker.show()
             }
             //완료버튼 : 새로운 사진으로 등록 또는 변경 후 읽기전용모드로 전환한다.
@@ -121,7 +124,6 @@ class PhotoFragment : DialogFragment() {
                 setOnClickListener {
                     sharedViewModel.updateNewGallery(
                         binding.photoEtTitle.text.toString(),
-                        binding.photoTvCalendar.text.toString(),
                         item.index
                     )
                     Log.d("포토에서는", "${sharedViewModel.galleryListLiveData.value}")

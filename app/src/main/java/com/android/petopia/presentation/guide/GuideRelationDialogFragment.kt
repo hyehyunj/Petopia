@@ -20,30 +20,32 @@ class GuideRelationDialogFragment : DialogFragment() {
         FragmentGuideRelationDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var sharedViewModel: HomeSharedViewModel
+    private lateinit var guideSharedViewModel: GuideViewModel
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        sharedViewModel = ViewModelProvider(requireActivity()).get(HomeSharedViewModel::class.java)
-
-        binding.dialogTvAction.setOnClickListener {}
-
-
-        //취소버튼 클릭이벤트
-        binding.dialogTvCancel.setOnClickListener {
-            dismiss()
-        }
-
-
         return binding.root
     }
 
 
     override fun onResume() {
+
+        guideSharedViewModel = ViewModelProvider(requireActivity()).get(GuideViewModel::class.java)
+
+        //이전으로버튼 클릭이벤트
+        binding.guideRelationDialogTvBack.setOnClickListener {
+            guideSharedViewModel.guideButtonClickListener("BACK")
+            dismiss()
+        }
+
+        //완료버튼 클릭이벤트
+        binding.guideRelationDialogTvComplete.setOnClickListener {
+            guideSharedViewModel.guideButtonClickListener("NEXT")
+            dismiss()
+        }
         super.onResume()
 
         //다이얼로그 사용자 폰에 맞춰 크기조정, 리팩토링 필요
@@ -58,7 +60,7 @@ class GuideRelationDialogFragment : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 0.5).toInt()
+        params?.height = (deviceWidth * 0.7).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 //        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)

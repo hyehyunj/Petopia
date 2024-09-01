@@ -2,18 +2,18 @@ package com.android.petopia.presentation.guide
 
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentGuideBinding
-import com.android.petopia.databinding.ToastBinding
+import com.android.petopia.presentation.gallery.GallerySharedViewModel
 import com.android.petopia.presentation.home.HomePetopiaFragment
+import com.android.petopia.presentation.home.HomePetopiaGuideSharedViewModel
 import io.github.muddz.styleabletoast.StyleableToast
 
 //가이드 프래그먼트 : 앱 사용방법과 특징을 안내하는 튜토리얼
@@ -23,19 +23,57 @@ class GuideFragment : Fragment() {
     }
     private val binding get() = _binding
     private val guideViewModel by viewModels<GuideViewModel>()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
+    private lateinit var homePetopiaGuideSharedViewModel: HomePetopiaGuideSharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return binding.root
+    }
 
-        //다음으로 또는 뒤로가기 버튼 클릭에 따라 페이지 번호 변경
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        homePetopiaGuideSharedViewModel =
+            ViewModelProvider(requireParentFragment()).get(HomePetopiaGuideSharedViewModel::class.java)
+
+        guideButtonClickListener()
+        guideDataObserver()
+
+    }
+
+    //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
+    private fun guideButtonClickListener() {
+        //다음으로 버튼 클릭이벤트
+        binding.guideIvNext.setOnClickListener {
+            guideViewModel.guideButtonClickListener("NEXT")
+        }
+        //뒤로가기 버튼 클릭이벤트
+        binding.guideIvBack.setOnClickListener {
+            guideViewModel.guideButtonClickListener("BACK")
+        }
+        //나가기 버튼 클릭이벤트
+        binding.guideIvExit.setOnClickListener {
+            (parentFragment as HomePetopiaFragment).cancelGuide()
+        }
+
+//
+//
+//
+//            when(homePetopiaGuideSharedViewModel.guideStateLiveData.value) {
+//                "ESSENTIAL" -> homePetopiaGuideSharedViewModel.updateGuideState("NONE")
+//                "OPTIONAL" -> homePetopiaGuideSharedViewModel.updateGuideState("DONE")
+//            }
+//            parentFragmentManager.beginTransaction()
+//                .remove(this)
+//                .commit()
+//        }
+    }
+
+    //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
+    private fun guideDataObserver() {
+        //페이지 변화감지 : 다음으로 또는 뒤로가기 버튼 클릭에 따라 페이지 번호 변경
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
             Log.d("가이드는", "${guideViewModel.guidePageNumberLiveData.value}")
             when (it) {
@@ -44,25 +82,27 @@ class GuideFragment : Fragment() {
 
                 in 0..7 -> guideViewModel.makeGuideModel()
                 8 -> {
+                    homePetopiaGuideSharedViewModel.updateGuideState("OPTIONAL")
                     guideViewModel.makeGuideModel()
-                    (parentFragment as HomePetopiaFragment).showPet()
                     binding.apply {
                         guideTvProgressText.isVisible = false
                         guideIvProgressBar.isVisible = false
                     }
                 }
+                in 9..12 -> guideViewModel.makeGuideModel()
 
             }
         }
 
-        //페이지 번호에 따라 화면 구성
+        //가이드모델 변화감지 : 페이지 번호에 따라 화면 구성 변경
         guideViewModel.guideModelLiveData.observe(viewLifecycleOwner) {
-            //스토리
-            binding.guideTvStory.text = it.guideStory
-            //상단진행문구
+            //상단진행부
             if (guideViewModel.guidePageNumberLiveData.value!! < 8)
-                binding.guideTvProgressText.text =
-                    it.progressText
+            { binding.guideTvProgressText.text =
+                    it.progressText}
+
+            //하단스토리
+            binding.guideTvStory.text = it.guideStory
             //다이얼로그
             when (guideViewModel.guideModelLiveData.value?.dialog) {
                 0 -> GuideNameDialogFragment().apply {
@@ -77,32 +117,12 @@ class GuideFragment : Fragment() {
                     isCancelable = false
                 }.show(childFragmentManager, "DIALOG_FRAGMENT")
             }
-
         }
-
-
-        //다음으로 또는 뒤로가기 버튼 클릭이벤트
-        binding.guideIvNext.setOnClickListener {
-            guideViewModel.guideButtonClickListener("NEXT")
-        }
-        binding.guideIvBack.setOnClickListener {
-            guideViewModel.guideButtonClickListener("BACK")
-        }
-
-
-
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        //나가기 버튼 클릭이벤트
-        binding.guideIvExit.setOnClickListener {
+        homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
+            if(it == "DONE" || it == "NONE")
             parentFragmentManager.beginTransaction()
-                        .remove(this)
-                       .commit()
+                .remove(this)
+                .commit()
         }
     }
 }

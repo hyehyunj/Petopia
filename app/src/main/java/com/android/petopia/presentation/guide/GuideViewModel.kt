@@ -11,7 +11,7 @@ class GuideViewModel :
     ViewModel() {
 
     private val dog = listOf("말티즈", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
-    private val cat = listOf("말", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
+    private val cat = listOf("고양이", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
 
     //페이지
     private val _guidePageNumberLiveData = MutableLiveData(0)
@@ -25,32 +25,17 @@ class GuideViewModel :
     private val _pressedButtonLiveData = MutableLiveData("")
     val pressedButtonLiveData: LiveData<String> = _pressedButtonLiveData
 
-    //종 대분류 : "DOG" 강아지 , "CAT" 고양이
-    private val _appearanceLiveData = MutableLiveData("DOG")
-    val appearanceLiveData: LiveData<String> = _appearanceLiveData
-
-    //종 소분류 리스트
-    private val _breedListLiveData = MutableLiveData<List<String>>(dog)
-    val breedListLiveData: LiveData<List<String>> = _breedListLiveData
-
-    //가이드넘버 : 1 필수, 2 선택
-    private val _guideNumberLiveData = MutableLiveData(1)
-    val guideNumberLiveData: LiveData<Int> = _guideNumberLiveData
-
-
-
     //반려동물 데이터클래스
     private val _petModelLiveData = MutableLiveData<PetModel>()
     val petModelLiveData: LiveData<PetModel> = _petModelLiveData
 
+    //종 대분류 : "DOG" 강아지 , "CAT" 고양이
+    private val _appearanceLiveData = MutableLiveData("DOG")
+    val appearanceLiveData: LiveData<String> = _appearanceLiveData
 
-
-
-
-    fun updateGuideNumber() {
-        _guideNumberLiveData.value = 2
-
-    }
+    //종 소분류
+    private val _breedListLiveData = MutableLiveData(dog)
+    val breedListLiveData: LiveData<List<String>> = _breedListLiveData
 
     fun changeAppearance(appearance: String) {
         _appearanceLiveData.value = appearance
@@ -64,7 +49,7 @@ class GuideViewModel :
 //반려동물 정보
     //반려동물 이름을 입력받는 함수
     fun setPetName(petName: String) {
-        _petModelLiveData.value = PetModel(petName, "", 0)
+        _petModelLiveData.value = PetModel(petName, "", 0,"",0,0)
         guideButtonClickListener("NEXT")
     }
 
@@ -103,7 +88,16 @@ class GuideViewModel :
 
     //
     private val guideStoryData = mapOf(
-        0 to "누구를 찾아오셨나요?", 2 to "어떤 외모", 4 to "처럼", 6 to "도와", 8 to "보시는")
+        0 to "누구를 찾아오셨나요?",
+        2 to "어떤 외모",
+        4 to "처럼",
+        6 to "도와",
+        8 to "보시는",
+        9 to "펫토피아",
+        10 to "편지나 사진은",
+        11 to "소중한 날짜를",
+        12 to "메모리 브릿지로",
+        )
 
     //
     private val guideDialogData = mapOf(
@@ -149,7 +143,6 @@ class GuideViewModel :
         _guideModelLiveData.value = guideModel
         if(page == 8) {
             _guideModelLiveData.value = guideModel.copy(completeFirstGuide = true)
-            updateGuideNumber()
         }
 
     }
