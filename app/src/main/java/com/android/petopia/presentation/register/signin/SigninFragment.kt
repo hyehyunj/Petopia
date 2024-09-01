@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.android.petopia.R
+import com.android.petopia.data.remote.SignRepositoryImpl
 import com.android.petopia.databinding.FragmentSigninBinding
 import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.register.RegisterViewModel
 import com.android.petopia.presentation.register.signup.SignupFragment
+import kotlinx.coroutines.launch
 
 
 class SigninFragment : Fragment() {
@@ -20,7 +23,10 @@ class SigninFragment : Fragment() {
     private var _binding: FragmentSigninBinding? = null
     private val binding get() = _binding!!
 
-    private val registerViewModel: RegisterViewModel by activityViewModels()
+    private val signRepository = SignRepositoryImpl()
+    private val registerViewModel: RegisterViewModel by activityViewModels {
+        RegisterViewModel.RegisterViewModelFactory(signRepository)
+    }
 
 
     override fun onCreateView(
@@ -40,19 +46,19 @@ class SigninFragment : Fragment() {
             val userInputId = binding.etSigninId.text.toString()
             val userInputPassword = binding.etSigninPassword.text.toString()
 
-
-//            if (registerViewModel.validateSignin(userInputId, userInputPassword)) {
-//                //로그인 성공
-//                Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
-                //메인화면으로 이동
-                val intent = Intent(requireContext(), MainActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-
-//            } else {
-//                //로그인 실패
-//                Toast.makeText(requireContext(), "로그인 실패", Toast.LENGTH_SHORT).show()
-//            }
+            registerViewModel.signing(userInputId, userInputPassword,
+                onSuccess = {
+                    //로그인 성공
+                    Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                },
+                onFailure = {
+                    //로그인 실패
+                    Toast.makeText(requireContext(), "로그인 실패", Toast.LENGTH_SHORT).show()
+                }
+            )
         }
 
         //회원가입 누르면 회원가입 프래그먼트로 이동

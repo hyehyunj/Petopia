@@ -31,6 +31,7 @@
     <string name="signup_password">비밀번호</string>
     <string name="signup_password_check">비밀번호 확인</string>
     <string name="signup_email">이메일</string>
+    <string name="signup">회원가입</string>
     <string name="signup_btn_complete">완료</string>
     <string name="signup_btn_cancel">취소</string>
     <string name="signup_agree_all">[필수] 만 14세 이상이며 모두 동의 합니다.</string>
@@ -41,7 +42,6 @@
     <!--  SignIn : 로그인에서 사용되는 String  -->
     <string name="signin_id_search">아이디 찾기</string>
     <string name="signin_password_search">비밀번호 찾기</string>
-    <string name="signup">회원가입</string>
     <string name="signin_btn_login">로그인</string>
     <string name="signin_autologin_guide">로그인할 방법을 선택하세요.</string>
     <string name="signin_by_google">Google로 로그인</string>
@@ -63,9 +63,11 @@
     <!--  Memory : 메모리에서 사용되는 String  -->
     <string name="memory_example_text">asdfasdfasdfasdfasdfasdfaaasasdfasdfasdfasdfasdfasdfdsdf</string>
     <string name="memory_feed_title">OO이와 추억 모아보기</string>
-    <string name="memory_list_title">메모리즈</string>
+    <string name="memory_list_title">메모리북</string>
     <string name="memory_list_rv_title">질문질문질문?</string>
     <string name="memory_question_title">Today\'s Memory</string>
+    <string name="memory_add_memory">작성하기</string>
+    <string name="memory_content_sample">내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용</string>
 
 
     <!--  Letter : 레터에서 사용되는 String  -->

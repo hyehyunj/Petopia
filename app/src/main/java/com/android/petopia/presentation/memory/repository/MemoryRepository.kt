@@ -1,10 +1,10 @@
 package com.android.petopia.presentation.memory.repository
 
 import android.content.Context
-import com.android.petopia.data.MemoryModel
+import com.android.petopia.data.Memory
 
 interface MemoryRepository {
-    fun getMemoryList(): List<MemoryModel>
-    fun addMemoryList(memory: MemoryModel)
-    fun deleteMemoryList(memory: MemoryModel)
+    fun getMemoryList(): List<Memory>
+    fun addMemoryList(memory: Memory)
+    fun deleteMemoryList(memory: Memory)
 }

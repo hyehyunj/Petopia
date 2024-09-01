@@ -5,9 +5,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#BFBFBF</color>
+    <color name="ivory">#FFFEF5</color>
+
     <color name="main_Sky_blue">#46C0FE</color>
     <color name="sub_blue">#3C9AD6</color>
     <color name="dark_gray">#343434</color>
+
     <!--  Gallery : 갤러리에서 사용되는 Color   -->
     <color name="baby_blue">#DEF0FF</color>
 
