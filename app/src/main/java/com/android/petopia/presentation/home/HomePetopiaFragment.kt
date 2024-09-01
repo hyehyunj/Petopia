@@ -96,6 +96,15 @@ class HomePetopiaFragment : Fragment() {
         }
     }
 
+    fun showPet() {
+        binding.apply {
+            homeTvNameUser.isVisible = true
+            homeTvNamePet.isVisible = true
+            homeIvPet.isVisible = true
+        }
+    }
+
+
     private fun showLetterFragment() {
         LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
 

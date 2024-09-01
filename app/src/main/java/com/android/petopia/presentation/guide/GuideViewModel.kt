@@ -33,6 +33,9 @@ class GuideViewModel :
     private val _breedListLiveData = MutableLiveData<List<String>>(dog)
     val breedListLiveData: LiveData<List<String>> = _breedListLiveData
 
+    //가이드넘버 : 1 필수, 2 선택
+    private val _guideNumberLiveData = MutableLiveData(1)
+    val guideNumberLiveData: LiveData<Int> = _guideNumberLiveData
 
 
 
@@ -42,10 +45,10 @@ class GuideViewModel :
 
 
 
-    //반려동물 이름을 입력받는 함수
-    fun setPetName(petName: String) {
-        _petModelLiveData.value = PetModel(petName, "", 0)
-        guideButtonClickListener("NEXT")
+
+
+    fun updateGuideNumber() {
+        _guideNumberLiveData.value = 2
 
     }
 
@@ -57,6 +60,13 @@ class GuideViewModel :
         _breedListLiveData.value = if(_appearanceLiveData.value == "DOG") dog else cat
     }
 
+
+//반려동물 정보
+    //반려동물 이름을 입력받는 함수
+    fun setPetName(petName: String) {
+        _petModelLiveData.value = PetModel(petName, "", 0)
+        guideButtonClickListener("NEXT")
+    }
 
     //반려동물 외모를 입력받는 함수
     fun setPetAppearance(breed : String) {
@@ -73,13 +83,15 @@ class GuideViewModel :
 
 
 
+
     //클릭된 버튼에 따라 페이지 변경해주는 함수
     fun guideButtonClickListener(pressedButton: String) {
         _pressedButtonLiveData.value = pressedButton
         when (_pressedButtonLiveData.value) {
-            "BACK" -> if (_guidePageNumberLiveData.value != 0) _guidePageNumberLiveData.value =
+            "BACK" -> if (_guidePageNumberLiveData.value != -1) _guidePageNumberLiveData.value =
                 _guidePageNumberLiveData.value?.minus(1)
-            "NEXT" -> _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(1)
+            "NEXT" -> if (_guidePageNumberLiveData.value == -1) _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(2)
+                else _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(1)
         }
     }
 
@@ -91,7 +103,7 @@ class GuideViewModel :
 
     //
     private val guideStoryData = mapOf(
-        0 to "누구를 찾아오셨나요?", 2 to "어떤 외모", 4 to "처럼", 6 to "도와")
+        0 to "누구를 찾아오셨나요?", 2 to "어떤 외모", 4 to "처럼", 6 to "도와", 8 to "보시는")
 
     //
     private val guideDialogData = mapOf(
@@ -135,6 +147,10 @@ class GuideViewModel :
             guideDialog
         )
         _guideModelLiveData.value = guideModel
+        if(page == 8) {
+            _guideModelLiveData.value = guideModel.copy(completeFirstGuide = true)
+            updateGuideNumber()
+        }
 
     }
 
