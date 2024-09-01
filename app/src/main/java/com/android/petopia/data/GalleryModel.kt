@@ -9,6 +9,7 @@ data class GalleryModel(
     val createdDate : Long,
     var updatedDate: Long,
     val index: Int = 0,
+    val checked : Boolean = false,
     val imageUris: MutableList<String> = mutableListOf(),
     val uId: String = UUID.randomUUID().toString()
 )

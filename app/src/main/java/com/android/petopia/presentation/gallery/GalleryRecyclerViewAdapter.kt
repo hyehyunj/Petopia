@@ -1,12 +1,9 @@
 package com.android.petopia.presentation.gallery
 
-import android.icu.text.DecimalFormat
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.petopia.data.GalleryModel
 import com.android.petopia.databinding.RecyclerviewGalleryHolderBinding
@@ -14,46 +11,47 @@ import com.android.petopia.databinding.RecyclerviewGalleryHolderBinding
 class GalleryRecyclerViewAdapter(
     private var item: List<GalleryModel>,
     private val itemClickListener: (item: GalleryModel, position: Int) -> Unit,
-    private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit
+    private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit,
 ) : RecyclerView.Adapter<GalleryRecyclerViewAdapter.Holder>() {
-    companion object {
-        private const val TAG = "Adapter"
-    }
-    private var removeMode = false
 
-    fun updateList(galleryList: List<GalleryModel>){
-        item = galleryList
-        notifyDataSetChanged()
-    }
-
+    private var removeMode = "COMPLETE"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding =
-            RecyclerviewGalleryHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return Holder(binding, itemClickListener, itemLongClickListener, removeMode)
+            RecyclerviewGalleryHolderBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        return Holder(binding, itemClickListener, itemLongClickListener)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(item[position], position)
+        holder.bind(item[position], position, removeMode)
     }
 
     override fun getItemCount(): Int {
         return item.size
     }
 
-   class Holder(private val binding: RecyclerviewGalleryHolderBinding,
-                private val itemClickListener: (item: GalleryModel, position: Int) -> Unit,
-                private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit,
-                private val removeMode: (Boolean)
-   ) :
-       RecyclerView.ViewHolder(binding.root) {
+    class Holder(
+        private val binding: RecyclerviewGalleryHolderBinding,
+        private val itemClickListener: (item: GalleryModel, position: Int) -> Unit,
+        private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: GalleryModel, position: Int) {
+        fun bind(item: GalleryModel, position: Int, removeMode: String) {
 
             binding.apply {
                 galleryHolderIvTitle.setImageURI(item.imageUris[0].toUri())
                 galleryHolderTvTitle.text = item.titleText
+
                 galleryHolder.setOnClickListener {
+                    when (removeMode) {
+                        "REMOVE" -> binding.galleryHolderCb.isVisible = true
+                        "COMPLETE" -> binding.galleryHolderCb.isVisible = item.checked
+                    }
                     itemClickListener(item, position)
                 }
                 galleryHolder.setOnLongClickListener {
@@ -61,32 +59,18 @@ class GalleryRecyclerViewAdapter(
                     true
                 }
             }
-}
         }
-
-
-    fun appearCheckBox(removeMode: Boolean) {
-        this.removeMode = removeMode
-    }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    fun updateList(galleryList: List<GalleryModel>) {
+        item = galleryList
+        notifyDataSetChanged()
+    }
+    fun updateRemoveMode(pressedRemoveButton: String) {
+        removeMode = pressedRemoveButton
+        notifyDataSetChanged()
+    }
+}
 
 
 //    private val itemClickListener: (item: GalleryModel) -> Unit,

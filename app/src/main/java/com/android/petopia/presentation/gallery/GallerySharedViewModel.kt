@@ -1,6 +1,7 @@
 package com.android.petopia.presentation.gallery
 
 import android.net.Uri
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,20 +20,9 @@ class GallerySharedViewModel :
     private val galleryList: MutableList<GalleryModel> =
         _galleryListLiveData.value?.toMutableList() ?: mutableListOf()
 
-    //삭제할 사진 : 임시 사진 휴지통, 완료시 휴지통의 사진들을 제거한다.
-    private lateinit var removePhoto: List<GalleryModel>
-
-
-
-
-
-    //모드 : "ADD" 추가, "EDIT" 편집, "READ" 읽기전용(기본값)
+    //레이아웃모드 : "ADD" 추가, "EDIT" 편집, "READ" 읽기전용(기본값)
     private val _layoutModeLiveData = MutableLiveData("READ")
     val layoutModeLiveData: LiveData<String> = _layoutModeLiveData
-
-
-
-
 
     //현재 보고있는 사진 : uri.toString() 갤러리 사진 단일 또는 다수
     private val _currentPhotoListLiveData = MutableLiveData<GalleryModel>()
@@ -41,12 +31,18 @@ class GallerySharedViewModel :
     //새로운 사진 : 임시 저장 데이터, 완료시 선택된 사진의 값으로 교체된다.
     private lateinit var newPhotoList: GalleryModel
 
+    //삭제모드 : "REMOVE" 삭제, "COMPLETE" 완료(기본값)
+    private val _removeModeLiveData = MutableLiveData("COMPLETE")
+    val removeModeLiveData: LiveData<String> = _removeModeLiveData
+
+    //삭제할 사진 : 임시 저장 데이터, 완료시 삭제된다.
+    private val removePhotoList = mutableListOf<GalleryModel>()
 
 
     //진입경로에 따라 레이아웃 모드를 변경해주는 함수
     fun changeLayoutMode(layoutMode: String) {
         _layoutModeLiveData.value = layoutMode
-        if(layoutMode == "ADD") {
+        if (layoutMode == "ADD") {
             newPhotoList = GalleryModel(
                 "", UserModel(), 0, 0, imageUris = mutableListOf()
             )
@@ -54,9 +50,16 @@ class GallerySharedViewModel :
         }
     }
 
-    //선택된 사진을 업데이트해주는 함수
-    fun updateCurrentGalleryList(photoList: GalleryModel, position: Int) {
-        _currentPhotoListLiveData.value = photoList.copy(index = position)
+    //선택된 사진을 상세페이지로 보여주기 위해 담거나, 삭제모드일 경우 임시 저장 변수에 담아주는 함수
+    fun updateGalleryList(photoList: GalleryModel, position: Int) {
+
+        when (_removeModeLiveData.value) {
+            "REMOVE" -> {
+                if (!photoList.checked) removePhotoList += photoList.copy(checked = false) else removePhotoList -= photoList.copy(
+                checked = true
+            )}
+            "COMPLETE" -> _currentPhotoListLiveData.value = photoList.copy(index = position)
+        }
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 정보를 담는 함수
@@ -97,25 +100,23 @@ class GallerySharedViewModel :
         }
         _galleryListLiveData.value = galleryList
     }
-//        _currentPhotoLiveData.value = newPhoto?.copy(titleText = titleText, date = date)
-//        val index = galleryList.indexOf(galleryList.find{ it.index == _currentPhotoLiveData.value?.index })
-//        if(index == -1) _currentPhotoLiveData.value?.let { galleryList.add(it) }
-//        else galleryList[index] = _currentPhotoLiveData.value!!
-//        _galleryListLiveData.value = galleryList
 
-
-    //삭제될 가능성이 있는 사진들을 임시 휴지통에 담는 함수
-    fun considerRemovePhoto(photo: GalleryModel, checked: Boolean) {
-        if (checked) removePhoto += photo else removePhoto -= photo
+    //삭제 모드를 변경해주는 함수
+    fun changeRemoveMode() {
+        _removeModeLiveData.value =
+            if (_removeModeLiveData.value == "COMPLETE") "REMOVE" else "COMPLETE"
     }
 
     //사진 삭제가 반영된 리스트로 교체하는 함수
-    fun updateRemovedGallery() {
-        removePhoto.forEach { removePhoto ->
-            galleryList.removeIf { it.index == removePhoto.index }
+    fun updateRemovedGalleryList() {
+
+        removePhotoList.forEach { removePhoto ->
+            galleryList.removeIf { it.uId == removePhoto.uId }
         }
         _galleryListLiveData.value = galleryList
     }
+
+
 }
 
 

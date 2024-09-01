@@ -38,48 +38,69 @@ class GalleryFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //버튼 클릭이벤트
+        galleryButtonClickListener()
+        //데이터 변화감지
+        galleryDataObserver()
 
-        //뒤로가기 버튼 클릭이벤트
-        binding.galleryIvBack.setOnClickListener {
-            dismiss()
+
+
+        initDialog()
+    }
+
+    //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
+    private fun galleryButtonClickListener() {
+
+        //뒤로가기버튼 클릭이벤트 : 갤러리 종료
+        binding.apply {
+            galleryIvBack.setOnClickListener {
+                dismiss()
+            }
+            //삭제버튼 클릭이벤트 : 체크박스 활성화
+            galleryIvRemove.setOnClickListener {
+                Log.d("삭제", "")
+                gallerySharedViewModel.changeRemoveMode()
+            }
+            //
+            //추가버튼 클릭이벤트 : 상세페이지로 이동하여 사진 추가
+            galleryIvAdd.setOnClickListener {
+                gallerySharedViewModel.changeLayoutMode("ADD")
+                showPhoto()
+            }
         }
+    }
 
-        //삭제버튼 클릭이벤트
-        binding.galleryIvRemove.setOnClickListener {
+    //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
+    private fun galleryDataObserver() {
 
-            galleryRecyclerViewAdapter.appearCheckBox(true)
-        }
-
-//추가버튼 클릭이벤트 : 상세페이지로 이동
-        binding.galleryIvAdd.setOnClickListener {
-            gallerySharedViewModel.changeLayoutMode("ADD")
-            showPhoto()
-        }
-
-//        gallerySharedViewModel.currentPhotoLiveData.observe(viewLifecycleOwner) {
-//            galleryRecyclerViewAdapter.notifyItemChanged(it.uId)
-//        }
-
+        //갤러리 리스트 변화감지
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
             Log.d("갤러리 변경감지", "${gallerySharedViewModel.galleryListLiveData.value}")
             galleryRecyclerViewAdapter.updateList(it)
-//            galleryRecyclerViewAdapter.notifyDataSetChanged()
         }
-        initDialog()
-//        btnBackListener()
+        //삭제모드 변화감지
+        gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
+            Log.d("옵저버감지", "${gallerySharedViewModel.removeModeLiveData.value}")
+            galleryRecyclerViewAdapter.updateRemoveMode(it)
+            if (it == "COMPLETE") gallerySharedViewModel.updateRemovedGalleryList()
+        }
     }
-
 
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
     private fun initAdapter() {
         galleryRecyclerViewAdapter = GalleryRecyclerViewAdapter(
             gallerySharedViewModel.galleryListLiveData.value!!,
+            //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
             itemClickListener = { item, position ->
                 Log.d("갤러리 변경감지", "${position}")
-                gallerySharedViewModel.updateCurrentGalleryList(item, position)
-                gallerySharedViewModel.changeLayoutMode("Read")
-                showPhoto()
-            }, itemLongClickListener = { item, position -> })
+                gallerySharedViewModel.updateGalleryList(item, position)
+                if (gallerySharedViewModel.removeModeLiveData.value == "COMPLETE") {
+                    gallerySharedViewModel.changeLayoutMode("Read")
+                    showPhoto()
+                }
+            },
+            itemLongClickListener = { item, position -> },
+        )
         binding.galleryRv.adapter = galleryRecyclerViewAdapter
         binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 2)
     }
@@ -88,7 +109,6 @@ class GalleryFragment : DialogFragment() {
     private fun showPhoto() {
         PhotoFragment().show(childFragmentManager, "PHOTO_FRAGMENT")
 
-
 //        childFragmentManager.beginTransaction()
 //            .replace(R.id.gallery_photo_container, PhotoFragment())
 //            .setReorderingAllowed(true)
@@ -96,7 +116,7 @@ class GalleryFragment : DialogFragment() {
 //            .commit()
     }
 
-    //
+
     private fun removePhoto() {
 
     }
@@ -113,6 +133,7 @@ class GalleryFragment : DialogFragment() {
 //        })
 //    }
 
+    //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현
     private fun initDialog() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager

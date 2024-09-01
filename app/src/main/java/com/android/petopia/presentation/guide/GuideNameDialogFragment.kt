@@ -45,6 +45,15 @@ class GuideNameDialogFragment : DialogFragment() {
 
         Log.d("네임은", "${guideSharedViewModel.guidePageNumberLiveData.value}")
 
+        //이전으로버튼 클릭이벤트
+        binding.dialogNameTvBack.setOnClickListener {
+            guideSharedViewModel.guideButtonClickListener("BACK")
+        dismiss()
+        }
+
+
+
+        //완료버튼 클릭이벤트
         binding.dialogNameTvComplete.setOnClickListener {
 
            if(binding.dialogNameEt.text.isBlank()) Toast.makeText(requireContext(),"이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
