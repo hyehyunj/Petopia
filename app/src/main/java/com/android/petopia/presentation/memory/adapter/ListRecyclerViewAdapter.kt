@@ -16,11 +16,11 @@ class ListRecyclerViewAdapter(
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<Memory>() {
             override fun areItemsTheSame(oldItem: Memory, newItem: Memory): Boolean {
-                return oldItem == newItem
+                return oldItem.key == newItem.key
             }
 
             override fun areContentsTheSame(oldItem: Memory, newItem: Memory): Boolean {
-                return oldItem.title == newItem.title
+                return oldItem == newItem
             }
         }
     }

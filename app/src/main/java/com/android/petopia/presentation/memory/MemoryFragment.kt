@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,15 +30,10 @@ class MemoryFragment : DialogFragment() {
 
     private var _binding: FragmentMemoryBinding? = null
     private val binding get() = _binding!!
-//    private var memoryList = mutableListOf<Memory>()
 
     private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
 
     //private lateinit var homeSharedViewModel: HomeSharedViewModel
-
-    private val memoryRepository: MemoryRepository by lazy {
-        MemoryRepositoryImpl()
-    }
 
     private lateinit var memoryViewModel: MemoryViewModel
 
@@ -47,10 +43,6 @@ class MemoryFragment : DialogFragment() {
     ): View {
         _binding = FragmentMemoryBinding.inflate(inflater, container, false)
 
-//        val memoryRepository =
-//            MemoryReposirotyImpl(memoryViewModel.memoryListLiveData.value ?: listOf())
-//        val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
-//        memoryViewModel = ViewModelProvider(this, factory).get(MemoryViewModel::class.java)
 
         return binding.root
     }
@@ -62,25 +54,25 @@ class MemoryFragment : DialogFragment() {
         initDialog()
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
-        //가상데이터
 
-        //1. MemoryViewModel -> Memory 로 변경하기
+        val memoryRepository = MemoryRepositoryImpl()
+        val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
+
         memoryViewModel =
-            ViewModelProvider(requireParentFragment()).get(MemoryViewModel::class.java)
-        memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) {
-            listRecyclerViewAdapter.submitList(it)
+            ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
+
+        //현재 로그인한 유저의 정보를 로드
+        val currentUser = getCurrentUser()
+        memoryViewModel.loadMemoryList(currentUser)
+
+        //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
+        memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
+            listRecyclerViewAdapter.submitList(memoryList)
         }
 
-        val user1 = UserModel("id1", "password1", "name1", "nickname1", "email1@gmail.com")
-
-        val memoryList = listOf(
-            Memory("title1", "content1", user1)
-        )
-        memoryList.forEach {
-            memoryViewModel.addMemoryList(it)
+        binding.btnAnswer.setOnClickListener {
+            setMemoryWriteFragment() // 메모리 작성 프래그먼트 이동
         }
-
-        listRecyclerViewAdapter.submitList(memoryList)
 
         binding.btnMemoryExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -94,7 +86,6 @@ class MemoryFragment : DialogFragment() {
                     .remove(this@MemoryFragment).commit()
             }
         })
-
     }
 
     private fun initAdapter() {
@@ -103,19 +94,17 @@ class MemoryFragment : DialogFragment() {
                 Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
                     .show()
 
-
             }, itemLongClickListener = { item ->
                 Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
                     .show()
-                (activity as MainActivity).showDialog()
+                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
             })
-        binding.rvMemoryList.adapter = listRecyclerViewAdapter
+        binding.rvMemoryList.adapter = listRecyclerViewAdapter // 어댑터 연결
         binding.rvMemoryList.layoutManager = GridLayoutManager(requireContext(), 1)
     }
 
 
-
-
+    //다이얼로그 크기 조절 함수
     private fun initDialog() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -133,6 +122,24 @@ class MemoryFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
+    // 메모리 작성 프래그먼트 이동함수
+    private fun setMemoryWriteFragment() {
+        MemoryWriteFragment().show(childFragmentManager, "MEMORY_WRITE_FRAGMENT")
+    }
 
+    // 메모리작성프래그먼트에서 작성한 내용을 메모리리스트에 저장 함수
+    fun onMemorySaved(memory: Memory) {
+        Log.d("MemoryFragment", "메모리 저장: $memory")
+        memoryViewModel.addMemoryList(memory)
+
+    }
+
+    fun getCurrentUser(): UserModel {
+        return UserModel()
+    }
 }
