@@ -9,6 +9,13 @@
     android:background="@drawable/border_round"
     android:elevation="3dp">
 
+    <ImageView
+        android:id="@+id/ivRank"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
@@ -18,8 +25,9 @@
         android:textSize="15sp"
         android:textStyle="bold"
         android:layout_marginStart="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/ivRank"
+        app:layout_constraintStart_toEndOf="@id/ivRank"
+        app:layout_constraintTop_toTopOf="@+id/ivRank" />
 
     <TextView
         android:id="@+id/tvWriter"
@@ -28,8 +36,8 @@
         android:text="jaeseon"
         android:textSize="12sp"
         android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        app:layout_constraintStart_toStartOf="@+id/ivRank"
+        app:layout_constraintTop_toBottomOf="@+id/ivRank"
         app:layout_constraintEnd_toStartOf="@+id/tvCreatedDate"
         />
 
