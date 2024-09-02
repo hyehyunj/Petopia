@@ -14,6 +14,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
+import com.android.petopia.data.LoginData
 import com.android.petopia.data.Memory
 import com.android.petopia.data.UserModel
 import com.android.petopia.data.remote.MemoryRepository
@@ -21,6 +22,8 @@ import com.android.petopia.data.remote.MemoryRepositoryImpl
 import com.android.petopia.databinding.FragmentMemoryBinding
 import com.android.petopia.databinding.FragmentMemoryWriteBinding
 import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class MemoryWriteFragment : DialogFragment() {
@@ -42,6 +45,12 @@ class MemoryWriteFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMemoryWriteBinding.inflate(inflater, container, false)
+
+        memoryViewModel = ViewModelProvider(requireActivity()).get(MemoryViewModel::class.java)
+        memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { title ->
+            binding.tvMemoryWriteQuestion.text = title
+        }
+
         return binding.root
     }
 
@@ -55,6 +64,9 @@ class MemoryWriteFragment : DialogFragment() {
             MemoryViewModel.MemoryViewModelFactory(memoryRepository)
         ).get(MemoryViewModel::class.java)
 
+        val currentTime: Long = System.currentTimeMillis()
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        binding.tvMemoryWriteDate.text = simpleDateFormat.format(currentTime)
 
         binding.btnMemoryWriteCheck.setOnClickListener {
             saveData()
@@ -92,7 +104,7 @@ class MemoryWriteFragment : DialogFragment() {
         Log.d("MemoryWriteFragment", "제목: $title, 내용: $content")
         // 여기서 작성한 데이터를 받아서 memoryFragment의 리사이클러뷰에 전달해야함
         if (title.isNotEmpty() && content.isNotEmpty()) {
-            val memory = Memory(title, content, UserModel())
+            val memory = Memory(title, content, LoginData.loginUser)
             memoryViewModel.addMemoryList(memory)
 
             (parentFragment as? MemoryFragment)?.onMemorySaved(memory)

@@ -32,6 +32,11 @@ class HomeMemoryBridgeFragment : Fragment() {
             setMemoryFragment()
         }
 
+        //편지버튼 클릭이벤트 : 클릭시 편지 이동e
+//        binding.homeMemoryBridgeBtnLetter.setOnClickListener {
+//            setLetterFragment()
+//        }
+
 
     }
 
@@ -43,9 +48,12 @@ class HomeMemoryBridgeFragment : Fragment() {
 //        transaction.commit()
 
         MemoryFragment().show(childFragmentManager, "MEMORY_FRAGMENT")
-
-
     }
+
+
+//    private fun setLetterFragment() {
+//        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
+//    }
 
 
 }

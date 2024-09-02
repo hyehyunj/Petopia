@@ -9,7 +9,6 @@ import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomePetopiaBinding
 import com.android.petopia.presentation.gallery.GalleryFragment
 import com.android.petopia.presentation.guide.GuideFragment
-import com.android.petopia.presentation.letter.LetterFragment
 
 
 class HomePetopiaFragment : Fragment() {
@@ -41,14 +40,6 @@ class HomePetopiaFragment : Fragment() {
         binding.homeTvGuide.setOnClickListener {
             showGuideFragment()
         }
-
-        //편지버튼 클릭이벤트 : 클릭시 편지함 이동
-        binding.homeIvLetter.setOnClickListener {
-            showLetterFragment()
-        }
-
-
-
 
 
     }
@@ -84,10 +75,7 @@ class HomePetopiaFragment : Fragment() {
             .commit()
     }
 
-    private fun showLetterFragment() {
-        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
 
-    }
 
 
 

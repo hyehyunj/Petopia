@@ -16,6 +16,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.petopia.data.LoginData
 import com.android.petopia.data.Memory
 import com.android.petopia.data.UserModel
 import com.android.petopia.data.remote.MemoryRepository
@@ -42,8 +44,6 @@ class MemoryFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMemoryBinding.inflate(inflater, container, false)
-
-
         return binding.root
     }
 
@@ -63,12 +63,19 @@ class MemoryFragment : DialogFragment() {
 
         //현재 로그인한 유저의 정보를 로드
         val currentUser = getCurrentUser()
-        memoryViewModel.loadMemoryList(currentUser)
+
+        var currentTitle = binding.tvTodayMemoryContent.text.toString()
+        memoryViewModel.setMemoryTitle(currentTitle)
+
 
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
             listRecyclerViewAdapter.submitList(memoryList)
         }
+
+        memoryViewModel.loadMemoryList(currentUser)
+
+
 
         binding.btnAnswer.setOnClickListener {
             setMemoryWriteFragment() // 메모리 작성 프래그먼트 이동
@@ -93,14 +100,18 @@ class MemoryFragment : DialogFragment() {
             itemClickListener = { item ->
                 Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
                     .show()
-
             }, itemLongClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
-                    .show()
-                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
+                Log.d("MemoryFragment", "롱클릭")
+                showDeleteDialog(item)
+
+                //(activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
             })
+        val manager = LinearLayoutManager(requireContext())
+
         binding.rvMemoryList.adapter = listRecyclerViewAdapter // 어댑터 연결
-        binding.rvMemoryList.layoutManager = GridLayoutManager(requireContext(), 1)
+        binding.rvMemoryList.layoutManager = LinearLayoutManager(requireContext())
+        manager.reverseLayout = true
+        manager.stackFromEnd = true
     }
 
 
@@ -140,6 +151,23 @@ class MemoryFragment : DialogFragment() {
     }
 
     fun getCurrentUser(): UserModel {
-        return UserModel()
+        return LoginData.loginUser
     }
+
+    private fun showDeleteDialog(memory: Memory) {
+        val deleteDialog = MemoryDeleteDialog(memory) { deletedMemory ->
+            memoryViewModel.deleteMemoryList(deletedMemory)
+            memoryViewModel.memoryListLiveData.value.let { updateList ->
+                listRecyclerViewAdapter.submitList(updateList)
+            }
+        }
+        deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
+
+        memoryViewModel.memoryListLiveData.value.let { updateList ->
+            listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
+        }
+
+    }
+
+
 }
