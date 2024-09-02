@@ -22,6 +22,8 @@ import com.android.petopia.data.remote.MemoryRepositoryImpl
 import com.android.petopia.databinding.FragmentMemoryBinding
 import com.android.petopia.databinding.FragmentMemoryWriteBinding
 import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class MemoryWriteFragment : DialogFragment() {
@@ -43,6 +45,12 @@ class MemoryWriteFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMemoryWriteBinding.inflate(inflater, container, false)
+
+        memoryViewModel = ViewModelProvider(requireActivity()).get(MemoryViewModel::class.java)
+        memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { title ->
+            binding.tvMemoryWriteQuestion.text = title
+        }
+
         return binding.root
     }
 
@@ -56,6 +64,9 @@ class MemoryWriteFragment : DialogFragment() {
             MemoryViewModel.MemoryViewModelFactory(memoryRepository)
         ).get(MemoryViewModel::class.java)
 
+        val currentTime: Long = System.currentTimeMillis()
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+        binding.tvMemoryWriteDate.text = simpleDateFormat.format(currentTime)
 
         binding.btnMemoryWriteCheck.setOnClickListener {
             saveData()

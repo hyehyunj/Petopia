@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.android.petopia.databinding.FragmentLetterBinding
 import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.home.HomeSharedViewModel
+import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
 import com.android.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
 
@@ -41,7 +42,7 @@ class LetterFragment : DialogFragment() {
             ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
 
         initDialog()
-        initAdapter()
+//        initAdapter()
 
 //        val letterRepository = LetterRepositoryImpl() // 추후 연결
 //        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
@@ -63,20 +64,21 @@ class LetterFragment : DialogFragment() {
     }
 
 
-    private fun initAdapter() {
-        listRecyclerViewAdapter = ListRecyclerViewAdapter(
-            itemClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
-                    .show()
-
-            }, itemLongClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
-                    .show()
-                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
-            })
-        binding.rvLetterList.adapter = listRecyclerViewAdapter // 어댑터 연결
-        binding.rvLetterList.layoutManager = GridLayoutManager(requireContext(), 1)
-    }
+//    private fun initAdapter() {
+//        listRecyclerViewAdapter = ListRecyclerViewAdapter(
+//            MemoryViewModel,
+//            itemClickListener = { item ->
+//                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
+//                    .show()
+//
+//            }, itemLongClickListener = { item ->
+//                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
+//                    .show()
+//                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
+//            })
+//        binding.rvLetterList.adapter = listRecyclerViewAdapter // 어댑터 연결
+//        binding.rvLetterList.layoutManager = GridLayoutManager(requireContext(), 1)
+//    }
 
     private fun initDialog() {
         val windowManager =

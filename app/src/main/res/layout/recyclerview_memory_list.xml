@@ -7,7 +7,7 @@
     android:layout_marginBottom="10dp"
     android:background="@drawable/border_round"
     android:elevation="5dp"
-    android:padding="10dp">
+    android:padding="8dp">
 
     <TextView
         android:id="@+id/tv_memory_list_number"
@@ -39,7 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
         android:text="@string/memory_list_rv_title"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -51,7 +51,7 @@
         android:id="@+id/tv_memory_list_content"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:maxLines="2"
         android:text="asdfkajsdlfkajsdlkfjasldasldkfjasldfk"
         android:textSize="16sp"
