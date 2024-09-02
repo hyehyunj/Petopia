@@ -1,61 +1,59 @@
-package com.android.petopia.presentation.dialog
+package com.android.petopia.presentation.guide
 
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.view.Display
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.view.WindowManager
-import android.view.WindowMetrics
-import android.widget.LinearLayout
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.petopia.R
 import com.android.petopia.databinding.FragmentDialogBinding
-import com.android.petopia.databinding.FragmentGalleryBinding
-import com.android.petopia.databinding.FragmentGuidRelationDialogBinding
-import com.android.petopia.presentation.gallery.GallerySharedViewModel
-import com.android.petopia.presentation.home.HomeSharedViewModel
+import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 
-//다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
-class GuideRelationDialogFragment : DialogFragment() {
-    private val _binding: FragmentGuidRelationDialogBinding by lazy {
-        FragmentGuidRelationDialogBinding.inflate(layoutInflater)
+
+class GuideCancelDialogFragment : DialogFragment() {
+
+    private val _binding: FragmentDialogBinding by lazy {
+        FragmentDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var sharedViewModel: HomeSharedViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-
-
-    }
+    private lateinit var homePetopiaGuideSharedViewModel: MainHomeGuideSharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        homePetopiaGuideSharedViewModel =
+            ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
+        binding.dialogTvAction.text = "종료"
 
-        sharedViewModel = ViewModelProvider(requireActivity()).get(HomeSharedViewModel::class.java)
+        homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                "ESSENTIAL" -> binding.dialogTvTitle.text = "다음에 찾아오시겠어요?\n처음부터 진행됩니다."
+                "OPTIONAL" -> binding.dialogTvTitle.text = "가이드를 종료하시겠어요?\n마이페이지에서 다시 보실 수 있습니다."
+            }
+        }
 
-        binding.dialogTvAction.setOnClickListener {}
-
+        //종료버튼 클릭이벤트
+        binding.dialogTvAction.setOnClickListener {
+            when (homePetopiaGuideSharedViewModel.guideStateLiveData.value) {
+                "ESSENTIAL" -> homePetopiaGuideSharedViewModel.updateGuideState("NONE")
+                "OPTIONAL" -> homePetopiaGuideSharedViewModel.updateGuideState("DONE")
+            }
+            parentFragmentManager.beginTransaction()
+                .remove(GuideFragment())
+                .commit()
+            dismiss()
+        }
 
         //취소버튼 클릭이벤트
         binding.dialogTvCancel.setOnClickListener {
             dismiss()
         }
-
-
         return binding.root
     }
 

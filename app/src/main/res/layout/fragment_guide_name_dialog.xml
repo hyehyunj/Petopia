@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/dialog_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     tools:context=".presentation.dialog.DialogFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dialog_layout_inside"
+        android:id="@+id/dialog_name_inside"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:clipToOutline="true"
-        android:background="@drawable/img_translucent_square"
+        android:background="@drawable/bg_translucent_white_square"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/dialog_tv_title"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/dialog_name_et"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
-            android:text="삭제하시겠습니까?"
-            android:textSize="20sp"
+            android:hint="반려동물의 이름을 입력해주세요."
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-
         <TextView
-            android:id="@+id/dialog_tv_action"
+            android:id="@+id/dialog_name_tv_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="24dp"
-            android:text="삭제"
+            android:text="이전으로"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/dialog_tv_cancel"
-            app:layout_constraintEnd_toStartOf="@+id/dialog_tv_cancel"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_name_et" />
 
         <TextView
-            android:id="@+id/dialog_tv_cancel"
+            android:id="@+id/dialog_name_tv_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="24dp"
-            android:text="취소"
+            android:text="완료"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dialog_name_et"
             app:layout_constraintEnd_toEndOf="parent"/>
 
 
@@ -61,4 +61,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

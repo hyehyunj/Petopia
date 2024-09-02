@@ -1,15 +1,17 @@
 package com.android.petopia.presentation.guide
 
-import android.util.Pair
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.petopia.data.GuideModel
+import com.android.petopia.data.PetModel
 
 //가이드 뷰모델
-class GuideViewModel :
+class GuideSharedViewModel :
     ViewModel() {
 
+    private val dog = listOf("말티즈", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
+    private val cat = listOf("고양이", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
 
     //페이지
     private val _guidePageNumberLiveData = MutableLiveData(0)
@@ -23,14 +25,59 @@ class GuideViewModel :
     private val _pressedButtonLiveData = MutableLiveData("")
     val pressedButtonLiveData: LiveData<String> = _pressedButtonLiveData
 
+    //반려동물 데이터클래스
+    private val _petModelLiveData = MutableLiveData<PetModel>()
+    val petModelLiveData: LiveData<PetModel> = _petModelLiveData
+
+    //외모 대분류 : "DOG" 강아지 , "CAT" 고양이
+    private val _appearanceLiveData = MutableLiveData("DOG")
+    val appearanceLiveData: LiveData<String> = _appearanceLiveData
+
+    //외모 소분류
+    private val _breedListLiveData = MutableLiveData(dog)
+    val breedListLiveData: LiveData<List<String>> = _breedListLiveData
+
+    //반려동물 외모 대분류
+    fun changeAppearance(appearance: String) {
+        _appearanceLiveData.value = appearance
+    }
+
+    fun changeBreed() {
+        _breedListLiveData.value = if(_appearanceLiveData.value == "DOG") dog else cat
+    }
+
+
+//반려동물 정보
+    //반려동물 이름을 입력받는 함수
+    fun setPetName(petName: String) {
+        _petModelLiveData.value = PetModel(petName, "", 0,"",0,0)
+        guideButtonClickListener("NEXT")
+    }
+
+    //반려동물 외모를 입력받는 함수
+    fun setPetAppearance(breed : String) {
+        _petModelLiveData.value = _petModelLiveData.value?.copy(petAppearance = breed)
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     //클릭된 버튼에 따라 페이지 변경해주는 함수
     fun guideButtonClickListener(pressedButton: String) {
         _pressedButtonLiveData.value = pressedButton
         when (_pressedButtonLiveData.value) {
-            "BACK" -> if (_guidePageNumberLiveData.value != 0) _guidePageNumberLiveData.value =
+            "BACK" -> if (_guidePageNumberLiveData.value != -1) _guidePageNumberLiveData.value =
                 _guidePageNumberLiveData.value?.minus(1)
-            "NEXT" -> _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(1)
+            "NEXT" -> if (_guidePageNumberLiveData.value == -1) _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(2)
+                else _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(1)
         }
     }
 
@@ -42,7 +89,27 @@ class GuideViewModel :
 
     //
     private val guideStoryData = mapOf(
-        0 to "누구를 찾아오셨나요?", 2 to "어떤 외모", 4 to "처럼", 6 to "도와")
+        0 to "누구를 찾아오셨나요?",
+    2 to "어떤 외모",
+    4 to "처럼",
+    6 to "도와",
+    8 to "보시는",
+    9 to "펫토피아",
+    10 to "편지나 사진은",
+    11 to "소중한 날짜를",
+    12 to "메모리 브릿지로",
+    14 to "매일 새로운 질문에",
+    15 to "풍선을",
+    16 to "지구로",
+    18 to "구름을",
+    19 to "나무는",
+    20 to "이동버튼",
+    21 to "설정",
+    22 to "그럼"
+
+
+
+    )
 
     //
     private val guideDialogData = mapOf(
@@ -86,6 +153,9 @@ class GuideViewModel :
             guideDialog
         )
         _guideModelLiveData.value = guideModel
+        if(page == 8) {
+            _guideModelLiveData.value = guideModel.copy(completeFirstGuide = true)
+        }
 
     }
 

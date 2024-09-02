@@ -32,13 +32,6 @@ open class DialogFragment : DialogFragment() {
     private val binding get() = _binding
     private lateinit var sharedViewModel: HomeSharedViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-
-        super.onCreate(savedInstanceState)
-
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
