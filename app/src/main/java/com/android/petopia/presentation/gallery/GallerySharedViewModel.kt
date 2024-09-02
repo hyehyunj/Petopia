@@ -57,10 +57,11 @@ private val user = LoginData.loginUser
             val list = async {
                     galleryRepository.selectGalleryList(user)
             }
-            list.await().let {
-                galleryRepository.selectGalleryImages(it)
-                _galleryListLiveData.value = it.toList()
-            }
+            val listA = list.await()
+            Log.d("listA", "${listA}")
+                _galleryListLiveData.value = galleryRepository.selectGalleryImages(listA).toList()
+            Log.d("_galleryListLiveData", "${_galleryListLiveData.value}")
+
         }
     }
 
@@ -137,7 +138,7 @@ private val user = LoginData.loginUser
                         titleText = titleText,
                     )
                 galleryList.add(0, _currentPhotoListLiveData.value!!)
-//                saveGalleryList()
+                saveGalleryList()
             }
 
             "EDIT" -> {
