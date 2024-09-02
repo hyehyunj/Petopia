@@ -22,7 +22,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         FragmentGuideAppearanceDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var guideSharedViewModel: GuideViewModel
+    private lateinit var guideSharedViewModel: GuideSharedViewModel
     private lateinit var guideAppearanceDialogRecyclerViewAdapter: GuideAppearanceDialogRecyclerViewAdapter
 
     override fun onCreateView(
@@ -30,7 +30,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         guideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(GuideViewModel::class.java)
+            ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
 
         initAdapter()
 

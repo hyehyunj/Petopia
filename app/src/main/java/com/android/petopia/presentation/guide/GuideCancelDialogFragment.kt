@@ -12,10 +12,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.databinding.FragmentDialogBinding
-import com.android.petopia.presentation.MainActivity
-import com.android.petopia.presentation.home.HomePetopiaFragment
-import com.android.petopia.presentation.home.HomePetopiaGuideSharedViewModel
-import com.android.petopia.presentation.home.HomeSharedViewModel
+import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 
 
 class GuideCancelDialogFragment : DialogFragment() {
@@ -23,21 +20,26 @@ class GuideCancelDialogFragment : DialogFragment() {
         FragmentDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var homePetopiaGuideSharedViewModel : HomePetopiaGuideSharedViewModel
+    private lateinit var homePetopiaGuideSharedViewModel: MainHomeGuideSharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        binding.dialogTvTitle.text = "다음에 찾아오시겠어요?\n처음부터 진행됩니다."
+        homePetopiaGuideSharedViewModel =
+            ViewModelProvider(requireParentFragment()).get(MainHomeGuideSharedViewModel::class.java)
         binding.dialogTvAction.text = "종료"
 
-        homePetopiaGuideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(HomePetopiaGuideSharedViewModel::class.java)
+        homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                "ESSENTIAL" -> binding.dialogTvTitle.text = "다음에 찾아오시겠어요?\n처음부터 진행됩니다."
+                "OPTIONAL" -> binding.dialogTvTitle.text = "가이드를 종료하시겠어요?\n마이페이지에서 다시 보실 수 있습니다."
+            }
+        }
+
         //종료버튼 클릭이벤트
         binding.dialogTvAction.setOnClickListener {
-when(homePetopiaGuideSharedViewModel.guideStateLiveData.value) {
+            when (homePetopiaGuideSharedViewModel.guideStateLiveData.value) {
                 "ESSENTIAL" -> homePetopiaGuideSharedViewModel.updateGuideState("NONE")
                 "OPTIONAL" -> homePetopiaGuideSharedViewModel.updateGuideState("DONE")
             }
@@ -47,14 +49,10 @@ when(homePetopiaGuideSharedViewModel.guideStateLiveData.value) {
             dismiss()
         }
 
-
         //취소버튼 클릭이벤트
         binding.dialogTvCancel.setOnClickListener {
-
             dismiss()
         }
-
-
         return binding.root
     }
 

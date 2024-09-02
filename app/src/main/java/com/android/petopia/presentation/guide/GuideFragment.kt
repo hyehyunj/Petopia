@@ -11,9 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentGuideBinding
-import com.android.petopia.presentation.gallery.GallerySharedViewModel
 import com.android.petopia.presentation.home.HomePetopiaFragment
-import com.android.petopia.presentation.home.HomePetopiaGuideSharedViewModel
+import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 import io.github.muddz.styleabletoast.StyleableToast
 
 //가이드 프래그먼트 : 앱 사용방법과 특징을 안내하는 튜토리얼
@@ -22,8 +21,8 @@ class GuideFragment : Fragment() {
         FragmentGuideBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private val guideViewModel by viewModels<GuideViewModel>()
-    private lateinit var homePetopiaGuideSharedViewModel: HomePetopiaGuideSharedViewModel
+    private val guideViewModel by viewModels<GuideSharedViewModel>()
+    private lateinit var homePetopiaGuideSharedViewModel: MainHomeGuideSharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +35,7 @@ class GuideFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homePetopiaGuideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(HomePetopiaGuideSharedViewModel::class.java)
+            ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
         guideButtonClickListener()
         guideDataObserver()
@@ -89,9 +88,24 @@ class GuideFragment : Fragment() {
                         guideIvProgressBar.isVisible = false
                     }
                 }
-                in 9..12 -> guideViewModel.makeGuideModel()
 
+                in 9..12, in 14..16 -> {
+                    homePetopiaGuideSharedViewModel.updateFunction(it)
+                    guideViewModel.makeGuideModel()
+                }
+
+                13, 17 -> {
+                    binding.guideTvStory.isVisible = false
+                    homePetopiaGuideSharedViewModel.updateFunction(it)
+                }
+
+                14 -> {
+                    binding.guideTvStory.isVisible = true
+                    homePetopiaGuideSharedViewModel.updateFunction(it)
+                }
             }
+
+
         }
 
         //가이드모델 변화감지 : 페이지 번호에 따라 화면 구성 변경

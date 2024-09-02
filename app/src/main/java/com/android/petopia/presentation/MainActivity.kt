@@ -1,21 +1,21 @@
 package com.android.petopia.presentation
 
 import android.os.Bundle
-import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.android.petopia.R
 import com.android.petopia.databinding.ActivityMainBinding
 import com.android.petopia.presentation.dialog.DialogFragment
-import com.android.petopia.presentation.gallery.PhotoFragment
+import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    private lateinit var mainSharedViewModel: MainSharedViewModel
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
+    private val mainHomeGuideViewModel by viewModels<MainHomeGuideSharedViewModel>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,13 +28,9 @@ class MainActivity : AppCompatActivity() {
 //액티비티 공유 뷰모델 갖다 쓰세요~!
         //private val sharedViewModel : MainViewModel by activityViewModels()
 
-
         //레이아웃 초기화
         initLayout()
-        mainSharedViewModel = ViewModelProvider(this)[MainSharedViewModel::class.java]
-
-
-    }
+           }
 
     //레이아웃 초기화 함수 : 뷰페이저, 탭레이아웃 연결
     private fun initLayout() {
@@ -77,8 +73,4 @@ class MainActivity : AppCompatActivity() {
 //            .addToBackStack(null)
 //            .commit()
     }
-
-
-
-
 }

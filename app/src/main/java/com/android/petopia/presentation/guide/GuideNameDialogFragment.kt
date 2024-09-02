@@ -22,7 +22,7 @@ class GuideNameDialogFragment : DialogFragment() {
         FragmentGuideNameDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var guideSharedViewModel: GuideViewModel
+    private lateinit var guideSharedViewModel: GuideSharedViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,7 +42,7 @@ class GuideNameDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        guideSharedViewModel = ViewModelProvider(requireParentFragment()).get(GuideViewModel::class.java)
+        guideSharedViewModel = ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
 
         Log.d("네임은", "${guideSharedViewModel.guidePageNumberLiveData.value}")
 

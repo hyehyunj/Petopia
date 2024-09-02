@@ -12,7 +12,6 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.databinding.FragmentGuideRelationDialogBinding
-import com.android.petopia.presentation.home.HomeSharedViewModel
 
 //다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
 class GuideRelationDialogFragment : DialogFragment() {
@@ -20,7 +19,7 @@ class GuideRelationDialogFragment : DialogFragment() {
         FragmentGuideRelationDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var guideSharedViewModel: GuideViewModel
+    private lateinit var guideSharedViewModel: GuideSharedViewModel
 
 
     override fun onCreateView(
@@ -33,7 +32,7 @@ class GuideRelationDialogFragment : DialogFragment() {
 
     override fun onResume() {
 
-        guideSharedViewModel = ViewModelProvider(requireActivity()).get(GuideViewModel::class.java)
+        guideSharedViewModel = ViewModelProvider(requireActivity()).get(GuideSharedViewModel::class.java)
 
         //이전으로버튼 클릭이벤트
         binding.guideRelationDialogTvBack.setOnClickListener {
