@@ -101,9 +101,10 @@ class MemoryFragment : DialogFragment() {
                 Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
                     .show()
             }, itemLongClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
-                    .show()
-                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
+                Log.d("MemoryFragment", "롱클릭")
+                showDeleteDialog(item)
+
+                //(activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
             })
         val manager = LinearLayoutManager(requireContext())
 
@@ -152,4 +153,21 @@ class MemoryFragment : DialogFragment() {
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
     }
+
+    private fun showDeleteDialog(memory: Memory) {
+        val deleteDialog = MemoryDeleteDialog(memory) { deletedMemory ->
+            memoryViewModel.deleteMemoryList(deletedMemory)
+            memoryViewModel.memoryListLiveData.value.let { updateList ->
+                listRecyclerViewAdapter.submitList(updateList)
+            }
+        }
+        deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
+
+        memoryViewModel.memoryListLiveData.value.let { updateList ->
+            listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
+        }
+
+    }
+
+
 }
