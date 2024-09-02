@@ -28,6 +28,7 @@ import com.android.petopia.data.remote.SignRepositoryImpl
 import com.android.petopia.databinding.FragmentCommunityBinding
 import com.android.petopia.databinding.FragmentImageTestBinding
 import com.bumptech.glide.Glide
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -48,13 +49,13 @@ class CommunityFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private val binding: FragmentCommunityBinding by lazy {
-        FragmentCommunityBinding.inflate(layoutInflater)
-    }
-
-//    private val binding: FragmentImageTestBinding by lazy {
-//        FragmentImageTestBinding.inflate(layoutInflater)
+//    private val binding: FragmentCommunityBinding by lazy {
+//        FragmentCommunityBinding.inflate(layoutInflater)
 //    }
+
+    private val binding: FragmentImageTestBinding by lazy {
+        FragmentImageTestBinding.inflate(layoutInflater)
+    }
 
     private val signRepository: SignRepository by lazy{
         SignRepositoryImpl()
@@ -66,6 +67,14 @@ class CommunityFragment : Fragment() {
 
     private val galleryRepository: GalleryRepository by lazy {
         GalleryRepositoryImpl()
+    }
+
+    private var imageUri: Uri? = null
+
+    private val imageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ result ->
+        if(result.resultCode == RESULT_OK) {
+            imageUri = result.data?.data
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,11 +90,80 @@ class CommunityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
+        val user = UserModel("id1", "password1", "name1", "nickname1")
+//        val gallery = GalleryModel()
 
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+//        initView()
+
+
+
+
+    }
+
+//    private fun initView(){
+//        binding.header.ivBack.setOnClickListener{
+//            Toast.makeText(requireActivity(), "click back", Toast.LENGTH_SHORT).show()
+//        }
+//
+//        binding.header.ivSearch.setOnClickListener {
+//            Toast.makeText(requireActivity(), "click search", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+
+
+    private fun initImageView(reference: StorageReference) {
+        binding.ivUpload.setOnClickListener {
+
+            if (ContextCompat.checkSelfPermission(
+                    requireActivity(),
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                == PackageManager.PERMISSION_DENIED
+            ) {
+                requireActivity().requestPermissions(
+                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    1
+                )
+            }
+
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.setDataAndType(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+            )
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+            imageLauncher.launch(intent)
+        }
+
+        binding.btnOk.setOnClickListener {
+
+
+            val uploadTask = reference.child("1").child("test2.png")
+                .putFile(imageUri ?: throw Exception("image Uri is null"))
+
+            uploadTask.addOnSuccessListener {
+                Toast.makeText(requireActivity(), "upload success", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener {
+                Toast.makeText(requireActivity(), "upload fail", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.btnDownload.setOnClickListener {
+            val downloadTask = reference.child("1").child("test2.png").downloadUrl
+            downloadTask.addOnSuccessListener { uri ->
+                Glide.with(requireActivity())
+                    .load(uri)
+                    .centerCrop()
+                    .into(binding.ivDownload)
+            }.addOnFailureListener {
+                Log.e("FirebaseTest", "Download fail : ${it.message}")
+            }
+        }
+    }
     companion object {
         /**
          * Use this factory method to create a new instance of

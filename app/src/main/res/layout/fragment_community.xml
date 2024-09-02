@@ -5,37 +5,14 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="15dp"
     tools:context=".presentation.community.CommunityFragment">
 
-    <ImageView
-        android:id="@+id/ivUpload"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/image_plus"
-        />
-    <android.widget.Button
-        android:id="@+id/btnOk"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:text="확인"
-        android:textSize="28sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/ivDownload"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:background="@drawable/image_plus"
-        />
-
-    <android.widget.Button
-        android:id="@+id/btnDownload"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:text="다운로드"
-        android:textSize="28sp"
-        android:textStyle="bold" />
-
+    <include
+        android:id="@+id/header"
+        layout="@layout/post_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 
