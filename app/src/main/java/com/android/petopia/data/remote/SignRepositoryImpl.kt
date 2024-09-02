@@ -1,8 +1,11 @@
 package com.android.petopia.data.remote
 
+import android.util.Log
 import com.android.petopia.Table
 import com.android.petopia.network.FirebaseReference
 import com.android.petopia.data.UserModel
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import com.google.gson.Gson
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
@@ -11,22 +14,30 @@ import kotlin.coroutines.resumeWithException
 class SignRepositoryImpl: SignRepository {
 
     private val reference = FirebaseReference.reference.child(Table.USER.tableName)
+    private val storeReference = Firebase.firestore.collection(Table.USER.tableName)
 
     override suspend fun createUser(user: UserModel) {
-        reference.child(user.id).setValue(user)
+//        reference.child(user.id).setValue(user)
+        storeReference.document(user.id).set(user).addOnSuccessListener {
+            Log.i("SignRepositoryImpl", "success signUp = ${it}")
+        }.addOnFailureListener {
+            Log.e("SignRepositoryImpl", "fail signUp = ${it}")
+        }
     }
 
     override suspend fun selectUser(id: String): UserModel? {
         return suspendCancellableCoroutine { continuation ->
-            reference.orderByChild("id").equalTo(id).get().addOnCompleteListener { task ->
+//            reference.orderByChild("id").equalTo(id).get().addOnCompleteListener { task ->
+            storeReference.whereEqualTo("id", id).get().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val result = task.result
-                    if (result.childrenCount.toInt() == 0 || result.childrenCount > 1) {
+//                    if (result.childrenCount.toInt() == 0 || result.childrenCount > 1) {
+                    if (result.documents.size == 0 || result.documents.size > 1) {
                         continuation.resume(null)
                         return@addOnCompleteListener
                     }
-                    for (child in result.children) {
-                        val hashMap = child.value as HashMap<*, *>
+                    for (document in result.documents) {
+                        val hashMap = document.data as HashMap<*, *>
                         val gson = Gson()
                         val toJson = gson.toJson(hashMap)
                         val selectedUser = gson.fromJson(toJson, UserModel::class.java)

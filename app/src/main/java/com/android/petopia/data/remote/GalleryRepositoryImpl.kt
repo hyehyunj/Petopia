@@ -10,6 +10,8 @@ import com.android.petopia.data.GalleryModel
 import com.android.petopia.data.UserModel
 import com.android.petopia.network.FirebaseReference
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.storage
 import com.google.gson.Gson
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -19,6 +21,7 @@ import kotlin.coroutines.resumeWithException
 class GalleryRepositoryImpl: GalleryRepository {
 
     private val RTReference = FirebaseReference.reference.child(Table.GALLERY.tableName)
+    private val storeReference = Firebase.firestore.collection(Table.GALLERY.tableName)
     private val storageReference = Firebase.storage.getReference(Table.GALLERY.tableName)
 
 
@@ -28,8 +31,9 @@ class GalleryRepositoryImpl: GalleryRepository {
             // RT
             var isFailRT = false
             var isFailStorage = false
-            val imageName = DateFormatUtils.convertToImageFormat(gallery.createdDate) + "_01.png"
-            RTReference.child(gallery.uId).setValue(gallery).addOnFailureListener {
+//            val imageName = DateFormatUtils.convertToImageFormat(gallery.createdDate) + "_01.png"
+//            RTReference.child(gallery.uId).setValue(gallery).addOnFailureListener {
+            storeReference.document(gallery.uId).set(gallery).addOnFailureListener {
 //                continuation.resumeWithException(it)
                 isFailRT = true
 //                continuation.resume(false)
@@ -42,7 +46,8 @@ class GalleryRepositoryImpl: GalleryRepository {
                 uploadTask.addOnFailureListener {
                     isFailStorage = false
                     if(!isFailRT) {
-                        RTReference.child(gallery.uId).removeValue()
+//                        RTReference.child(gallery.uId).removeValue()
+                        storeReference.document(gallery.uId).delete()
 //                    continuation.resume(false)
                         continuation.resumeWithException(Exception("fail create gallery"))
                     }
@@ -68,11 +73,17 @@ class GalleryRepositoryImpl: GalleryRepository {
             Log.i("GalleryRepositoryImpl", "start selectGalleryList")
             val galleryList = mutableListOf<GalleryModel>()
 
-            RTReference.orderByChild("writer/id").equalTo(user.id).get().addOnCompleteListener {
+//            RTReference.orderByChild("writer/id").equalTo(user.id).get().addOnCompleteListener {
+            storeReference
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .orderBy("writer.id")
+                .whereEqualTo("writer.id", user.id)
+                .whereLessThan("createdDate", 999999999999999)
+                .get().addOnCompleteListener {
                 val result = it.result
-                Log.i("GalleryRepositoryImpl", "result count = ${result.childrenCount}")
-                for (child in result.children) {
-                    val value = child.value as HashMap<*,*>
+                Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
+                for (child in result.documents) {
+                    val value = child.data as HashMap<*,*>
                     val gson = Gson()
                     val toJson = gson.toJson(value)
                     val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
@@ -96,13 +107,16 @@ class GalleryRepositoryImpl: GalleryRepository {
                     if (task.isSuccessful) {
                         val items = task.result.items
                         Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
-                        for (item in items) {
-//                            Log.d("GalleryRepositoryImpl", "${item.name}")
-                            item.downloadUrl.addOnCompleteListener{ uri ->
+                        items[0].downloadUrl.addOnCompleteListener{ uri ->
                                 gallery.imageUris.add(uri.result.toString())
-                            }
-                            break // 리스트에 출력되는 대표 이미지 1개만 추가
                         }
+//                        for (item in items) {
+////                            Log.d("GalleryRepositoryImpl", "${item.name}")
+//                            item.downloadUrl.addOnCompleteListener{ uri ->
+//                                gallery.imageUris.add(uri.result.toString())
+//                            }
+//                            break // 리스트에 출력되는 대표 이미지 1개만 추가
+//                        }
                     } else {
                         continuation.resumeWithException(task.exception ?: Exception("Unknown error occurred"))
                     }
