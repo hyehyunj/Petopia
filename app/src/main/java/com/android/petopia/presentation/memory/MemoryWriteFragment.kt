@@ -14,6 +14,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
+import com.android.petopia.data.LoginData
 import com.android.petopia.data.Memory
 import com.android.petopia.data.UserModel
 import com.android.petopia.data.remote.MemoryRepository
@@ -92,7 +93,7 @@ class MemoryWriteFragment : DialogFragment() {
         Log.d("MemoryWriteFragment", "제목: $title, 내용: $content")
         // 여기서 작성한 데이터를 받아서 memoryFragment의 리사이클러뷰에 전달해야함
         if (title.isNotEmpty() && content.isNotEmpty()) {
-            val memory = Memory(title, content, UserModel())
+            val memory = Memory(title, content, LoginData.loginUser)
             memoryViewModel.addMemoryList(memory)
 
             (parentFragment as? MemoryFragment)?.onMemorySaved(memory)

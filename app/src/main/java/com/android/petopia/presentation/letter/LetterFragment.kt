@@ -5,45 +5,78 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.petopia.R
+import androidx.recyclerview.widget.GridLayoutManager
 import com.android.petopia.databinding.FragmentLetterBinding
+import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.home.HomeSharedViewModel
+import com.android.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
 
 class LetterFragment : DialogFragment() {
     private var _binding: FragmentLetterBinding? = null
     private val binding get() = _binding as FragmentLetterBinding
-    private lateinit var homeSharedViewModel : HomeSharedViewModel
+    private lateinit var homeSharedViewModel: HomeSharedViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
 
-
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLetterBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeSharedViewModel = ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
+        homeSharedViewModel =
+            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
+
         initDialog()
+        initAdapter()
+
+//        val letterRepository = LetterRepositoryImpl() // 추후 연결
+//        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
+//
+//        letterViewModel =
+//            ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
+//
+//        //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
+//        letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
+//            listRecyclerViewAdapter.submitList(letterList)
+//        }
+
+
+        binding.btnLetterExit.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .remove(this).commit()
+        }
 
     }
 
+
+    private fun initAdapter() {
+        listRecyclerViewAdapter = ListRecyclerViewAdapter(
+            itemClickListener = { item ->
+                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
+                    .show()
+
+            }, itemLongClickListener = { item ->
+                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
+                    .show()
+                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
+            })
+        binding.rvLetterList.adapter = listRecyclerViewAdapter // 어댑터 연결
+        binding.rvLetterList.layoutManager = GridLayoutManager(requireContext(), 1)
+    }
 
     private fun initDialog() {
         val windowManager =

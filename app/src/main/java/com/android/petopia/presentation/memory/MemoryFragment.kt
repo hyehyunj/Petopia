@@ -42,8 +42,6 @@ class MemoryFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMemoryBinding.inflate(inflater, container, false)
-
-
         return binding.root
     }
 

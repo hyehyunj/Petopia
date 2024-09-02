@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.android.petopia.data.LoginData
 import com.android.petopia.data.UserModel
 import com.android.petopia.data.remote.SignRepository
 import kotlinx.coroutines.launch
@@ -55,7 +56,7 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
         viewModelScope.launch {
             val user = signRepository.selectUser(inputId)
             if (user != null && user.password == inputPassword) {
-                _loginUser.value = user
+                LoginData.loginUser = user
                 onSuccess()
             } else {
                 onFailure()
