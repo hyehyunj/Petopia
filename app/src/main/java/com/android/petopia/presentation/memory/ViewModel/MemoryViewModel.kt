@@ -17,6 +17,22 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
 
     private val memoryItems = mutableListOf<Memory>()
 
+    // 메모리 제목
+    private val _memoryTitle = MutableLiveData<String>()
+    val memoryTitle: LiveData<String> = _memoryTitle
+
+    // 메모리 작성 날짜
+    private val _memoryDate = MutableLiveData<String>()
+    val memoryDate: LiveData<String> = _memoryDate
+
+    fun setMemoryDate(date: String) {
+        _memoryDate.value = date
+    }
+
+    fun setMemoryTitle(title: String) {
+        _memoryTitle.value = title
+    }
+
 
     fun addMemoryList(memory: Memory) {
         viewModelScope.launch {

@@ -25,7 +25,7 @@ import com.android.petopia.presentation.gallery.GallerySharedViewModel
 import com.android.petopia.presentation.home.HomeSharedViewModel
 
 //다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
-class DialogFragment : DialogFragment() {
+open class DialogFragment : DialogFragment() {
     private val _binding: FragmentDialogBinding by lazy {
         FragmentDialogBinding.inflate(layoutInflater)
     }

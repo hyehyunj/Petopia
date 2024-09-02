@@ -43,6 +43,14 @@ class HomeMemoryBridgeFragment : Fragment() {
         binding.homeMemoryBridgeTvMemoryBtn.setOnClickListener {
             setMemoryFragment()
         }
+
+
+        //편지버튼 클릭이벤트 : 클릭시 편지 이동e
+//        binding.homeMemoryBridgeBtnLetter.setOnClickListener {
+//            setLetterFragment()
+//        }
+
+
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
@@ -79,8 +87,6 @@ class HomeMemoryBridgeFragment : Fragment() {
 //        transaction.commit()
 
         MemoryFragment().show(childFragmentManager, "MEMORY_FRAGMENT")
-
-
     }
 
     override fun onResume() {
@@ -89,5 +95,10 @@ class HomeMemoryBridgeFragment : Fragment() {
         homeMemoryBridgeDataObserver()
 
     }
+
+//    private fun setLetterFragment() {
+//        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
+//    }
+
 
 }

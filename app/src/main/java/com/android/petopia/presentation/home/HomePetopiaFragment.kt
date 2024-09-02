@@ -13,8 +13,10 @@ import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.gallery.GalleryFragment
 import com.android.petopia.presentation.guide.GuideCancelDialogFragment
 import com.android.petopia.presentation.guide.GuideFragment
+
 import com.android.petopia.presentation.letter.LetterFragment
 import io.github.muddz.styleabletoast.StyleableToast
+
 
 
 class HomePetopiaFragment : Fragment() {
@@ -35,11 +37,13 @@ class HomePetopiaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
         homePetopiaButtonClickListener()
         guideDataObserver()
+
 
 
     }
@@ -164,7 +168,9 @@ private fun showGalleryFragment() {
 //            .setReorderingAllowed(true)
 //            .addToBackStack("BACK_PETOPIA")
 //            .commitAllowingStateLoss()
+
 }
+
 
 
 

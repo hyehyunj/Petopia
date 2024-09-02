@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.android.petopia.data.GalleryModel
+import com.android.petopia.data.LoginData
 import com.android.petopia.data.UserModel
 import com.android.petopia.data.remote.GalleryRepository
 import com.android.petopia.data.remote.GalleryRepositoryImpl
@@ -23,7 +24,7 @@ import java.time.ZoneId
 //갤러리와 포토의 공유 뷰모델
 class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     ViewModel() {
-private val user = UserModel()
+private val user = LoginData.loginUser
 
     //갤러리 리스트
     private val _galleryListLiveData = MutableLiveData<List<GalleryModel>>(listOf())
