@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentGuideBinding
+import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.home.HomePetopiaFragment
 import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 import io.github.muddz.styleabletoast.StyleableToast
@@ -35,7 +36,7 @@ class GuideFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homePetopiaGuideSharedViewModel =
-            ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
+            ViewModelProvider(requireActivity())[MainHomeGuideSharedViewModel::class.java]
 
         guideButtonClickListener()
         guideDataObserver()
@@ -54,7 +55,7 @@ class GuideFragment : Fragment() {
         }
         //나가기 버튼 클릭이벤트
         binding.guideIvExit.setOnClickListener {
-            (parentFragment as HomePetopiaFragment).cancelGuide()
+            (activity as MainActivity).cancelGuide()
         }
 
 //
@@ -89,7 +90,7 @@ class GuideFragment : Fragment() {
                     }
                 }
 
-                in 9..12, in 14..16 -> {
+                in 9..12, in 15..16 -> {
                     homePetopiaGuideSharedViewModel.updateFunction(it)
                     guideViewModel.makeGuideModel()
                 }
@@ -111,9 +112,10 @@ class GuideFragment : Fragment() {
         //가이드모델 변화감지 : 페이지 번호에 따라 화면 구성 변경
         guideViewModel.guideModelLiveData.observe(viewLifecycleOwner) {
             //상단진행부
-            if (guideViewModel.guidePageNumberLiveData.value!! < 8)
-            { binding.guideTvProgressText.text =
-                    it.progressText}
+            if (guideViewModel.guidePageNumberLiveData.value!! < 8) {
+                binding.guideTvProgressText.text =
+                    it.progressText
+            }
 
             //하단스토리
             binding.guideTvStory.text = it.guideStory
@@ -132,12 +134,18 @@ class GuideFragment : Fragment() {
                 }.show(childFragmentManager, "DIALOG_FRAGMENT")
             }
         }
+
         homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
-            if(it == "DONE" || it == "NONE")
-            parentFragmentManager.beginTransaction()
-                .remove(this)
-                .commit()
+            if (it == "DONE" || it == "NONE")
+                parentFragmentManager.beginTransaction()
+                    .remove(this)
+                    .commit()
         }
+        homePetopiaGuideSharedViewModel.currentHomeLiveData.observe(viewLifecycleOwner) {
+            if (it == 1) guideViewModel.guideButtonClickListener("NEXT")
+
+        }
+
     }
 }
 

@@ -1,5 +1,6 @@
 package com.android.petopia.presentation.gallery
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -13,6 +14,10 @@ class GalleryRecyclerViewAdapter(
     private val itemClickListener: (item: GalleryModel, position: Int) -> Unit,
     private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit,
 ) : RecyclerView.Adapter<GalleryRecyclerViewAdapter.Holder>() {
+
+    companion object {
+        private const val TAG = "GalleryFragment"
+    }
 
     private var removeMode = "COMPLETE"
 
@@ -28,6 +33,7 @@ class GalleryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(item[position], position, removeMode)
+        Log.d(TAG, "온바인드${position}")
     }
 
     override fun getItemCount(): Int {
@@ -48,9 +54,10 @@ class GalleryRecyclerViewAdapter(
                 galleryHolderTvTitle.text = item.titleText
 
                 galleryHolder.setOnClickListener {
+                    Log.d("어댑터", "${item.checked}")
                     when (removeMode) {
                         "REMOVE" -> binding.galleryHolderCb.isVisible = true
-                        "COMPLETE" -> binding.galleryHolderCb.isVisible = item.checked
+                        "COMPLETE" -> binding.galleryHolderCb.isVisible = false
                     }
                     itemClickListener(item, position)
                 }

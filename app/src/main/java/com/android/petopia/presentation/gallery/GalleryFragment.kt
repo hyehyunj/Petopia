@@ -17,6 +17,11 @@ import com.android.petopia.databinding.FragmentGalleryBinding
 
 
 class GalleryFragment : DialogFragment() {
+
+    companion object {
+        private const val TAG = "GalleryFragment"
+    }
+
     private lateinit var galleryRecyclerViewAdapter: GalleryRecyclerViewAdapter
     private val _binding: FragmentGalleryBinding by lazy {
         FragmentGalleryBinding.inflate(layoutInflater)
@@ -58,7 +63,7 @@ class GalleryFragment : DialogFragment() {
             }
             //삭제버튼 클릭이벤트 : 체크박스 활성화
             galleryIvRemove.setOnClickListener {
-                Log.d("삭제", "")
+                Log.d(TAG, "")
                 gallerySharedViewModel.changeRemoveMode()
             }
             //
@@ -75,12 +80,12 @@ class GalleryFragment : DialogFragment() {
 
         //갤러리 리스트 변화감지
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
-            Log.d("갤러리 변경감지", "${gallerySharedViewModel.galleryListLiveData.value}")
+            Log.d(TAG, "갤러리추가완료${gallerySharedViewModel.galleryListLiveData.value}")
             galleryRecyclerViewAdapter.updateList(it)
         }
         //삭제모드 변화감지
         gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
-            Log.d("옵저버감지", "${gallerySharedViewModel.removeModeLiveData.value}")
+            Log.d(TAG, "${gallerySharedViewModel.removeModeLiveData.value}")
             galleryRecyclerViewAdapter.updateRemoveMode(it)
             if (it == "COMPLETE") gallerySharedViewModel.updateRemovedGalleryList()
         }
@@ -89,15 +94,22 @@ class GalleryFragment : DialogFragment() {
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
     private fun initAdapter() {
         galleryRecyclerViewAdapter = GalleryRecyclerViewAdapter(
-            gallerySharedViewModel.galleryListLiveData.value!!,
+            gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
             //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
             itemClickListener = { item, position ->
-                Log.d("갤러리 변경감지", "${position}")
-                gallerySharedViewModel.updateGalleryList(item, position)
-                if (gallerySharedViewModel.removeModeLiveData.value == "COMPLETE") {
-                    gallerySharedViewModel.changeLayoutMode("Read")
-                    showPhoto()
+                Log.d(TAG, "${position}")
+                when(gallerySharedViewModel.removeModeLiveData.value) {
+                    "COMPLETE" -> {
+                        gallerySharedViewModel.changeLayoutMode("Read")
+                        showPhoto()
+                        gallerySharedViewModel.updateGalleryList(item, position)
+                    }
+                    "REMOVE" -> {
+                        gallerySharedViewModel.updateGalleryList(item.copy(checked = true), position)
+                    }
                 }
+                gallerySharedViewModel.updateGalleryList(item, position)
+
             },
             itemLongClickListener = { item, position -> },
         )

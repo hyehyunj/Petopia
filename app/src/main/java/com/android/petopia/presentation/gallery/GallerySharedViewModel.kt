@@ -87,9 +87,11 @@ private val user = UserModel()
 
         when (_removeModeLiveData.value) {
             "REMOVE" -> {
-                if (!photoList.checked) removePhotoList += photoList.copy(checked = false) else removePhotoList -= photoList.copy(
-                    checked = true
-                )
+                removePhotoList += _galleryListLiveData.value!![position].copy(checked = true)
+
+                if (!photoList.checked) removePhotoList += photoList.copy(checked = true) else removePhotoList -= photoList.copy(
+                    checked = false
+                 )
             }
 
             "COMPLETE" -> _currentPhotoListLiveData.value = photoList.copy(index = position)
@@ -134,7 +136,7 @@ private val user = UserModel()
                         titleText = titleText,
                     )
                 galleryList.add(0, _currentPhotoListLiveData.value!!)
-                saveGalleryList()
+//                saveGalleryList()
             }
 
             "EDIT" -> {

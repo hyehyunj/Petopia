@@ -60,7 +60,7 @@ class HomePetopiaFragment : Fragment() {
         }
         //가이드 버튼 클릭이벤트 : 클릭시 가이드 시작
         binding.homeTvGuide.setOnClickListener {
-            showGuideFragment()
+            (activity as MainActivity).showGuideFragment()
         }
     }
 
@@ -70,7 +70,6 @@ class HomePetopiaFragment : Fragment() {
         mainHomeGuideViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "NONE" -> {
-                    swipeControl(it)
                     binding.apply {
                         homeTvNameUser.isVisible = false
                         homeTvNamePet.isVisible = false
@@ -83,14 +82,12 @@ class HomePetopiaFragment : Fragment() {
                 }
 
                 "ESSENTIAL" -> {
-                    swipeControl(it)
                     binding.apply {
                         homeTvGuide.isVisible = false
                     }
                 }
 
                 "DONE" -> {
-                    swipeControl(it)
                     binding.apply {
                         homeTvNameUser.isVisible = true
                         homeTvNamePet.isVisible = true
@@ -104,7 +101,6 @@ class HomePetopiaFragment : Fragment() {
 
 
                 "OPTIONAL" -> {
-                    swipeControl(it)
                     binding.apply {
                         homeTvNameUser.isVisible = true
                         homeTvNamePet.isVisible = true
@@ -148,14 +144,6 @@ class HomePetopiaFragment : Fragment() {
             .show()
     }
 
-    private fun swipeControl(mode: String) {
-        if (mode == "ESSENTIAL" || mode == "OPTINAL") {
-            if (mainHomeGuideViewModel.guideFunctionLiveData.value != "MOVE_UNDER") (activity as MainActivity).binding.mainViewPager.isUserInputEnabled =
-                false
-        } else (activity as MainActivity).binding.mainViewPager.isUserInputEnabled = true
-
-}
-
 private fun showGalleryFragment() {
     GalleryFragment().show(childFragmentManager, "G_FRAGMENT")
 
@@ -178,22 +166,9 @@ private fun showGalleryFragment() {
 //            .commitAllowingStateLoss()
 }
 
-private fun showGuideFragment() {
-    mainHomeGuideViewModel.updateGuideState("ESSENTIAL")
-    (activity as MainActivity).supportFragmentManager.beginTransaction()
-        .replace(
-            R.id.main_sub_frame, GuideFragment()
-        )
-        .setReorderingAllowed(true)
-        .addToBackStack(null)
-        .commit()
 
-}
 
-fun cancelGuide() {
-    GuideCancelDialogFragment().show(childFragmentManager, "GUIDE_CANCEL_DIALOG_FRAGMENT")
 
-}
 
 
 private fun showLetterFragment() {

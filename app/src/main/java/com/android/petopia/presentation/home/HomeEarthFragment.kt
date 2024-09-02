@@ -27,7 +27,7 @@ class HomeEarthFragment : Fragment() {
 
 
         homeEarthButtonClickListener()
-        homeEarthDataObserver()
+//        homeEarthDataObserver()
 
     }
 

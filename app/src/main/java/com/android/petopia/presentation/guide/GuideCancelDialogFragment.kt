@@ -16,6 +16,7 @@ import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 
 
 class GuideCancelDialogFragment : DialogFragment() {
+
     private val _binding: FragmentDialogBinding by lazy {
         FragmentDialogBinding.inflate(layoutInflater)
     }
@@ -27,7 +28,7 @@ class GuideCancelDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         homePetopiaGuideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(MainHomeGuideSharedViewModel::class.java)
+            ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
         binding.dialogTvAction.text = "종료"
 
         homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {

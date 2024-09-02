@@ -26,6 +26,12 @@ import java.time.LocalDateTime
 
 //포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
 class PhotoFragment : DialogFragment() {
+
+
+    companion object {
+        private const val TAG = "PhotoFragment"
+    }
+
     private val _binding: FragmentPhotoBinding by lazy {
         FragmentPhotoBinding.inflate(layoutInflater)
     }
@@ -53,7 +59,7 @@ class PhotoFragment : DialogFragment() {
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-            Log.d("현재모드","${sharedViewModel.layoutModeLiveData.value}")
+            Log.d(TAG,"${sharedViewModel.layoutModeLiveData.value}")
             if (it == "ADD" || it == "EDIT") {//추가 or 편집모드
                 sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
                     addOrEditMode(
@@ -81,7 +87,6 @@ class PhotoFragment : DialogFragment() {
 
     //추가 or 편집모드 함수 : 레이아웃을 입력가능한 모드로 구성한다.
     private fun addOrEditMode(layoutMode: String, item: GalleryModel) {
-        Log.d("사진추가할래","")
 
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
@@ -105,7 +110,7 @@ class PhotoFragment : DialogFragment() {
             }
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
             photoTvCalendar.setOnClickListener {
-                Log.d("현재 인덱스는", "${sharedViewModel.currentPhotoLiveData.value?.index}")
+                Log.d(TAG, "${sharedViewModel.currentPhotoLiveData.value?.index}")
 
                 val calendar = Calendar.getInstance()
                     val year = calendar.get(Calendar.YEAR)
@@ -126,7 +131,7 @@ class PhotoFragment : DialogFragment() {
                         binding.photoEtTitle.text.toString(),
                         item.index
                     )
-                    Log.d("포토에서는", "${sharedViewModel.galleryListLiveData.value}")
+                    Log.d(TAG, "사진추가완료${sharedViewModel.galleryListLiveData.value}")
                     sharedViewModel.changeLayoutMode("READ")
 
                 }
