@@ -28,7 +28,6 @@ import java.util.Locale
 
 class MemoryWriteFragment : DialogFragment() {
 
-    // 여기서 작성한 데이터를 받아서 memoryFragment의 리사이클러뷰에 전달해야함
 
     private var _binding: FragmentMemoryWriteBinding? = null
     private val binding get() = _binding!!

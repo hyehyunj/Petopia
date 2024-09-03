@@ -16,18 +16,18 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.android.petopia.databinding.FragmentLetterBinding
 import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.home.HomeSharedViewModel
-import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
 import com.android.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
 
 class LetterFragment : DialogFragment() {
     private var _binding: FragmentLetterBinding? = null
-    private val binding get() = _binding as FragmentLetterBinding
+    private val binding get() = _binding!!
     private lateinit var homeSharedViewModel: HomeSharedViewModel
 
     private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
 
 
+    private lateinit var letterViewModel: LetterViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,19 +42,22 @@ class LetterFragment : DialogFragment() {
             ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
 
         initDialog()
-//        initAdapter()
+        initAdapter()
 
 //        val letterRepository = LetterRepositoryImpl() // 추후 연결
 //        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
-//
+
 //        letterViewModel =
-//            ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
-//
-//        //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
+//            ViewModelProvider(requireActivity()).get(LetterViewModel::class.java)
+
+        //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
 //        letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
 //            listRecyclerViewAdapter.submitList(letterList)
 //        }
 
+        binding.letterIvAdd.setOnClickListener {
+            showLetterWritingPadFragment()
+        }
 
         binding.btnLetterExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
@@ -64,21 +67,20 @@ class LetterFragment : DialogFragment() {
     }
 
 
-//    private fun initAdapter() {
-//        listRecyclerViewAdapter = ListRecyclerViewAdapter(
-//            MemoryViewModel,
-//            itemClickListener = { item ->
-//                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
-//                    .show()
-//
-//            }, itemLongClickListener = { item ->
-//                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
-//                    .show()
-//                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
-//            })
-//        binding.rvLetterList.adapter = listRecyclerViewAdapter // 어댑터 연결
-//        binding.rvLetterList.layoutManager = GridLayoutManager(requireContext(), 1)
-//    }
+    private fun initAdapter() {
+        listRecyclerViewAdapter = ListRecyclerViewAdapter(
+            itemClickListener = { item ->
+                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
+                    .show()
+
+            }, itemLongClickListener = { item ->
+                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
+                    .show()
+                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
+            })
+        binding.rvLetterList.adapter = listRecyclerViewAdapter // 어댑터 연결
+        binding.rvLetterList.layoutManager = GridLayoutManager(requireContext(), 1)
+    }
 
     private fun initDialog() {
         val windowManager =
@@ -97,5 +99,8 @@ class LetterFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-
+    fun showLetterWritingPadFragment() {
+        LetterWritingPadFragment().show(childFragmentManager, "LETTER_ADD_FRAGMENT")
+    }
 }
+

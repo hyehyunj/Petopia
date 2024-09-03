@@ -9,6 +9,8 @@ import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomePetopiaBinding
 import com.android.petopia.presentation.gallery.GalleryFragment
 import com.android.petopia.presentation.guide.GuideFragment
+import com.android.petopia.presentation.letter.LetterFragment
+import com.android.petopia.presentation.memory.MemoryFragment
 
 
 class HomePetopiaFragment : Fragment() {
@@ -41,6 +43,9 @@ class HomePetopiaFragment : Fragment() {
             showGuideFragment()
         }
 
+        binding.homeIvLetter.setOnClickListener {
+            showLetterFragment()
+        }
 
     }
 
@@ -55,7 +60,7 @@ class HomePetopiaFragment : Fragment() {
             .commit()
 
         //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
-    // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)
+        // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)
 //        requireActivity().supportFragmentManager.beginTransaction()
 //            .replace(
 //                R.id.main_sub_frame, GalleryFragment(), "BACK_PETOPIA"
@@ -75,9 +80,10 @@ class HomePetopiaFragment : Fragment() {
             .commit()
     }
 
+    private fun showLetterFragment() {
 
-
-
+        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
+    }
 
 
 }

@@ -76,6 +76,8 @@
     <string name="letter_question_title">Today\'s Memory</string>
     <string name="letter_add_letter">작성하기</string>
     <string name="letter_content_sample">내용을 입력해주세요</string>
+    <string name="letter_write_list_title">편지쓰기</string>
+    <string name="letter_pad_title">편지지 선택</string>
 
     <!--  Gallery : 갤러리에서 사용되는 String  -->
 
