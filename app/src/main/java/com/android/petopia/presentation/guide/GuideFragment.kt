@@ -51,7 +51,15 @@ class GuideFragment : Fragment() {
         }
         //뒤로가기 버튼 클릭이벤트
         binding.guideIvBack.setOnClickListener {
-            guideViewModel.guideButtonClickListener("BACK")
+            when (guideViewModel.guidePageNumberLiveData.value) {
+                0, 14 -> StyleableToast.makeText(
+                    requireActivity(),
+                    "첫 장면입니다.",
+                    R.style.toast_custom
+                ).show()
+                13,17 -> binding.guideTvStory.isVisible = true
+                else -> guideViewModel.guideButtonClickListener("BACK")
+            }
         }
         //나가기 버튼 클릭이벤트
         binding.guideIvExit.setOnClickListener {
@@ -77,8 +85,6 @@ class GuideFragment : Fragment() {
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
             Log.d("가이드는", "${guideViewModel.guidePageNumberLiveData.value}")
             when (it) {
-                -1 -> StyleableToast.makeText(requireActivity(), "첫 장면입니다.", R.style.toast_custom)
-                    .show()
 
                 in 0..7 -> guideViewModel.makeGuideModel()
                 8 -> {
@@ -103,14 +109,19 @@ class GuideFragment : Fragment() {
                 14 -> {
                     binding.guideTvStory.isVisible = true
                     homePetopiaGuideSharedViewModel.updateFunction(it)
+                    guideViewModel.makeGuideModel()
                 }
+
             }
+//지구 이동이 안됨
 
 
         }
 
         //가이드모델 변화감지 : 페이지 번호에 따라 화면 구성 변경
         guideViewModel.guideModelLiveData.observe(viewLifecycleOwner) {
+            Log.d("기능", "${homePetopiaGuideSharedViewModel.guideFunctionLiveData.value}")
+            Log.d("페이지", "")
             //상단진행부
             if (guideViewModel.guidePageNumberLiveData.value!! < 8) {
                 binding.guideTvProgressText.text =
@@ -142,7 +153,8 @@ class GuideFragment : Fragment() {
                     .commit()
         }
         homePetopiaGuideSharedViewModel.currentHomeLiveData.observe(viewLifecycleOwner) {
-            if (it == 1) guideViewModel.guideButtonClickListener("NEXT")
+            Log.d("메모리", "${guideViewModel.guidePageNumberLiveData.value}")
+            if (it == 1 || it == 2) guideViewModel.guideButtonClickListener("NEXT")
 
         }
 

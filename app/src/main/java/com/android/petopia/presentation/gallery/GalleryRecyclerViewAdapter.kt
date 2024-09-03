@@ -33,7 +33,7 @@ class GalleryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(item[position], position, removeMode)
-        Log.d(TAG, "온바인드${position}")
+        Log.d(TAG, "홀더생성${position}")
     }
 
     override fun getItemCount(): Int {
@@ -52,12 +52,16 @@ class GalleryRecyclerViewAdapter(
             binding.apply {
                 galleryHolderIvTitle.setImageURI(item.imageUris[0].toUri())
                 galleryHolderTvTitle.text = item.titleText
-
+                when (removeMode) {
+                    "REMOVE" -> binding.galleryHolderIvUnchecked.isVisible = true
+                    "COMPLETE" -> binding.galleryHolderIvUnchecked.isVisible = false
+                }
                 galleryHolder.setOnClickListener {
-                    Log.d("어댑터", "${item.checked}")
+
+                    Log.d("어댑터 모드는", "${removeMode}")
                     when (removeMode) {
-                        "REMOVE" -> binding.galleryHolderCb.isVisible = true
-                        "COMPLETE" -> binding.galleryHolderCb.isVisible = false
+                        "REMOVE" ->  if (item.checked) binding.galleryHolderIvChecked.isVisible = true else false
+                        "COMPLETE" -> binding.galleryHolderIvChecked.isVisible = false
                     }
                     itemClickListener(item, position)
                 }
@@ -73,9 +77,17 @@ class GalleryRecyclerViewAdapter(
         item = galleryList
         notifyDataSetChanged()
     }
+
+    fun updateCheckedList(galleryList: List<GalleryModel>, position: Int) {
+        item = galleryList
+        notifyItemChanged(position)
+    }
+
     fun updateRemoveMode(pressedRemoveButton: String) {
         removeMode = pressedRemoveButton
         notifyDataSetChanged()
+        Log.d("어댑터 모드는", "${removeMode}")
+
     }
 }
 

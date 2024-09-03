@@ -47,7 +47,7 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        gallerySharedViewModel.loadGalleryList()
+//        gallerySharedViewModel.loadGalleryList()
 
 
         initDialog()
@@ -65,6 +65,10 @@ class GalleryFragment : DialogFragment() {
             galleryIvRemove.setOnClickListener {
                 Log.d(TAG, "")
                 gallerySharedViewModel.changeRemoveMode()
+//                when(gallerySharedViewModel.removeModeLiveData.value) {
+//                    "REMOVE" -> galleryRecyclerViewAdapter.updateRemoveMode("REMOVE")
+//                    "COMPLETE" -> galleryRecyclerViewAdapter.updateRemoveMode("COMPLETE")
+//                }
             }
             //
             //추가버튼 클릭이벤트 : 상세페이지로 이동하여 사진 추가
@@ -80,15 +84,24 @@ class GalleryFragment : DialogFragment() {
 
         //갤러리 리스트 변화감지
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
-            Log.d(TAG, "갤러리추가완료${gallerySharedViewModel.galleryListLiveData.value}")
             galleryRecyclerViewAdapter.updateList(it)
         }
+
         //삭제모드 변화감지
         gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
-            Log.d(TAG, "${gallerySharedViewModel.removeModeLiveData.value}")
+            Log.d("현재모드", "${gallerySharedViewModel.removeModeLiveData.value}")
             galleryRecyclerViewAdapter.updateRemoveMode(it)
-            if (it == "COMPLETE") gallerySharedViewModel.updateRemovedGalleryList()
+            gallerySharedViewModel.updateRemoveGalleryList(it)
         }
+
+        gallerySharedViewModel.checkedPhotoLiveData.observe(viewLifecycleOwner) {
+            Log.d("삭제후", "${gallerySharedViewModel.removePhotoList}")
+            galleryRecyclerViewAdapter.updateCheckedList(gallerySharedViewModel.removePhotoList.toList(), it)
+        }
+
+
+
+
     }
 
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
@@ -97,15 +110,10 @@ class GalleryFragment : DialogFragment() {
             gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
             //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
             itemClickListener = { item, position ->
-                Log.d(TAG, "${position}")
                 when(gallerySharedViewModel.removeModeLiveData.value) {
                     "COMPLETE" -> {
                         gallerySharedViewModel.changeLayoutMode("Read")
                         showPhoto()
-                        gallerySharedViewModel.updateGalleryList(item, position)
-                    }
-                    "REMOVE" -> {
-                        gallerySharedViewModel.updateGalleryList(item.copy(checked = true), position)
                     }
                 }
                 gallerySharedViewModel.updateGalleryList(item, position)

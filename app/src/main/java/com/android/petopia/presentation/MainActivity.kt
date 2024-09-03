@@ -35,23 +35,26 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this)[MainHomeGuideSharedViewModel::class.java]
 
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
-            swipeControl(it)
+            if (it == "NONE" || it == "DONE") binding.mainViewPager.isUserInputEnabled = true
         }
 
         mainHomeGuideSharedViewModel.guideFunctionLiveData.observe(this) {
             Log.d("지금 프래그먼트는", "${mainHomeGuideSharedViewModel.currentHomeLiveData.value}")
-            if(it == "MOVE_MEMORY_BRIDGE")
-            viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    mainHomeGuideSharedViewModel.updateCurrentHome(position)
+            binding.mainViewPager.isUserInputEnabled = false
+            when (it) {
+                "MOVE_MEMORY_BRIDGE", "MOVE_EARTH" -> {
+                    binding.mainViewPager.isUserInputEnabled = true
+                    viewPager.registerOnPageChangeCallback(object :
+                        ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
+                            mainHomeGuideSharedViewModel.updateCurrentHome(position)
+                        }
+                    })
                 }
-            })
+            }
+
         }
-
-
-
-
 
 
         //레이아웃 초기화
@@ -79,14 +82,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }.attach()
-    }
-
-    private fun swipeControl(mode: String) {
-        if (mode == "ESSENTIAL" || mode == "OPTINAL") {
-            if (mainHomeGuideSharedViewModel.guideFunctionLiveData.value != "MOVE_MEMORY_BRIDGE" && mainHomeGuideSharedViewModel.guideFunctionLiveData.value != "MOVE_EARTH") binding.mainViewPager.isUserInputEnabled =
-                false
-        } else binding.mainViewPager.isUserInputEnabled = true
-
     }
 
     fun cancelGuide() {

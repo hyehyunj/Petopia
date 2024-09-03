@@ -32,7 +32,8 @@ class HomeMemoryBridgeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        homeMemoryBridgeButtonClickListener()
+        homeMemoryBridgeDataObserver()
 
 
     }
@@ -73,6 +74,8 @@ class HomeMemoryBridgeFragment : Fragment() {
                 }
                 }
             }
+
+
         }
 
 
@@ -91,8 +94,7 @@ class HomeMemoryBridgeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        homeMemoryBridgeButtonClickListener()
-        homeMemoryBridgeDataObserver()
+
 
     }
 
