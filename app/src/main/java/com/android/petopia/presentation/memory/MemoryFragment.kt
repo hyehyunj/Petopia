@@ -71,6 +71,7 @@ class MemoryFragment() : DialogFragment() {
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
             listRecyclerViewAdapter.submitList(memoryList)
+
         }
 
         memoryViewModel.loadMemoryList(currentUser)
@@ -98,8 +99,9 @@ class MemoryFragment() : DialogFragment() {
     private fun initAdapter() {
         listRecyclerViewAdapter = ListRecyclerViewAdapter(
             itemClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
-                    .show()
+                memoryViewModel.setSelectedMemory(item)
+                showDetailFragment()
+                Log.d("데이터", item.key)
             }, itemLongClickListener = { item ->
                 Log.d("MemoryFragment", "롱클릭")
                 showDeleteDialog(item)
@@ -152,6 +154,12 @@ class MemoryFragment() : DialogFragment() {
 
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
+    }
+
+    private fun showDetailFragment() {
+        val detailFragment = MemoryDetailFragment()
+        detailFragment.show(childFragmentManager, "DETAIL_DIALOG")
+
     }
 
     private fun showDeleteDialog(memory: Memory) {

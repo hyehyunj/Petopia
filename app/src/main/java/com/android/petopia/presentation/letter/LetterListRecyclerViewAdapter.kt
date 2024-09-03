@@ -43,8 +43,9 @@ class LetterListRecyclerViewAdapter(
         holder: LetterListRecyclerViewAdapter.LetterListViewHolder,
         position: Int
     ) {
+        val reversePosition = itemCount - position
         val item = getItem(position)
-        holder.bind(item)
+        holder.bind(item,reversePosition)
     }
 
     override fun getItemCount(): Int {
@@ -56,9 +57,10 @@ class LetterListRecyclerViewAdapter(
         private val itemClickListener: (item: LetterModel) -> Unit,
         private val itemLongClickListener: (item: LetterModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: LetterModel) {
+        fun bind(item: LetterModel, reversePosition: Int) {
             binding.tvLetterListTitle.text = item.title
             binding.tvLetterListContent.text = item.content
+            binding.tvLetterListNumber.setText("#${reversePosition}")
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
             val date = dateFormat.format(item.createdDate)

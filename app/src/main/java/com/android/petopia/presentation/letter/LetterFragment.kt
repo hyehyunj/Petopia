@@ -94,12 +94,15 @@ class LetterFragment : DialogFragment() {
                     .show()
 
             }, itemLongClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 롱클릭", Toast.LENGTH_SHORT)
-                    .show()
-                (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
+
+                showDeleteDialog(item)
             })
+
+        val manager = LinearLayoutManager(requireContext())
         binding.rvLetterList.adapter = letterListRecyclerViewAdapter // 어댑터 연결
         binding.rvLetterList.layoutManager = LinearLayoutManager(requireContext())
+        manager.reverseLayout = true
+        manager.stackFromEnd = true
     }
 
     private fun initDialog() {
