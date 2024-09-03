@@ -46,12 +46,12 @@ class MainHomeGuideSharedViewModel () :
             13 to "MOVE_MEMORY_BRIDGE",
             14 to "MEMORY",
             15 to "EMOTION",
-            18 to "MOVE_EARTH",
-            19 to "CLOUD",
+            17 to "MOVE_EARTH",
+            18 to "CLOUD",
             19 to "COMMUNITY",
             20 to "MOVE_UPPER",
             21 to "MY",
-            23 to "END"
+            22 to "END"
         )
         _guideFunctionLiveData.value = guideFunctionData[function]
     }

@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.android.petopia.databinding.FragmentHomeEarthBinding
 
@@ -27,7 +28,7 @@ class HomeEarthFragment : Fragment() {
 
 
         homeEarthButtonClickListener()
-//        homeEarthDataObserver()
+        homeEarthDataObserver()
 
     }
 
@@ -58,14 +59,14 @@ class HomeEarthFragment : Fragment() {
         //가이드 상태 변화감지 : 가이드 상태에 따라 화면구성 변경
         mainHomeGuideViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
-//                "OPTIONAL" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = false
-//                "NONE", "DONE" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = true
+                "OPTIONAL" -> binding.homeEarthFabTop.isVisible = false
+                "NONE", "DONE" -> binding.homeEarthFabTop.isVisible = true
             }
         }
 
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
-//                "MOVE_UNDER" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = true
+                "MOVE_UPPER" -> binding.homeEarthFabTop.isVisible = true
             }
         }
 

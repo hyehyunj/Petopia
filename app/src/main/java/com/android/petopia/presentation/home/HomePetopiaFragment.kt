@@ -84,13 +84,11 @@ class HomePetopiaFragment : Fragment() {
                         homeTvGuide.isVisible = true
                     }
                 }
-
                 "ESSENTIAL" -> {
                     binding.apply {
                         homeTvGuide.isVisible = false
                     }
                 }
-
                 "DONE" -> {
                     binding.apply {
                         homeTvNameUser.isVisible = true
@@ -102,8 +100,6 @@ class HomePetopiaFragment : Fragment() {
                         homeTvGuide.isVisible = false
                     }
                 }
-
-
                 "OPTIONAL" -> {
                     binding.apply {
                         homeTvNameUser.isVisible = true
@@ -123,10 +119,8 @@ class HomePetopiaFragment : Fragment() {
                     homeIvGallery.isVisible = true
                     homeIvLetter.isVisible = true
                 }
-
-                "MOVE_UNDER" -> {
+                "MOVE_MEMORY_BRIDGE" -> {
                     binding.homeIvArrowUnder.isVisible = true
-                    (activity as MainActivity).binding.mainViewPager.isUserInputEnabled = true
                 }
 
             }

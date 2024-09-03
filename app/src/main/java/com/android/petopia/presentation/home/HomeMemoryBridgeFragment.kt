@@ -68,10 +68,6 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                "MOVE_UNDER" -> {
-                    binding.homeMemoryBridgeIvArrowUnder.isVisible = true
-                    (activity as MainActivity).showGuideFragment()
-                }
                 }
             }
 
@@ -92,11 +88,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         MemoryFragment().show(childFragmentManager, "MEMORY_FRAGMENT")
     }
 
-    override fun onResume() {
-        super.onResume()
-
-
-    }
 
 //    private fun setLetterFragment() {
 //        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")

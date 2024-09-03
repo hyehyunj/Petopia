@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentGuideBinding
 import com.android.petopia.presentation.MainActivity
-import com.android.petopia.presentation.home.HomePetopiaFragment
 import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -23,7 +22,7 @@ class GuideFragment : Fragment() {
     }
     private val binding get() = _binding
     private val guideViewModel by viewModels<GuideSharedViewModel>()
-    private lateinit var homePetopiaGuideSharedViewModel: MainHomeGuideSharedViewModel
+    private lateinit var mainHomeGuideSharedViewModel: MainHomeGuideSharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +34,7 @@ class GuideFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homePetopiaGuideSharedViewModel =
+        mainHomeGuideSharedViewModel =
             ViewModelProvider(requireActivity())[MainHomeGuideSharedViewModel::class.java]
 
         guideButtonClickListener()
@@ -52,12 +51,13 @@ class GuideFragment : Fragment() {
         //뒤로가기 버튼 클릭이벤트
         binding.guideIvBack.setOnClickListener {
             when (guideViewModel.guidePageNumberLiveData.value) {
-                0, 14 -> StyleableToast.makeText(
+                0, 14, 18 -> StyleableToast.makeText(
                     requireActivity(),
-                    "첫 장면입니다.",
+                    "더 이상 뒤로가실 수 없습니다.",
                     R.style.toast_custom
                 ).show()
-                13,17 -> binding.guideTvStory.isVisible = true
+
+                13, 17 -> binding.guideStoryLayout.isVisible = true
                 else -> guideViewModel.guideButtonClickListener("BACK")
             }
         }
@@ -88,7 +88,7 @@ class GuideFragment : Fragment() {
 
                 in 0..7 -> guideViewModel.makeGuideModel()
                 8 -> {
-                    homePetopiaGuideSharedViewModel.updateGuideState("OPTIONAL")
+                    mainHomeGuideSharedViewModel.updateGuideState("OPTIONAL")
                     guideViewModel.makeGuideModel()
                     binding.apply {
                         guideTvProgressText.isVisible = false
@@ -96,22 +96,25 @@ class GuideFragment : Fragment() {
                     }
                 }
 
-                in 9..12, in 15..16 -> {
-                    homePetopiaGuideSharedViewModel.updateFunction(it)
+                in 9..12, in 15..16, in 19..22 -> {
+                    mainHomeGuideSharedViewModel.updateFunction(it)
                     guideViewModel.makeGuideModel()
                 }
 
                 13, 17 -> {
-                    binding.guideTvStory.isVisible = false
-                    homePetopiaGuideSharedViewModel.updateFunction(it)
+                    binding.guideStoryLayout.isVisible = false
+                    mainHomeGuideSharedViewModel.updateFunction(it)
                 }
 
-                14 -> {
-                    binding.guideTvStory.isVisible = true
-                    homePetopiaGuideSharedViewModel.updateFunction(it)
+                14, 18 -> {
+                    binding.guideStoryLayout.isVisible = true
+                    mainHomeGuideSharedViewModel.updateFunction(it)
                     guideViewModel.makeGuideModel()
                 }
 
+                23 -> {
+                    mainHomeGuideSharedViewModel.updateGuideState("DONE")
+                }
             }
 //지구 이동이 안됨
 
@@ -120,7 +123,7 @@ class GuideFragment : Fragment() {
 
         //가이드모델 변화감지 : 페이지 번호에 따라 화면 구성 변경
         guideViewModel.guideModelLiveData.observe(viewLifecycleOwner) {
-            Log.d("기능", "${homePetopiaGuideSharedViewModel.guideFunctionLiveData.value}")
+            Log.d("기능", "${mainHomeGuideSharedViewModel.guideFunctionLiveData.value}")
             Log.d("페이지", "")
             //상단진행부
             if (guideViewModel.guidePageNumberLiveData.value!! < 8) {
@@ -146,13 +149,13 @@ class GuideFragment : Fragment() {
             }
         }
 
-        homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
+        mainHomeGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             if (it == "DONE" || it == "NONE")
                 parentFragmentManager.beginTransaction()
                     .remove(this)
                     .commit()
         }
-        homePetopiaGuideSharedViewModel.currentHomeLiveData.observe(viewLifecycleOwner) {
+        mainHomeGuideSharedViewModel.currentHomeLiveData.observe(viewLifecycleOwner) {
             Log.d("메모리", "${guideViewModel.guidePageNumberLiveData.value}")
             if (it == 1 || it == 2) guideViewModel.guideButtonClickListener("NEXT")
 

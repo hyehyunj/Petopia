@@ -11,6 +11,7 @@ import com.android.petopia.databinding.ActivityMainBinding
 import com.android.petopia.presentation.dialog.DialogFragment
 import com.android.petopia.presentation.guide.GuideCancelDialogFragment
 import com.android.petopia.presentation.guide.GuideFragment
+import com.android.petopia.presentation.home.HomePetopiaFragment
 import com.android.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -35,14 +36,20 @@ class MainActivity : AppCompatActivity() {
             ViewModelProvider(this)[MainHomeGuideSharedViewModel::class.java]
 
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
-            if (it == "NONE" || it == "DONE") binding.mainViewPager.isUserInputEnabled = true
+            Log.d("액티비티 종료?", "${it}")
+            when (it) {
+                "DONE" -> {
+                    finishGuideFragment()
+                }
+                "NONE" -> binding.mainViewPager.isUserInputEnabled = true
+            }
         }
 
         mainHomeGuideSharedViewModel.guideFunctionLiveData.observe(this) {
             Log.d("지금 프래그먼트는", "${mainHomeGuideSharedViewModel.currentHomeLiveData.value}")
             binding.mainViewPager.isUserInputEnabled = false
             when (it) {
-                "MOVE_MEMORY_BRIDGE", "MOVE_EARTH" -> {
+                "MOVE_MEMORY_BRIDGE", "MOVE_EARTH"-> {
                     binding.mainViewPager.isUserInputEnabled = true
                     viewPager.registerOnPageChangeCallback(object :
                         ViewPager2.OnPageChangeCallback() {
@@ -85,10 +92,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun cancelGuide() {
+
+//            supportFragmentManager.beginTransaction()
+//            .replace(R.id.main_signin_container, DialogFragment()
+//            )
+//            .setReorderingAllowed(true)
+//            .addToBackStack(null)
+//            .commit()
         GuideCancelDialogFragment().show(supportFragmentManager, "GUIDE_CANCEL_DIALOG_FRAGMENT")
 
     }
-
+//    fun clearGuide() {
+//        binding.mainViewPager.isUserInputEnabled = true
+//        supportFragmentManager.beginTransaction()
+//            .remove(GuideFragment())
+//            .commit()
+//    }
     //이 3줄 추가하면 다이얼로그! 버튼이벤트.setOnClickListener {
     //        (activity as MainActivity).showDialog()
     //    }
@@ -119,5 +138,16 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
     }
+
+    //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
+    private fun finishGuideFragment() {
+        binding.mainViewPager.isUserInputEnabled = true
+        viewPager.setCurrentItem(0, true)
+        supportFragmentManager.beginTransaction()
+            .remove(GuideFragment())
+            .commit()
+
+    }
+
 
 }
