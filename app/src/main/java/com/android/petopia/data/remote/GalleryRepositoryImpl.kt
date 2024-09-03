@@ -5,10 +5,8 @@ import android.util.Log
 import androidx.core.net.toUri
 import com.android.petopia.DateFormatUtils
 import com.android.petopia.Table
-import com.android.petopia.data.Gallery
 import com.android.petopia.data.GalleryModel
 import com.android.petopia.data.UserModel
-import com.android.petopia.network.FirebaseReference
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -18,10 +16,9 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class GalleryRepositoryImpl: GalleryRepository {
+class GalleryRepositoryImpl : GalleryRepository {
 
-    private val RTReference = FirebaseReference.reference.child(Table.GALLERY.tableName)
-    private val storeReference = Firebase.firestore.collection(Table.GALLERY.tableName)
+    private val reference = Firebase.firestore.collection(Table.GALLERY.tableName)
     private val storageReference = Firebase.storage.getReference(Table.GALLERY.tableName)
 
 
@@ -33,7 +30,7 @@ class GalleryRepositoryImpl: GalleryRepository {
             var isFailStorage = false
 //            val imageName = DateFormatUtils.convertToImageFormat(gallery.createdDate) + "_01.png"
 //            RTReference.child(gallery.uId).setValue(gallery).addOnFailureListener {
-            storeReference.document(gallery.uId).set(gallery).addOnFailureListener {
+            reference.document(gallery.uId).set(gallery).addOnFailureListener {
 //                continuation.resumeWithException(it)
                 isFailRT = true
 //                continuation.resume(false)
@@ -41,13 +38,15 @@ class GalleryRepositoryImpl: GalleryRepository {
             }
             // 다중 사진 업로드 시 수정(번호 증가)
             for ((index, imageUri) in gallery.imageUris.withIndex()) {
-                val imageName = DateFormatUtils.convertToImageFormat(gallery.createdDate) + "_0"+(index+1)+".png"
-                val uploadTask = storageReference.child(gallery.uId).child(imageName).putFile(imageUri.toUri())
+                val imageName =
+                    DateFormatUtils.convertToImageFormat(gallery.createdDate) + "_0" + (index + 1) + ".png"
+                val uploadTask =
+                    storageReference.child(gallery.uId).child(imageName).putFile(imageUri.toUri())
                 uploadTask.addOnFailureListener {
                     isFailStorage = false
-                    if(!isFailRT) {
+                    if (!isFailRT) {
 //                        RTReference.child(gallery.uId).removeValue()
-                        storeReference.document(gallery.uId).delete()
+                        reference.document(gallery.uId).delete()
 //                    continuation.resume(false)
                         continuation.resumeWithException(Exception("fail create gallery"))
                     }
@@ -55,7 +54,7 @@ class GalleryRepositoryImpl: GalleryRepository {
             }
 
 
-            if(isFailRT || isFailStorage)
+            if (isFailRT || isFailStorage)
                 continuation.resumeWithException(Exception("create gallery fail"))
             continuation.resume(true)
             return@suspendCancellableCoroutine
@@ -74,27 +73,28 @@ class GalleryRepositoryImpl: GalleryRepository {
             val galleryList = mutableListOf<GalleryModel>()
 
 //            RTReference.orderByChild("writer/id").equalTo(user.id).get().addOnCompleteListener {
-            storeReference
+            reference
                 .orderBy("createdDate", Query.Direction.DESCENDING)
                 .orderBy("writer.id")
                 .whereEqualTo("writer.id", user.id)
                 .whereLessThan("createdDate", 999999999999999)
-                .get().addOnCompleteListener {
-                val result = it.result
-                Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
-                for (child in result.documents) {
-                    val value = child.data as HashMap<*,*>
-                    val gson = Gson()
-                    val toJson = gson.toJson(value)
-                    val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
-                    galleryList.add(fromJson)
+                .get()
+                .addOnCompleteListener {
+                    val result = it.result
+                    Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
+                    for (child in result.documents) {
+                        val value = child.data as HashMap<*, *>
+                        val gson = Gson()
+                        val toJson = gson.toJson(value)
+                        val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
+                        galleryList.add(fromJson)
+                    }
+                    Log.i("GalleryRepositoryImpl", "galleryList.size = ${galleryList.size}")
+                    continuation.resume(galleryList)
+                    return@addOnCompleteListener
+                }.addOnFailureListener {
+                    continuation.resumeWithException(it)
                 }
-                Log.i("GalleryRepositoryImpl", "galleryList.size = ${galleryList.size}")
-                continuation.resume(galleryList)
-                return@addOnCompleteListener
-            }.addOnFailureListener {
-                continuation.resumeWithException(it)
-            }
         }
     }
 
@@ -107,8 +107,8 @@ class GalleryRepositoryImpl: GalleryRepository {
                     if (task.isSuccessful) {
                         val items = task.result.items
                         Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
-                        items[0].downloadUrl.addOnCompleteListener{ uri ->
-                                gallery.imageUris.add(uri.result.toString())
+                        items[0].downloadUrl.addOnCompleteListener { uri ->
+                            gallery.imageUris.add(uri.result.toString())
                         }
 //                        for (item in items) {
 ////                            Log.d("GalleryRepositoryImpl", "${item.name}")
@@ -118,7 +118,9 @@ class GalleryRepositoryImpl: GalleryRepository {
 //                            break // 리스트에 출력되는 대표 이미지 1개만 추가
 //                        }
                     } else {
-                        continuation.resumeWithException(task.exception ?: Exception("Unknown error occurred"))
+                        continuation.resumeWithException(
+                            task.exception ?: Exception("Unknown error occurred")
+                        )
                     }
                 }.addOnFailureListener {
                     continuation.resumeWithException(it)
@@ -138,12 +140,14 @@ class GalleryRepositoryImpl: GalleryRepository {
                     Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
                     for (item in items) {
 //                            Log.d("GalleryRepositoryImpl", "${item.name}")
-                        item.downloadUrl.addOnCompleteListener{ uri ->
+                        item.downloadUrl.addOnCompleteListener { uri ->
                             gallery.imageUris.add(uri.result.toString())
                         }
                     }
                 } else {
-                    continuation.resumeWithException(task.exception ?: Exception("Unknown error occurred"))
+                    continuation.resumeWithException(
+                        task.exception ?: Exception("Unknown error occurred")
+                    )
                 }
                 continuation.resume(gallery)
                 return@addOnCompleteListener
@@ -166,6 +170,12 @@ class GalleryRepositoryImpl: GalleryRepository {
 //                continuation.resumeWithException(it)
 //            }
 
+            reference.document(galleryKey).delete().addOnCompleteListener {
+                Log.i("GalleryRepositoryImpl", "success delete gallery text : ${it}")
+            }.addOnFailureListener {
+                Log.i("GalleryRepositoryImpl", "fail delete gallery text : ${it}")
+            }
+
 //            storageReference.(galleryKey+"/").delete().addOnCompleteListener{
             Log.i("GalleryRepositoryImpl", "gallery key = ${galleryKey}")
             storageReference.child(galleryKey).listAll().addOnCompleteListener { task ->
@@ -178,10 +188,12 @@ class GalleryRepositoryImpl: GalleryRepository {
 //                            gallery.imageUris.add(uri.result)
 //                        }
                         Log.i("GalleryRepositoryImpl", "item name = ${item.name}")
-                        storageReference.child(galleryKey+"/"+item.name).delete()
+                        storageReference.child(galleryKey + "/" + item.name).delete()
                     }
                 } else {
-                    continuation.resumeWithException(task.exception ?: Exception("Unknown error occurred"))
+                    continuation.resumeWithException(
+                        task.exception ?: Exception("Unknown error occurred")
+                    )
                 }
                 continuation.resume(true)
                 return@addOnCompleteListener
