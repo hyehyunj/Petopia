@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -32,7 +33,7 @@ class LetterFragment : DialogFragment() {
 //    private lateinit var homeSharedViewModel: HomeSharedViewModel
 
     private lateinit var letterViewModel: LetterViewModel
-    private lateinit var listRecyclerViewAdapter: LetterListRecyclerViewAdapter
+    private lateinit var letterListRecyclerViewAdapter: LetterListRecyclerViewAdapter
 
 
     override fun onCreateView(
@@ -48,8 +49,9 @@ class LetterFragment : DialogFragment() {
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
 
-        initDialog()
         initAdapter()
+        initDialog()
+
 
         val letterRepository = LetterRepositoryImpl() // 추후 연결
         val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
@@ -58,11 +60,10 @@ class LetterFragment : DialogFragment() {
             ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
 
-
         val curentUser = getCurrentUser()
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
-            listRecyclerViewAdapter.submitList(letterList)
+            letterListRecyclerViewAdapter.submitList(letterList)
         }
 
         letterViewModel.loadLetterList(curentUser)
@@ -76,11 +77,18 @@ class LetterFragment : DialogFragment() {
                 .remove(this).commit()
         }
 
+        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                parentFragmentManager.beginTransaction()
+                    .remove(this@LetterFragment).commit()
+            }
+        })
+
     }
 
 
     private fun initAdapter() {
-        listRecyclerViewAdapter = LetterListRecyclerViewAdapter(
+        letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
                 Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
                     .show()
@@ -90,7 +98,7 @@ class LetterFragment : DialogFragment() {
                     .show()
                 (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
             })
-        binding.rvLetterList.adapter = listRecyclerViewAdapter // 어댑터 연결
+        binding.rvLetterList.adapter = letterListRecyclerViewAdapter // 어댑터 연결
         binding.rvLetterList.layoutManager = LinearLayoutManager(requireContext())
     }
 
@@ -111,6 +119,11 @@ class LetterFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     fun showLetterWritingPadFragment() {
         LetterWritingPadFragment().show(childFragmentManager, "LETTER_ADD_FRAGMENT")
     }
@@ -124,5 +137,17 @@ class LetterFragment : DialogFragment() {
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
     }
+
+    private fun showDeleteDialog(letterModel: LetterModel) {
+        val deleteDialog = LetterDeleteDialog(letterModel) { deletedLetter ->
+            letterViewModel.deleteLetterList(deletedLetter)
+            letterViewModel.letterListLiveData.value.let { updateList ->
+                letterListRecyclerViewAdapter.submitList(updateList)
+            }
+        }
+        deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
+
+    }
+
 }
 

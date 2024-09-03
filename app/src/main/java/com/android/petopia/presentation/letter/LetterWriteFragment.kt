@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,18 +13,20 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
+import com.android.petopia.data.LetterModel
+import com.android.petopia.data.LoginData
+import com.android.petopia.data.remote.LetterRepositoryImpl
 import com.android.petopia.databinding.FragmentLetterWriteBinding
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class LetterWriteFragment : DialogFragment() {
     private var _binding: FragmentLetterWriteBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var letterPadViewModel: LetterPadViewModel
+    private lateinit var letterViewModel: LetterViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +39,7 @@ class LetterWriteFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //편지지 선택
         letterPadViewModel =
             ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java)
         letterPadViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
@@ -46,7 +50,14 @@ class LetterWriteFragment : DialogFragment() {
 
         initDialog()
 
+        val letterRepository = LetterRepositoryImpl()
+        letterViewModel = ViewModelProvider(
+            requireParentFragment(),
+            LetterViewModel.LetterViewModelFactory(letterRepository)
+        ).get(LetterViewModel::class.java)
+
         binding.btnLetterWriteCheck.setOnClickListener {
+            saveLetterData()
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
@@ -75,7 +86,21 @@ class LetterWriteFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    fun setSelectBackground(selectedBackground: Int) {
-        binding.letterWriteLayout.setBackgroundResource(selectedBackground)
+    private fun saveLetterData() {
+        val title = binding.etLetterWriteTitle.text.toString()
+        val content = binding.etLetterWriteContent.text.toString()
+
+        Log.d("LetterWriteFragment", "제목: $title, 내용: $content")
+
+        if (title.isNotEmpty() && content.isNotEmpty()) {
+            val letterModel = LetterModel(title, content, LoginData.loginUser)
+            letterViewModel.addLetterList(letterModel)
+
+            (parentFragment as? LetterFragment)?.onLetterSaved(letterModel)
+        } else {
+            Log.d("LetterWriteFragment", "제목 또는 내용이 비어있습니다.")
+        }
     }
+
+
 }
