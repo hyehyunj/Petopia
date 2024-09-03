@@ -33,7 +33,6 @@ class GalleryRecyclerViewAdapter(
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(item[position], position, removeMode)
-        Log.d(TAG, "홀더생성${position}")
     }
 
     override fun getItemCount(): Int {
@@ -52,15 +51,15 @@ class GalleryRecyclerViewAdapter(
             binding.apply {
                 galleryHolderIvTitle.setImageURI(item.imageUris[0].toUri())
                 galleryHolderTvTitle.text = item.titleText
+//                binding.galleryHolderIvChecked.isVisible = false
                 when (removeMode) {
                     "REMOVE" -> binding.galleryHolderIvUnchecked.isVisible = true
-                    "COMPLETE" -> binding.galleryHolderIvUnchecked.isVisible = false
+                    "COMPLETE" -> { binding.galleryHolderIvUnchecked.isVisible = false
+                        binding.galleryHolderIvChecked.isVisible = false }
                 }
                 galleryHolder.setOnClickListener {
-
-                    Log.d("어댑터 모드는", "${removeMode}")
                     when (removeMode) {
-                        "REMOVE" ->  if (item.checked) binding.galleryHolderIvChecked.isVisible = true else false
+                        "REMOVE" -> binding.galleryHolderIvChecked.isVisible = !item.checked
                         "COMPLETE" -> binding.galleryHolderIvChecked.isVisible = false
                     }
                     itemClickListener(item, position)
@@ -83,11 +82,10 @@ class GalleryRecyclerViewAdapter(
         notifyItemChanged(position)
     }
 
+    //모드로 전환해 전체 홀더에 선택박스를 표시해주거나 제거해주는 함수
     fun updateRemoveMode(pressedRemoveButton: String) {
         removeMode = pressedRemoveButton
         notifyDataSetChanged()
-        Log.d("어댑터 모드는", "${removeMode}")
-
     }
 }
 

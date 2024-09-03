@@ -13,6 +13,8 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.android.petopia.databinding.FragmentGalleryBinding
 
 
@@ -89,13 +91,12 @@ class GalleryFragment : DialogFragment() {
 
         //삭제모드 변화감지
         gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
-            Log.d("현재모드", "${gallerySharedViewModel.removeModeLiveData.value}")
             galleryRecyclerViewAdapter.updateRemoveMode(it)
             gallerySharedViewModel.updateRemoveGalleryList(it)
         }
 
+        //삭제할 사진 클릭 감지
         gallerySharedViewModel.checkedPhotoLiveData.observe(viewLifecycleOwner) {
-            Log.d("삭제후", "${gallerySharedViewModel.removePhotoList}")
             galleryRecyclerViewAdapter.updateCheckedList(gallerySharedViewModel.removePhotoList.toList(), it)
         }
 
@@ -121,6 +122,10 @@ class GalleryFragment : DialogFragment() {
             },
             itemLongClickListener = { item, position -> },
         )
+        val animator = binding.galleryRv.itemAnimator
+        if(animator is SimpleItemAnimator){
+            animator.supportsChangeAnimations = false
+        }
         binding.galleryRv.adapter = galleryRecyclerViewAdapter
         binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 2)
     }

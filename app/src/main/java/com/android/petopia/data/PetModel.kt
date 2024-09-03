@@ -5,7 +5,7 @@ import java.util.UUID
 data class PetModel(
     val petName : String,
     val petAppearance : String,
-    val petRelation : Int,
+    val petRelation : Int, //enum
     val id: String = "",
     val createdDate : Long,
     var updatedDate: Long,

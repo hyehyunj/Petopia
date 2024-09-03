@@ -45,7 +45,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     val removeModeLiveData: LiveData<String> = _removeModeLiveData
 
     //삭제할 사진 : 임시 저장 데이터, 완료시 삭제된다.
-    val removePhotoList = mutableListOf<GalleryModel>()
+    var removePhotoList = mutableListOf<GalleryModel>()
 
     //삭제모드 : "REMOVE" 삭제, "COMPLETE" 완료(기본값)
     private val _checkedPhotoLiveData = MutableLiveData<Int>()
@@ -98,13 +98,13 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             "COMPLETE" -> _currentPhotoListLiveData.value = photoList.copy(index = position)
         }
 
-        Log.d("적용됐어?", "${removePhotoList}")
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진을 담는 함수
     fun considerNewPhoto(uriList: List<Uri>) {
         val photoList = mutableListOf<String>()
-        uriList.forEach { photoList.add(it.toString()) }
+            uriList.forEach { photoList.add(it.toString()) }
+
         when (_layoutModeLiveData.value) {
             "ADD" -> newPhotoList = newPhotoList.copy(imageUris = photoList)
             "EDIT" -> newPhotoList =
@@ -114,6 +114,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                     "", UserModel(), 0, 0, imageUris = photoList
                 )
         }
+        Log.d("어떰", "${newPhotoList}")
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
@@ -137,6 +138,8 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     //현재 사진을 새 사진으로 교체하는 함수
     fun updateNewGallery(titleText: String, index: Int) {
         galleryList = _galleryListLiveData.value?.toMutableList() ?: mutableListOf()
+        Log.d("추가하는 사본", "${galleryList}")
+
         when (_layoutModeLiveData.value) {
             "ADD" -> {
                 _currentPhotoListLiveData.value =
@@ -168,19 +171,20 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     //사진 삭제가 반영된 리스트로 교체하는 함수
     fun updateRemoveGalleryList(mode: String) {
         when (mode) {
-            "REMOVE" ->
-                if(removePhotoList.isEmpty()) _galleryListLiveData.value?.let {
-                    removePhotoList.clear()
-                    removePhotoList.addAll(it)
-                    Log.d("시작리스트", "${removePhotoList}")
-                }
+            "REMOVE" -> {removePhotoList = _galleryListLiveData.value!!.toMutableList()
+                                           Log.d("시작리스트", "${removePhotoList}")
+}
+
 
             "COMPLETE" -> {
                 removePhotoList.removeIf { it.checked }
 //        removePhotoList.forEach { removePhoto ->
 //            galleryList.removeIf { it.uId == removePhoto.uId }
 //        }
+
                 _galleryListLiveData.value = removePhotoList
+                Log.d("원본", "${_galleryListLiveData.value}")
+
             }
         }
     }

@@ -1,6 +1,5 @@
 package com.android.petopia.data
 
-import android.net.Uri
 import java.util.UUID
 
 data class GalleryModel(

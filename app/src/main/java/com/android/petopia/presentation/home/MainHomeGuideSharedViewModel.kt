@@ -13,7 +13,7 @@ class MainHomeGuideSharedViewModel () :
         private val user = UserModel()
 
     //가이드 상태 : "NONE" 모든 가이드 미완료, "ESSENTIAL" 필수 가이드 진행중, "DONE" 가이드 완료, "OPTIONAL" 선택 가이드 진행중
-    private val _guideStateLiveData = MutableLiveData("NONE")
+    private val _guideStateLiveData = MutableLiveData("DONE")
     val guideStateLiveData: LiveData<String> = _guideStateLiveData
 
     //가이드 기능설명 : "NONE"
