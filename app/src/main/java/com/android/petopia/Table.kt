@@ -6,5 +6,5 @@ enum class Table(val tableName: String) {
     POST_IMAGE("post_image"),
     LETTER("letter"),
     MEMORY("memory"),
-    GALLERY("gallery")
+    GALLERY("gallery"),
 }
