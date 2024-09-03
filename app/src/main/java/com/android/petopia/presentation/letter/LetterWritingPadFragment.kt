@@ -21,6 +21,7 @@ class LetterWritingPadFragment : DialogFragment() {
     private var _binding: FragmentLetterWritingPadBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var letterPadViewModel: LetterPadViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +33,9 @@ class LetterWritingPadFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        letterPadViewModel =
+            ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java)
 
         arguments?.getInt("selectedBackground")?.let { resId ->
             binding.root.setBackgroundResource(resId)
@@ -65,9 +69,10 @@ class LetterWritingPadFragment : DialogFragment() {
             R.drawable.testpad3
         )
         val adapter = LetterWritepadAdapter(backgroungList) { selectedBackground ->
-            val viewModel = ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java)
-            viewModel.selectBackgroundResId = selectedBackground
+            letterPadViewModel.selectBackground(selectedBackground)
+
             dismiss()
+            showLetterWriteFragment()
 
         }
         binding.rvWritepadList.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -76,17 +81,7 @@ class LetterWritingPadFragment : DialogFragment() {
     }
 
     private fun showLetterWriteFragment() {
-        val fragment = LetterWriteFragment().apply {
-            arguments = Bundle().apply {
-                ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java).selectBackgroundResId?.let {
-                    putInt(
-                        "selectedBackground",
-                        it
-                    )
-                }
-            }
-        }
-        fragment.show(parentFragmentManager, "LETTER_WRITE_FRAGMENT")
+        LetterWriteFragment().show(parentFragmentManager, "LETTER_WRITE_FRAGMENT")
     }
 }
 // 동등한 수준의 프래그먼트로 호출하여(자식이 아닌) 뒤로가기 하거나 완료했을때 편지지 선택이 다시 뜨지 않게 함

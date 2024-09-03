@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.android.petopia.data.Memory
-import com.android.petopia.data.remote.MemoryRepositoryImpl
 import com.android.petopia.databinding.RecyclerviewMemoryListBinding
-import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 

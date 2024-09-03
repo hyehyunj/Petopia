@@ -5,43 +5,45 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.android.petopia.data.LetterModel
 import com.android.petopia.data.Memory
 import com.android.petopia.data.UserModel
+import com.android.petopia.data.remote.LetterRepository
 import kotlinx.coroutines.launch
 
 class LetterViewModel(private val letterRepository: LetterRepository) : ViewModel() {
-    private val _letterListLiveData = MutableLiveData<List<Memory>>()
-    val letterListLiveData: LiveData<List<Memory>> = _letterListLiveData
+    private val _letterListLiveData = MutableLiveData<List<LetterModel>>()
+    val letterListLiveData: LiveData<List<LetterModel>> = _letterListLiveData
 
-//    fun addLetterList(memory: Memory) {
-//        viewModelScope.launch {
-//            letterRepository.createLetter(memory)
-//            loadLetterList(memory.writer)
-//        }
-//    }
-//
-//    fun loadLetterList(user: UserModel) {
-//        viewModelScope.launch {
-//            val memoryList = letterRepository.selectLetterList(user)
-//            _letterListLiveData.value = memoryList
-//        }
-//    }
-//
-//    fun updateLetterList(memory: Memory) {
-//        viewModelScope.launch {
-//            letterRepository.updateLetter(memory)
-//            loadLetterList(memory.writer)
-//        }
-//    }
-//
-//    fun deleteLetterList(memory: Memory) {
-//        viewModelScope.launch {
-//            letterRepository.deleteLetter(memory.key)
-//            loadLetterList(memory.writer)
-//        }
-//    }
+    fun addLetterList(letterModel: LetterModel) {
+        viewModelScope.launch {
+            letterRepository.createLetter(letterModel)
+            loadLetterList(letterModel.writer)
+        }
+    }
 
-    class LetterViewModelFactory(private val letterRepository: LetterRepositoryImpl) :
+    fun loadLetterList(user: UserModel) {
+        viewModelScope.launch {
+            val memoryList = letterRepository.selectLetterList(user)
+            _letterListLiveData.value = memoryList
+        }
+    }
+
+    fun updateLetterList(letterModel: LetterModel) {
+        viewModelScope.launch {
+            letterRepository.updateLetter(letterModel)
+            loadLetterList(letterModel.writer)
+        }
+    }
+
+    fun deleteLetterList(letterModel: LetterModel) {
+        viewModelScope.launch {
+            letterRepository.deleteLetter(letterModel.key)
+            loadLetterList(letterModel.writer)
+        }
+    }
+
+    class LetterViewModelFactory(private val letterRepository: LetterRepository) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(LetterViewModel::class.java)) {

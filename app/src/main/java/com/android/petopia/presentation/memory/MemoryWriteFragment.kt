@@ -105,6 +105,7 @@ class MemoryWriteFragment : DialogFragment() {
         if (title.isNotEmpty() && content.isNotEmpty()) {
             val memory = Memory(title, content, LoginData.loginUser)
             memoryViewModel.addMemoryList(memory)
+            memoryViewModel.setMemorySaved(true)
 
             (parentFragment as? MemoryFragment)?.onMemorySaved(memory)
         } else {

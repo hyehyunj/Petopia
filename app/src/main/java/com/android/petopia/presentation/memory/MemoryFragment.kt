@@ -28,7 +28,7 @@ import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
 import com.android.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
 
-class MemoryFragment : DialogFragment() {
+class MemoryFragment() : DialogFragment() {
 
     private var _binding: FragmentMemoryBinding? = null
     private val binding get() = _binding!!

@@ -10,12 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentLetterWriteBinding
 
 class LetterWriteFragment : DialogFragment() {
     private var _binding: FragmentLetterWriteBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var letterPadViewModel: LetterPadViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +35,15 @@ class LetterWriteFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        letterPadViewModel =
+            ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java)
+        letterPadViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
+            resId?.let {
+                binding.letterWriteLayout.setBackgroundResource(it)
+            }
+        }
+
         initDialog()
 
         binding.btnLetterWriteCheck.setOnClickListener {

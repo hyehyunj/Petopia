@@ -25,12 +25,19 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
     private val _memoryDate = MutableLiveData<String>()
     val memoryDate: LiveData<String> = _memoryDate
 
+    private val _isMemorySaved = MutableLiveData<Boolean>()
+    val isMemorySaved: LiveData<Boolean> = _isMemorySaved
+
     fun setMemoryDate(date: String) {
         _memoryDate.value = date
     }
 
     fun setMemoryTitle(title: String) {
         _memoryTitle.value = title
+    }
+
+    fun setMemorySaved(isSaved: Boolean) {
+        _isMemorySaved.value = isSaved
     }
 
 

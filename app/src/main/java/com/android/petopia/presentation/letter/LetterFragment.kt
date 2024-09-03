@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,21 +14,27 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.android.petopia.data.LetterModel
+import com.android.petopia.data.LoginData
+import com.android.petopia.data.UserModel
+import com.android.petopia.data.remote.LetterRepositoryImpl
 import com.android.petopia.databinding.FragmentLetterBinding
 import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.home.HomeSharedViewModel
+import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
 import com.android.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
 
 class LetterFragment : DialogFragment() {
     private var _binding: FragmentLetterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var homeSharedViewModel: HomeSharedViewModel
-
-    private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
-
+//    private lateinit var homeSharedViewModel: HomeSharedViewModel
 
     private lateinit var letterViewModel: LetterViewModel
+    private lateinit var listRecyclerViewAdapter: LetterListRecyclerViewAdapter
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,22 +45,27 @@ class LetterFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
+//        homeSharedViewModel =
+//            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
 
         initDialog()
         initAdapter()
 
-//        val letterRepository = LetterRepositoryImpl() // 추후 연결
-//        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
+        val letterRepository = LetterRepositoryImpl() // 추후 연결
+        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
 
-//        letterViewModel =
-//            ViewModelProvider(requireActivity()).get(LetterViewModel::class.java)
+        letterViewModel =
+            ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
+
+
+        val curentUser = getCurrentUser()
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
-//        letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
-//            listRecyclerViewAdapter.submitList(letterList)
-//        }
+        letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
+            listRecyclerViewAdapter.submitList(letterList)
+        }
+
+        letterViewModel.loadLetterList(curentUser)
 
         binding.letterIvAdd.setOnClickListener {
             showLetterWritingPadFragment()
@@ -68,7 +80,7 @@ class LetterFragment : DialogFragment() {
 
 
     private fun initAdapter() {
-        listRecyclerViewAdapter = ListRecyclerViewAdapter(
+        listRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
                 Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
                     .show()
@@ -79,7 +91,7 @@ class LetterFragment : DialogFragment() {
                 (activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
             })
         binding.rvLetterList.adapter = listRecyclerViewAdapter // 어댑터 연결
-        binding.rvLetterList.layoutManager = GridLayoutManager(requireContext(), 1)
+        binding.rvLetterList.layoutManager = LinearLayoutManager(requireContext())
     }
 
     private fun initDialog() {
@@ -101,6 +113,16 @@ class LetterFragment : DialogFragment() {
 
     fun showLetterWritingPadFragment() {
         LetterWritingPadFragment().show(childFragmentManager, "LETTER_ADD_FRAGMENT")
+    }
+
+    fun onLetterSaved(letterModel: LetterModel) {
+        Log.d("LetterFragment", "편지 저장: $letterModel")
+        letterViewModel.addLetterList(letterModel)
+
+    }
+
+    fun getCurrentUser(): UserModel {
+        return LoginData.loginUser
     }
 }
 
