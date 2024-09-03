@@ -90,4 +90,3 @@ class LetterWritingPadFragment : DialogFragment() {
     }
 }
 // 동등한 수준의 프래그먼트로 호출하여(자식이 아닌) 뒤로가기 하거나 완료했을때 편지지 선택이 다시 뜨지 않게 함
-}

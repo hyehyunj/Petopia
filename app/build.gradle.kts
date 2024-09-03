@@ -45,6 +45,7 @@ android {
 }
 
 dependencies {
+    implementation("io.github.muddz:styleabletoast:2.4.0")
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation("androidx.fragment:fragment-ktx:1.8.1")
     implementation("androidx.activity:activity-ktx:1.6.0")
