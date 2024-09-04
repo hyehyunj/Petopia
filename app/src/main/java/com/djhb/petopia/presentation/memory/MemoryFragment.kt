@@ -57,20 +57,17 @@ class MemoryFragment() : DialogFragment() {
         memoryViewModel =
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
-        //현재 로그인한 유저의 정보를 로드
-        val currentUser = getCurrentUser()
-
-        var currentTitle = binding.tvTodayMemoryContent.text.toString()
-        memoryViewModel.setMemoryTitle(currentTitle)
-
-
-        //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
             listRecyclerViewAdapter.submitList(memoryList)
 
         }
 
+        //현재 로그인한 유저의 정보를 로드
+        val currentUser = getCurrentUser()
         memoryViewModel.loadMemoryList(currentUser)
+
+        var currentTitle = binding.tvTodayMemoryContent.text.toString()
+        memoryViewModel.setMemoryTitle(currentTitle)
 
 
 
@@ -148,6 +145,12 @@ class MemoryFragment() : DialogFragment() {
 
     }
 
+    // 수정된 메모리를 업데이트하는 함수
+    fun onMemoryUpdated(updatedMemory: Memory) {
+        memoryViewModel.updateMemoryList(updatedMemory)
+        memoryViewModel.loadMemoryList(getCurrentUser())
+    }
+
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
     }
@@ -173,5 +176,8 @@ class MemoryFragment() : DialogFragment() {
 
     }
 
+    private fun updateMemoryList(memory: Memory) {
 
+
+    }
 }

@@ -22,7 +22,10 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class MemoryWriteFragment : DialogFragment() {
+class MemoryWriteFragment(
+    private val isEditMode: Boolean = false,
+    private val onMemorySaved: ((Memory) -> Unit)? = null
+) : DialogFragment() {
 
 
     private var _binding: FragmentMemoryWriteBinding? = null
@@ -33,6 +36,7 @@ class MemoryWriteFragment : DialogFragment() {
     }
 
     private lateinit var memoryViewModel: MemoryViewModel
+    private var memoryToEdit: Memory? = null
 
 
     override fun onCreateView(
@@ -45,6 +49,17 @@ class MemoryWriteFragment : DialogFragment() {
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { title ->
             binding.tvMemoryWriteQuestion.text = title
         }
+        //수정하기를 통해 왔을경우
+        if (isEditMode) {
+            memoryViewModel.selectedMemory.observe(viewLifecycleOwner) { selectedMemory ->
+                memoryToEdit = selectedMemory
+                binding.tvMemoryWriteQuestion.text = selectedMemory.title
+                binding.etMemoryWriteContent.setText(selectedMemory.content)
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
+                val date = dateFormat.format(selectedMemory.createdDate)
+                binding.tvMemoryWriteDate.text = date
+            }
+        }
 
         return binding.root
     }
@@ -53,26 +68,31 @@ class MemoryWriteFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         initDialog()
 
-        val memoryRepository = MemoryRepositoryImpl()
-        memoryViewModel = ViewModelProvider(
-            requireParentFragment(),
-            MemoryViewModel.MemoryViewModelFactory(memoryRepository)
-        ).get(MemoryViewModel::class.java)
-
         val currentTime: Long = System.currentTimeMillis()
-        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
-        binding.tvMemoryWriteDate.text = simpleDateFormat.format(currentTime)
+
+        if (!isEditMode) {
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA)
+            binding.tvMemoryWriteDate.text = simpleDateFormat.format(currentTime)
+        }
 
         binding.btnMemoryWriteCheck.setOnClickListener {
-            saveData()
-            parentFragmentManager.beginTransaction()
-                .remove(this).commit()
+
+            if (isEditMode) {
+                updateData()
+            } else {
+                saveData()
+            }
         }
 
         binding.btnMemoryWriteExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun initDialog() {
@@ -104,11 +124,25 @@ class MemoryWriteFragment : DialogFragment() {
             memoryViewModel.setMemorySaved(true)
 
             (parentFragment as? MemoryFragment)?.onMemorySaved(memory)
+            parentFragmentManager.beginTransaction().remove(this).commit()
         } else {
             Log.d("MemoryWriteFragment", "제목 또는 내용이 비어있습니다.")
         }
+    }
 
+    private fun updateData() {
+        val title = binding.tvMemoryWriteQuestion.text.toString()
+        val content = binding.etMemoryWriteContent.text.toString()
 
+        memoryToEdit?.let {
+            it.title = title
+            it.content = content
+            memoryViewModel.updateMemoryList(it)
+            memoryViewModel.setMemorySaved(true)
+            onMemorySaved?.invoke(it)
+            (parentFragment as? MemoryFragment)?.onMemorySaved(it)
+            parentFragmentManager.beginTransaction().remove(this).commit()
+        }
     }
 
 }

@@ -137,8 +137,7 @@ class LetterFragment : DialogFragment() {
     }
 
     private fun showLetterDetailFragment() {
-        val detailFragment = LetterDetailFragment()
-        detailFragment.show(childFragmentManager, "DETAIL_DIALOG")
+        LetterDetailFragment().show(childFragmentManager, "DETAIL_DIALOG")
     }
 
     private fun showDeleteDialog(letterModel: LetterModel) {

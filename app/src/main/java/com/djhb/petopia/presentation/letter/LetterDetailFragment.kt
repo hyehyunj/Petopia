@@ -46,6 +46,8 @@ class LetterDetailFragment : DialogFragment() {
             binding.tvLetterDetailContent.text = selectedLetter.content
         }
 
+
+
         binding.btnLetterDetailExit.setOnClickListener {
             dismiss()
         }
@@ -70,5 +72,8 @@ class LetterDetailFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
+    private fun showLetterModyfyFragment() {
+        LetterWriteFragment().show(parentFragmentManager, "DETAIL_DIALOG")
+    }
 
 }
