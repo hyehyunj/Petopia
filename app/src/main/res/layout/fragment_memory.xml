@@ -5,21 +5,21 @@
     android:id="@+id/memory_feed_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#77000000"
+    android:background="@android:color/transparent"
     android:gravity="center"
     tools:context=".presentation.memory.MemoryFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/img_outline_square">
+        android:background="@drawable/bg_ivory">
 
         <ImageView
             android:id="@+id/btn_memory_exit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:background="@color/skyblue"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/sel_btn_left"
             app:layout_constraintBottom_toBottomOf="@id/tv_memory_list_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_memory_list_title" />
@@ -27,22 +27,21 @@
 
         <TextView
             android:id="@+id/tv_memory_list_title"
+            style="@style/common_text_20_bold_dark_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="16dp"
             android:text="@string/memory_list_title"
-            android:textSize="26sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/btn_memory_delete"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/skyblue"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/sel_btn_cancellation"
             app:layout_constraintBottom_toBottomOf="@id/tv_memory_list_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_memory_list_title" />
@@ -50,10 +49,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/memory_today_memory_layout"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="2:1"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/border_round"
+            android:background="@drawable/bg_translucent_black_square"
             android:elevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -61,36 +61,37 @@
 
             <TextView
                 android:id="@+id/tv_question_title"
+                style="@style/common_text_14_white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
                 android:text="@string/memory_question_title"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@+id/btn_answer"
+                app:layout_constraintTop_toTopOf="@+id/btn_answer" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/btn_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_margin="10dp"
-                android:text="@string/memory_add_memory"
+                android:padding="10dp"
+                android:src="@drawable/icon_writing_white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_today_memory_content"
-                android:layout_width="wrap_content"
+                style="@style/point_text_24_bold_white"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_margin="10dp"
+                android:maxLines="2"
                 android:text="처음만난 그날은 기분이 어땠나요?"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@id/tv_question_title"
-                app:layout_constraintTop_toBottomOf="@id/tv_question_title" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_answer" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -99,7 +100,7 @@
             android:id="@+id/sv_memory_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

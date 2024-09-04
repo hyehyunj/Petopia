@@ -64,7 +64,7 @@ if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
             if (memoryViewModel.isMemorySaved.value == true) {
                 binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
-                binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
+//                binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
             }
 
 

@@ -13,8 +13,8 @@
         android:id="@+id/dialog_name_inside"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToOutline="true"
         android:background="@drawable/bg_translucent_white_square"
+        android:clipToOutline="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,13 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:gravity="center"
             android:hint="반려동물의 이름을 입력해주세요."
-            android:textSize="16sp"
-            android:textStyle="bold"
+       style="@style/common_hint_16"
+            android:maxLines="1"
+            android:maxLength="20"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/dialog_name_tv_back"
@@ -46,16 +47,16 @@
 
         <TextView
             android:id="@+id/dialog_name_tv_complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="완료"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            style="@style/common_btn_16_bold_white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/sel_btn_round_square_blue_white"
+            android:gravity="center"
+            android:text="확인"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_name_et"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
+            app:layout_constraintTop_toBottomOf="@+id/dialog_name_et" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

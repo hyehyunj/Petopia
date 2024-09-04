@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         mainHomeGuideSharedViewModel.guideFunctionLiveData.observe(this) {
             Log.d("지금 프래그먼트는", "${mainHomeGuideSharedViewModel.currentHomeLiveData.value}")
-            binding.mainViewPager.isUserInputEnabled = false
+//            binding.mainViewPager.isUserInputEnabled = false
             when (it) {
                 "MOVE_MEMORY_BRIDGE", "MOVE_EARTH"-> {
                     binding.mainViewPager.isUserInputEnabled = true

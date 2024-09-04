@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/photo_layout_inside"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:background="@drawable/img_outline_square"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,15 +20,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
 
-
-        <TextView
+        <ImageView
             android:id="@+id/photo_tv_exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="닫기"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/sel_btn_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,7 +40,7 @@
             android:background="@drawable/img_round_square"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/photo_tv_exit" />
 
@@ -65,13 +62,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:maxLines="1"
             android:text="title"
             android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/photo_tv_edit"
             app:layout_constraintEnd_toEndOf="@+id/photo_iv_title"
-            app:layout_constraintStart_toStartOf="@+id/photo_iv_title"
-            app:layout_constraintTop_toBottomOf="@+id/photo_iv_title" />
+            app:layout_constraintStart_toStartOf="@+id/photo_iv_title" />
 
         <EditText
             android:id="@+id/photo_et_title"
@@ -79,15 +76,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:hint="사진을 한줄로 설명해주세요."
+            android:hint="사진의 제목을 입력해주세요."
             android:inputType="text"
             android:maxLines="1"
             android:textSize="20sp"
             app:layout_constraintBottom_toTopOf="@+id/photo_tv_edit"
             app:layout_constraintEnd_toEndOf="@+id/photo_iv_title"
-            app:layout_constraintStart_toStartOf="@+id/photo_iv_title"
-            app:layout_constraintTop_toBottomOf="@+id/photo_iv_title" />
-
+            app:layout_constraintStart_toStartOf="@+id/photo_iv_title" />
 
 
         <TextView
@@ -98,8 +93,8 @@
             android:text="수정"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -9,52 +9,52 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_memory_bridge_memory_container"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
-        android:background="@color/black"
+        app:layout_constraintDimensionRatio="2:1"
+        android:background="@drawable/bg_translucent_black_square"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/home_memory_bridge_tv_memory_today"
+            style="@style/common_text_16_white"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="text"
-            android:textColor="@color/white"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/memory_question_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/home_memory_bridge_tv_memory_btn"
+            app:layout_constraintTop_toTopOf="@+id/home_memory_bridge_tv_memory_btn" />
+
+        <ImageView
+            android:id="@+id/home_memory_bridge_tv_memory_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:padding="10dp"
+            android:src="@drawable/icon_writing_white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/home_memory_bridge_tv_memory_title"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:text="text"
-            android:textColor="@color/white"
-            android:textSize="40sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_memory_bridge_tv_memory_today" />
-
-        <TextView
-            android:id="@+id/home_memory_bridge_tv_memory_btn"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:gravity="center"
-            android:text="button"
-            android:textColor="@color/white"
+            style="@style/point_text_24_bold_white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="처음만난 그날은 기분이 어땠나요?"
+            android:maxLines="2"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_memory_bridge_tv_memory_title" />
+            app:layout_constraintEnd_toEndOf="@+id/home_memory_bridge_tv_memory_today"
+            app:layout_constraintStart_toStartOf="@+id/home_memory_bridge_tv_memory_today"
+            app:layout_constraintTop_toBottomOf="@+id/home_memory_bridge_tv_memory_btn" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -70,10 +70,10 @@
 
     <ImageView
         android:id="@+id/home_memory_bridge_iv_arrow_under"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:background="@color/skyblue"
+        android:background="@drawable/icon_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

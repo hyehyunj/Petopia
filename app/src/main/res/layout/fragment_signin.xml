@@ -16,7 +16,7 @@
             android:layout_width="260dp"
             android:layout_height="60dp"
             android:layout_marginTop="30dp"
-            android:src="@drawable/img_logo"
+            android:src="@drawable/logo2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 android:hint="비밀번호">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -67,6 +67,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_id_search"
+                    style="@style/common_text_16_dark_gray"
+
                     app:layout_constraintEnd_toStartOf="@+id/divider1"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -80,13 +82,15 @@
                     app:layout_constraintEnd_toStartOf="@+id/btn_password_search"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/btn_id_search"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/btn_id_search"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"/>
 
                 <TextView
                     android:id="@+id/btn_password_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_password_search"
+                    style="@style/common_text_16_dark_gray"
                     app:layout_constraintEnd_toStartOf="@+id/divider2"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/divider1"
@@ -100,30 +104,30 @@
                     app:layout_constraintEnd_toStartOf="@+id/btn_signup"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/btn_password_search"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="@id/btn_id_search"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"/>
 
                 <TextView
                     android:id="@+id/btn_signup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signup"
-                    android:textColor="@color/skyblue"
+                    style="@style/common_btn_16_bold_blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/divider2"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <android.widget.Button
+            <TextView
                 android:id="@+id/btn_signin"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/border_round"
-                android:backgroundTint="@color/skyblue"
-                android:text="@string/signin_btn_login"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:padding="4dp"
+                android:text="완료"
+                style="@style/common_btn_16_bold_white"
+                android:background="@drawable/sel_btn_square_blue_white" />
 
             <View
                 android:id="@+id/divide_line"
@@ -138,31 +142,21 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:text="@string/signin_autologin_guide"
-                android:textSize="16sp" />
+                style="@style/common_hint_16"/>
 
             <android.widget.Button
                 android:id="@+id/btn_google_signin"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/border_round_btn"
-                android:drawableLeft="@drawable/img_google"
-                android:paddingStart="10dp"
-                android:text="@string/signin_by_google"
-                android:textColor="@color/gray"
-                android:textSize="18sp" />
+                android:background="@drawable/btn_google" />
 
             <android.widget.Button
                 android:id="@+id/btn_naver_signin"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/border_round_btn"
-                android:drawableLeft="@drawable/img_naver"
-                android:paddingStart="10dp"
-                android:text="@string/signin_by_naver"
-                android:textColor="@color/gray"
-                android:textSize="18sp" />
+                android:background="@drawable/btn_naver" />
 
             <android.widget.Button
                 android:id="@+id/btn_kakao_signin"

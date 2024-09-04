@@ -33,43 +33,53 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/guide_appearance_dialog_tv_dog"
-            android:layout_width="0dp"
-            android:layout_height="44dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"
+        <RadioGroup
+            android:id="@+id/guide_appearance_dialog_rg"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
             android:gravity="center"
-            android:text="강아지"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/guide_appearance_dialog_tv_cat"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_tv_title" />
-
-        <TextView
-            android:id="@+id/guide_appearance_dialog_tv_cat"
-            android:layout_width="0dp"
-            android:layout_height="44dp"
-            android:layout_marginEnd="16dp"
-            android:gravity="center"
-            android:text="고양이"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/guide_appearance_dialog_tv_dog"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guide_appearance_dialog_tv_dog"
-            app:layout_constraintTop_toTopOf="@+id/guide_appearance_dialog_tv_dog" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_tv_title">
+
+            <RadioButton
+                android:id="@+id/guide_appearance_dialog_rb_dog"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/sel_btn_guide_appearance"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="강아지"
+                android:textColor="@drawable/sel_text_blue_white"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/guide_appearance_dialog_rb_cat"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/sel_btn_guide_appearance"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:text="고양이"
+
+                android:textColor="@drawable/sel_text_blue_white"
+                android:textSize="16sp" />
+
+        </RadioGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/guide_appearance_dialog_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="@+id/guide_appearance_dialog_tv_cat"
-            app:layout_constraintStart_toStartOf="@+id/guide_appearance_dialog_tv_dog"
-            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_tv_dog"
-            app:layout_constraintBottom_toTopOf="@+id/guide_appearance_dialog_tv_complete"/>
+            app:layout_constraintBottom_toTopOf="@+id/guide_appearance_dialog_tv_complete"
+            app:layout_constraintEnd_toEndOf="@+id/guide_appearance_dialog_rg"
+            app:layout_constraintStart_toStartOf="@+id/guide_appearance_dialog_rg"
+            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rg" />
 
         <TextView
             android:id="@+id/guide_appearance_dialog_tv_back"
@@ -85,15 +95,16 @@
 
         <TextView
             android:id="@+id/guide_appearance_dialog_tv_complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="완료"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            style="@style/common_btn_16_bold_white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/sel_btn_round_square_blue_white"
+            android:gravity="center"
+            android:text="확인"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

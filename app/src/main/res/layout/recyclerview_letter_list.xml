@@ -11,14 +11,11 @@
 
     <TextView
         android:id="@+id/tv_letter_list_number"
+        style="@style/common_btn_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="16dp"
         android:text="# 1"
-        android:textColor="@color/skyblue"
-        android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,21 +25,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:text="제목"
-        android:textSize="16sp"
-        android:textStyle="bold"
+       style="@style/common_btn_16_bold_blue"
+        android:textColor="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_letter_list_number"
         app:layout_constraintStart_toEndOf="@id/tv_letter_list_number"
         app:layout_constraintTop_toTopOf="@id/tv_letter_list_number" />
 
     <TextView
         android:id="@+id/tv_letter_list_date"
+        style="@style/common_text_14_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="16dp"
         android:text="YYYY-MM-dd"
-        android:textSize="16sp"
-        android:textStyle="bold"
+        android:textColor="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="@+id/tv_letter_list_number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_letter_list_number" />
@@ -50,12 +46,13 @@
 
     <TextView
         android:id="@+id/tv_letter_list_content"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:maxLines="2"
         android:text="asdfkajsdlfkajsdlkfjasldasldkfjasldfk"
-        android:textSize="16sp"
+        style="@style/common_text_14_dark_gray"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="@+id/tv_letter_list_date"
         app:layout_constraintStart_toStartOf="@id/tv_letter_list_number"
         app:layout_constraintTop_toBottomOf="@id/tv_letter_list_date" />
 
