@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    tools:context=".presentation.guide.GuideAppearanceDialogFragment">
+    tools:context="com.djhb.petopia.presentation.guide.GuideAppearanceDialogFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/guide_appearance_dialog_inside"
