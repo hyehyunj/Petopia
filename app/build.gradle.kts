@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.android.petopia"
+    namespace = "com.djhb.petopia"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.android.petopia"
+        applicationId = "com.djhb.petopia"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

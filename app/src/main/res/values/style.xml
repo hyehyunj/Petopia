@@ -10,11 +10,11 @@
     <!-- Toast -->
     <style name="toast_custom">
         <item name="stTextBold">true</item>
-        <item name="stTextColor">@color/main_Sky_blue</item>
+        <item name="stTextColor">@color/main_blue</item>
         <item name="stTextSize">14sp</item>
         <item name="stColorBackground">@color/white</item>
         <item name="stStrokeWidth">3dp</item>
-        <item name="stStrokeColor">@color/main_Sky_blue</item>
+        <item name="stStrokeColor">@color/main_blue</item>
         <item name="stIconStart">@drawable/ic_launcher_foreground</item>
         <item name="stIconEnd">@drawable/ic_launcher_foreground</item>
         <item name="stLength">SHORT</item> LONG or SHORT

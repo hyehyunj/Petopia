@@ -25,13 +25,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/gallery_holder_cb"
+        android:id="@+id/gallery_holder_iv_unchecked"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:visibility="invisible"
         android:background="@drawable/ic_launcher_foreground"
         app:layout_constraintTop_toTopOf="@+id/gallery_holder_iv_title"
         app:layout_constraintStart_toStartOf="@+id/gallery_holder_iv_title"/>
+
+    <ImageView
+        android:id="@+id/gallery_holder_iv_checked"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="invisible"
+        android:background="@drawable/ic_launcher_background"
+        app:layout_constraintTop_toTopOf="@+id/gallery_holder_iv_title"
+        app:layout_constraintStart_toStartOf="@+id/gallery_holder_iv_title"/>
+
 
     <TextView
         android:id="@+id/gallery_holder_tv_title"
