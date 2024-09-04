@@ -90,8 +90,8 @@ class LetterFragment : DialogFragment() {
     private fun initAdapter() {
         letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
-                    .show()
+                letterViewModel.setSelectedLetter(item)
+                showLetterDetailFragment()
 
             }, itemLongClickListener = { item ->
 
@@ -139,6 +139,11 @@ class LetterFragment : DialogFragment() {
 
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
+    }
+
+    private fun showLetterDetailFragment() {
+        val detailFragment = LetterDetailFragment()
+        detailFragment.show(childFragmentManager, "DETAIL_DIALOG")
     }
 
     private fun showDeleteDialog(letterModel: LetterModel) {

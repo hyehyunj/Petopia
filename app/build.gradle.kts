@@ -61,6 +61,7 @@ dependencies {
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.dataconnect)
     implementation(libs.firebase.firestore)
+    implementation(libs.androidx.lifecycle.viewmodel.android)
 
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")

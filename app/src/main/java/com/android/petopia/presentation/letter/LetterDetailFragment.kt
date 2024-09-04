@@ -1,4 +1,4 @@
-package com.android.petopia.presentation.memory
+package com.android.petopia.presentation.letter
 
 import android.content.Context
 import android.graphics.Color
@@ -11,56 +11,47 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.android.petopia.data.remote.MemoryRepositoryImpl
-import com.android.petopia.databinding.FragmentMemoryDetailBinding
-import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.android.petopia.data.remote.LetterRepositoryImpl
+import com.android.petopia.databinding.FragmentLetterDetailBinding
 
-class MemoryDetailFragment : DialogFragment() {
 
-    private var _binding: FragmentMemoryDetailBinding? = null
+class LetterDetailFragment : DialogFragment() {
+    private var _binding: FragmentLetterDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var memoryViewModel: MemoryViewModel
+    private lateinit var letterDetailViewModel: LetterViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMemoryDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentLetterDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initDialog()
 
-        val memoryRepository = MemoryRepositoryImpl()
-        val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
+        val letterRepository = LetterRepositoryImpl()
+        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
 
-        memoryViewModel =
-            ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
+        letterDetailViewModel =
+            ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
-        memoryViewModel.selectedMemory.observe(viewLifecycleOwner) { selectedMemory ->
-            binding.tvMemoryDetailQuestion.text = selectedMemory.title
-            binding.etMemoryDetailContent.text = selectedMemory.content
-
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
-            val date = dateFormat.format(selectedMemory.createdDate)
-            binding.tvMemoryDetailDate.text = date
+        letterDetailViewModel.selectedLetter.observe(viewLifecycleOwner) { selectedLetter ->
+            binding.tvLetterDetailTitle.text = selectedLetter.title
+            binding.tvLetterDetailContent.text = selectedLetter.content
         }
 
-        binding.btnMemoryDetailExit.setOnClickListener {
+        binding.btnLetterDetailExit.setOnClickListener {
             dismiss()
         }
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 
     private fun initDialog() {
         val windowManager =
@@ -78,5 +69,6 @@ class MemoryDetailFragment : DialogFragment() {
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
+
 
 }

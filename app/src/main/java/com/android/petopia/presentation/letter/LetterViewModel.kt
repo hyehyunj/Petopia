@@ -15,6 +15,14 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
     private val _letterListLiveData = MutableLiveData<List<LetterModel>>()
     val letterListLiveData: LiveData<List<LetterModel>> = _letterListLiveData
 
+    private val _selectedLetter = MutableLiveData<LetterModel>()
+    val selectedLetter: LiveData<LetterModel> = _selectedLetter
+
+
+    fun setSelectedLetter(letterModel: LetterModel) {
+        _selectedLetter.value = letterModel
+    }
+
     fun addLetterList(letterModel: LetterModel) {
         viewModelScope.launch {
             letterRepository.createLetter(letterModel)
