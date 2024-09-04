@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.android.petopia.R
 import com.android.petopia.databinding.FragmentGuideRelationDialogBinding
+import io.github.muddz.styleabletoast.StyleableToast
 
 //다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
 class GuideRelationDialogFragment : DialogFragment() {
@@ -34,7 +36,8 @@ class GuideRelationDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        guideSharedViewModel = ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
+        guideSharedViewModel =
+            ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
 
         //이전으로버튼 클릭이벤트
         binding.guideRelationDialogTvBack.setOnClickListener {
@@ -44,8 +47,13 @@ class GuideRelationDialogFragment : DialogFragment() {
 
         //완료버튼 클릭이벤트
         binding.guideRelationDialogTvComplete.setOnClickListener {
-            guideSharedViewModel.guideButtonClickListener("NEXT")
-            dismiss()
+            if (guideSharedViewModel.petModelLiveData.value?.petRelation == 0)
+                StyleableToast.makeText(requireActivity(), "이미지를 선택해주세요", R.style.toast_custom)
+                    .show()
+            else {
+                guideSharedViewModel.guideButtonClickListener("NEXT")
+                dismiss()
+            }
         }
 
     }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.databinding.FragmentHomeEarthBinding
 
 class HomeEarthFragment : Fragment() {
@@ -14,7 +15,7 @@ class HomeEarthFragment : Fragment() {
         FragmentHomeEarthBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private val mainHomeGuideViewModel by viewModels<MainHomeGuideSharedViewModel>()
+    private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +27,8 @@ class HomeEarthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainHomeGuideViewModel =
+            ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
         homeEarthButtonClickListener()
         homeEarthDataObserver()

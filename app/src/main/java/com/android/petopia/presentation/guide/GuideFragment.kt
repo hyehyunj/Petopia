@@ -51,13 +51,16 @@ class GuideFragment : Fragment() {
         //뒤로가기 버튼 클릭이벤트
         binding.guideIvBack.setOnClickListener {
             when (guideViewModel.guidePageNumberLiveData.value) {
-                0, 14, 18 -> StyleableToast.makeText(
+                0, 7, 8, 14, 18 -> StyleableToast.makeText(
                     requireActivity(),
                     "더 이상 뒤로가실 수 없습니다.",
                     R.style.toast_custom
                 ).show()
-
-                13, 17 -> binding.guideStoryLayout.isVisible = true
+                13, 17 -> StyleableToast.makeText(
+                    requireActivity(),
+                    "아래로 이동해보세요!",
+                    R.style.toast_custom
+                ).show()
                 else -> guideViewModel.guideButtonClickListener("BACK")
             }
         }
@@ -83,10 +86,12 @@ class GuideFragment : Fragment() {
     private fun guideDataObserver() {
         //페이지 변화감지 : 다음으로 또는 뒤로가기 버튼 클릭에 따라 페이지 번호 변경
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
-            Log.d("가이드는", "${guideViewModel.guidePageNumberLiveData.value}")
+            Log.d("반려동물", "${guideViewModel.petModelLiveData.value}")
+            Log.d("페이지", "${guideViewModel.guidePageNumberLiveData.value}")
             when (it) {
 
-                in 0..7 -> guideViewModel.makeGuideModel()
+                in 0..7 -> { guideViewModel.makeGuideModel()
+                }
                 8 -> {
                     mainHomeGuideSharedViewModel.updateGuideState("OPTIONAL")
                     guideViewModel.makeGuideModel()

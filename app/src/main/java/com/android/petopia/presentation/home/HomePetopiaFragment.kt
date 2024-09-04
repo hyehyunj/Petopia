@@ -45,7 +45,6 @@ class HomePetopiaFragment : Fragment() {
         guideDataObserver()
 
 
-
     }
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
@@ -71,6 +70,7 @@ class HomePetopiaFragment : Fragment() {
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun guideDataObserver() {
         //가이드 상태 변화감지 : 가이드 상태에 따라 화면구성 변경
+
         mainHomeGuideViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "NONE" -> {
@@ -115,6 +115,10 @@ class HomePetopiaFragment : Fragment() {
 
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
+                "GALLERY_LETTER_GONE" -> binding.apply {
+                    homeIvGallery.isVisible = false
+                    homeIvLetter.isVisible = false
+                }
                 "GALLERY_LETTER" -> binding.apply {
                     homeIvGallery.isVisible = true
                     homeIvLetter.isVisible = true
@@ -128,7 +132,7 @@ class HomePetopiaFragment : Fragment() {
     }
 
     private fun toastMoveUnder() {
-        if (mainHomeGuideViewModel.guideFunctionLiveData.value == "MOVE_UNDER")
+        if (mainHomeGuideViewModel.guideFunctionLiveData.value == "MOVE_MEMORY_BRIDGE")
             StyleableToast.makeText(
                 requireActivity(),
                 "아래로 이동해주세요.",
@@ -143,7 +147,7 @@ class HomePetopiaFragment : Fragment() {
     }
 
 private fun showGalleryFragment() {
-    GalleryFragment().show(childFragmentManager, "G_FRAGMENT")
+    GalleryFragment().show(childFragmentManager, "GALLERY_FRAGMENT")
 
 //        childFragmentManager.beginTransaction()
 //            .replace(

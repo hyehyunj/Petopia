@@ -10,6 +10,7 @@ import com.android.petopia.data.PetModel
 class GuideSharedViewModel :
     ViewModel() {
 
+
     private val dog = listOf("말티즈", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
     private val cat = listOf("고양이", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
 
@@ -25,38 +26,42 @@ class GuideSharedViewModel :
     private val _pressedButtonLiveData = MutableLiveData("")
     val pressedButtonLiveData: LiveData<String> = _pressedButtonLiveData
 
-    //반려동물 데이터클래스
-    private val _petModelLiveData = MutableLiveData<PetModel>()
-    val petModelLiveData: LiveData<PetModel> = _petModelLiveData
-
     //외모 대분류 : "DOG" 강아지 , "CAT" 고양이
     private val _appearanceLiveData = MutableLiveData("DOG")
     val appearanceLiveData: LiveData<String> = _appearanceLiveData
 
     //외모 소분류
-    private val _breedListLiveData = MutableLiveData(dog)
-    val breedListLiveData: LiveData<List<String>> = _breedListLiveData
+    private val _detailAppearanceListLiveData = MutableLiveData(dog)
+    val detailAppearanceListLiveData: LiveData<List<String>> = _detailAppearanceListLiveData
+
+    //반려동물 데이터클래스
+    private val _petModelLiveData = MutableLiveData<PetModel>()
+    val petModelLiveData: LiveData<PetModel> = _petModelLiveData
+
+
+
+
 
     //반려동물 외모 대분류
     fun changeAppearance(appearance: String) {
         _appearanceLiveData.value = appearance
     }
 
-    fun changeBreed() {
-        _breedListLiveData.value = if(_appearanceLiveData.value == "DOG") dog else cat
+    fun changeDetailAppearance() {
+        _detailAppearanceListLiveData.value = if(_appearanceLiveData.value == "DOG") dog else cat
     }
-
 
 //반려동물 정보
     //반려동물 이름을 입력받는 함수
     fun setPetName(petName: String) {
-        _petModelLiveData.value = PetModel(petName, "", 0,"",0,0)
+        _petModelLiveData.value = PetModel(petName, "", 1,"",0,0)
         guideButtonClickListener("NEXT")
     }
 
     //반려동물 외모를 입력받는 함수
-    fun setPetAppearance(breed : String) {
-        _petModelLiveData.value = _petModelLiveData.value?.copy(petAppearance = breed)
+    fun setPetAppearance(petAppearance : String) {
+        _petModelLiveData.value = _petModelLiveData.value?.copy(petAppearance = petAppearance)
+
     }
 
 

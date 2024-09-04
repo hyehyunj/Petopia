@@ -12,8 +12,11 @@ class MainHomeGuideSharedViewModel () :
 
         private val user = UserModel()
 
-    //가이드 상태 : "NONE" 모든 가이드 미완료, "ESSENTIAL" 필수 가이드 진행중, "DONE" 가이드 완료, "OPTIONAL" 선택 가이드 진행중
-    private val _guideStateLiveData = MutableLiveData("DONE")
+    //가이드 상태 : "NONE" 모든 가이드 미완료,
+    // "ESSENTIAL" 필수 가이드 진행중,
+    // "DONE" 가이드 완료,
+    // "OPTIONAL" 선택 가이드 진행중
+    private val _guideStateLiveData = MutableLiveData("NONE")
     val guideStateLiveData: LiveData<String> = _guideStateLiveData
 
     //가이드 기능설명 : "NONE"
@@ -41,6 +44,7 @@ class MainHomeGuideSharedViewModel () :
     //가이드에서 설명하는 기능을 업데이트 해주는 함수
     fun updateFunction(function: Int) {
         val guideFunctionData = mapOf(
+            9 to "GALLERY_LETTER_GONE",
             10 to "GALLERY_LETTER",
             11 to "D_DAY",
             13 to "MOVE_MEMORY_BRIDGE",

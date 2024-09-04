@@ -1,17 +1,20 @@
 package com.android.petopia.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
 import com.android.petopia.databinding.FragmentHomeMemoryBridgeBinding
 import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.guide.GuideFragment
 import com.android.petopia.presentation.memory.MemoryFragment
+import io.github.muddz.styleabletoast.StyleableToast
 
 class HomeMemoryBridgeFragment : Fragment() {
 
@@ -19,7 +22,7 @@ class HomeMemoryBridgeFragment : Fragment() {
         FragmentHomeMemoryBridgeBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private val mainHomeGuideViewModel by viewModels<MainHomeGuideSharedViewModel>()
+    private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
 
 
     override fun onCreateView(
@@ -32,8 +35,12 @@ class HomeMemoryBridgeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        mainHomeGuideViewModel =
+            ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
+
         homeMemoryBridgeButtonClickListener()
         homeMemoryBridgeDataObserver()
+
 
 
     }
@@ -42,7 +49,9 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
         binding.homeMemoryBridgeTvMemoryBtn.setOnClickListener {
-            setMemoryFragment()
+            Log.d("메모리는", "${mainHomeGuideViewModel.guideStateLiveData.value}")
+            if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
+                toastMoveUnder() else setMemoryFragment()
         }
 
 
@@ -68,6 +77,7 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
+                "MEMORY" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = false
                 }
             }
 
@@ -75,7 +85,20 @@ class HomeMemoryBridgeFragment : Fragment() {
         }
 
 
-
+    private fun toastMoveUnder() {
+        if (mainHomeGuideViewModel.guideFunctionLiveData.value == "MOVE_EARTH")
+            StyleableToast.makeText(
+                requireActivity(),
+                "아래로 이동해주세요.",
+                R.style.toast_custom
+            ).show()
+        else StyleableToast.makeText(
+            requireActivity(),
+            "가이드 종료 후 이용 가능합니다.",
+            R.style.toast_custom
+        )
+            .show()
+    }
 
 
 
