@@ -1,17 +1,21 @@
 package com.android.petopia.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.android.petopia.R
+import com.android.petopia.data.remote.MemoryRepositoryImpl
 import com.android.petopia.databinding.FragmentHomeMemoryBridgeBinding
 import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.guide.GuideFragment
 import com.android.petopia.presentation.memory.MemoryFragment
+import com.android.petopia.presentation.memory.ViewModel.MemoryViewModel
 
 class HomeMemoryBridgeFragment : Fragment() {
 
@@ -20,6 +24,7 @@ class HomeMemoryBridgeFragment : Fragment() {
     }
     private val binding get() = _binding
     private val mainHomeGuideViewModel by viewModels<MainHomeGuideSharedViewModel>()
+    private lateinit var memoryViewModel: MemoryViewModel
 
 
     override fun onCreateView(
@@ -33,15 +38,28 @@ class HomeMemoryBridgeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-
-
     }
+
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun homeMemoryBridgeButtonClickListener() {
+
+        val memoryRepository = MemoryRepositoryImpl()
+        val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
+
+        memoryViewModel =
+            ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
         binding.homeMemoryBridgeTvMemoryBtn.setOnClickListener {
             setMemoryFragment()
+            Log.d("memorybuttonclick", "메모리버튼 클릭")
+
+            // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
+            if (memoryViewModel.isMemorySaved.value == true) {
+                binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+                binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
+            }
+
         }
 
 
@@ -71,13 +89,9 @@ class HomeMemoryBridgeFragment : Fragment() {
                     binding.homeMemoryBridgeIvArrowUnder.isVisible = true
                     (activity as MainActivity).showGuideFragment()
                 }
-                }
             }
         }
-
-
-
-
+    }
 
 
     private fun setMemoryFragment() {

@@ -13,10 +13,9 @@ import com.android.petopia.presentation.MainActivity
 import com.android.petopia.presentation.gallery.GalleryFragment
 import com.android.petopia.presentation.guide.GuideCancelDialogFragment
 import com.android.petopia.presentation.guide.GuideFragment
-
 import com.android.petopia.presentation.letter.LetterFragment
+import com.android.petopia.presentation.memory.MemoryFragment
 import io.github.muddz.styleabletoast.StyleableToast
-
 
 
 class HomePetopiaFragment : Fragment() {
@@ -43,7 +42,6 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
-
 
 
     }
@@ -117,6 +115,9 @@ class HomePetopiaFragment : Fragment() {
             }
         }
 
+        binding.homeIvLetter.setOnClickListener {
+            showLetterFragment()
+        }
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "GALLERY_LETTER" -> binding.apply {
@@ -148,8 +149,8 @@ class HomePetopiaFragment : Fragment() {
             .show()
     }
 
-private fun showGalleryFragment() {
-    GalleryFragment().show(childFragmentManager, "G_FRAGMENT")
+    private fun showGalleryFragment() {
+        GalleryFragment().show(childFragmentManager, "G_FRAGMENT")
 
 //        childFragmentManager.beginTransaction()
 //            .replace(
@@ -159,8 +160,10 @@ private fun showGalleryFragment() {
 //            .addToBackStack(null)
 //            .commit()
 
-    //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
-    // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)
+        //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
+        // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)
+        //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
+        // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)
 //        requireActivity().supportFragmentManager.beginTransaction()
 //            .replace(
 //                R.id.main_sub_frame, GalleryFragment(), "BACK_PETOPIA"
@@ -169,18 +172,12 @@ private fun showGalleryFragment() {
 //            .addToBackStack("BACK_PETOPIA")
 //            .commitAllowingStateLoss()
 
-}
+    }
 
 
-
-
-
-
-
-private fun showLetterFragment() {
-    LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
-
-}
+    private fun showLetterFragment() {
+        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
+    }
 
 
 }
