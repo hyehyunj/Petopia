@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.data.LetterModel
 import com.djhb.petopia.data.remote.LetterRepositoryImpl
 import com.djhb.petopia.databinding.FragmentLetterDetailBinding
 
@@ -20,6 +21,7 @@ class LetterDetailFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private lateinit var letterDetailViewModel: LetterViewModel
+    private var letterToEdit: LetterModel? = null
 
 
     override fun onCreateView(
@@ -32,7 +34,6 @@ class LetterDetailFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initDialog()
 
         val letterRepository = LetterRepositoryImpl()
@@ -42,15 +43,29 @@ class LetterDetailFragment : DialogFragment() {
             ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
         letterDetailViewModel.selectedLetter.observe(viewLifecycleOwner) { selectedLetter ->
+            letterToEdit = selectedLetter
             binding.tvLetterDetailTitle.text = selectedLetter.title
             binding.tvLetterDetailContent.text = selectedLetter.content
         }
 
+        binding.btnLetterDetailModify.setOnClickListener {
+            showLetterModyfyFragment()
+        }
 
 
         binding.btnLetterDetailExit.setOnClickListener {
+            letterToEdit?.let {
+                updateLetterList(it)
+                letterDetailViewModel.updateLetterList(it)
+            }
             dismiss()
         }
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
 
     }
 
@@ -73,7 +88,18 @@ class LetterDetailFragment : DialogFragment() {
     }
 
     private fun showLetterModyfyFragment() {
-        LetterWriteFragment().show(parentFragmentManager, "DETAIL_DIALOG")
+        LetterWriteFragment(isEditMode = true) { updatedLetter ->
+            updateLetterList(updatedLetter)
+        }.show(parentFragmentManager, "DETAIL_DIALOG")
+    }
+
+    private fun updateLetterList(letter: LetterModel) {
+        letterToEdit = letter
+        binding.tvLetterDetailTitle.text = letter.title
+        binding.tvLetterDetailContent.text = letter.content
+
+        (parentFragment as? LetterFragment)?.onLetterUpdated(letter)
+
     }
 
 }

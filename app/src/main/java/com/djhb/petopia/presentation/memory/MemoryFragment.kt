@@ -51,6 +51,9 @@ class MemoryFragment() : DialogFragment() {
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
 
+        //메모리 작성되면 오늘의 메모리 작성칸 사라짐
+
+
         val memoryRepository = MemoryRepositoryImpl()
         val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
 
@@ -59,7 +62,10 @@ class MemoryFragment() : DialogFragment() {
 
         memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
             listRecyclerViewAdapter.submitList(memoryList)
+        }
 
+        if (memoryViewModel.isMemorySaved.value == true) {
+            binding.btnAnswer.visibility = View.GONE
         }
 
         //현재 로그인한 유저의 정보를 로드
@@ -81,12 +87,13 @@ class MemoryFragment() : DialogFragment() {
         }
 
         // 기기의 뒤로가기 버튼
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                parentFragmentManager.beginTransaction()
-                    .remove(this@MemoryFragment).commit()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.beginTransaction()
+                        .remove(this@MemoryFragment).commit()
+                }
+            })
     }
 
     private fun initAdapter() {
@@ -156,9 +163,7 @@ class MemoryFragment() : DialogFragment() {
     }
 
     private fun showDetailFragment() {
-        val detailFragment = MemoryDetailFragment()
-        detailFragment.show(childFragmentManager, "DETAIL_DIALOG")
-
+        MemoryDetailFragment().show(childFragmentManager, "DETAIL_DIALOG")
     }
 
     private fun showDeleteDialog(memory: Memory) {
@@ -173,11 +178,6 @@ class MemoryFragment() : DialogFragment() {
         memoryViewModel.memoryListLiveData.value.let { updateList ->
             listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
         }
-
-    }
-
-    private fun updateMemoryList(memory: Memory) {
-
 
     }
 }

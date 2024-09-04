@@ -27,13 +27,8 @@ class MemoryWriteFragment(
     private val onMemorySaved: ((Memory) -> Unit)? = null
 ) : DialogFragment() {
 
-
     private var _binding: FragmentMemoryWriteBinding? = null
     private val binding get() = _binding!!
-
-    private val memoryRepository: MemoryRepository by lazy {
-        MemoryRepositoryImpl()
-    }
 
     private lateinit var memoryViewModel: MemoryViewModel
     private var memoryToEdit: Memory? = null

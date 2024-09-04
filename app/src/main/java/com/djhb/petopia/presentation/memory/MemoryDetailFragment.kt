@@ -11,10 +11,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentMemoryDetailBinding
 import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -36,6 +38,7 @@ class MemoryDetailFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initDialog()
 
         val memoryRepository = MemoryRepositoryImpl()
@@ -43,7 +46,6 @@ class MemoryDetailFragment : DialogFragment() {
 
         memoryViewModel =
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
-
 
         memoryViewModel.selectedMemory.observe(viewLifecycleOwner) { selectedMemory ->
             memoryToEdit = selectedMemory
@@ -61,6 +63,10 @@ class MemoryDetailFragment : DialogFragment() {
         }
 
         binding.btnMemoryDetailExit.setOnClickListener {
+            memoryToEdit?.let { memory ->
+                updateMemoryList(memory)
+                memoryViewModel.updateMemoryList(memory)
+            }
             dismiss()
         }
 

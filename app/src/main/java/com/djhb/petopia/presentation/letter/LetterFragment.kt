@@ -72,12 +72,14 @@ class LetterFragment : DialogFragment() {
                 .remove(this).commit()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                parentFragmentManager.beginTransaction()
-                    .remove(this@LetterFragment).commit()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.beginTransaction()
+                        .remove(this@LetterFragment).commit()
+                }
+            })
 
     }
 
@@ -122,7 +124,7 @@ class LetterFragment : DialogFragment() {
         _binding = null
     }
 
-    fun showLetterWritingPadFragment() {
+    private fun showLetterWritingPadFragment() {
         LetterWritingPadFragment().show(childFragmentManager, "LETTER_ADD_FRAGMENT")
     }
 
@@ -134,6 +136,11 @@ class LetterFragment : DialogFragment() {
 
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
+    }
+
+    fun onLetterUpdated(updatedLetter: LetterModel) {
+        letterViewModel.updateLetterList(updatedLetter)
+        letterViewModel.loadLetterList(getCurrentUser())
     }
 
     private fun showLetterDetailFragment() {

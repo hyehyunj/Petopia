@@ -17,6 +17,8 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
     private val _selectedLetter = MutableLiveData<LetterModel>()
     val selectedLetter: LiveData<LetterModel> = _selectedLetter
 
+    private val _isLetterSaved = MutableLiveData<Boolean>()
+    val isLetterSaved: LiveData<Boolean> = _isLetterSaved
 
     fun setSelectedLetter(letterModel: LetterModel) {
         _selectedLetter.value = letterModel
@@ -36,8 +38,18 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
         }
     }
 
+    fun setLetterSaved(isSaved: Boolean) {
+        _isLetterSaved.value = isSaved
+    }
+
     fun updateLetterList(letterModel: LetterModel) {
         viewModelScope.launch {
+            val currentLetter = _letterListLiveData.value?.toMutableList() ?: mutableListOf()
+            val index = currentLetter.indexOfFirst { it.key == letterModel.key }
+            if (index != -1) {
+                currentLetter[index] = letterModel
+                _letterListLiveData.value = currentLetter
+            }
             letterRepository.updateLetter(letterModel)
             loadLetterList(letterModel.writer)
         }
