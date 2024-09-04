@@ -7,7 +7,8 @@
     <color name="gray">#BFBFBF</color>
     <color name="ivory">#FFFEF5</color>
 
-    <color name="main_Sky_blue">#46C0FE</color>
+    <color name="main_blue">#017ACD</color>
+    <color name="sub_sky_blue">#46C0FE</color>
     <color name="sub_blue">#3C9AD6</color>
     <color name="dark_gray">#343434</color>
 
