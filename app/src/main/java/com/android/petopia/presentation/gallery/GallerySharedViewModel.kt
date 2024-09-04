@@ -14,6 +14,7 @@ import com.android.petopia.data.UserModel
 import com.android.petopia.data.remote.GalleryRepository
 import com.android.petopia.data.remote.GalleryRepositoryImpl
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.ZoneId

@@ -13,5 +13,7 @@ interface SignRepository {
     // 정보 수정(user 받아서 수정)
 
     suspend fun updateUser(user: UserModel)
+
+    suspend fun deleteUser(id: String)
     
 }
