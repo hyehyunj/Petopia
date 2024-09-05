@@ -17,12 +17,16 @@ import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.remote.LetterRepositoryImpl
 import com.djhb.petopia.databinding.FragmentLetterWriteBinding
 
-class LetterWriteFragment : DialogFragment() {
+class LetterWriteFragment(
+    private val isEditMode: Boolean = false,
+    private val onLetterSaved: ((LetterModel) -> Unit)? = null
+) : DialogFragment() {
     private var _binding: FragmentLetterWriteBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var letterPadViewModel: LetterPadViewModel
     private lateinit var letterViewModel: LetterViewModel
+    private var letterToEdit: LetterModel? = null
 
 
     override fun onCreateView(
@@ -30,6 +34,20 @@ class LetterWriteFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentLetterWriteBinding.inflate(inflater, container, false)
+
+        val letterRepository = LetterRepositoryImpl()
+        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
+        letterViewModel =
+            ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
+
+        //수정하기를 통해 왔을경우
+        if (isEditMode) {
+            letterViewModel.selectedLetter.observe(viewLifecycleOwner) { selectedLetter ->
+                letterToEdit = selectedLetter
+                binding.etLetterWriteTitle.setText(selectedLetter.title)
+                binding.etLetterWriteContent.setText(selectedLetter.content)
+            }
+        }
         return binding.root
     }
 
@@ -47,6 +65,7 @@ class LetterWriteFragment : DialogFragment() {
 
         initDialog()
 
+
         val letterRepository = LetterRepositoryImpl()
         letterViewModel = ViewModelProvider(
             requireParentFragment(),
@@ -54,15 +73,23 @@ class LetterWriteFragment : DialogFragment() {
         ).get(LetterViewModel::class.java)
 
         binding.btnLetterWriteCheck.setOnClickListener {
-            saveLetterData()
-            parentFragmentManager.beginTransaction()
-                .remove(this).commit()
+
+            if (isEditMode) {
+                updateData()
+            } else {
+                saveLetterData()
+            }
         }
 
         binding.btnLetterWriteExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 
@@ -92,10 +119,27 @@ class LetterWriteFragment : DialogFragment() {
         if (title.isNotEmpty() && content.isNotEmpty()) {
             val letterModel = LetterModel(title, content, LoginData.loginUser)
             letterViewModel.addLetterList(letterModel)
+            letterViewModel.setLetterSaved(true)
 
             (parentFragment as? LetterFragment)?.onLetterSaved(letterModel)
+            parentFragmentManager.beginTransaction().remove(this).commit()
         } else {
             Log.d("LetterWriteFragment", "제목 또는 내용이 비어있습니다.")
+        }
+    }
+
+    private fun updateData() {
+        val title = binding.etLetterWriteTitle.text.toString()
+        val content = binding.etLetterWriteContent.text.toString()
+
+        letterToEdit?.let {
+            it.title = title
+            it.content = content
+            letterViewModel.updateLetterList(it)
+            letterViewModel.setLetterSaved(true)
+            onLetterSaved?.invoke(it)
+            (parentFragment as? LetterFragment)?.onLetterSaved(it)
+            parentFragmentManager.beginTransaction().remove(this).commit()
         }
     }
 

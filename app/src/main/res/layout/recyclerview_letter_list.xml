@@ -21,14 +21,19 @@
 
     <TextView
         android:id="@+id/tv_letter_list_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="제목"
+        android:gravity="start"
        style="@style/common_btn_16_bold_blue"
         android:textColor="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_letter_list_number"
-        app:layout_constraintStart_toEndOf="@id/tv_letter_list_number"
+        app:layout_constraintEnd_toStartOf="@+id/tv_letter_list_date"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_letter_list_number"
         app:layout_constraintTop_toTopOf="@id/tv_letter_list_number" />
 
     <TextView
@@ -41,6 +46,8 @@
         android:textColor="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="@+id/tv_letter_list_number"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tv_letter_list_title"
         app:layout_constraintTop_toTopOf="@id/tv_letter_list_number" />
 
 

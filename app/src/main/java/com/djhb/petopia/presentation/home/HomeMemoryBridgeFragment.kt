@@ -15,6 +15,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
+import com.djhb.petopia.databinding.FragmentMemoryBinding
 import com.djhb.petopia.presentation.memory.MemoryFragment
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -42,6 +43,9 @@ class HomeMemoryBridgeFragment : Fragment() {
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
+        binding.homeMemoryBridgeTvMemoryTitle.setText("오늘의 메모리")
+//        binding.homeMemoryBridgeTvMemoryBtn.setText("작성하기")
+
         homeMemoryBridgeButtonClickListener()
         homeMemoryBridgeDataObserver()
 
@@ -58,16 +62,21 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
         binding.homeMemoryBridgeTvMemoryBtn.setOnClickListener {
-if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
+            if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
                 toastMoveUnder() else setMemoryFragment()
 
 
             Log.d("memorybuttonclick", "메모리버튼 클릭")
 
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
-            if (memoryViewModel.isMemorySaved.value == true) {
-                binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
-//                binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
+
+            memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
+                if (it == true) {
+                    binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+//                    binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
+
+                }
+
             }
 
 
@@ -99,12 +108,11 @@ if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
 
                 "MEMORY" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = false
 
-                }
             }
-
-
         }
 
+
+    }
 
 
     private fun toastMoveUnder() {
@@ -124,6 +132,7 @@ if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
 
 
 
+
     private fun initAnimation() {
         binding.homeMemoryBridgeIvArrowUnder.startAnimation(
             AnimationUtils.loadAnimation(requireContext(), R.anim.move_under)
@@ -136,7 +145,6 @@ if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
         )
 
     }
-
 
     private fun setMemoryFragment() {
 //        val transaction = requireActivity().supportFragmentManager.beginTransaction()

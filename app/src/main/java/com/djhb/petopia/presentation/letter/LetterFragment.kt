@@ -73,12 +73,17 @@ class LetterFragment : DialogFragment() {
                 .remove(this).commit()
         }
 
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                parentFragmentManager.beginTransaction()
-                    .remove(this@LetterFragment).commit()
-            }
-        })
+        letterViewModel.loadLetterList(getCurrentUser())
+        letterListRecyclerViewAdapter.notifyDataSetChanged()
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.beginTransaction()
+                        .remove(this@LetterFragment).commit()
+                }
+            })
 
     }
 
@@ -86,8 +91,8 @@ class LetterFragment : DialogFragment() {
     private fun initAdapter() {
         letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
-                Toast.makeText(requireContext(), "${item.title} 클릭", Toast.LENGTH_SHORT)
-                    .show()
+                letterViewModel.setSelectedLetter(item)
+                showLetterDetailFragment()
 
             }, itemLongClickListener = { item ->
 
@@ -125,7 +130,7 @@ class LetterFragment : DialogFragment() {
         _binding = null
     }
 
-    fun showLetterWritingPadFragment() {
+    private fun showLetterWritingPadFragment() {
         LetterWritingPadFragment().show(childFragmentManager, "LETTER_ADD_FRAGMENT")
     }
 
@@ -137,6 +142,15 @@ class LetterFragment : DialogFragment() {
 
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
+    }
+
+    fun onLetterUpdated(updatedLetter: LetterModel) {
+        letterViewModel.updateLetterList(updatedLetter)
+        letterViewModel.loadLetterList(getCurrentUser())
+    }
+
+    private fun showLetterDetailFragment() {
+        LetterDetailFragment().show(childFragmentManager, "DETAIL_DIALOG")
     }
 
     private fun showDeleteDialog(letterModel: LetterModel) {

@@ -5,12 +5,14 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentMemoryDetailBinding
 import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
@@ -23,6 +25,7 @@ class MemoryDetailFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private lateinit var memoryViewModel: MemoryViewModel
+    private var memoryToEdit: Memory? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +37,7 @@ class MemoryDetailFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initDialog()
 
         val memoryRepository = MemoryRepositoryImpl()
@@ -43,15 +47,24 @@ class MemoryDetailFragment : DialogFragment() {
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
         memoryViewModel.selectedMemory.observe(viewLifecycleOwner) { selectedMemory ->
+            memoryToEdit = selectedMemory
             binding.tvMemoryDetailQuestion.text = selectedMemory.title
             binding.etMemoryDetailContent.text = selectedMemory.content
 
             val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
             val date = dateFormat.format(selectedMemory.createdDate)
-            binding.tvMemoryDetailDate  .text = date
+            binding.tvMemoryDetailDate.text = date
+        }
+
+        binding.btnMemoryDetailModify.setOnClickListener {
+            showMemoryModifyFragment()
         }
 
         binding.btnMemoryDetailExit.setOnClickListener {
+            memoryToEdit?.let { memory ->
+                updateMemoryList(memory)
+                memoryViewModel.updateMemoryList(memory)
+            }
             dismiss()
         }
 
@@ -77,6 +90,24 @@ class MemoryDetailFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    private fun showMemoryModifyFragment() {
+        MemoryWriteFragment(isEditMode = true) { updatedMemory ->
+            updateMemoryList(updatedMemory)
+
+        }.show(childFragmentManager, "MEMORY_MODIFY_FRAGMENT")
+    }
+
+    private fun updateMemoryList(memory: Memory) {
+        memoryToEdit = memory
+        binding.tvMemoryDetailQuestion.text = memory.title
+        binding.etMemoryDetailContent.text = memory.content
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
+        val date = dateFormat.format(memory.createdDate)
+        binding.tvMemoryDetailDate.text = date
+
+        (parentFragment as? MemoryFragment)?.onMemoryUpdated(memory)
     }
 
 }
