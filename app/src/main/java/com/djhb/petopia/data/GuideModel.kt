@@ -46,6 +46,6 @@ object Guide {
 
         return guideModel
 
-    }
+    }}
 
 

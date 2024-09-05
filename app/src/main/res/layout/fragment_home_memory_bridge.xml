@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img_home_background"
     tools:context=".presentation.home.HomeMemoryBridgeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,19 +62,18 @@
 
     <ImageView
         android:id="@+id/home_memory_bridge_iv_emotion"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="24dp"
-        android:background="@color/black"
+        android:layout_width="140dp"
+        android:layout_height="230dp"
+        android:background="@drawable/img_red_balloon"
         app:layout_constraintBottom_toTopOf="@+id/home_memory_bridge_iv_arrow_under"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@+id/home_memory_bridge_memory_container" />
 
     <ImageView
         android:id="@+id/home_memory_bridge_iv_arrow_under"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:background="@drawable/icon_arrow"
+        android:background="@drawable/icon_arrow_translucent_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -84,9 +84,7 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

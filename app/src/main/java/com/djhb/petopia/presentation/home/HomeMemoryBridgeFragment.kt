@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -121,7 +122,14 @@ if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
 
 
 
-
+    private fun initAnimation() {
+        binding.homeMemoryBridgeIvArrowUnder.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.move_under)
+        )
+        binding.homeMemoryBridgeIvEmotion.startAnimation(
+        AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
+        )
+    }
 
 
     private fun setMemoryFragment() {
@@ -138,5 +146,9 @@ if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
 //        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
 //    }
 
-
+    override fun onResume() {
+        super.onResume()
+        initAnimation()
+        
+    }
 }

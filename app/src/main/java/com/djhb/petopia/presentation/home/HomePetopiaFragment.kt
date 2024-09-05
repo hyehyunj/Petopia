@@ -174,7 +174,7 @@ class HomePetopiaFragment : Fragment() {
 
     }
 
-    fun initAnimation() {
+    private fun initAnimation() {
         binding.homeIvArrowUnder.startAnimation(
             AnimationUtils.loadAnimation(requireContext(), R.anim.move_under)
         )
