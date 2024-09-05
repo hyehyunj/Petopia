@@ -51,26 +51,30 @@ class MemoryFragment() : DialogFragment() {
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
 
+        //메모리 작성되면 오늘의 메모리 작성칸 사라짐
+
+
         val memoryRepository = MemoryRepositoryImpl()
         val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
 
         memoryViewModel =
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
+        memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
+            listRecyclerViewAdapter.submitList(memoryList)
+        }
+
+        //메모리 최초 작성시 버튼 사라지게 함
+        if (memoryViewModel.isMemorySaved.value == true) {
+            binding.btnAnswer.visibility = View.GONE
+        }
+
         //현재 로그인한 유저의 정보를 로드
         val currentUser = getCurrentUser()
+        memoryViewModel.loadMemoryList(currentUser)
 
         var currentTitle = binding.tvTodayMemoryContent.text.toString()
         memoryViewModel.setMemoryTitle(currentTitle)
-
-
-        //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
-        memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
-            listRecyclerViewAdapter.submitList(memoryList)
-
-        }
-
-        memoryViewModel.loadMemoryList(currentUser)
 
 
 
@@ -83,13 +87,18 @@ class MemoryFragment() : DialogFragment() {
                 .remove(this).commit()
         }
 
+        //리사이클러뷰 강제로 업데이트
+        memoryViewModel.loadMemoryList(getCurrentUser())
+        listRecyclerViewAdapter.notifyDataSetChanged()
+
         // 기기의 뒤로가기 버튼
-        requireActivity().onBackPressedDispatcher.addCallback(object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                parentFragmentManager.beginTransaction()
-                    .remove(this@MemoryFragment).commit()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    parentFragmentManager.beginTransaction()
+                        .remove(this@MemoryFragment).commit()
+                }
+            })
     }
 
     private fun initAdapter() {
@@ -148,14 +157,18 @@ class MemoryFragment() : DialogFragment() {
 
     }
 
+    // 수정된 메모리를 업데이트하는 함수
+    fun onMemoryUpdated(updatedMemory: Memory) {
+        memoryViewModel.updateMemoryList(updatedMemory)
+        memoryViewModel.loadMemoryList(getCurrentUser())
+    }
+
     fun getCurrentUser(): UserModel {
         return LoginData.loginUser
     }
 
     private fun showDetailFragment() {
-        val detailFragment = MemoryDetailFragment()
-        detailFragment.show(childFragmentManager, "DETAIL_DIALOG")
-
+        MemoryDetailFragment().show(childFragmentManager, "DETAIL_DIALOG")
     }
 
     private fun showDeleteDialog(memory: Memory) {
@@ -169,9 +182,8 @@ class MemoryFragment() : DialogFragment() {
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->
             listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
+
         }
 
     }
-
-
 }

@@ -31,6 +31,9 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
     private val _selectedMemory = MutableLiveData<Memory>()
     val selectedMemory: LiveData<Memory> = _selectedMemory
 
+    private val _isModify = MutableLiveData<Boolean>()
+    val isModify: LiveData<Boolean> = _isModify
+
     fun setMemoryDate(date: String) {
         _memoryDate.value = date
     }
@@ -47,6 +50,9 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
         _selectedMemory.value = memory
     }
 
+    fun setModify(isModify: Boolean) {
+        _isModify.value = isModify
+    }
 
     fun addMemoryList(memory: Memory) {
         viewModelScope.launch {
@@ -64,6 +70,12 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
 
     fun updateMemoryList(memory: Memory) {
         viewModelScope.launch {
+            val currentMemory = _memoryListLiveData.value?.toMutableList() ?: mutableListOf()
+            val index = currentMemory.indexOfFirst { it.key == memory.key }
+            if (index != -1) {
+                currentMemory[index] = memory
+                _memoryListLiveData.value = currentMemory
+            }
             memoryRepository.updateMemory(memory)
             loadMemoryList(memory.writer)
         }
