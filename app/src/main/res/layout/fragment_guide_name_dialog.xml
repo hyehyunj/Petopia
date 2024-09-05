@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:hint="반려동물의 이름을 입력해주세요."
-       style="@style/common_hint_16"
             android:maxLines="1"
             android:maxLength="20"
             android:inputType="text"

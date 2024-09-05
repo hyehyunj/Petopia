@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:background="@drawable/img_login_cloud"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.register.signin.SigninFragment">
@@ -14,7 +15,7 @@
         <ImageView
             android:id="@+id/iv_main_logo"
             android:layout_width="260dp"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:src="@drawable/logo2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,15 +37,17 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                app:helperTextTextColor="@color/main_blue"
-
                 android:layout_height="wrap_content"
+                app:boxStrokeWidth="2dp"
+                app:boxStrokeColor="@color/main_blue"
+                app:hintTextColor="@color/main_blue"
                 android:hint="아이디">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_id"
-                    style="@style/common_text_16_bold_blue"
                     android:layout_width="match_parent"
+                    android:background="@color/white"
+
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,14 +55,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:helperTextTextColor="@color/main_blue"
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@color/main_blue"
+                app:boxStrokeColor="@color/main_blue"
                 android:hint="비밀번호">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/common_text_16_bold_blue"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +75,7 @@
 
                 <TextView
                     android:id="@+id/btn_id_search"
-                    style="@style/common_text_16_dark_gray"
+                    style="@style/common_text_16_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_id_search"
@@ -94,7 +98,7 @@
 
                 <TextView
                     android:id="@+id/btn_password_search"
-                    style="@style/common_text_16_dark_gray"
+                    style="@style/common_text_16_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_password_search"
@@ -148,7 +152,7 @@
 
         <TextView
             android:id="@+id/choose_login"
-            style="@style/common_hint_16"
+            style="@style/common_text_16_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -181,7 +185,7 @@
             android:layout_height="66dp"
             android:background="@drawable/bg_round_green"
             android:elevation="5dp"
-            android:padding="16dp"
+            android:padding="18dp"
             android:src="@drawable/icon_naver"
             app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
             app:layout_constraintDimensionRatio="1:1"

@@ -7,9 +7,7 @@
     <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
     <!--    </style>-->
 
-    <!-- Text -->
-
-
+    <!-- Text(common) -->
     <style name="common_text_14_dark_gray">
         <item name="android:textSize">14sp</item>
         <item name="fontFamily">@font/notosans_medium</item>
@@ -21,6 +19,12 @@
         <item name="fontFamily">@font/notosans_medium</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_16_gray">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
     <style name="common_text_16_white">
@@ -36,6 +40,8 @@
         <item name="android:textColor">@color/dark_gray</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <!-- Text(common_bold) -->
 
     <style name="common_text_16_bold_white">
         <item name="android:textSize">16sp</item>
@@ -119,11 +125,12 @@
 
 
     <!-- EditText -->
-    <style name="common_hint_16">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/gray</item>
-        <item name="fontFamily">@font/notosans_medium</item>
-        <item name="android:gravity">center</item>
+    <style name="edit_text_login" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="boxStrokeColor">@color/main_blue</item>
+        <item name="android:textCursorDrawable">@color/main_blue</item>
+        <item name="android:textColorHint">@color/main_blue</item>
+        <item name="hintTextColor">@color/main_blue</item>
     </style>
 
     <!-- Button -->
