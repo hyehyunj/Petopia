@@ -172,7 +172,6 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 _currentPhotoListLiveData.value =
                     newPhotoList
                 galleryList.add(0, _currentPhotoListLiveData.value!!)
-//                saveGalleryList()
             }
             "EDIT" -> {
                 _currentPhotoListLiveData.value = newPhotoList
@@ -180,6 +179,8 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             }
         }
         _galleryListLiveData.value = galleryList
+        saveGalleryList()
+
     }
 
     //삭제 모드를 변경해주는 함수
