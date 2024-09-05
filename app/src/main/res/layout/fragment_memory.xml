@@ -41,7 +41,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/sel_btn_cancellation"
+            android:background="@drawable/icon_delete"
             app:layout_constraintBottom_toBottomOf="@id/tv_memory_list_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_memory_list_title" />
@@ -82,7 +82,7 @@
 
             <TextView
                 android:id="@+id/tv_today_memory_content"
-                style="@style/point_text_24_bold_white"
+                style="@style/point_text_24_white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

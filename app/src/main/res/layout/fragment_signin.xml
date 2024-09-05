@@ -14,12 +14,13 @@
         <ImageView
             android:id="@+id/iv_main_logo"
             android:layout_width="260dp"
-            android:layout_height="60dp"
+            android:layout_height="0dp"
             android:layout_marginTop="30dp"
             android:src="@drawable/logo2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/signin_layout"/>
 
         <LinearLayout
             android:id="@+id/signin_layout"
@@ -30,15 +31,19 @@
             android:paddingHorizontal="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_main_logo">
+            app:layout_constraintTop_toBottomOf="@id/iv_main_logo"
+            app:layout_constraintBottom_toTopOf="@+id/choose_login">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
+                app:helperTextTextColor="@color/main_blue"
+
                 android:layout_height="wrap_content"
                 android:hint="아이디">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_id"
+                    style="@style/common_text_16_bold_blue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -46,13 +51,15 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
+                app:helperTextTextColor="@color/main_blue"
                 android:hint="비밀번호">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/common_text_16_bold_blue"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,14 +67,14 @@
                 android:id="@+id/signin_search_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/btn_id_search"
+                    style="@style/common_text_16_dark_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_id_search"
-                    style="@style/common_text_16_dark_gray"
 
                     app:layout_constraintEnd_toStartOf="@+id/divider1"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -79,18 +86,18 @@
                     android:layout_width="2dp"
                     android:layout_height="20dp"
                     android:background="@color/gray"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"
                     app:layout_constraintEnd_toStartOf="@+id/btn_password_search"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/btn_id_search"
-                    app:layout_constraintTop_toTopOf="@id/btn_id_search"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"/>
+                    app:layout_constraintTop_toTopOf="@id/btn_id_search" />
 
                 <TextView
                     android:id="@+id/btn_password_search"
+                    style="@style/common_text_16_dark_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_password_search"
-                    style="@style/common_text_16_dark_gray"
                     app:layout_constraintEnd_toStartOf="@+id/divider2"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/divider1"
@@ -101,18 +108,18 @@
                     android:layout_width="2dp"
                     android:layout_height="20dp"
                     android:background="@color/gray"
+                    app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"
                     app:layout_constraintEnd_toStartOf="@+id/btn_signup"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/btn_password_search"
-                    app:layout_constraintTop_toTopOf="@id/btn_id_search"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"/>
+                    app:layout_constraintTop_toTopOf="@id/btn_id_search" />
 
                 <TextView
                     android:id="@+id/btn_signup"
+                    style="@style/common_btn_16_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signup"
-                    style="@style/common_btn_16_bold_blue"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/divider2"
@@ -121,13 +128,13 @@
 
             <TextView
                 android:id="@+id/btn_signin"
+                style="@style/common_btn_16_bold_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:background="@drawable/sel_btn_square_blue_white"
                 android:padding="4dp"
-                android:text="완료"
-                style="@style/common_btn_16_bold_white"
-                android:background="@drawable/sel_btn_square_blue_white" />
+                android:text="완료" />
 
             <View
                 android:id="@+id/divide_line"
@@ -136,42 +143,67 @@
                 android:layout_marginTop="30dp"
                 android:background="@color/gray" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:text="@string/signin_autologin_guide"
-                style="@style/common_hint_16"/>
-
-            <android.widget.Button
-                android:id="@+id/btn_google_signin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/btn_google" />
-
-            <android.widget.Button
-                android:id="@+id/btn_naver_signin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/btn_naver" />
-
-            <android.widget.Button
-                android:id="@+id/btn_kakao_signin"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/border_round_btn"
-                android:drawableLeft="@drawable/img_kakao"
-                android:paddingStart="10dp"
-                android:text="@string/signin_by_kakao"
-                android:textColor="@color/gray"
-                android:textSize="18sp" />
-
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/choose_login"
+            style="@style/common_hint_16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:text="@string/signin_autologin_guide"
+            app:layout_constraintBottom_toTopOf="@+id/btn_google_signin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/signin_layout" />
+
+        <ImageView
+            android:id="@+id/btn_google_signin"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:background="@drawable/bg_round_white"
+            android:elevation="5dp"
+            android:padding="16dp"
+            android:layout_marginBottom="32dp"
+            android:src="@drawable/icon_google"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_naver_signin"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/choose_login" />
+
+        <ImageView
+            android:id="@+id/btn_naver_signin"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:background="@drawable/bg_round_green"
+            android:elevation="5dp"
+            android:padding="16dp"
+            android:src="@drawable/icon_naver"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/btn_kakao_signin"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_google_signin"
+            app:layout_constraintTop_toTopOf="@+id/btn_google_signin" />
+
+        <ImageView
+            android:id="@+id/btn_kakao_signin"
+            android:layout_width="66dp"
+            android:layout_height="66dp"
+            android:background="@drawable/bg_round_yellow"
+            android:elevation="5dp"
+            android:padding="16dp"
+            android:src="@drawable/btn_kakao"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_naver_signin"
+            app:layout_constraintTop_toTopOf="@+id/btn_google_signin" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

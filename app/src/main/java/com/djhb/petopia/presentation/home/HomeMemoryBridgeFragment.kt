@@ -1,5 +1,7 @@
 package com.djhb.petopia.presentation.home
 
+import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -129,6 +131,10 @@ if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
         binding.homeMemoryBridgeIvEmotion.startAnimation(
         AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
         )
+        binding.homeMemoryBridgeTvMemoryBtn.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
+        )
+
     }
 
 

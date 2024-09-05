@@ -12,14 +12,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.animation.AnimationUtils
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentPhotoBinding
+import io.github.muddz.styleabletoast.StyleableToast
 import java.time.LocalDateTime
 
 //포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
@@ -57,7 +60,7 @@ class PhotoFragment : DialogFragment() {
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-            Log.d(TAG,"${sharedViewModel.layoutModeLiveData.value}")
+            Log.d(TAG, "${sharedViewModel.layoutModeLiveData.value}")
             if (it == "ADD" || it == "EDIT") {//추가 or 편집모드
                 sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
                     addOrEditMode(
@@ -65,8 +68,7 @@ class PhotoFragment : DialogFragment() {
                     )
                 }
 
-                }
-             else {//읽기전용모드
+            } else {//읽기전용모드
                 sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
                     readOnlyMode(
                         currentPhoto
@@ -95,7 +97,7 @@ class PhotoFragment : DialogFragment() {
             }
         }
         binding.apply {
-
+            photoTvCalendar.isVisible = false
             photoTvTitle.isVisible = false
             photoEtTitle.isVisible = true
             //사진 클릭이벤트 : 사용자의 갤러리에서 선택한 사진으로 사진을 업로드
@@ -107,77 +109,95 @@ class PhotoFragment : DialogFragment() {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
-            photoTvCalendar.setOnClickListener {
+            photoIvCalendar.setOnClickListener {
                 Log.d(TAG, "${sharedViewModel.currentPhotoLiveData.value?.index}")
 
                 val calendar = Calendar.getInstance()
-                    val year = calendar.get(Calendar.YEAR)
-                    val month = calendar.get(Calendar.MONTH)
-                    val day = calendar.get(Calendar.DAY_OF_MONTH)
-                    val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
-                        binding.photoTvCalendar.text = "${yy}. ${mm + 1}. ${dd}."
-                    }
-                    sharedViewModel.considerNewPhoto(LocalDateTime.of(year, month + 1, day, 0, 0, 0))
+                val year = calendar.get(Calendar.YEAR)
+                val month = calendar.get(Calendar.MONTH)
+                val day = calendar.get(Calendar.DAY_OF_MONTH)
+                val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
+                    binding.photoTvCalendar.text = "${yy}. ${mm + 1}. ${dd}"
+                }
+                sharedViewModel.considerNewPhoto(LocalDateTime.of(year, month + 1, day, 0, 0, 0))
                 val picker = DatePickerDialog(requireContext(), listener, year, month, day)
-                    picker.show()
+                picker.show()
             }
-            //완료버튼 : 새로운 사진으로 등록 또는 변경 후 읽기전용모드로 전환한다.
-            photoTvEdit.apply {
-                text = "완료"
-                setOnClickListener {
-                    sharedViewModel.updateNewGallery(
-                        binding.photoEtTitle.text.toString(),
-                        item.index
-                    )
-                    Log.d(TAG, "사진추가완료${sharedViewModel.galleryListLiveData.value}")
-                    sharedViewModel.changeLayoutMode("READ")
 
+            //완료버튼 : 새로운 사진으로 등록 또는 변경 후 읽기전용모드로 전환한다.
+            photoIvAction.apply {
+
+                setOnClickListener {
+                    sharedViewModel.considerNewPhoto(binding.photoEtTitle.text.toString())
+                    if (sharedViewModel.prepared()) {
+                        sharedViewModel.updateNewGallery(
+                            item.index
+                        )
+                        binding.photoIvTitle.isClickable = false
+                        binding.photoIvCalendar.isVisible = false
+                        setBackgroundResource(R.drawable.icon_write)
+                        Log.d(TAG, "사진추가완료${sharedViewModel.galleryListLiveData.value}")
+                        sharedViewModel.changeLayoutMode("READ")
+                    } else StyleableToast.makeText(
+                        requireActivity(),
+                        "항목이 비어있습니다.",
+                        R.style.toast_custom
+                    ).show()
                 }
             }
         }
     }
 
-        //읽기전용 모드 함수 : 레이아웃을 입력 불가능한 모드로 구성한다.
-        private fun readOnlyMode(item: GalleryModel) {
-            binding.apply {
-                photoEtTitle.isVisible = false
-                photoIvTitle.setImageURI(item.imageUris[0].toUri())
-                photoTvTitle.apply {
-                    isVisible = true
-                    text = item.titleText
-                }
-                photoTvCalendar.apply {
-                    isVisible = true
-//                    text = item.date
-                    isClickable = false
-                }
-                //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
-                photoTvEdit.apply {
-                    text = "수정"
-                    setOnClickListener {
-                        sharedViewModel.changeLayoutMode("EDIT")
+    //읽기전용 모드 함수 : 레이아웃을 입력 불가능한 모드로 구성한다.
+    private fun readOnlyMode(item: GalleryModel) {
+
+        binding.photoLayoutInside.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.photo_down)
+        )
+        binding.apply {
+            photoEtTitle.isVisible = false
+            photoIvTitle.setImageURI(item.imageUris[0].toUri())
+            photoTvCalendar.isVisible = true
+            photoIvCalendar.isVisible = false
+            photoTvTitle.apply {
+                isVisible = true
+                text = item.titleText
+            }
+            //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
+            photoIvAction.apply {
+                setOnClickListener {
+                    binding.apply {
+                        binding.photoIvTitle.isClickable = true
+                        photoTvCalendar.isVisible = false
+                        photoIvCalendar.isVisible = true
+                        photoLayoutInside.startAnimation(
+                            AnimationUtils.loadAnimation(requireContext(), R.anim.photo_up)
+                        )
                     }
+                    setBackgroundResource(R.drawable.icon_check)
+                    sharedViewModel.changeLayoutMode("EDIT")
                 }
             }
         }
+    }
 
 
-private fun initDialog() {
-    val windowManager =
-        requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    val display = windowManager.defaultDisplay
+    private fun initDialog() {
+        val windowManager =
+            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = windowManager.defaultDisplay
 
-    val size = Point()
-    display.getSize(size)
-    size.x
-    size.y
-    val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-    val deviceWidth = size.x
-    params?.width = (deviceWidth * 0.9).toInt()
-    params?.height = (deviceWidth * 1.4).toInt()
-    dialog?.window?.attributes = params as WindowManager.LayoutParams
-    dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-}
+        val size = Point()
+        display.getSize(size)
+        size.x
+        size.y
+        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+        val deviceWidth = size.x
+        params?.width = (deviceWidth * 0.9).toInt()
+        params?.height = (deviceWidth * 1.8).toInt()
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
 
 
     override fun onResume() {
