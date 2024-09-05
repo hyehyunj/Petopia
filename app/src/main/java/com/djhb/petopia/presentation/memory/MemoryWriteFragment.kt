@@ -44,8 +44,11 @@ class MemoryWriteFragment(
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { title ->
             binding.tvMemoryWriteQuestion.text = title
         }
+
+        Log.d("MemoryWriteFragment", "$isEditMode")
         //수정하기를 통해 왔을경우
         if (isEditMode) {
+
             memoryViewModel.selectedMemory.observe(viewLifecycleOwner) { selectedMemory ->
                 memoryToEdit = selectedMemory
                 binding.tvMemoryWriteQuestion.text = selectedMemory.title
@@ -80,6 +83,7 @@ class MemoryWriteFragment(
         }
 
         binding.btnMemoryWriteExit.setOnClickListener {
+
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }

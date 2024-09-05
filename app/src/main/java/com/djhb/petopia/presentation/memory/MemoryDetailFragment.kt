@@ -5,18 +5,17 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentMemoryDetailBinding
 import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -59,7 +58,6 @@ class MemoryDetailFragment : DialogFragment() {
 
         binding.btnMemoryDetailModify.setOnClickListener {
             showMemoryModifyFragment()
-
         }
 
         binding.btnMemoryDetailExit.setOnClickListener {
@@ -97,6 +95,7 @@ class MemoryDetailFragment : DialogFragment() {
     private fun showMemoryModifyFragment() {
         MemoryWriteFragment(isEditMode = true) { updatedMemory ->
             updateMemoryList(updatedMemory)
+
         }.show(childFragmentManager, "MEMORY_MODIFY_FRAGMENT")
     }
 

@@ -64,6 +64,7 @@ class MemoryFragment() : DialogFragment() {
             listRecyclerViewAdapter.submitList(memoryList)
         }
 
+        //메모리 최초 작성시 버튼 사라지게 함
         if (memoryViewModel.isMemorySaved.value == true) {
             binding.btnAnswer.visibility = View.GONE
         }
@@ -85,6 +86,10 @@ class MemoryFragment() : DialogFragment() {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
+
+        //리사이클러뷰 강제로 업데이트
+        memoryViewModel.loadMemoryList(getCurrentUser())
+        listRecyclerViewAdapter.notifyDataSetChanged()
 
         // 기기의 뒤로가기 버튼
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
@@ -177,6 +182,7 @@ class MemoryFragment() : DialogFragment() {
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->
             listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
+
         }
 
     }

@@ -72,6 +72,9 @@ class LetterFragment : DialogFragment() {
                 .remove(this).commit()
         }
 
+        letterViewModel.loadLetterList(getCurrentUser())
+        letterListRecyclerViewAdapter.notifyDataSetChanged()
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
