@@ -4,12 +4,13 @@
     <!--  Common : 공통적으로 사용되는 Color   -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="gray">#BFBFBF</color>
+    <color name="gray">#AAAAAA</color>
     <color name="ivory">#FFFEF5</color>
 
     <color name="main_blue">#017ACD</color>
     <color name="sub_sky_blue">#46C0FE</color>
-    <color name="sub_blue">#3C9AD6</color>
+    <color name="translucent_black">#B3000000</color>
+    <color name="translucent_white">#C8FFFFFF</color>
     <color name="dark_gray">#343434</color>
 
     <!--  Gallery : 갤러리에서 사용되는 Color   -->

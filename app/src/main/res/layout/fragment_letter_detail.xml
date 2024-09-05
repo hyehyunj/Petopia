@@ -9,14 +9,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/img_outline_square">
+        android:background="@drawable/bg_ivory">
 
         <ImageView
             android:id="@+id/btn_letter_detail_exit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:background="@color/skyblue"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/sel_btn_left"
             app:layout_constraintBottom_toBottomOf="@id/tv_letter_detail_layout_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_letter_detail_layout_title" />
@@ -28,18 +28,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/letter_write_detail_title"
-            android:textSize="26sp"
-            android:textStyle="bold"
+            style="@style/common_text_20_bold_dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/btn_letter_detail_modify"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="10dp"
-            android:background="@color/skyblue"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/icon_write"
             app:layout_constraintBottom_toBottomOf="@id/tv_letter_detail_layout_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_letter_detail_layout_title" />

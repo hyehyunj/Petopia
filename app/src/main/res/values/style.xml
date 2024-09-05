@@ -3,9 +3,179 @@
 
     <!-- Contact Detail Alert Dialog-->
 
-    <style name="dialog" parent="Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
+    <!--    <style name="dialog" parent="Theme.AppCompat.Dialog">-->
+    <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+    <!--    </style>-->
+
+    <!-- Text(common) -->
+    <style name="common_text_14_dark_gray">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
     </style>
+    <style name="common_text_14_white">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_16_gray">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="common_text_16_white">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_16_dark_gray">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Text(common_bold) -->
+
+    <style name="common_text_16_bold_white">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_16_bold_blue">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/main_blue</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_18_bold_white">
+        <item name="android:textSize">18sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    <style name="common_text_20_bold_white">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_20_bold_dark_gray">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_24_bold_white">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="common_text_24_bold_dark_gray">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Point Text -->
+
+    <style name="point_text_16_dark_gray">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="point_text_24_dark_gray">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="point_text_24_white">
+        <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="point_text_32_dark_gray">
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    <!-- EditText -->
+    <style name="edit_text_login" parent="Widget.Design.TextInputLayout">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="boxStrokeColor">@color/main_blue</item>
+        <item name="android:textCursorDrawable">@color/main_blue</item>
+        <item name="android:textColorHint">@color/main_blue</item>
+        <item name="hintTextColor">@color/main_blue</item>
+    </style>
+
+    <!-- Button -->
+    <style name="common_btn_16_bold_white">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/sel_text_white_blue</item>
+    </style>
+
+    <style name="common_btn_16_bold_blue">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/sel_text_blue_white</item>
+    </style>
+
+    <style name="common_btn_14">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@drawable/sel_text_white_blue</item>
+    </style>
+
+    <!-- Fab -->
+    <style name="common_fab">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- List -->
+
+    <style name="common_text_14_gray">
+        <item name="android:textSize">14sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
+    <style name="guide_text_story">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
 
     <!-- Toast -->
     <style name="toast_custom">
@@ -17,11 +187,12 @@
         <item name="stStrokeColor">@color/main_blue</item>
         <item name="stIconStart">@drawable/ic_launcher_foreground</item>
         <item name="stIconEnd">@drawable/ic_launcher_foreground</item>
-        <item name="stLength">SHORT</item> LONG or SHORT
-        <item name="stGravity">center</item> top or center
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stGravity">center</item>
+        top or center
         <item name="stRadius">20dp</item>
     </style>
-
 
 
 </resources>

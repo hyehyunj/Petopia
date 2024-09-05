@@ -57,11 +57,11 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             initAdapter()
         }
 
-        binding.guideAppearanceDialogTvDog.setOnClickListener {
+        binding.guideAppearanceDialogRbDog.setOnClickListener {
             guideSharedViewModel.changeAppearance("DOG")
             Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
         }
-        binding.guideAppearanceDialogTvCat.setOnClickListener {
+        binding.guideAppearanceDialogRbDog.setOnClickListener {
             guideSharedViewModel.changeAppearance("CAT")
             Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
         }

@@ -5,30 +5,54 @@
     android:id="@+id/photo_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_ivory"
     android:gravity="center"
     tools:context=".presentation.gallery.PhotoFragment">
 
 
+    <ImageView
+        android:id="@+id/photo_tv_exit"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/sel_btn_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/photo_iv_action"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/icon_check"
+        app:layout_constraintBottom_toBottomOf="@+id/photo_tv_exit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/photo_tv_exit" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/photo_layout_inside"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/img_outline_square"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintDimensionRatio="1:1.25"
+        app:layout_constraintEnd_toEndOf="@+id/photo_iv_action"
+        app:layout_constraintStart_toStartOf="@+id/photo_tv_exit"
+        app:layout_constraintTop_toBottomOf="@+id/photo_tv_exit">
 
 
-
-        <TextView
-            android:id="@+id/photo_tv_exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="닫기"
-            android:textSize="14sp"
-            android:textStyle="bold"
+        <ImageView
+            android:id="@+id/photo_iv_add_photo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            android:src="@drawable/icon_album"
+            android:padding="100dp"
+            android:background="@drawable/img_round_square"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,71 +61,67 @@
             android:id="@+id/photo_iv_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="150dp"
-            android:background="@drawable/img_round_square"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_translucent_white_square"
             android:clipToOutline="true"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photo_tv_exit" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/photo_tv_calendar"
+            style="@style/common_text_16_dark_gray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:gravity="end
-"
-            android:text="calendar"
+            android:maxLines="1"
+            android:maxLength="16"
+            android:text=""
             app:layout_constraintEnd_toEndOf="@+id/photo_iv_title"
-            app:layout_constraintStart_toStartOf="@+id/photo_iv_title"
             app:layout_constraintTop_toBottomOf="@+id/photo_iv_title" />
 
         <TextView
             android:id="@+id/photo_tv_title"
+            style="@style/point_text_32_dark_gray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="title"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/photo_tv_edit"
-            app:layout_constraintEnd_toEndOf="@+id/photo_iv_title"
-            app:layout_constraintStart_toStartOf="@+id/photo_iv_title"
-            app:layout_constraintTop_toBottomOf="@+id/photo_iv_title" />
-
-        <EditText
-            android:id="@+id/photo_et_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:hint="사진을 한줄로 설명해주세요."
-            android:inputType="text"
             android:maxLines="1"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/photo_tv_edit"
+            android:text="text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/photo_iv_title"
             app:layout_constraintStart_toStartOf="@+id/photo_iv_title"
-            app:layout_constraintTop_toBottomOf="@+id/photo_iv_title" />
-
-
-
-        <TextView
-            android:id="@+id/photo_tv_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="수정"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/photo_tv_calendar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/photo_iv_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        style="@style/common_text_16_dark_gray"
+        android:text="날짜설정  "
+        app:drawableEndCompat="@drawable/icon_calendar"
+       app:layout_constraintBottom_toTopOf="@+id/photo_et_title"
+        app:layout_constraintEnd_toEndOf="@+id/photo_layout_inside"
+        app:layout_constraintStart_toStartOf="@+id/photo_layout_inside"
+        app:layout_constraintTop_toBottomOf="@+id/photo_layout_inside" />
+
+
+    <EditText
+        android:id="@+id/photo_et_title"
+        style="@style/common_text_16_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:hint="사진의 제목을 입력해주세요."
+        android:inputType="text"
+        android:maxLength="16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/photo_layout_inside"
+        app:layout_constraintStart_toStartOf="@+id/photo_layout_inside"
+        app:layout_constraintTop_toBottomOf="@+id/photo_iv_calendar" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

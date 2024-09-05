@@ -48,8 +48,8 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-//        gallerySharedViewModel.loadGalleryList()
-
+        gallerySharedViewModel.loadGalleryList()
+Log.d("데이터 있나?", "${gallerySharedViewModel.galleryListLiveData.value}")
 
         initDialog()
     }

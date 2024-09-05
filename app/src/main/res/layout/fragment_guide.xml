@@ -11,31 +11,30 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:src="@drawable/icon_left"
         android:clickable="true"
+        android:src="@drawable/sel_btn_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-
     <TextView
         android:id="@+id/guide_tv_progress_text"
+        style="@style/common_text_20_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:text="text"
-        android:textSize="24sp"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="@+id/guide_iv_back"
+        android:text="text"
         app:layout_constraintBottom_toBottomOf="@+id/guide_iv_back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="@+id/guide_iv_back" />
 
     <ImageView
         android:id="@+id/guide_iv_exit"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:src="@drawable/icon_cancellation"
+        android:src="@drawable/sel_btn_cancellation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,36 +43,33 @@
         android:layout_width="0dp"
         android:layout_height="5dp"
         android:layout_margin="16dp"
-        android:src="@color/black"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guide_iv_back" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/guide_story_layout"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-
-    <TextView
-        android:id="@+id/guide_tv_story"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="text"
-        android:gravity="center"
-        android:textColor="@color/white"
+        android:layout_height="180dp"
         android:background="@drawable/bg_translucent_black_guide_story"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
 
-
-
+        <TextView
+            android:id="@+id/guide_tv_story"
+            style="@style/common_text_16_white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:maxLines="2"
+            android:text="text"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guide_iv_next" />
 
 
         <ImageView
@@ -81,10 +77,10 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="16dp"
-            android:src="@color/white"
             android:clickable="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:src="@drawable/icon_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

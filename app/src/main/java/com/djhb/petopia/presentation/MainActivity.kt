@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         mainHomeGuideSharedViewModel.guideFunctionLiveData.observe(this) {
             Log.d("지금 프래그먼트는", "${mainHomeGuideSharedViewModel.currentHomeLiveData.value}")
-            binding.mainViewPager.isUserInputEnabled = false
+//            binding.mainViewPager.isUserInputEnabled = false
             when (it) {
                 "MOVE_MEMORY_BRIDGE", "MOVE_EARTH"-> {
                     binding.mainViewPager.isUserInputEnabled = true
@@ -141,12 +141,17 @@ class MainActivity : AppCompatActivity() {
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {
         binding.mainViewPager.isUserInputEnabled = true
-        viewPager.setCurrentItem(0, true)
+        moveToPetopia()
         supportFragmentManager.beginTransaction()
             .remove(GuideFragment())
             .commit()
 
     }
+
+    fun moveToPetopia() {
+        viewPager.setCurrentItem(0, true)
+    }
+
 
     fun hideViewPager() = with(binding) {
         mainSubFrame.isVisible = true
@@ -159,5 +164,6 @@ class MainActivity : AppCompatActivity() {
         viewPager.isVisible = true
         mainTabLayout.isVisible = true
     }
+
 
 }

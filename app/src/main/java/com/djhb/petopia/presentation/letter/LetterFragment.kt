@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.letter
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
@@ -105,6 +106,8 @@ class LetterFragment : DialogFragment() {
         manager.stackFromEnd = true
     }
 
+
+
     private fun initDialog() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -117,7 +120,7 @@ class LetterFragment : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 1.4).toInt()
+        params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }

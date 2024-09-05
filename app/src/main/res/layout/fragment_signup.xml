@@ -14,14 +14,13 @@
 
         <TextView
             android:id="@+id/tv_signup_title"
+            style="@style/common_text_20_bold_dark_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="50dp"
-            android:text="회원가입"
-            android:textColor="@color/skyblue"
-            android:textSize="26sp" />
+            android:text="회원가입" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -162,32 +161,28 @@
             android:orientation="horizontal"
             android:padding="10dp">
 
-            <android.widget.Button
+            <TextView
                 android:id="@+id/btn_signup_cancel"
+                style="@style/common_btn_16_bold_blue"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/border_round_btn"
-                android:backgroundTint="@color/white"
-                android:elevation="5dp"
-                android:text="@string/signup_btn_cancel"
-                android:textColor="@color/gray"
-                android:textSize="18sp" />
+                android:text="text"
+                android:background="@drawable/sel_btn_square_white_blue"
+                android:elevation="5dp" />
 
-            <android.widget.Button
+            <TextView
                 android:id="@+id/btn_signup_check"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/border_round"
-                android:backgroundTint="@color/skyblue"
-                android:text="@string/signup_btn_complete"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:text="text"
+                android:background="@drawable/sel_btn_square_blue_white"
+                style="@style/common_btn_16_bold_white" />
 
 
         </LinearLayout>

@@ -5,22 +5,24 @@
     android:id="@+id/home_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img_home_background"
     tools:context=".presentation.home.HomePetopiaFragment">
 
     <TextView
         android:id="@+id/home_tv_name_pet"
+        style="@style/common_text_24_bold_dark_gray"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="text"
-        android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/home_tv_name_user"
+        style="@style/common_text_16_dark_gray"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
@@ -31,30 +33,31 @@
 
     <ImageView
         android:id="@+id/home_iv_gallery"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:background="@color/skyblue"
+        android:background="@drawable/btn_album"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_tv_name_user" />
 
     <ImageView
         android:id="@+id/home_iv_letter"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:background="@color/skyblue"
+        android:background="@drawable/btn_letter"
         app:layout_constraintEnd_toEndOf="@+id/home_iv_gallery"
         app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
 
 
     <TextView
         android:id="@+id/home_tv_guide"
+        style="@style/common_btn_16_bold_white"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:background="@color/skyblue"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_round_translucent_black"
         android:text="guide"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +68,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginTop="200dp"
-        android:background="@color/skyblue"
+        android:background="@drawable/img_persian"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,10 +76,10 @@
 
     <ImageView
         android:id="@+id/home_iv_arrow_under"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:background="@color/skyblue"
+        android:background="@drawable/icon_arrow_translucent_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

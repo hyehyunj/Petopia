@@ -5,19 +5,20 @@
     android:id="@+id/letter_writing_pad_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     tools:context=".presentation.letter.LetterWritingPadFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/img_outline_square">
+        android:background="@drawable/bg_ivory">
 
         <ImageView
             android:id="@+id/btn_letter_writepad_exit"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:background="@color/skyblue"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/sel_btn_left"
             app:layout_constraintBottom_toBottomOf="@id/tv_letter_writepad_layout_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_letter_writepad_layout_title" />
@@ -27,10 +28,9 @@
             android:id="@+id/tv_letter_writepad_layout_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_margin="16dp"
             android:text="@string/letter_pad_title"
-            android:textSize="26sp"
-            android:textStyle="bold"
+            style="@style/common_text_20_bold_dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -39,7 +40,6 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
-
 
     }
 
@@ -80,11 +80,13 @@ class HomePetopiaFragment : Fragment() {
                         homeTvGuide.isVisible = true
                     }
                 }
+
                 "ESSENTIAL" -> {
                     binding.apply {
                         homeTvGuide.isVisible = false
                     }
                 }
+
                 "DONE" -> {
                     binding.apply {
                         homeTvNameUser.isVisible = true
@@ -96,6 +98,7 @@ class HomePetopiaFragment : Fragment() {
                         homeTvGuide.isVisible = false
                     }
                 }
+
                 "OPTIONAL" -> {
                     binding.apply {
                         homeTvNameUser.isVisible = true
@@ -115,10 +118,12 @@ class HomePetopiaFragment : Fragment() {
                     homeIvGallery.isVisible = false
                     homeIvLetter.isVisible = false
                 }
+
                 "GALLERY_LETTER" -> binding.apply {
                     homeIvGallery.isVisible = true
                     homeIvLetter.isVisible = true
                 }
+
                 "MOVE_MEMORY_BRIDGE" -> {
                     binding.homeIvArrowUnder.isVisible = true
                 }
@@ -143,8 +148,8 @@ class HomePetopiaFragment : Fragment() {
     }
 
 
-private fun showGalleryFragment() {
-    GalleryFragment().show(childFragmentManager, "GALLERY_FRAGMENT")
+    private fun showGalleryFragment() {
+        GalleryFragment().show(childFragmentManager, "GALLERY_FRAGMENT")
 
 
 //        childFragmentManager.beginTransaction()
@@ -169,10 +174,20 @@ private fun showGalleryFragment() {
 
     }
 
+    private fun initAnimation() {
+        binding.homeIvArrowUnder.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.move_under)
+        )
+    }
 
     private fun showLetterFragment() {
         LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
     }
 
+    override fun onResume() {
+        super.onResume()
+        initAnimation()
+
+    }
 
 }

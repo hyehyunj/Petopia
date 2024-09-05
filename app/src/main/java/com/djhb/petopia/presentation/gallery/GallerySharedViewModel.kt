@@ -119,46 +119,68 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
     fun considerNewPhoto(dateTime: LocalDateTime) {
+        newPhotoList = newPhotoList.copy(
+            photoDate = dateTime.toString()
+        )
+//        when (_layoutModeLiveData.value) {
+//            "ADD" -> {
+//                newPhotoList = newPhotoList.copy(
+//                    createdDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+//                )
+//            }
+//
+//            "EDIT" -> {
+//                newPhotoList = newPhotoList.copy(
+//                    updatedDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+//                )
+//            }
+//        }
+    }
+
+
+    //등록 또는 변경될 가능성이 있는 사진의 제목을 담는 함수
+    fun considerNewPhoto(editText: String) {
         when (_layoutModeLiveData.value) {
             "ADD" -> {
                 newPhotoList = newPhotoList.copy(
-                    createdDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                    titleText = editText
                 )
             }
 
             "EDIT" -> {
                 newPhotoList = newPhotoList.copy(
-                    updatedDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+                    titleText = editText
                 )
             }
         }
     }
 
 
+
+    fun prepared() : Boolean {
+        Log.d("준비?", "${newPhotoList}")
+        return newPhotoList.imageUris.isNotEmpty() && newPhotoList.titleText.isNotEmpty()
+    }
+
     //현재 사진을 새 사진으로 교체하는 함수
-    fun updateNewGallery(titleText: String, index: Int) {
+    fun updateNewGallery(index: Int) {
         galleryList = _galleryListLiveData.value?.toMutableList() ?: mutableListOf()
         Log.d("추가하는 사본", "${galleryList}")
 
         when (_layoutModeLiveData.value) {
             "ADD" -> {
                 _currentPhotoListLiveData.value =
-                    newPhotoList.copy(
-                        titleText = titleText,
-                    )
+                    newPhotoList
                 galleryList.add(0, _currentPhotoListLiveData.value!!)
-//                saveGalleryList()
             }
-
             "EDIT" -> {
-                _currentPhotoListLiveData.value = newPhotoList.copy(
-                    titleText = titleText,
-                )
+                _currentPhotoListLiveData.value = newPhotoList
                 galleryList[index] = _currentPhotoListLiveData.value!!
-
             }
         }
         _galleryListLiveData.value = galleryList
+        saveGalleryList()
+
     }
 
     //삭제 모드를 변경해주는 함수

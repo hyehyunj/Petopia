@@ -1,10 +1,13 @@
 package com.djhb.petopia.presentation.home
 
+import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -41,7 +44,7 @@ class HomeMemoryBridgeFragment : Fragment() {
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
         binding.homeMemoryBridgeTvMemoryTitle.setText("오늘의 메모리")
-        binding.homeMemoryBridgeTvMemoryBtn.setText("작성하기")
+//        binding.homeMemoryBridgeTvMemoryBtn.setText("작성하기")
 
         homeMemoryBridgeButtonClickListener()
         homeMemoryBridgeDataObserver()
@@ -66,12 +69,14 @@ class HomeMemoryBridgeFragment : Fragment() {
             Log.d("memorybuttonclick", "메모리버튼 클릭")
 
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
+
             memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
                 if (it == true) {
                     binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
-                    binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
+//                    binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
 
                 }
+
             }
 
 
@@ -126,6 +131,21 @@ class HomeMemoryBridgeFragment : Fragment() {
     }
 
 
+
+
+    private fun initAnimation() {
+        binding.homeMemoryBridgeIvArrowUnder.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.move_under)
+        )
+        binding.homeMemoryBridgeIvEmotion.startAnimation(
+        AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
+        )
+        binding.homeMemoryBridgeTvMemoryBtn.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
+        )
+
+    }
+
     private fun setMemoryFragment() {
 //        val transaction = requireActivity().supportFragmentManager.beginTransaction()
 //        transaction.replace(R.id.home_layout, MemoryFragment())
@@ -140,5 +160,9 @@ class HomeMemoryBridgeFragment : Fragment() {
 //        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
 //    }
 
-
+    override fun onResume() {
+        super.onResume()
+        initAnimation()
+        
+    }
 }

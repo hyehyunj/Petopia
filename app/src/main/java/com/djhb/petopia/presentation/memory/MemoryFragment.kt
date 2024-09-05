@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.memory
 
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
@@ -45,7 +46,6 @@ class MemoryFragment() : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initAdapter()
         initDialog()
 //        homeSharedViewModel =
@@ -121,7 +121,6 @@ class MemoryFragment() : DialogFragment() {
         manager.stackFromEnd = true
     }
 
-
     //다이얼로그 크기 조절 함수
     private fun initDialog() {
         val windowManager =
@@ -135,7 +134,7 @@ class MemoryFragment() : DialogFragment() {
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 1.4).toInt()
+        params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
