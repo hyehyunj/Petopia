@@ -54,8 +54,8 @@ class GalleryRepositoryImpl : GalleryRepository {
             }
 
 
-            if (isFailRT || isFailStorage)
-                continuation.resumeWithException(Exception("create gallery fail"))
+//            if (isFailRT || isFailStorage)
+//                continuation.resumeWithException(Exception("create gallery fail"))
             continuation.resume(true)
             return@suspendCancellableCoroutine
 
@@ -125,8 +125,8 @@ class GalleryRepositoryImpl : GalleryRepository {
                 }.addOnFailureListener {
                     continuation.resumeWithException(it)
                 }
-                continuation.resume(galleryList)
             }
+            continuation.resume(galleryList)
         }
     }
 
