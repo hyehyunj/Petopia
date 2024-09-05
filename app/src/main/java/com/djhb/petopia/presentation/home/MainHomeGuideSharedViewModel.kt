@@ -3,6 +3,7 @@ package com.djhb.petopia.presentation.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.djhb.petopia.data.PetModel
 import com.djhb.petopia.data.UserModel
 
 
@@ -30,11 +31,20 @@ class MainHomeGuideSharedViewModel () :
     private val _currentHomeLiveData = MutableLiveData(0)
     val currentHomeLiveData: LiveData<Int> = _currentHomeLiveData
 
+    //유저 반려동물 :
+    private val _userPetLiveData = MutableLiveData<PetModel>()
+    val userPetLiveData: LiveData<PetModel> = _userPetLiveData
 
     //가이드 상태를 업데이트 해주는 함수
     fun updateGuideState(state: String) {
         _guideStateLiveData.value = state
     }
+
+    //유저 반려동물 정보를 불러오는 함수
+//    fun loadUserPet() {
+//        _userPetLiveData.value = user.pet
+//    }
+
 
     fun updateCurrentHome(fragmentPosition: Int) {
         _currentHomeLiveData.value = fragmentPosition

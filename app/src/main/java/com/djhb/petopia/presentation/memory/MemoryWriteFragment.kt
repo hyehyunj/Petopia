@@ -86,8 +86,8 @@ class MemoryWriteFragment : DialogFragment() {
         size.y
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
-        params?.width = (deviceWidth * 0.8).toInt()
-        params?.height = (deviceWidth * 1.4).toInt()
+        params?.width = (deviceWidth * 0.9).toInt()
+        params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }

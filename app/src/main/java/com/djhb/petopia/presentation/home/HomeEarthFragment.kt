@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
+import com.djhb.petopia.presentation.MainActivity
 
 class HomeEarthFragment : Fragment() {
     private val _binding: FragmentHomeEarthBinding by lazy {
@@ -54,6 +57,13 @@ class HomeEarthFragment : Fragment() {
         //메모리버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
         }
+
+        //최상단 이동버튼 클릭이벤트 :
+        binding.homeEarthFabTop.setOnClickListener {
+            (activity as MainActivity).moveToPetopia()
+        }
+
+
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
@@ -73,4 +83,8 @@ class HomeEarthFragment : Fragment() {
         }
 
     }
+
+
+
+
     }
