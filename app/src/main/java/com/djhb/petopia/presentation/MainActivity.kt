@@ -3,6 +3,7 @@ package com.djhb.petopia.presentation
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
@@ -146,7 +147,23 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
     }
+
     fun moveToPetopia() {
         viewPager.setCurrentItem(0, true)
     }
+
+
+    fun hideViewPager() = with(binding) {
+        mainSubFrame.isVisible = true
+        viewPager.isVisible = false
+        mainTabLayout.isVisible = false
+    }
+
+    fun showViewPager() = with(binding) {
+        mainSubFrame.isVisible = false
+        viewPager.isVisible = true
+        mainTabLayout.isVisible = true
+    }
+
+
 }
