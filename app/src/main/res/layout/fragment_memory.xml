@@ -61,7 +61,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/icon_1st_rank_temp"
+            android:background="@drawable/icon_delete"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/tv_memory_list_title"
             app:layout_constraintEnd_toEndOf="parent"

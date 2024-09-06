@@ -3,6 +3,7 @@ package com.djhb.petopia.presentation.register
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.ActivityRegisterBinding
 import com.djhb.petopia.presentation.register.signin.SigninFragment
@@ -15,6 +16,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         setContentView(binding.root)
 
         //초기 프래그먼트 설정
