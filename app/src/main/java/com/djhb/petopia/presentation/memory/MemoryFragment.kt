@@ -123,6 +123,11 @@ class MemoryFragment() : DialogFragment() {
             if (listRecyclerViewAdapter.isDeleteMode) {
                 listRecyclerViewAdapter.toggleDeleteMode()
             }
+            Log.d("MemoryFragment", "${listRecyclerViewAdapter.isCleared}")
+            if(!listRecyclerViewAdapter.isCleared){
+                listRecyclerViewAdapter.clearSelections()
+            }
+
             binding.btnImageDeleteCancel.visibility = View.GONE
             binding.btnMemoryDelete.visibility = View.VISIBLE
             binding.btnMemoryDelete2.visibility = View.GONE
