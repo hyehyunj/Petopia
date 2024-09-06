@@ -9,8 +9,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.community.CommunityMainFragment
+import com.djhb.petopia.presentation.guide.GuideFragment
 
 class HomeEarthFragment : Fragment() {
     private val _binding: FragmentHomeEarthBinding by lazy {
@@ -56,6 +59,15 @@ class HomeEarthFragment : Fragment() {
 
         //메모리버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
+
+            childFragmentManager.beginTransaction()
+                .replace(
+                    R.id.home_earth_container, CommunityMainFragment()
+                )
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit()
+
         }
 
         //최상단 이동버튼 클릭이벤트 :
@@ -69,18 +81,7 @@ class HomeEarthFragment : Fragment() {
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun homeEarthDataObserver() {
         //가이드 상태 변화감지 : 가이드 상태에 따라 화면구성 변경
-        mainHomeGuideViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                "OPTIONAL" -> binding.homeEarthFabTop.isVisible = false
-                "NONE", "DONE" -> binding.homeEarthFabTop.isVisible = true
-            }
-        }
 
-        mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                "MOVE_UPPER" -> binding.homeEarthFabTop.isVisible = true
-            }
-        }
 
     }
 

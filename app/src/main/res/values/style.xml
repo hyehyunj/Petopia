@@ -123,6 +123,13 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="point_text_50_dark_gray">
+        <item name="android:textSize">50sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
     <!-- EditText -->
     <style name="edit_text_login" parent="Widget.Design.TextInputLayout">
@@ -159,6 +166,15 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
+
+    <!-- Guide Dialog -->
+    <style name="guide_text_dialog">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/sel_text_guide_appearance</item>
+    </style>
+
 
     <!-- List -->
 

@@ -179,7 +179,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             }
         }
         _galleryListLiveData.value = galleryList
-        saveGalleryList()
+//        saveGalleryList()
 
     }
 

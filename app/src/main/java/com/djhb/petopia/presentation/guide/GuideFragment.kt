@@ -21,7 +21,9 @@ class GuideFragment : Fragment() {
         FragmentGuideBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private val guideViewModel by viewModels<GuideSharedViewModel>()
+    private val guideViewModel by viewModels<GuideSharedViewModel> {
+        GuideSharedViewModelFactory()
+    }
     private lateinit var mainHomeGuideSharedViewModel: MainHomeGuideSharedViewModel
 
     override fun onCreateView(
@@ -36,7 +38,6 @@ class GuideFragment : Fragment() {
 
         mainHomeGuideSharedViewModel =
             ViewModelProvider(requireActivity())[MainHomeGuideSharedViewModel::class.java]
-
         guideButtonClickListener()
         guideDataObserver()
 
@@ -46,6 +47,9 @@ class GuideFragment : Fragment() {
     private fun guideButtonClickListener() {
         //다음으로 버튼 클릭이벤트
         binding.guideIvNext.setOnClickListener {
+            guideViewModel.guideButtonClickListener("NEXT")
+        }
+        binding.guideStoryLayout.setOnClickListener {
             guideViewModel.guideButtonClickListener("NEXT")
         }
         //뒤로가기 버튼 클릭이벤트
@@ -86,7 +90,6 @@ class GuideFragment : Fragment() {
     private fun guideDataObserver() {
         //페이지 변화감지 : 다음으로 또는 뒤로가기 버튼 클릭에 따라 페이지 번호 변경
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
-            Log.d("반려동물", "${guideViewModel.petModelLiveData.value}")
             Log.d("페이지", "${guideViewModel.guidePageNumberLiveData.value}")
             when (it) {
 
@@ -95,6 +98,7 @@ class GuideFragment : Fragment() {
                 8 -> {
                     mainHomeGuideSharedViewModel.updateGuideState("OPTIONAL")
                     guideViewModel.makeGuideModel()
+                    mainHomeGuideSharedViewModel.getPetData()
                     binding.apply {
                         guideTvProgressText.isVisible = false
                         guideIvProgressBar.isVisible = false
@@ -121,9 +125,6 @@ class GuideFragment : Fragment() {
                     mainHomeGuideSharedViewModel.updateGuideState("DONE")
                 }
             }
-//지구 이동이 안됨
-
-
         }
 
         //가이드모델 변화감지 : 페이지 번호에 따라 화면 구성 변경

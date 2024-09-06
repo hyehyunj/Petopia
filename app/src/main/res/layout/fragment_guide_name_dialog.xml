@@ -29,6 +29,8 @@
             android:maxLines="1"
             android:maxLength="20"
             android:inputType="text"
+            style="@style/common_text_16_dark_gray"
+            android:textColorHint="@color/main_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

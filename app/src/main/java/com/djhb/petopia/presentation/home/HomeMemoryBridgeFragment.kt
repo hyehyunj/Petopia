@@ -1,7 +1,5 @@
 package com.djhb.petopia.presentation.home
 
-import android.animation.ValueAnimator
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,7 +13,6 @@ import com.djhb.petopia.R
 import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
-import com.djhb.petopia.databinding.FragmentMemoryBinding
 import com.djhb.petopia.presentation.memory.MemoryFragment
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -61,7 +58,7 @@ class HomeMemoryBridgeFragment : Fragment() {
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
-        binding.homeMemoryBridgeTvMemoryBtn.setOnClickListener {
+        binding.homeMemoryBridgeMemoryContainer.setOnClickListener {
             if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
                 toastMoveUnder() else setMemoryFragment()
 
@@ -140,9 +137,19 @@ class HomeMemoryBridgeFragment : Fragment() {
         binding.homeMemoryBridgeIvEmotion.startAnimation(
         AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
         )
-        binding.homeMemoryBridgeTvMemoryBtn.startAnimation(
-            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
+                binding.homeMemoryBridgeMemoryEffectShine1.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.shine1)
         )
+                binding.homeMemoryBridgeMemoryEffectShine2.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.shine2)
+        )
+        binding.homeMemoryBridgeMemoryEffectShine3.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.shine3)
+        )
+
+//        binding.homeMemoryBridgeMemoryContainer.startAnimation(
+//            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
+//        )
 
     }
 

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:background="@drawable/img_login_cloud"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/img_login_cloud"
     tools:context=".presentation.register.signin.SigninFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,32 +16,32 @@
             android:id="@+id/iv_main_logo"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/logo2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/signin_layout"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:id="@+id/signin_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="180dp"
             android:orientation="vertical"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/choose_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_main_logo"
-            app:layout_constraintBottom_toTopOf="@+id/choose_login">
+            app:layout_constraintTop_toBottomOf="@id/iv_main_logo">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxStrokeWidth="2dp"
+                android:hint="아이디"
+                app:boxBackgroundColor="@color/translucent_white"
                 app:boxStrokeColor="@color/main_blue"
-                app:hintTextColor="@color/main_blue"
-                android:hint="아이디">
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@color/main_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_id"
@@ -52,11 +52,13 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:boxStrokeWidth="2dp"
-                app:hintTextColor="@color/main_blue"
+                android:layout_marginTop="4dp"
+                android:clipToOutline="true"
+                android:hint="비밀번호"
+                app:boxBackgroundColor="@color/translucent_white"
                 app:boxStrokeColor="@color/main_blue"
-                android:hint="비밀번호">
+                app:boxStrokeWidth="2dp"
+                app:hintTextColor="@color/main_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_password"
@@ -136,7 +138,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/sel_btn_square_blue_white"
                 android:padding="4dp"
-                android:text="완료" />
+                android:text="@string/common_sign_in" />
 
             <View
                 android:id="@+id/divide_line"
@@ -165,10 +167,10 @@
             android:id="@+id/btn_google_signin"
             android:layout_width="66dp"
             android:layout_height="66dp"
+            android:layout_marginBottom="32dp"
             android:background="@drawable/bg_round_white"
             android:elevation="5dp"
             android:padding="16dp"
-            android:layout_marginBottom="32dp"
             android:src="@drawable/icon_google"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"

@@ -1,19 +1,32 @@
 package com.djhb.petopia.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import com.djhb.petopia.data.GuideLocalDataSource
+import com.djhb.petopia.data.PetLocalDatasource
 import com.djhb.petopia.data.PetModel
 import com.djhb.petopia.data.UserModel
+import com.djhb.petopia.data.remote.GuideRepository
+import com.djhb.petopia.data.remote.GuideRepositoryImpl
+import com.djhb.petopia.data.remote.PetRepository
+import com.djhb.petopia.data.remote.PetRepositoryImpl
+import com.djhb.petopia.presentation.guide.GuideSharedViewModel
 
 
 //펫토피아 뷰모델
-class MainHomeGuideSharedViewModel () :
+class MainHomeGuideSharedViewModel (
+   private val petRepository: PetRepository
+) :
     ViewModel() {
 
         private val user = UserModel()
 
-    //가이드 상태 : "NONE" 모든 가이드 미완료,
+    //가이드 상태 :
+    // "NONE" 모든 가이드 미완료,
     // "ESSENTIAL" 필수 가이드 진행중,
     // "DONE" 가이드 완료,
     // "OPTIONAL" 선택 가이드 진행중
@@ -41,9 +54,10 @@ class MainHomeGuideSharedViewModel () :
     }
 
     //유저 반려동물 정보를 불러오는 함수
-//    fun loadUserPet() {
-//        _userPetLiveData.value = user.pet
-//    }
+    fun getPetData() {
+        _userPetLiveData.value = petRepository.getPetData()
+        Log.d("반려동물", "${_userPetLiveData.value}")
+    }
 
 
     fun updateCurrentHome(fragmentPosition: Int) {
@@ -75,4 +89,17 @@ class MainHomeGuideSharedViewModel () :
 
 
 
+}
+
+class MainHomeGuideSharedViewModelFactory : ViewModelProvider.Factory {
+    private val petRepository = PetRepositoryImpl(PetLocalDatasource)
+    override fun <T : ViewModel> create(
+        modelClass: Class<T>,
+        extras: CreationExtras
+    ): T {
+
+        return MainHomeGuideSharedViewModel(
+            petRepository
+        ) as T
+    }
 }
