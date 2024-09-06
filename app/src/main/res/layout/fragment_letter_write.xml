@@ -39,7 +39,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/icon_search"
+            android:background="@drawable/icon_check"
             app:layout_constraintBottom_toBottomOf="@id/tv_letter_write_layout_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_letter_write_layout_title" />

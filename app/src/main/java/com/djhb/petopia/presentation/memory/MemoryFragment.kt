@@ -65,9 +65,9 @@ class MemoryFragment() : DialogFragment() {
         }
 
         //메모리 최초 작성시 버튼 사라지게 함
-        if (memoryViewModel.isMemorySaved.value == true) {
-            binding.btnAnswer.visibility = View.GONE
-        }
+//        if (memoryViewModel.isMemorySaved.value == true) {
+//            binding.btnAnswer.visibility = View.GONE
+//        }
 
         //현재 로그인한 유저의 정보를 로드
         val currentUser = getCurrentUser()
@@ -78,7 +78,7 @@ class MemoryFragment() : DialogFragment() {
 
 
 
-        binding.btnAnswer.setOnClickListener {
+        binding.memoryTodayMemoryLayout.setOnClickListener {
             setMemoryWriteFragment() // 메모리 작성 프래그먼트 이동
         }
 

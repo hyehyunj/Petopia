@@ -49,7 +49,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:checked="true"
-                android:background="@drawable/sel_btn_guide_appearance"
+                android:background="@drawable/sel_btn_guide_appearance_left"
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:text="강아지" />
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/sel_btn_guide_appearance"
+                android:background="@drawable/sel_btn_guide_appearance_right"
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:text="고양이"

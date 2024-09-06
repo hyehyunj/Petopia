@@ -46,6 +46,9 @@ class GuideFragment : Fragment() {
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun guideButtonClickListener() {
         //다음으로 버튼 클릭이벤트
+        binding.guideIvNext.setOnClickListener {
+            guideViewModel.guideButtonClickListener("NEXT")
+        }
         binding.guideStoryLayout.setOnClickListener {
             guideViewModel.guideButtonClickListener("NEXT")
         }

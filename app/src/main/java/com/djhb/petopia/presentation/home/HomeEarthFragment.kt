@@ -81,18 +81,7 @@ class HomeEarthFragment : Fragment() {
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun homeEarthDataObserver() {
         //가이드 상태 변화감지 : 가이드 상태에 따라 화면구성 변경
-        mainHomeGuideViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                "OPTIONAL" -> binding.homeEarthFabTop.isVisible = false
-                "NONE", "DONE" -> binding.homeEarthFabTop.isVisible = true
-            }
-        }
 
-        mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
-            when (it) {
-                "MOVE_UPPER" -> binding.homeEarthFabTop.isVisible = true
-            }
-        }
 
     }
 

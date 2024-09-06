@@ -123,6 +123,13 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="point_text_50_dark_gray">
+        <item name="android:textSize">50sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
     <!-- EditText -->
     <style name="edit_text_login" parent="Widget.Design.TextInputLayout">

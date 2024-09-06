@@ -37,15 +37,13 @@ class MainActivity : AppCompatActivity() {
 
 //액티비티 공유 뷰모델 갖다 쓰세요~!
         //private val sharedViewModel : MainViewModel by activityViewModels()
-
-
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
             Log.d("액티비티 종료?", "${it}")
             when (it) {
                 "DONE" -> {
                     finishGuideFragment()
                 }
-                "NONE" -> binding.mainViewPager.isUserInputEnabled = true
+                "ESSENTIAL" -> binding.mainViewPager.isUserInputEnabled = false
             }
         }
 
@@ -78,21 +76,6 @@ class MainActivity : AppCompatActivity() {
         val mainViewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = mainViewPagerAdapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
-        TabLayoutMediator(binding.mainTabLayout, binding.mainViewPager) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = getString(R.string.common_petopia)
-                }
-
-                1 -> {
-                    tab.text = getString(R.string.common_memory_bridge)
-                }
-
-                2 -> {
-                    tab.text = getString(R.string.common_earth)
-                }
-            }
-        }.attach()
     }
 
     fun cancelGuide() {
@@ -161,13 +144,11 @@ class MainActivity : AppCompatActivity() {
     fun hideViewPager() = with(binding) {
         mainSubFrame.isVisible = true
         viewPager.isVisible = false
-        mainTabLayout.isVisible = false
     }
 
     fun showViewPager() = with(binding) {
         mainSubFrame.isVisible = false
         viewPager.isVisible = true
-        mainTabLayout.isVisible = true
     }
 
 
