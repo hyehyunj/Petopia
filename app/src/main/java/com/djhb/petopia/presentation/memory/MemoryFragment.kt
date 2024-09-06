@@ -1,7 +1,6 @@
 package com.djhb.petopia.presentation.memory
 
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
@@ -21,8 +20,6 @@ import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentMemoryBinding
-import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
-import com.djhb.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
 
 class MemoryFragment() : DialogFragment() {
@@ -80,11 +77,55 @@ class MemoryFragment() : DialogFragment() {
 
         binding.memoryTodayMemoryLayout.setOnClickListener {
             setMemoryWriteFragment() // 메모리 작성 프래그먼트 이동
+            if (listRecyclerViewAdapter.isDeleteMode) {
+                listRecyclerViewAdapter.toggleDeleteMode()
+                binding.btnImageDeleteCancel.visibility = View.GONE
+                binding.btnMemoryDelete.visibility = View.VISIBLE
+                binding.btnMemoryDelete2.visibility = View.GONE
+                listRecyclerViewAdapter.clearSelections()
+                //삭제모드가 켜있을때 작성하기를 누르면 삭제모드가 꺼짐
+            }
         }
 
         binding.btnMemoryExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
+        }
+
+        binding.btnMemoryDelete.setOnClickListener {
+            listRecyclerViewAdapter.toggleDeleteMode()
+            binding.btnImageDeleteCancel.visibility = View.VISIBLE
+            binding.btnMemoryDelete.visibility = View.GONE
+            binding.btnMemoryDelete2.visibility = View.VISIBLE
+        }
+
+        binding.btnMemoryDelete2.setOnClickListener {
+            if (listRecyclerViewAdapter.isDeleteMode) {
+                val selectedItems = listRecyclerViewAdapter.getSelectedItems()
+                selectedItems.forEach { item ->
+                    memoryViewModel.deleteMemoryList(item)
+                }
+                listRecyclerViewAdapter.toggleDeleteMode()
+
+                binding.btnImageDeleteCancel.visibility = View.GONE
+                binding.btnMemoryDelete.visibility = View.VISIBLE
+                binding.btnMemoryDelete2.visibility = View.GONE
+
+                listRecyclerViewAdapter.clearSelections()
+            }
+            memoryViewModel.memoryListLiveData.value.let { updateList ->
+                listRecyclerViewAdapter.submitList(updateList)
+            }
+        }
+
+
+        binding.btnImageDeleteCancel.setOnClickListener {
+            if (listRecyclerViewAdapter.isDeleteMode) {
+                listRecyclerViewAdapter.toggleDeleteMode()
+            }
+            binding.btnImageDeleteCancel.visibility = View.GONE
+            binding.btnMemoryDelete.visibility = View.VISIBLE
+            binding.btnMemoryDelete2.visibility = View.GONE
         }
 
         //리사이클러뷰 강제로 업데이트
@@ -181,8 +222,8 @@ class MemoryFragment() : DialogFragment() {
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->
             listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
-
         }
 
     }
+
 }

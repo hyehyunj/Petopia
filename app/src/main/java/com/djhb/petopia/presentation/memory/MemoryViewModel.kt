@@ -1,4 +1,4 @@
-package com.djhb.petopia.presentation.memory.ViewModel
+package com.djhb.petopia.presentation.memory
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

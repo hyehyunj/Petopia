@@ -14,10 +14,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.Memory
-import com.djhb.petopia.data.remote.MemoryRepository
-import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentMemoryWriteBinding
-import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 

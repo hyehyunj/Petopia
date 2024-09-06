@@ -37,6 +37,16 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/btn_image_delete_cancel"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/sel_btn_cancellation"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/btn_memory_delete2"
+            app:layout_constraintEnd_toStartOf="@id/btn_memory_delete2"
+            app:layout_constraintTop_toTopOf="@id/btn_memory_delete2" />
+
+        <ImageView
             android:id="@+id/btn_memory_delete"
             android:layout_width="48dp"
             android:layout_height="48dp"
@@ -46,16 +56,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_memory_list_title" />
 
+        <ImageView
+            android:id="@+id/btn_memory_delete2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/icon_1st_rank_temp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/tv_memory_list_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_memory_list_title" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/memory_today_memory_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="2:1"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/bg_translucent_black_square"
             android:elevation="5dp"
             android:visibility="visible"
+            app:layout_constraintDimensionRatio="2:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_memory_list_title">

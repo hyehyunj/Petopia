@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
-import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
+import com.djhb.petopia.presentation.memory.MemoryViewModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
 import com.djhb.petopia.presentation.memory.MemoryFragment
