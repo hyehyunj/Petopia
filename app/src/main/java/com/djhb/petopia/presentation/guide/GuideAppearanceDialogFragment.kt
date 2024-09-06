@@ -32,7 +32,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         guideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(com.djhb.petopia.presentation.guide.GuideSharedViewModel::class.java)
+            ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
 
         initAdapter()
 
@@ -49,33 +49,28 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             dismiss()
         }
 
-        guideSharedViewModel.appearanceLiveData.observe(viewLifecycleOwner) {
-            guideSharedViewModel.changeDetailAppearance()
+        guideSharedViewModel.breedLiveData.observe(viewLifecycleOwner) {
+            guideSharedViewModel.changeAppearance()
         }
 
-        guideSharedViewModel.detailAppearanceListLiveData.observe(viewLifecycleOwner) {
+        guideSharedViewModel.appearanceListLiveData.observe(viewLifecycleOwner) {
             initAdapter()
         }
 
-        binding.guideAppearanceDialogRbDog.setOnClickListener {
-            guideSharedViewModel.changeAppearance("DOG")
-            Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
+        binding.guideAppearanceDialogRg.setOnCheckedChangeListener { _, id ->
+            when (id) {
+                R.id.guide_appearance_dialog_rb_dog -> guideSharedViewModel.changeBreed("DOG")
+                R.id.guide_appearance_dialog_rb_cat -> guideSharedViewModel.changeBreed("CAT")
+            }
         }
-        binding.guideAppearanceDialogRbDog.setOnClickListener {
-            guideSharedViewModel.changeAppearance("CAT")
-            Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
-        }
-
 
         binding.guideAppearanceDialogTvComplete.setOnClickListener {
-            Log.d("외모", "${guideSharedViewModel.detailAppearanceListLiveData.value}")
-            if (guideSharedViewModel.petModelLiveData.value?.petAppearance == "")
-                StyleableToast.makeText(requireActivity(), "외형을 선택해주세요", R.style.toast_custom)
-                    .show()
-            else {
+            Log.d("외모", "${guideSharedViewModel.appearanceListLiveData.value}")
+            if (guideSharedViewModel.preparedPetData(1)) {
                 guideSharedViewModel.guideButtonClickListener("NEXT")
                 dismiss()
-            }
+            } else StyleableToast.makeText(requireActivity(), "외형을 선택해주세요", R.style.toast_custom)
+                .show()
         }
 
     }
@@ -85,9 +80,11 @@ class GuideAppearanceDialogFragment : DialogFragment() {
     private fun initAdapter() {
         guideAppearanceDialogRecyclerViewAdapter =
             com.djhb.petopia.presentation.guide.GuideAppearanceDialogRecyclerViewAdapter(
-                guideSharedViewModel.detailAppearanceListLiveData.value ?: listOf(),
-                itemClickListener = { item ->
+                guideSharedViewModel.appearanceListLiveData.value ?: listOf(),
+                itemClickListener = { item, position ->
+                    Log.d("클릭된", "${item}")
                     guideSharedViewModel.setPetAppearance(item)
+                    guideAppearanceDialogRecyclerViewAdapter.updateSelectedIndex(position)
                 })
         binding.guideAppearanceDialogRv.adapter = guideAppearanceDialogRecyclerViewAdapter
         binding.guideAppearanceDialogRv.layoutManager = GridLayoutManager(requireContext(), 3)

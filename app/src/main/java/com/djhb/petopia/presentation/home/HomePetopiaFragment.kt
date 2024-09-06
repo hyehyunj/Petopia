@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
+import com.djhb.petopia.data.PetAppearance
 import com.djhb.petopia.databinding.FragmentHomePetopiaBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.gallery.GalleryFragment
@@ -40,6 +42,33 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
+        mainHomeGuideViewModel.userPetLiveData.observe(viewLifecycleOwner) {
+            binding.apply {
+                Log.d("이름", "${it.petName}")
+                homeTvNamePet.text = it.petName
+                when (it.petAppearance) {
+                    PetAppearance.ABYSSINIAN -> binding.homeIvPet.setImageResource(R.drawable.img_abyssinian)
+                    PetAppearance.AMERICANSHORTHAIR->binding.homeIvPet.setImageResource(R.drawable.img_americanshoerthair)
+                    PetAppearance.BICHON->binding.homeIvPet.setImageResource(R.drawable.img_bichon)
+                    PetAppearance.CHIHUAHUA->binding.homeIvPet.setImageResource(R.drawable.img_chihuahua)
+                    PetAppearance.KOREANSHORTHAIR->binding.homeIvPet.setImageResource(R.drawable.img_koreanshorthair)
+                    PetAppearance.MALTESE->binding.homeIvPet.setImageResource(R.drawable.img_maltese)
+                    PetAppearance.NORWEGIANFOREST->binding.homeIvPet.setImageResource(R.drawable.img_norwegianforest)
+                    PetAppearance.PERSIAN->binding.homeIvPet.setImageResource(R.drawable.img_persian)
+                    PetAppearance.POMERANIAN->binding.homeIvPet.setImageResource(R.drawable.img_pomeranian)
+                    PetAppearance.POODLE->binding.homeIvPet.setImageResource(R.drawable.img_poodle)
+                    PetAppearance.RETRIEVER->binding.homeIvPet.setImageResource(R.drawable.img_retriever)
+                    PetAppearance.RUSSIANBLUE->binding.homeIvPet.setImageResource(R.drawable.img_russianblue)
+                    PetAppearance.SCOTTISHFOLD->binding.homeIvPet.setImageResource(R.drawable.img_scottishfold)
+                    PetAppearance.SHIBA->binding.homeIvPet.setImageResource(R.drawable.img_shiba)
+                    PetAppearance.SHIHTZU->binding.homeIvPet.setImageResource(R.drawable.img_shihtzu)
+                    PetAppearance.SIAMESE->binding.homeIvPet.setImageResource(R.drawable.img_siamese)
+                    PetAppearance.TURKISHANGORA->binding.homeIvPet.setImageResource(R.drawable.img_turkishangora)
+                    PetAppearance.WELSHCORGI->binding.homeIvPet.setImageResource(R.drawable.img_welshcorgi)
+                }
+            }
+        }
+
 
     }
 

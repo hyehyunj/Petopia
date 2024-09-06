@@ -11,9 +11,8 @@ import com.djhb.petopia.presentation.home.HomePetopiaFragment
 
 
 class ViewPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-//    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), HomeEarthFragment())
-    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), CommunityMainFragment())
-//    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), CommunityCreateFragment())
+    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), HomeEarthFragment())
+//    private val fragments = listOf(HomePetopiaFragment(), HomeMemoryBridgeFragment(), CommunityMainFragment())
 
     override fun getItemCount(): Int {
         return fragments.size

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,6 +40,16 @@ class GuideRelationDialogFragment : DialogFragment() {
         guideSharedViewModel =
             ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
 
+
+        binding.guideRelationDialogRg.setOnCheckedChangeListener { _, id ->
+            when (id) {
+                R.id.guide_relation_dialog_rb_child -> guideSharedViewModel.setPetRelation("CHILD")
+                R.id.guide_relation_dialog_rb_younger -> guideSharedViewModel.setPetRelation("YOUNGER")
+                R.id.guide_relation_dialog_rb_friend -> guideSharedViewModel.setPetRelation("FRIEND")
+            }
+        }
+
+
         //이전으로버튼 클릭이벤트
         binding.guideRelationDialogTvBack.setOnClickListener {
             guideSharedViewModel.guideButtonClickListener("BACK")
@@ -47,15 +58,12 @@ class GuideRelationDialogFragment : DialogFragment() {
 
         //완료버튼 클릭이벤트
         binding.guideRelationDialogTvComplete.setOnClickListener {
-            if (guideSharedViewModel.petModelLiveData.value?.petRelation == 0)
-                StyleableToast.makeText(requireActivity(), "이미지를 선택해주세요", R.style.toast_custom)
-                    .show()
-            else {
+            if (guideSharedViewModel.preparedPetData(2)) {
                 guideSharedViewModel.guideButtonClickListener("NEXT")
                 dismiss()
-            }
+            } else StyleableToast.makeText(requireActivity(), "이미지를 선택해주세요", R.style.toast_custom)
+                .show()
         }
-
     }
 
     override fun onResume() {

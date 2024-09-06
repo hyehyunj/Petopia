@@ -3,24 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/guide_appearance_dialog_holder"
-    android:layout_margin="12dp"
-    android:padding="10dp"
-    android:background="@drawable/sel_btn_square_white_blue"
-    android:elevation="10dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:elevation="10dp"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/guide_appearance_dialog_tv"
+        style="@style/guide_text_dialog"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="appearance"
-style="@style/common_btn_16_bold_blue"
+        android:button="@android:color/transparent"
+        android:background="@drawable/sel_btn_guide_appearance"
         app:layout_constraintDimensionRatio="1:1"
-       app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

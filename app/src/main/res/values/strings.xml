@@ -18,7 +18,8 @@
     <string name="common_setting">설정</string>
     <string name="common_sign_in">로그인</string>
     <string name="common_sign_up">회원가입</string>
-
+    <string name="common_complete">완료</string>
+    <string name="common_cancel">취소</string>
 
     <string name="common_id">아이디</string>
     <string name="common_password">비밀번호</string>

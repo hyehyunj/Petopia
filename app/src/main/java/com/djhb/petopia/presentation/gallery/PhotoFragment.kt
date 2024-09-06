@@ -174,7 +174,7 @@ class PhotoFragment : DialogFragment() {
                             AnimationUtils.loadAnimation(requireContext(), R.anim.photo_up)
                         )
                     }
-                    setBackgroundResource(R.drawable.icon_check)
+                    setBackgroundResource(R.drawable.icon_search)
                     sharedViewModel.changeLayoutMode("EDIT")
                 }
             }

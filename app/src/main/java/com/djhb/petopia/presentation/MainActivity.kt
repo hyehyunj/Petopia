@@ -2,8 +2,10 @@ package com.djhb.petopia.presentation
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
@@ -11,14 +13,19 @@ import com.djhb.petopia.databinding.ActivityMainBinding
 import com.djhb.petopia.presentation.dialog.DialogFragment
 import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
+import com.djhb.petopia.presentation.guide.GuideSharedViewModel
+import com.djhb.petopia.presentation.guide.GuideSharedViewModelFactory
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
+import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
-    private lateinit var mainHomeGuideSharedViewModel: MainHomeGuideSharedViewModel
+    private val mainHomeGuideSharedViewModel by viewModels<MainHomeGuideSharedViewModel> {
+        MainHomeGuideSharedViewModelFactory()
+    }
     private lateinit var viewPager: ViewPager2
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +38,6 @@ class MainActivity : AppCompatActivity() {
 //액티비티 공유 뷰모델 갖다 쓰세요~!
         //private val sharedViewModel : MainViewModel by activityViewModels()
 
-        mainHomeGuideSharedViewModel =
-            ViewModelProvider(this)[MainHomeGuideSharedViewModel::class.java]
 
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
             Log.d("액티비티 종료?", "${it}")

@@ -61,7 +61,7 @@ class HomeMemoryBridgeFragment : Fragment() {
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
-        binding.homeMemoryBridgeTvMemoryBtn.setOnClickListener {
+        binding.homeMemoryBridgeMemoryContainer.setOnClickListener {
             if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
                 toastMoveUnder() else setMemoryFragment()
 
@@ -140,9 +140,9 @@ class HomeMemoryBridgeFragment : Fragment() {
         binding.homeMemoryBridgeIvEmotion.startAnimation(
         AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
         )
-        binding.homeMemoryBridgeTvMemoryBtn.startAnimation(
-            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
-        )
+//        binding.homeMemoryBridgeMemoryContainer.startAnimation(
+//            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
+//        )
 
     }
 

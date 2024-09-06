@@ -160,6 +160,15 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <!-- Guide Dialog -->
+    <style name="guide_text_dialog">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/sel_text_guide_appearance</item>
+    </style>
+
+
     <!-- List -->
 
     <style name="common_text_14_gray">
