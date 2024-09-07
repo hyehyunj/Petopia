@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.R
@@ -49,7 +50,7 @@ class SigninFragment : Fragment() {
                     //로그인 성공
                     StyleableToast.makeText(
                         requireActivity(),
-                        "로그인 성공",
+                        "로그인 완료",
                         R.style.toast_common
                     ).show()
                     val intent = Intent(requireContext(), MainActivity::class.java)
@@ -60,8 +61,8 @@ class SigninFragment : Fragment() {
                     //로그인 실패
                     StyleableToast.makeText(
                         requireActivity(),
-                        "로그인 실패",
-                        R.style.toast_error
+                        "아이디 또는 비밀번호를 확인해주세요.",
+                        R.style.toast_warning
                     ).show()
                 }
             )

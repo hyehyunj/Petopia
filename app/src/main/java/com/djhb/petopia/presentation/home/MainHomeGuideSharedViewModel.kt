@@ -33,7 +33,7 @@ class MainHomeGuideSharedViewModel(
     //ESSENTIAL_DONE 필수 가이드 완료
     //OPTIONAL 선택 가이드 진행중
     //DONE 모두 완료
-    private val _guideStateLiveData = MutableLiveData("NONE")
+    private val _guideStateLiveData = MutableLiveData("DONE")
     val guideStateLiveData: LiveData<String> = _guideStateLiveData
 
     //가이드 기능설명 :

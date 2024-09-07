@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentMemoryDetailBinding
-import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 

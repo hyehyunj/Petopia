@@ -79,6 +79,14 @@ class SignupFragment : Fragment() {
             }
         }
 
+        binding.btnReadTerms.setOnClickListener {
+            setTermFragment()
+        }
+
+        binding.btnReadTerms2.setOnClickListener {
+            setPersonalTermFragment()
+        }
+
 //        if (binding.cbCheckAgreeAll.isChecked) {
 //            binding.btnSignupCheck.isEnabled = true
 //        } else {
@@ -181,5 +189,20 @@ class SignupFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    private fun setTermFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.register_fragment_container, TermFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun setPersonalTermFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.register_fragment_container, PersonalTermFragment())
+            .addToBackStack(null)
+            .commit()
+
     }
 }

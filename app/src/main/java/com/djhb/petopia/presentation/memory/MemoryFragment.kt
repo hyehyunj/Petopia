@@ -1,12 +1,12 @@
 package com.djhb.petopia.presentation.memory
 
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +16,12 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentMemoryBinding
-import com.djhb.petopia.presentation.memory.ViewModel.MemoryViewModel
-import com.djhb.petopia.presentation.memory.adapter.ListRecyclerViewAdapter
 
 
 class MemoryFragment() : DialogFragment() {
@@ -73,18 +72,74 @@ class MemoryFragment() : DialogFragment() {
         val currentUser = getCurrentUser()
         memoryViewModel.loadMemoryList(currentUser)
 
-        var currentTitle = binding.tvTodayMemoryContent.text.toString()
-        memoryViewModel.setMemoryTitle(currentTitle)
+        memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
+            binding.tvTodayMemoryContent.text = text
+        }
+        var currentTitle = memoryViewModel.memoryTitle.value
+        memoryViewModel.setMemoryTitle(currentTitle.toString())
 
+
+        if (memoryViewModel.isMemorySaved.value == true) {
+            binding.memoryTodayMemoryLayout.visibility = View.GONE
+        }
 
 
         binding.memoryTodayMemoryLayout.setOnClickListener {
             setMemoryWriteFragment() // 메모리 작성 프래그먼트 이동
+            if (listRecyclerViewAdapter.isDeleteMode) {
+                listRecyclerViewAdapter.toggleDeleteMode()
+                binding.btnImageDeleteCancel.visibility = View.GONE
+                binding.btnMemoryDelete.visibility = View.VISIBLE
+                binding.btnMemoryDelete2.visibility = View.GONE
+                listRecyclerViewAdapter.clearSelections()
+                //삭제모드가 켜있을때 작성하기를 누르면 삭제모드가 꺼짐
+            }
         }
 
         binding.btnMemoryExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
+        }
+
+        binding.btnMemoryDelete.setOnClickListener {
+            listRecyclerViewAdapter.toggleDeleteMode()
+            binding.btnImageDeleteCancel.visibility = View.VISIBLE
+            binding.btnMemoryDelete.visibility = View.GONE
+            binding.btnMemoryDelete2.visibility = View.VISIBLE
+        }
+
+        binding.btnMemoryDelete2.setOnClickListener {
+            if (listRecyclerViewAdapter.isDeleteMode) {
+                val selectedItems = listRecyclerViewAdapter.getSelectedItems()
+                selectedItems.forEach { item ->
+                    memoryViewModel.deleteMemoryList(item)
+                }
+                listRecyclerViewAdapter.toggleDeleteMode()
+
+                binding.btnImageDeleteCancel.visibility = View.GONE
+                binding.btnMemoryDelete.visibility = View.VISIBLE
+                binding.btnMemoryDelete2.visibility = View.GONE
+
+                listRecyclerViewAdapter.clearSelections()
+            }
+            memoryViewModel.memoryListLiveData.value.let { updateList ->
+                listRecyclerViewAdapter.submitList(updateList)
+            }
+        }
+
+
+        binding.btnImageDeleteCancel.setOnClickListener {
+            if (listRecyclerViewAdapter.isDeleteMode) {
+                listRecyclerViewAdapter.toggleDeleteMode()
+            }
+            Log.d("MemoryFragment", "${listRecyclerViewAdapter.isCleared}")
+            if (!listRecyclerViewAdapter.isCleared) {
+                listRecyclerViewAdapter.clearSelections()
+            }
+
+            binding.btnImageDeleteCancel.visibility = View.GONE
+            binding.btnMemoryDelete.visibility = View.VISIBLE
+            binding.btnMemoryDelete2.visibility = View.GONE
         }
 
         //리사이클러뷰 강제로 업데이트
@@ -117,8 +172,29 @@ class MemoryFragment() : DialogFragment() {
 
         binding.rvMemoryList.adapter = listRecyclerViewAdapter // 어댑터 연결
         binding.rvMemoryList.layoutManager = LinearLayoutManager(requireContext())
+
+        listRecyclerViewAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                if (!listRecyclerViewAdapter.isDeleteMode) {
+                    binding.rvMemoryList.smoothScrollToPosition(0)
+                }
+            }
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                if (!listRecyclerViewAdapter.isDeleteMode) {
+                    binding.rvMemoryList.smoothScrollToPosition(0)
+                }
+            }
+        })
+
+
         manager.reverseLayout = true
         manager.stackFromEnd = true
+
+
     }
 
     //다이얼로그 크기 조절 함수
@@ -154,12 +230,18 @@ class MemoryFragment() : DialogFragment() {
         Log.d("MemoryFragment", "메모리 저장: $memory")
         memoryViewModel.addMemoryList(memory)
 
+        memoryViewModel.memoryListLiveData.value.let { updateList ->
+            listRecyclerViewAdapter.submitList(updateList)
+        }
+        binding.memoryTodayMemoryLayout.visibility = View.GONE
+
     }
 
     // 수정된 메모리를 업데이트하는 함수
     fun onMemoryUpdated(updatedMemory: Memory) {
         memoryViewModel.updateMemoryList(updatedMemory)
         memoryViewModel.loadMemoryList(getCurrentUser())
+
     }
 
     fun getCurrentUser(): UserModel {
@@ -181,8 +263,8 @@ class MemoryFragment() : DialogFragment() {
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->
             listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
-
         }
 
     }
+
 }

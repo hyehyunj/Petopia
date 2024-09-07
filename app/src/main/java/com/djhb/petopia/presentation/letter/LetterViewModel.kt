@@ -20,6 +20,13 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
     private val _isLetterSaved = MutableLiveData<Boolean>()
     val isLetterSaved: LiveData<Boolean> = _isLetterSaved
 
+    private val _selectBackgroundResId = MutableLiveData<Int?>()
+    val selectBackgroundResId: MutableLiveData<Int?> = _selectBackgroundResId
+
+    fun selectBackground(resId: Int) {
+        _selectBackgroundResId.value = resId
+    }
+
     fun setSelectedLetter(letterModel: LetterModel) {
         _selectedLetter.value = letterModel
     }
