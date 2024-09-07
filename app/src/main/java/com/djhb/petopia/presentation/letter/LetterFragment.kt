@@ -16,6 +16,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.data.LetterModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
@@ -55,7 +56,6 @@ class LetterFragment : DialogFragment() {
         letterViewModel =
             ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
-
         val curentUser = getCurrentUser()
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
@@ -65,7 +65,7 @@ class LetterFragment : DialogFragment() {
         letterViewModel.loadLetterList(curentUser)
 
         binding.letterIvAdd.setOnClickListener {
-            showLetterWritingPadFragment()
+            showLetterWriteFragment()
         }
 
         binding.btnLetterExit.setOnClickListener {
@@ -92,6 +92,11 @@ class LetterFragment : DialogFragment() {
         letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
                 letterViewModel.setSelectedLetter(item)
+                letterViewModel.selectBackground(
+                    letterListRecyclerViewAdapter.currentList.indexOf(
+                        item
+                    )
+                )
                 showLetterDetailFragment()
 
             }, itemLongClickListener = { item ->
@@ -102,10 +107,23 @@ class LetterFragment : DialogFragment() {
         val manager = LinearLayoutManager(requireContext())
         binding.rvLetterList.adapter = letterListRecyclerViewAdapter // 어댑터 연결
         binding.rvLetterList.layoutManager = LinearLayoutManager(requireContext())
+
+        letterListRecyclerViewAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                binding.rvLetterList.smoothScrollToPosition(0)
+            }
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.rvLetterList.smoothScrollToPosition(0)
+            }
+        })
+
         manager.reverseLayout = true
         manager.stackFromEnd = true
     }
-
 
 
     private fun initDialog() {
@@ -138,6 +156,7 @@ class LetterFragment : DialogFragment() {
         Log.d("LetterFragment", "편지 저장: $letterModel")
         letterViewModel.addLetterList(letterModel)
 
+
     }
 
     fun getCurrentUser(): UserModel {
@@ -150,7 +169,17 @@ class LetterFragment : DialogFragment() {
     }
 
     private fun showLetterDetailFragment() {
+
+        letterViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
+            resId?.let {
+                val args = Bundle().apply {
+                    putInt("selectedBackground", it)
+                }
+                LetterDetailFragment().arguments = args
+            }
+        }
         LetterDetailFragment().show(childFragmentManager, "DETAIL_DIALOG")
+
     }
 
     private fun showDeleteDialog(letterModel: LetterModel) {
@@ -162,6 +191,10 @@ class LetterFragment : DialogFragment() {
         }
         deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
 
+    }
+
+    private fun showLetterWriteFragment() {
+        LetterWriteFragment().show(parentFragmentManager, "LETTER_WRITE_FRAGMENT")
     }
 
 }

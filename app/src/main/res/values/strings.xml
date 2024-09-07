@@ -27,7 +27,7 @@
 
 
     <!--  SignUp : 회원가입에서 사용되는 String -->
-    <string name="signup_nickname">별명</string>
+    <string name="signup_nickname">닉네임</string>
     <string name="signup_id">아이디</string>
     <string name="signup_password">비밀번호</string>
     <string name="signup_password_check">비밀번호 확인</string>
