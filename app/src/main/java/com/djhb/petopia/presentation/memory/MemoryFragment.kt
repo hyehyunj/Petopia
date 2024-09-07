@@ -214,7 +214,7 @@ class MemoryFragment() : DialogFragment() {
         }
         binding.rvMemoryList.smoothScrollToPosition(0)
 
-//        binding.memoryTodayMemoryLayout.visibility = View.GONE
+        binding.memoryTodayMemoryLayout.visibility = View.GONE
 
     }
 
