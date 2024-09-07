@@ -2,6 +2,7 @@ package com.djhb.petopia.presentation
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
     private lateinit var mainHomeGuideSharedViewModel: MainHomeGuideSharedViewModel
     private lateinit var viewPager: ViewPager2
+
+    private val onBackPressedCallback = object: OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            Log.i("MainActivity", "press backButton")
+            showViewPager()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +73,8 @@ class MainActivity : AppCompatActivity() {
 
         //레이아웃 초기화
         initLayout()
+
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
     //레이아웃 초기화 함수 : 뷰페이저, 탭레이아웃 연결

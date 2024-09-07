@@ -1,14 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.community.CommunityDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <include
+        android:id="@+id/header"
+        layout="@layout/post_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" />
 
-</FrameLayout>
+    <ScrollView
+        android:id="@+id/svDetail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="10dp"
+        app:layout_constraintBottom_toTopOf="@id/etComment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="10dp">
+
+        <TextView
+            android:id="@+id/tvDetailTitle"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:maxLines="1"
+            android:text="제목제목제목제목"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+            <android.widget.Button
+                android:id="@+id/btnDelete"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/icon_delete"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <android.widget.Button
+                android:id="@+id/btnEdit"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/icon_writing_blue"
+                app:layout_constraintEnd_toStartOf="@+id/btnDelete"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvBorderLineUnderTitle"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/post_border_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvDetailTitle"
+                app:layout_constraintBottom_toTopOf="@+id/tvWriterBanner"
+                />
+
+            <TextView
+                android:id="@+id/tvWriterBanner"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/community_detail_writer"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderTitle" />
+
+            <TextView
+                android:id="@+id/tvWriter"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="누구누구"
+                android:textSize="20sp"
+                app:layout_constraintStart_toEndOf="@+id/tvWriterBanner"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderTitle" />
+
+            <TextView
+                android:id="@+id/tvCreatedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="2024.08.07"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderTitle" />
+
+            <ImageView
+                android:id="@+id/ivCreatedDate"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/icon_calendar"
+                app:layout_constraintEnd_toStartOf="@+id/tvCreatedDate"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderTitle" />
+
+            <TextView
+                android:id="@+id/tvViewCount"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="5dp"
+                android:text="33"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@id/ivCreatedDate"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderTitle" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="5dp"
+                android:background="@drawable/icon_view_count_temp"
+                app:layout_constraintEnd_toStartOf="@+id/tvViewCount"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderTitle" />
+
+
+            <TextView
+                android:id="@+id/tvBorderLineUnderWriter"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/post_border_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvWriterBanner" />
+
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderWriter"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <me.relex.circleindicator.CircleIndicator3
+                android:id="@+id/indicatorDetail"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                app:ci_height="7dp"
+                app:ci_margin="4dp"
+                app:ci_width="7dp"
+                app:ci_drawable="@drawable/bg_round_main_blue"
+                app:layout_constraintTop_toBottomOf="@+id/vpImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/tvBorderLineUnderImage"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/post_border_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/indicatorDetail" />
+
+            <TextView
+                android:id="@+id/tvContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="우리집 강아지는 하룻강아지~ 범만 보면 무섭다고 야옹야옹야옹우리집 강아지는 하룻강아지~ 범만 보면 무섭다고 야옹야옹야옹우리집 강아지는 하룻강아지~ 범만 보면 무섭다고 야옹야옹야옹우리집 강아지는 하룻강아지~ "
+                android:textSize="20sp"
+                android:layout_marginVertical="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/tvBorderLineUnderContent"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="20dp"
+                android:background="@drawable/post_border_line"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvContent" />
+
+
+            <TextView
+                android:id="@+id/tvCommentTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/community_detail_comment"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderContent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tvCommentCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="@string/community_detail_commentCount"
+                android:layout_marginStart="5dp"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderContent"
+                app:layout_constraintStart_toEndOf="@id/tvContent" />
+
+
+            <ImageView
+                android:id="@+id/ivLike"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/icon_heart"
+                android:layout_marginVertical="10dp"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintEnd_toStartOf="@+id/tvLike"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderContent"
+                />
+
+            <TextView
+                android:id="@+id/tvLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginVertical="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/tvBorderLineUnderContent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/tvCommentTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+    <EditText
+        android:id="@+id/etComment"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:hint="댓글을 남겨주세요."
+        android:textSize="20sp"
+        android:background="@drawable/shape_post_create_form"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginVertical="10dp"
+        android:paddingHorizontal="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/svDetail"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    <android.widget.Button
+        android:id="@+id/btnAddComment"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:text="등록"
+        android:background="@drawable/bg_round_main_blue"
+        android:backgroundTint="@color/skyblue"
+        android:layout_marginVertical="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etComment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

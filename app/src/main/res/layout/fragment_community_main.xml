@@ -37,8 +37,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewQuestionMain"
-        android:layout_width="384dp"
-        android:layout_height="195dp"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
         android:layout_marginTop="10dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"

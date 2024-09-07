@@ -12,7 +12,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.PostHolderBinding
 
-class PostAdapter(): ListAdapter<PostModel, PostAdapter.PostItem>(object: DiffUtil.ItemCallback<PostModel>(){
+class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel, PostAdapter.PostItem>(object: DiffUtil.ItemCallback<PostModel>(){
     override fun areItemsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
         return oldItem.key == newItem.key
     }
@@ -30,11 +30,14 @@ class PostAdapter(): ListAdapter<PostModel, PostAdapter.PostItem>(object: DiffUt
     override fun onBindViewHolder(holder: PostItem, position: Int) {
         val item = getItem(position)
 
-        holder.title = item.title
-        holder.viewCount = item.viewCount.toString()
-        holder.likeCount = item.likeCount.toString()
-        holder.userId = item.writer.id
-        holder.createdDate = DateFormatUtils.convertToPostFormat(item.createdDate)
+        holder.title.text = item.title
+        holder.viewCount.text = item.viewCount.toString()
+        holder.likeCount.text = item.likeCount.toString()
+        holder.userId.text = item.writer.id
+        holder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)
+        holder.binding.root.setOnClickListener {
+            onClick(item)
+        }
 
         if(item.imageUris.size == 0)
             holder.mainImage.setImageResource(R.drawable.icon_no_image_temp)
@@ -49,10 +52,10 @@ class PostAdapter(): ListAdapter<PostModel, PostAdapter.PostItem>(object: DiffUt
 
     class PostItem(val binding: PostHolderBinding): RecyclerView.ViewHolder(binding.root){
         val mainImage = binding.ivMainImage
-        var title = binding.tvTitle.text
-        var viewCount = binding.tvViewCount.text
-        var likeCount = binding.tvLikeCount.text
-        var userId = binding.tvWriter.text
-        var createdDate = binding.tvCreatedDate.text
+        var title = binding.tvTitle
+        var viewCount = binding.tvViewCount
+        var likeCount = binding.tvLikeCount
+        var userId = binding.tvWriter
+        var createdDate = binding.tvCreatedDate
     }
 }

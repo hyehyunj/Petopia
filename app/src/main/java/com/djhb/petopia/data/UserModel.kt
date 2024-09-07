@@ -1,7 +1,10 @@
 package com.djhb.petopia.data
 
+import android.os.Parcelable
 import com.djhb.petopia.presentation.community.Authority
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class UserModel(
     val id: String = "",
     var password: String = "",
@@ -12,4 +15,4 @@ data class UserModel(
     val createdDate: Long = System.currentTimeMillis(),
     var updatedDate: Long? = null,
     var authority: Authority = Authority.CLIENT
-)
+) : Parcelable

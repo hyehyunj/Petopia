@@ -18,6 +18,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.djhb.petopia.data.CommentModel
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.PostRepository
@@ -51,7 +53,12 @@ class CommunityCreateFragment : Fragment() {
         PostRepositoryImpl()
     }
 
+    private val mainActivity: MainActivity by lazy {
+        requireActivity() as MainActivity
+    }
+
     private val viewModel: CommunityViewModel by activityViewModels()
+    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
 
     private val createImageAdapter: CreateImageAdapter by lazy {
             CreateImageAdapter(object : OnclickImage{
@@ -133,6 +140,25 @@ class CommunityCreateFragment : Fragment() {
         initListener()
         initObserveModel()
 
+//        val user = UserModel("devTest", "11qqaa..")
+//
+//        val comment1 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", LoginData.loginUser, "content1")
+//        val comment2 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", user, "content2")
+//        val comment3 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", LoginData.loginUser, "content3")
+//        val comment4 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", user, "content4")
+//        val comment5 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", user, "content5")
+//        val comment6 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", LoginData.loginUser, "content6")
+//
+//        lifecycleScope.launch {
+//            detailViewModel.createComment(comment1)
+//            detailViewModel.createComment(comment2)
+//            detailViewModel.createComment(comment3)
+//            detailViewModel.createComment(comment4)
+//            detailViewModel.createComment(comment5)
+//            detailViewModel.createComment(comment6)
+//        }
+
+
     }
 
     private fun initView() {
@@ -152,6 +178,7 @@ class CommunityCreateFragment : Fragment() {
     //    private fun initImageView(reference: StorageReference) {
     private fun initListener() {
 
+            val mainActivity = requireActivity() as MainActivity
         binding.btnComplete.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val content = binding.etContent.text.toString()
@@ -170,6 +197,7 @@ class CommunityCreateFragment : Fragment() {
                     Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
                     postRepository.createPost(PostModel(title, content, loginUser), imageUris)
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                    mainActivity.showViewPager()
                     requireActivity().supportFragmentManager.popBackStack()
                 }
             }
@@ -177,13 +205,11 @@ class CommunityCreateFragment : Fragment() {
 
         binding.header.ivBack.setOnClickListener{
             Toast.makeText(requireActivity(), "click back", Toast.LENGTH_SHORT).show()
-            val mainActivity = requireActivity() as MainActivity
             mainActivity.showViewPager()
             requireActivity().supportFragmentManager.popBackStack()
         }
 
         binding.btnCancel.setOnClickListener {
-            val mainActivity = requireActivity() as MainActivity
             mainActivity.showViewPager()
             requireActivity().supportFragmentManager.popBackStack()
         }
