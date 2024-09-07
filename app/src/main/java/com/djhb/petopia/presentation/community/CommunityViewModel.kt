@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.remote.PostRepositoryImpl
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CommunityViewModel : ViewModel() {
@@ -26,13 +25,25 @@ class CommunityViewModel : ViewModel() {
 
     private val postRepository = PostRepositoryImpl()
 
-    fun createRankList() {
+    fun createPost(post: PostModel, imageUris: MutableList<String>){
 
         viewModelScope.launch {
-            Log.i("CommunityViewModel", "createRankList 1")
+            postRepository.createPost(post, imageUris)
+            selectRankList()
+            selectAllList()
+        }
+
+    }
+
+
+    fun selectRankList() {
+
+        viewModelScope.launch {
+            rankPostResult.clear()
+//            Log.i("CommunityViewModel", "createRankList 1")
             val selectRankPosts = postRepository.selectRankPosts()
-            Log.i("CommunityViewModel", "createRankList 2")
-            Log.i("CommunityViewModel", "selectRankPosts = ${selectRankPosts}")
+//            Log.i("CommunityViewModel", "createRankList 2")
+//            Log.i("CommunityViewModel", "selectRankPosts = ${selectRankPosts}")
             for (post in selectRankPosts) {
                 rankPostResult.add(postRepository.selectPostMainImage(post))
             }
@@ -59,12 +70,13 @@ class CommunityViewModel : ViewModel() {
 //        }
     }
 
-    fun createAllList(){
+    fun selectAllList(){
         viewModelScope.launch {
-            val selectRankPosts = postRepository.selectPosts()
+            searchPostResult.clear()
+            val allPosts = postRepository.selectPosts()
             Log.i("CommunityViewModel", "createRankList 2")
-            Log.i("CommunityViewModel", "selectRankPosts.size = ${selectRankPosts.size}")
-            for (post in selectRankPosts) {
+            Log.i("CommunityViewModel", "selectRankPosts.size = ${allPosts.size}")
+            for (post in allPosts) {
                 searchPostResult.add(postRepository.selectPostMainImage(post))
             }
 
@@ -89,7 +101,42 @@ class CommunityViewModel : ViewModel() {
     fun updatePost(post: PostModel) {
         viewModelScope.launch {
             postRepository.updatePost(post)
+
+            for ((postIndex,postModel) in rankPostResult.withIndex()) {
+                if(postModel.key == post.key) {
+                    rankPostResult[postIndex] = post
+                    break
+                }
+            }
+
+            _rankPosts.value = rankPostResult
+
+            for ((postIndex,postModel) in searchPostResult.withIndex()) {
+                if(postModel.key == post.key) {
+                    searchPostResult[postIndex] = post
+                    break
+                }
+            }
+            _searchPosts.value = searchPostResult
         }
     }
+
+    fun deletePost(postKey: String) {
+        viewModelScope.launch {
+            postRepository.deletePost(postKey)
+
+            rankPostResult.removeIf{ post ->
+                post.key == postKey
+            }
+
+            _rankPosts.value = rankPostResult
+
+            searchPostResult.removeIf { post ->
+                post.key == postKey
+            }
+            _searchPosts.value = searchPostResult
+        }
+    }
+
 
 }

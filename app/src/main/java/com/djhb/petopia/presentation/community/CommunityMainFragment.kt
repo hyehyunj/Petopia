@@ -120,8 +120,8 @@ class CommunityMainFragment : Fragment() {
 
     private fun initView(){
         lifecycleScope.launch {
-            viewModel.createRankList()
-            viewModel.createAllList()
+            viewModel.selectRankList()
+            viewModel.selectAllList()
         }
     }
 
@@ -148,10 +148,11 @@ class CommunityMainFragment : Fragment() {
     private fun initObserve(){
         viewModel.rankPosts.observe(viewLifecycleOwner) {
             Log.i("CommunityMainFragment", "observe rank : ${it}")
-            rankPostAdapter.submitList(it)
+            rankPostAdapter.submitList(it.toMutableList())
         }
         viewModel.searchPost.observe(viewLifecycleOwner){
-            allPostAdapter.submitList(it)
+            Log.i("CommunityMainFragment", "observe search : ${it}")
+            allPostAdapter.submitList(it.toMutableList())
         }
 
 //        viewModel.isCompleteRankPost.observe(viewLifecycleOwner){
