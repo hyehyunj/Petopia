@@ -92,11 +92,6 @@ class LetterFragment : DialogFragment() {
         letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
                 letterViewModel.setSelectedLetter(item)
-                letterViewModel.selectBackground(
-                    letterListRecyclerViewAdapter.currentList.indexOf(
-                        item
-                    )
-                )
                 showLetterDetailFragment()
 
             }, itemLongClickListener = { item ->
@@ -148,13 +143,13 @@ class LetterFragment : DialogFragment() {
         _binding = null
     }
 
-    private fun showLetterWritingPadFragment() {
-        LetterWritingPadFragment().show(childFragmentManager, "LETTER_ADD_FRAGMENT")
-    }
-
     fun onLetterSaved(letterModel: LetterModel) {
         Log.d("LetterFragment", "편지 저장: $letterModel")
         letterViewModel.addLetterList(letterModel)
+
+        letterViewModel.letterListLiveData.value.let { updateList ->
+            letterListRecyclerViewAdapter.submitList(updateList)
+        }
 
 
     }
@@ -170,14 +165,6 @@ class LetterFragment : DialogFragment() {
 
     private fun showLetterDetailFragment() {
 
-        letterViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
-            resId?.let {
-                val args = Bundle().apply {
-                    putInt("selectedBackground", it)
-                }
-                LetterDetailFragment().arguments = args
-            }
-        }
         LetterDetailFragment().show(childFragmentManager, "DETAIL_DIALOG")
 
     }
@@ -194,7 +181,7 @@ class LetterFragment : DialogFragment() {
     }
 
     private fun showLetterWriteFragment() {
-        LetterWriteFragment().show(parentFragmentManager, "LETTER_WRITE_FRAGMENT")
+        LetterWriteFragment().show(childFragmentManager, "LETTER_WRITE_FRAGMENT")
     }
 
 }

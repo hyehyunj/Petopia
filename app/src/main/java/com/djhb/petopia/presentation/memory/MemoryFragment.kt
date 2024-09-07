@@ -81,7 +81,6 @@ class MemoryFragment() : DialogFragment() {
 
         if (memoryViewModel.isMemorySaved.value == true) {
             binding.memoryTodayMemoryLayout.visibility = View.GONE
-            binding.rvMemoryList.smoothScrollToPosition(0)
         }
 
 
@@ -178,14 +177,19 @@ class MemoryFragment() : DialogFragment() {
             RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
                 super.onChanged()
-                binding.rvMemoryList.smoothScrollToPosition(0)
+                if (!listRecyclerViewAdapter.isDeleteMode) {
+                    binding.rvMemoryList.smoothScrollToPosition(0)
+                }
             }
 
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                binding.rvMemoryList.smoothScrollToPosition(0)
+                if (!listRecyclerViewAdapter.isDeleteMode) {
+                    binding.rvMemoryList.smoothScrollToPosition(0)
+                }
             }
         })
+
 
         manager.reverseLayout = true
         manager.stackFromEnd = true
