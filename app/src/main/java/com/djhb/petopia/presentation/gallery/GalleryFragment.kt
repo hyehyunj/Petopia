@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.gallery
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -22,7 +23,6 @@ class GalleryFragment : DialogFragment() {
     companion object {
         private const val TAG = "GalleryFragment"
     }
-
     private lateinit var galleryRecyclerViewAdapter: GalleryRecyclerViewAdapter
     private val _binding: FragmentGalleryBinding by lazy {
         FragmentGalleryBinding.inflate(layoutInflater)
@@ -48,11 +48,13 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-//        gallerySharedViewModel.loadGalleryList()
-Log.d("데이터 있나?", "${gallerySharedViewModel.galleryListLiveData.value}")
+        gallerySharedViewModel.loadGalleryList()
 
         initDialog()
     }
+
+
+
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun galleryButtonClickListener() {

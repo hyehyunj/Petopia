@@ -1,7 +1,6 @@
 package com.djhb.petopia.presentation.gallery
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,7 +15,6 @@ import com.djhb.petopia.data.remote.GalleryRepositoryImpl
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
-import java.time.ZoneId
 
 //갤러리와 포토의 공유 뷰모델
 class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
@@ -60,8 +58,8 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             val list = async {
                 galleryRepository.selectGalleryList(user)
             }
-            val listA = list.await()
-            _galleryListLiveData.value = galleryRepository.selectGalleryImages(listA).toList()
+            val successList = list.await()
+            _galleryListLiveData.value = galleryRepository.selectGalleryImages(successList).toList()
         }
     }
 
@@ -78,7 +76,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         _layoutModeLiveData.value = layoutMode
         if (layoutMode == "ADD") { //추가를 위한 새로운 객체 생성
             newPhotoList = GalleryModel(
-                "", UserModel(), 0, 0, imageUris = mutableListOf()
+                "", writer = user, imageUris = mutableListOf()
             )
             _currentPhotoListLiveData.value = newPhotoList
         }
@@ -114,7 +112,6 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                     "", UserModel(), 0, 0, imageUris = photoList
                 )
         }
-        Log.d("어떰", "${newPhotoList}")
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
@@ -158,14 +155,12 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
 
     fun prepared() : Boolean {
-        Log.d("준비?", "${newPhotoList}")
         return newPhotoList.imageUris.isNotEmpty() && newPhotoList.titleText.isNotEmpty()
     }
 
     //현재 사진을 새 사진으로 교체하는 함수
     fun updateNewGallery(index: Int) {
         galleryList = _galleryListLiveData.value?.toMutableList() ?: mutableListOf()
-        Log.d("추가하는 사본", "${galleryList}")
 
         when (_layoutModeLiveData.value) {
             "ADD" -> {
@@ -179,7 +174,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             }
         }
         _galleryListLiveData.value = galleryList
-//        saveGalleryList()
+        saveGalleryList()
 
     }
 
@@ -194,7 +189,6 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     fun updateRemoveGalleryList(mode: String) {
         when (mode) {
             "REMOVE" -> {removePhotoList = _galleryListLiveData.value!!.toMutableList()
-                                           Log.d("시작리스트", "${removePhotoList}")
 }
 
 
@@ -205,7 +199,6 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 //        }
 
                 _galleryListLiveData.value = removePhotoList
-                Log.d("원본", "${_galleryListLiveData.value}")
 
             }
         }

@@ -210,10 +210,6 @@ class CommunityCreateFragment : Fragment() {
             requireActivity().supportFragmentManager.popBackStack()
         }
 
-        binding.btnCancel.setOnClickListener {
-            mainActivity.showViewPager()
-            requireActivity().supportFragmentManager.popBackStack()
-        }
 
 //        binding.ivAddImage.setOnClickListener {
 //

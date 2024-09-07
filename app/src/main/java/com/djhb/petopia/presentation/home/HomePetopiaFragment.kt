@@ -46,7 +46,6 @@ class HomePetopiaFragment : Fragment() {
         mainHomeGuideViewModel.getUser()
 //        if () getUserAndPet()
         mainHomeGuideViewModel.userPetLiveData.observe(viewLifecycleOwner) {
-            Log.d("펫?", "${it}")
             getUserAndPet()
         }
 
@@ -58,7 +57,6 @@ class HomePetopiaFragment : Fragment() {
         //갤러리버튼 클릭이벤트 : 클릭시 갤러리 이동
 
         binding.homeIvGallery.setOnClickListener {
-            Log.d("왜?", "${mainHomeGuideViewModel.guideStateLiveData.value}")
             if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
                 toastMoveUnder() else showGalleryFragment()
         }
