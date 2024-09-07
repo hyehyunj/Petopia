@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.UserModel
@@ -79,6 +81,7 @@ class MemoryFragment() : DialogFragment() {
 
         if (memoryViewModel.isMemorySaved.value == true) {
             binding.memoryTodayMemoryLayout.visibility = View.GONE
+            binding.rvMemoryList.smoothScrollToPosition(0)
         }
 
 
@@ -170,6 +173,20 @@ class MemoryFragment() : DialogFragment() {
 
         binding.rvMemoryList.adapter = listRecyclerViewAdapter // 어댑터 연결
         binding.rvMemoryList.layoutManager = LinearLayoutManager(requireContext())
+
+        listRecyclerViewAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                binding.rvMemoryList.smoothScrollToPosition(0)
+            }
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.rvMemoryList.smoothScrollToPosition(0)
+            }
+        })
+
         manager.reverseLayout = true
         manager.stackFromEnd = true
 
@@ -212,8 +229,6 @@ class MemoryFragment() : DialogFragment() {
         memoryViewModel.memoryListLiveData.value.let { updateList ->
             listRecyclerViewAdapter.submitList(updateList)
         }
-        binding.rvMemoryList.smoothScrollToPosition(0)
-
         binding.memoryTodayMemoryLayout.visibility = View.GONE
 
     }
@@ -222,6 +237,7 @@ class MemoryFragment() : DialogFragment() {
     fun onMemoryUpdated(updatedMemory: Memory) {
         memoryViewModel.updateMemoryList(updatedMemory)
         memoryViewModel.loadMemoryList(getCurrentUser())
+
     }
 
     fun getCurrentUser(): UserModel {

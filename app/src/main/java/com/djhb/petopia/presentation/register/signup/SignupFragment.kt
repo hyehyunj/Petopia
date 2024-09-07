@@ -1,12 +1,10 @@
 package com.djhb.petopia.presentation.register.signup
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.R
@@ -79,6 +77,14 @@ class SignupFragment : Fragment() {
                 binding.cbCheckTerms.isChecked = false
                 binding.cbPersonalInfoTerm.isChecked = false
             }
+        }
+
+        binding.btnReadTerms.setOnClickListener {
+            setTermFragment()
+        }
+
+        binding.btnReadTerms2.setOnClickListener {
+            setPersonalTermFragment()
         }
 
 //        if (binding.cbCheckAgreeAll.isChecked) {
@@ -183,5 +189,20 @@ class SignupFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+
+    private fun setTermFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.register_fragment_container, TermFragment())
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun setPersonalTermFragment() {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.register_fragment_container, PersonalTermFragment())
+            .addToBackStack(null)
+            .commit()
+
     }
 }

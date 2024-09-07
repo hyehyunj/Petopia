@@ -16,6 +16,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.data.LetterModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
@@ -106,6 +107,20 @@ class LetterFragment : DialogFragment() {
         val manager = LinearLayoutManager(requireContext())
         binding.rvLetterList.adapter = letterListRecyclerViewAdapter // 어댑터 연결
         binding.rvLetterList.layoutManager = LinearLayoutManager(requireContext())
+
+        letterListRecyclerViewAdapter.registerAdapterDataObserver(object :
+            RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                binding.rvLetterList.smoothScrollToPosition(0)
+            }
+
+            override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
+                super.onItemRangeInserted(positionStart, itemCount)
+                binding.rvLetterList.smoothScrollToPosition(0)
+            }
+        })
+
         manager.reverseLayout = true
         manager.stackFromEnd = true
     }
