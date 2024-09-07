@@ -12,7 +12,7 @@
         android:layout_height="48dp"
         android:layout_margin="16dp"
         android:clickable="true"
-        android:src="@drawable/sel_btn_left"
+        android:src="@drawable/icon_left_gray"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,6 +24,7 @@
         android:layout_height="0dp"
         android:gravity="center"
         android:text="text"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/guide_iv_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,16 +35,16 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
-        android:src="@drawable/sel_btn_cancellation"
+        android:src="@drawable/icon_cancellation_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/guide_iv_progress_bar"
         android:layout_width="0dp"
-        android:layout_height="5dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:src="@color/gray"
+        android:src="@drawable/img_progressbar_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guide_iv_back" />
@@ -57,7 +58,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-
         <TextView
             android:id="@+id/guide_tv_story"
             style="@style/common_text_16_white"
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/guide_iv_next" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
 
         <ImageView

@@ -34,7 +34,7 @@ class GuideCancelDialogFragment : DialogFragment() {
         homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "ESSENTIAL" -> binding.dialogTvTitle.text = "다음에 찾아오시겠어요?\n처음부터 진행됩니다."
-                "OPTIONAL" -> binding.dialogTvTitle.text = "가이드를 종료하시겠어요?\n마이페이지에서 다시 보실 수 있습니다."
+                "ESSENTIAL_DONE","OPTIONAL" -> binding.dialogTvTitle.text = "가이드를 종료하시겠어요?\n마이페이지에서 다시 보실 수 있습니다."
             }
         }
 

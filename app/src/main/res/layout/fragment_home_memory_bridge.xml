@@ -4,8 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_home_background"
+    android:background="@drawable/bridge"
     tools:context=".presentation.home.HomeMemoryBridgeFragment">
+
+
+    <ImageView
+        android:id="@+id/home_memory_bridge_memory_effect_shine1"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:src="@drawable/img_shining_1"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <ImageView
+        android:id="@+id/home_memory_bridge_memory_effect_shine2"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:src="@drawable/img_shining_1"
+        app:layout_constraintDimensionRatio="1:1"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/home_memory_bridge_memory_effect_shine3"
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:src="@drawable/img_shining_1"
+        android:rotation="-180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/home_memory_bridge_memory_container"
@@ -14,33 +46,32 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintDimensionRatio="2:1"
         android:background="@drawable/bg_translucent_black_square"
+        app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <ImageView
+            android:id="@+id/home_memory_bridge_iv_paper_plane"
+            android:layout_width="32dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:src="@drawable/img_paper_plane"
+            app:layout_constraintBottom_toBottomOf="@+id/home_memory_bridge_tv_memory_today"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/home_memory_bridge_tv_memory_today"
+            app:layout_constraintTop_toTopOf="@+id/home_memory_bridge_tv_memory_today" />
+
         <TextView
             android:id="@+id/home_memory_bridge_tv_memory_today"
             style="@style/common_text_16_white"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/memory_question_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/home_memory_bridge_tv_memory_btn"
-            app:layout_constraintTop_toTopOf="@+id/home_memory_bridge_tv_memory_btn" />
-
-        <ImageView
-            android:id="@+id/home_memory_bridge_tv_memory_btn"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="16dp"
-            android:padding="10dp"
-            android:src="@drawable/icon_writing_white"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -48,13 +79,14 @@
             style="@style/point_text_24_white"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="처음만난 그날은 기분이 어땠나요?"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:maxLines="2"
+            android:text="처음만난 그날은 기분이 어땠나요?"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/home_memory_bridge_tv_memory_today"
-            app:layout_constraintStart_toStartOf="@+id/home_memory_bridge_tv_memory_today"
-            app:layout_constraintTop_toBottomOf="@+id/home_memory_bridge_tv_memory_btn" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_memory_bridge_tv_memory_today" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -85,6 +117,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

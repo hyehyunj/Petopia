@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/home_tv_name_pet"
-        style="@style/common_text_24_bold_dark_gray"
+        style="@style/point_text_50_dark_gray"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="24dp"
@@ -33,20 +33,20 @@
 
     <ImageView
         android:id="@+id/home_iv_gallery"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/btn_album"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/btn_gallery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_tv_name_user" />
 
     <ImageView
         android:id="@+id/home_iv_letter"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_margin="16dp"
         android:background="@drawable/btn_letter"
-        app:layout_constraintEnd_toEndOf="@+id/home_iv_gallery"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
 
 
@@ -65,14 +65,15 @@
 
     <ImageView
         android:id="@+id/home_iv_pet"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="200dp"
-        android:background="@drawable/img_persian"
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_bias="0.7"
+        app:layout_constraintDimensionRatio="1:1"
+        android:src="@drawable/img_chihuahua"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
         android:id="@+id/home_iv_arrow_under"

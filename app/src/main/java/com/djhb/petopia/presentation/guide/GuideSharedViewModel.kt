@@ -3,22 +3,32 @@ package com.djhb.petopia.presentation.guide
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
+import com.djhb.petopia.data.GuideLocalDataSource
 import com.djhb.petopia.data.GuideModel
+import com.djhb.petopia.data.PetAppearance
+import com.djhb.petopia.data.PetAppearanceModel
+import com.djhb.petopia.data.PetLocalDatasource
 import com.djhb.petopia.data.PetModel
+import com.djhb.petopia.data.PetRelation
+import com.djhb.petopia.data.remote.GuideRepository
+import com.djhb.petopia.data.remote.GuideRepositoryImpl
+import com.djhb.petopia.data.remote.PetRepository
+import com.djhb.petopia.data.remote.PetRepositoryImpl
 
 //가이드 뷰모델
-class GuideSharedViewModel :
+class GuideSharedViewModel(
+    private val guideRepository: GuideRepository,
+    private val petRepository: PetRepository
+) :
     ViewModel() {
-
-
-    private val dog = listOf("말티즈", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
-    private val cat = listOf("고양이", "푸들 비숑", "치와와", "포메라니안", "웰시코기", "시츄", "시바", "진돗개", "리트리버")
 
     //페이지
     private val _guidePageNumberLiveData = MutableLiveData(0)
     val guidePageNumberLiveData: LiveData<Int> = _guidePageNumberLiveData
 
-    //가이드데이터클래스 : 상단진행글, 상단진행바, 스토리, 다이얼로그
+    //가이드데이터클래스
     private val _guideModelLiveData = MutableLiveData<GuideModel>()
     val guideModelLiveData: LiveData<GuideModel> = _guideModelLiveData
 
@@ -26,51 +36,15 @@ class GuideSharedViewModel :
     private val _pressedButtonLiveData = MutableLiveData("")
     val pressedButtonLiveData: LiveData<String> = _pressedButtonLiveData
 
-    //외모 대분류 : "DOG" 강아지 , "CAT" 고양이
-    private val _appearanceLiveData = MutableLiveData("DOG")
-    val appearanceLiveData: LiveData<String> = _appearanceLiveData
+    //반려동물 종 : "DOG" 강아지 , "CAT" 고양이
+    private val _breedLiveData = MutableLiveData("DOG")
+    val breedLiveData: LiveData<String> = _breedLiveData
 
-    //외모 소분류
-    private val _detailAppearanceListLiveData = MutableLiveData(dog)
-    val detailAppearanceListLiveData: LiveData<List<String>> = _detailAppearanceListLiveData
+    //반려동물 외모
+    private val _appearanceListLiveData = MutableLiveData(guideRepository.getPetListData("DOG"))
+    val appearanceListLiveData: LiveData<List<PetAppearanceModel>> = _appearanceListLiveData
 
-    //반려동물 데이터클래스
-    private val _petModelLiveData = MutableLiveData<PetModel>()
-    val petModelLiveData: LiveData<PetModel> = _petModelLiveData
-
-
-
-
-
-    //반려동물 외모 대분류
-    fun changeAppearance(appearance: String) {
-        _appearanceLiveData.value = appearance
-    }
-
-    fun changeDetailAppearance() {
-        _detailAppearanceListLiveData.value = if(_appearanceLiveData.value == "DOG") dog else cat
-    }
-
-//반려동물 정보
-    //반려동물 이름을 입력받는 함수
-    fun setPetName(petName: String) {
-        _petModelLiveData.value = PetModel(petName, "", 1,"",0,0)
-        guideButtonClickListener("NEXT")
-    }
-
-    //반려동물 외모를 입력받는 함수
-    fun setPetAppearance(petAppearance : String) {
-        _petModelLiveData.value = _petModelLiveData.value?.copy(petAppearance = petAppearance)
-
-    }
-
-
-
-
-
-
-
-
+    var appearanceMutableListLiveData = _appearanceListLiveData.value?.toMutableList()
 
 
 
@@ -81,88 +55,87 @@ class GuideSharedViewModel :
         when (_pressedButtonLiveData.value) {
             "BACK" -> if (_guidePageNumberLiveData.value != -1) _guidePageNumberLiveData.value =
                 _guidePageNumberLiveData.value?.minus(1)
-            "NEXT" -> if (_guidePageNumberLiveData.value == -1) _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(2)
-                else _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(1)
+
+            "NEXT" -> if (_guidePageNumberLiveData.value == -1) _guidePageNumberLiveData.value =
+                _guidePageNumberLiveData.value?.plus(2)
+            else _guidePageNumberLiveData.value = _guidePageNumberLiveData.value?.plus(1)
         }
     }
-
-    //
-    private val progressBarData = listOf(0, 1, 2)
-
-    //
-    private val progressTextData = listOf("보호자", "이름", "비슷한", "화면")
-
-    //
-    private val guideStoryData = mapOf(
-        0 to "누구를 찾아오셨나요?",
-    2 to "어떤 외모",
-    4 to "처럼",
-    6 to "도와",
-    8 to "보시는",
-    9 to "펫토피아",
-    10 to "편지나 사진은",
-    11 to "소중한 날짜를",
-    12 to "메모리 브릿지로",
-    14 to "매일 새로운 질문에",
-    15 to "풍선을",
-    16 to "지구로",
-    18 to "구름을",
-    19 to "나무는",
-    20 to "이동버튼",
-    21 to "설정",
-    22 to "그럼"
-
-
-
-    )
-
-    //
-    private val guideDialogData = mapOf(
-        1 to 0, 3 to 1, 5 to 2)
-
 
     //가이드화면 만드는 함수
     fun makeGuideModel() {
         val page = _guidePageNumberLiveData.value ?: 0
-        var progressBar = 0
-        var progressText = ""
-        var guideStory = ""
-        var guideDialog = 9
+        _guideModelLiveData.value = page?.let { guideRepository.getGuideData(it) }
+    }
 
-        if(guideStoryData[page] != null) guideStory = guideStoryData[page].toString()
-        if(guideDialogData[page] != null) guideDialog = guideDialogData[page]!!
-
-        //페이지에 따라 상단 진행바, 진행문구 변경
-        when (page) {
-            in 0..1 -> progressText = progressTextData[0]
-            in 2..3 -> {
-                progressBar = progressBarData[0]
-                progressText = progressTextData[1]
+    //가이드 상태 변경해주는 함수
+    fun getStatusData(status: String): String {
+        val status =
+            _guidePageNumberLiveData.value?.let {
+                guideRepository.updateStatusData(
+                    it,
+                    status
+                ).status
             }
-
-            in 4..5 -> {
-                progressBar = progressBarData[1]
-                progressText = progressTextData[2]
-            }
-
-            in 6..7 -> {
-                progressBar = progressBarData[2]
-                progressText = progressTextData[3]
-            }
-        }
-
-        val guideModel = GuideModel(
-            progressBar,
-            progressText,
-            guideStory,
-            guideDialog
-        )
-        _guideModelLiveData.value = guideModel
-        if(page == 8) {
-            _guideModelLiveData.value = guideModel.copy(completeFirstGuide = true)
-        }
-
+        return status!!
     }
 
 
+    //반려동물 종 분류 입력받는 함수
+    fun changeBreed(breed: String) {
+        _breedLiveData.value = breed
+    }
+
+    //반려동물 외형 분류 입력받는 함수
+    fun changeAppearance() {
+        _appearanceListLiveData.value =
+            _breedLiveData.value?.let { guideRepository.getPetListData(it) }
+    }
+
+    //반려동물 이름을 입력받는 함수
+    fun setPetName(petName: String) {
+        petRepository.setPetNameData(petName)
+        guideButtonClickListener("NEXT")
+    }
+
+    //클릭된 리스트 변경해주는 함수
+    fun updateSelected(petAppearance: PetAppearanceModel, position: Int) {
+        appearanceMutableListLiveData = mutableListOf()
+        _appearanceListLiveData.value?.toMutableList()?.forEach { appearanceMutableListLiveData?.plusAssign(
+            it.copy(selected = false)
+        ) }
+        appearanceMutableListLiveData?.set(position, petAppearance)
+        _appearanceListLiveData.value = appearanceMutableListLiveData
+    }
+
+    //반려동물 외모를 입력받는 함수
+    fun setPetAppearance(petAppearance: String) {
+        petRepository.setPetAppearanceData(petAppearance)[1]
+    }
+
+    //반려동물 이미지를 입력받는 함수
+    fun setPetRelation(petRelation: String) {
+        petRepository.setPetRelationData(petRelation)[2]
+    }
+
+    //반려동물 데이터가 준비됐는지 확인하는 함수
+    fun preparedPetData(index: Int): Boolean {
+        return petRepository.checkPetData(index)
+    }
+
+}
+
+class GuideSharedViewModelFactory : ViewModelProvider.Factory {
+    private val guideRepository = GuideRepositoryImpl(GuideLocalDataSource)
+    private val petRepository = PetRepositoryImpl(PetLocalDatasource)
+    override fun <T : ViewModel> create(
+        modelClass: Class<T>,
+        extras: CreationExtras
+    ): T {
+
+        return GuideSharedViewModel(
+            guideRepository,
+            petRepository
+        ) as T
+    }
 }

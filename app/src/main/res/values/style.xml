@@ -123,6 +123,20 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="point_text_40_dark_gray">
+        <item name="android:textSize">40sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="point_text_50_dark_gray">
+        <item name="android:textSize">50sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 
     <!-- EditText -->
     <style name="edit_text_login" parent="Widget.Design.TextInputLayout">
@@ -160,6 +174,15 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <!-- Guide Dialog -->
+    <style name="guide_text_dialog">
+        <item name="android:textSize">16sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/sel_text_guide_appearance</item>
+    </style>
+
+
     <!-- List -->
 
     <style name="common_text_14_gray">
@@ -178,15 +201,14 @@
 
 
     <!-- Toast -->
-    <style name="toast_custom">
+
+    <style name="toast_common">
         <item name="stTextBold">true</item>
         <item name="stTextColor">@color/main_blue</item>
         <item name="stTextSize">14sp</item>
         <item name="stColorBackground">@color/white</item>
         <item name="stStrokeWidth">3dp</item>
         <item name="stStrokeColor">@color/main_blue</item>
-        <item name="stIconStart">@drawable/ic_launcher_foreground</item>
-        <item name="stIconEnd">@drawable/ic_launcher_foreground</item>
         <item name="stLength">SHORT</item>
         LONG or SHORT
         <item name="stGravity">center</item>
@@ -194,5 +216,18 @@
         <item name="stRadius">20dp</item>
     </style>
 
+    <style name="toast_warning">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#F4363C</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/white</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">#F4363C</item>
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stGravity">center</item>
+        top or center
+        <item name="stRadius">20dp</item>
+    </style>
 
 </resources>

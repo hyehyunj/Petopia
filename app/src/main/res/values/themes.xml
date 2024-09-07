@@ -5,6 +5,7 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="android:colorBackground">@color/white</item>
         <item name="android:colorPrimary">@color/main_blue</item>
+        <item name="colorAccent">@color/main_blue</item>
     </style>
 
     <style name="Theme.Petopia" parent="Base.Theme.Petopia" />

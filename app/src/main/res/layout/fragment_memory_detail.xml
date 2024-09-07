@@ -39,7 +39,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="10dp"
-            android:background="@drawable/sel_btn_check"
+            android:background="@drawable/icon_write"
             app:layout_constraintBottom_toBottomOf="@id/tv_memory_detail_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_memory_detail_title" />
@@ -60,8 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/memory_list_rv_title"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                style="@style/point_text_32_dark_gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
@@ -74,13 +73,13 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/gray"
-                android:textSize="16sp"
+                style="@style/common_text_16_dark_gray"
                 app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_question"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <TextView
                 android:id="@+id/et_memory_detail_content"
-                android:hint="@string/memory_content_sample"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="20dp"
@@ -90,6 +89,17 @@
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+        <ImageView
+            android:id="@+id/iv_memory_origami_1"
+            android:layout_width="120dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:src="@drawable/img_origami_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

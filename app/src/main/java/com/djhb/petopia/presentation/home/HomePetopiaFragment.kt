@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
+import com.djhb.petopia.data.PetAppearance
 import com.djhb.petopia.databinding.FragmentHomePetopiaBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.gallery.GalleryFragment
@@ -40,6 +42,34 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
+        mainHomeGuideViewModel.userPetLiveData.observe(viewLifecycleOwner) {
+            binding.apply {
+
+                Log.d("이름", "${it.petName}")
+                homeTvNamePet.text = it.petName
+                when (it.petAppearance) {
+                    PetAppearance.ABYSSINIAN -> binding.homeIvPet.setImageResource(R.drawable.img_abyssinian)
+                    PetAppearance.AMERICANSHORTHAIR -> binding.homeIvPet.setImageResource(R.drawable.img_americanshoerthair)
+                    PetAppearance.BICHON -> binding.homeIvPet.setImageResource(R.drawable.img_bichon)
+                    PetAppearance.CHIHUAHUA -> binding.homeIvPet.setImageResource(R.drawable.img_chihuahua)
+                    PetAppearance.KOREANSHORTHAIR -> binding.homeIvPet.setImageResource(R.drawable.img_koreanshorthair)
+                    PetAppearance.MALTESE -> binding.homeIvPet.setImageResource(R.drawable.img_maltese)
+                    PetAppearance.NORWEGIANFOREST -> binding.homeIvPet.setImageResource(R.drawable.img_norwegianforest)
+                    PetAppearance.PERSIAN -> binding.homeIvPet.setImageResource(R.drawable.img_persian)
+                    PetAppearance.POMERANIAN -> binding.homeIvPet.setImageResource(R.drawable.img_pomeranian)
+                    PetAppearance.POODLE -> binding.homeIvPet.setImageResource(R.drawable.img_poodle)
+                    PetAppearance.RETRIEVER -> binding.homeIvPet.setImageResource(R.drawable.img_retriever)
+                    PetAppearance.RUSSIANBLUE -> binding.homeIvPet.setImageResource(R.drawable.img_russianblue)
+                    PetAppearance.SCOTTISHFOLD -> binding.homeIvPet.setImageResource(R.drawable.img_scottishfold)
+                    PetAppearance.SHIBA -> binding.homeIvPet.setImageResource(R.drawable.img_shiba)
+                    PetAppearance.SHIHTZU -> binding.homeIvPet.setImageResource(R.drawable.img_shihtzu)
+                    PetAppearance.SIAMESE -> binding.homeIvPet.setImageResource(R.drawable.img_siamese)
+                    PetAppearance.TURKISHANGORA -> binding.homeIvPet.setImageResource(R.drawable.img_turkishangora)
+                    PetAppearance.WELSHCORGI -> binding.homeIvPet.setImageResource(R.drawable.img_welshcorgi)
+                }
+            }
+        }
+
 
     }
 
@@ -48,12 +78,13 @@ class HomePetopiaFragment : Fragment() {
         //갤러리버튼 클릭이벤트 : 클릭시 갤러리 이동
 
         binding.homeIvGallery.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
+            Log.d("왜?", "${mainHomeGuideViewModel.guideStateLiveData.value}")
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
                 toastMoveUnder() else showGalleryFragment()
         }
         //편지버튼 클릭이벤트 : 클릭시 편지함 이동
         binding.homeIvLetter.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
                 toastMoveUnder()
             else showLetterFragment()
         }
@@ -81,9 +112,14 @@ class HomePetopiaFragment : Fragment() {
                     }
                 }
 
-                "ESSENTIAL" -> {
+                "ESSENTIAL" ->
+                    binding.homeTvGuide.isVisible = false
+
+                "ESSENTIAL_DONE" -> {
                     binding.apply {
-                        homeTvGuide.isVisible = false
+                        homeTvNameUser.isVisible = true
+                        homeTvNamePet.isVisible = true
+                        homeIvPet.isVisible = true
                     }
                 }
 
@@ -98,23 +134,12 @@ class HomePetopiaFragment : Fragment() {
                         homeTvGuide.isVisible = false
                     }
                 }
-
-                "OPTIONAL" -> {
-                    binding.apply {
-                        homeTvNameUser.isVisible = true
-                        homeTvNamePet.isVisible = true
-                        homeIvPet.isVisible = true
-                        homeIvArrowUnder.isVisible = false
-                        homeIvGallery.isVisible = false
-                        homeIvLetter.isVisible = false
-                    }
-                }
             }
         }
 
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                "GALLERY_LETTER_GONE" -> binding.apply {
+                "PETOPIA" -> binding.apply {
                     homeIvGallery.isVisible = false
                     homeIvLetter.isVisible = false
                 }
@@ -137,12 +162,12 @@ class HomePetopiaFragment : Fragment() {
             StyleableToast.makeText(
                 requireActivity(),
                 "아래로 이동해주세요.",
-                R.style.toast_custom
+                R.style.toast_common
             ).show()
         else StyleableToast.makeText(
             requireActivity(),
             "가이드 종료 후 이용 가능합니다.",
-            R.style.toast_custom
+            R.style.toast_common
         )
             .show()
     }

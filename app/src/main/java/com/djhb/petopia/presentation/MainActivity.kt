@@ -3,8 +3,10 @@ package com.djhb.petopia.presentation
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
@@ -12,14 +14,19 @@ import com.djhb.petopia.databinding.ActivityMainBinding
 import com.djhb.petopia.presentation.dialog.DialogFragment
 import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
+import com.djhb.petopia.presentation.guide.GuideSharedViewModel
+import com.djhb.petopia.presentation.guide.GuideSharedViewModelFactory
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
+import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
-    private lateinit var mainHomeGuideSharedViewModel: MainHomeGuideSharedViewModel
+    private val mainHomeGuideSharedViewModel by viewModels<MainHomeGuideSharedViewModel> {
+        MainHomeGuideSharedViewModelFactory()
+    }
     private lateinit var viewPager: ViewPager2
 
     private val onBackPressedCallback = object: OnBackPressedCallback(true) {
@@ -36,25 +43,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-//액티비티 공유 뷰모델 갖다 쓰세요~!
-        //private val sharedViewModel : MainViewModel by activityViewModels()
-
-        mainHomeGuideSharedViewModel =
-            ViewModelProvider(this)[MainHomeGuideSharedViewModel::class.java]
 
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
-            Log.d("액티비티 종료?", "${it}")
             when (it) {
-                "DONE" -> {
-                    finishGuideFragment()
-                }
                 "NONE" -> binding.mainViewPager.isUserInputEnabled = true
+                "ESSENTIAL","ESSENTIAL_DONE","OPTIONAL" -> binding.mainViewPager.isUserInputEnabled = false
+                "DONE" -> finishGuideFragment()
             }
         }
 
         mainHomeGuideSharedViewModel.guideFunctionLiveData.observe(this) {
-            Log.d("지금 프래그먼트는", "${mainHomeGuideSharedViewModel.currentHomeLiveData.value}")
-//            binding.mainViewPager.isUserInputEnabled = false
             when (it) {
                 "MOVE_MEMORY_BRIDGE", "MOVE_EARTH"-> {
                     binding.mainViewPager.isUserInputEnabled = true
@@ -66,6 +64,9 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
                 }
+                "MEMORY_BRIDGE", "CLOUD" -> binding.mainViewPager.isUserInputEnabled = false
+
+
             }
 
         }
@@ -83,31 +84,9 @@ class MainActivity : AppCompatActivity() {
         val mainViewPagerAdapter = ViewPagerAdapter(this)
         viewPager.adapter = mainViewPagerAdapter
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
-        TabLayoutMediator(binding.mainTabLayout, binding.mainViewPager) { tab, position ->
-            when (position) {
-                0 -> {
-                    tab.text = getString(R.string.common_petopia)
-                }
-
-                1 -> {
-                    tab.text = getString(R.string.common_memory_bridge)
-                }
-
-                2 -> {
-                    tab.text = getString(R.string.common_earth)
-                }
-            }
-        }.attach()
     }
 
     fun cancelGuide() {
-
-//            supportFragmentManager.beginTransaction()
-//            .replace(R.id.main_signin_container, DialogFragment()
-//            )
-//            .setReorderingAllowed(true)
-//            .addToBackStack(null)
-//            .commit()
         GuideCancelDialogFragment().show(supportFragmentManager, "GUIDE_CANCEL_DIALOG_FRAGMENT")
 
     }
@@ -166,13 +145,11 @@ class MainActivity : AppCompatActivity() {
     fun hideViewPager() = with(binding) {
         mainSubFrame.isVisible = true
         viewPager.isVisible = false
-        mainTabLayout.isVisible = false
     }
 
     fun showViewPager() = with(binding) {
         mainSubFrame.isVisible = false
         viewPager.isVisible = true
-        mainTabLayout.isVisible = true
     }
 
 

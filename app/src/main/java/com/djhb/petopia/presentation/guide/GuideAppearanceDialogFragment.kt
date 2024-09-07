@@ -18,7 +18,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentGuideAppearanceDialogBinding
 import io.github.muddz.styleabletoast.StyleableToast
 
-//다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
+//반려동물 외형 다이얼로그 프래그먼트 : 사용자로부터 반려동물 외형정보를 입력받는 다이얼로그
 class GuideAppearanceDialogFragment : DialogFragment() {
     private val _binding: FragmentGuideAppearanceDialogBinding by lazy {
         FragmentGuideAppearanceDialogBinding.inflate(layoutInflater)
@@ -32,7 +32,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         guideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(com.djhb.petopia.presentation.guide.GuideSharedViewModel::class.java)
+            ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
 
         initAdapter()
 
@@ -48,34 +48,33 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             guideSharedViewModel.guideButtonClickListener("BACK")
             dismiss()
         }
-
-        guideSharedViewModel.appearanceLiveData.observe(viewLifecycleOwner) {
-            guideSharedViewModel.changeDetailAppearance()
+        // 클릭이벤트
+        guideSharedViewModel.breedLiveData.observe(viewLifecycleOwner) {
+            guideSharedViewModel.changeAppearance()
         }
 
-        guideSharedViewModel.detailAppearanceListLiveData.observe(viewLifecycleOwner) {
+
+
+        guideSharedViewModel.appearanceListLiveData.observe(viewLifecycleOwner) {
+//            guideAppearanceDialogRecyclerViewAdapter.notifyDataSetChanged(guideSharedViewModel.appearanceMutableListLiveData.toList())
+
             initAdapter()
         }
 
-        binding.guideAppearanceDialogRbDog.setOnClickListener {
-            guideSharedViewModel.changeAppearance("DOG")
-            Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
+        binding.guideAppearanceDialogRg.setOnCheckedChangeListener { _, id ->
+            when (id) {
+                R.id.guide_appearance_dialog_rb_dog -> guideSharedViewModel.changeBreed("DOG")
+                R.id.guide_appearance_dialog_rb_cat -> guideSharedViewModel.changeBreed("CAT")
+            }
         }
-        binding.guideAppearanceDialogRbDog.setOnClickListener {
-            guideSharedViewModel.changeAppearance("CAT")
-            Log.d("종", "${guideSharedViewModel.appearanceLiveData.value}")
-        }
-
 
         binding.guideAppearanceDialogTvComplete.setOnClickListener {
-            Log.d("외모", "${guideSharedViewModel.detailAppearanceListLiveData.value}")
-            if (guideSharedViewModel.petModelLiveData.value?.petAppearance == "")
-                StyleableToast.makeText(requireActivity(), "외형을 선택해주세요", R.style.toast_custom)
-                    .show()
-            else {
+            Log.d("외모", "${guideSharedViewModel.appearanceListLiveData.value}")
+            if (guideSharedViewModel.preparedPetData(1)) {
                 guideSharedViewModel.guideButtonClickListener("NEXT")
                 dismiss()
-            }
+            } else StyleableToast.makeText(requireActivity(), "외형을 선택해주세요", R.style.toast_common)
+                .show()
         }
 
     }
@@ -85,9 +84,11 @@ class GuideAppearanceDialogFragment : DialogFragment() {
     private fun initAdapter() {
         guideAppearanceDialogRecyclerViewAdapter =
             com.djhb.petopia.presentation.guide.GuideAppearanceDialogRecyclerViewAdapter(
-                guideSharedViewModel.detailAppearanceListLiveData.value ?: listOf(),
-                itemClickListener = { item ->
-                    guideSharedViewModel.setPetAppearance(item)
+                guideSharedViewModel.appearanceListLiveData.value ?: listOf(),
+                itemClickListener = { item, position ->
+                    Log.d("클릭된", "${item}")
+                    guideSharedViewModel.updateSelected(item.copy(selected = true),position)
+                    guideSharedViewModel.setPetAppearance(item.name)
                 })
         binding.guideAppearanceDialogRv.adapter = guideAppearanceDialogRecyclerViewAdapter
         binding.guideAppearanceDialogRv.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -97,7 +98,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
     override fun onResume() {
         super.onResume()
 
-        //다이얼로그 사용자 폰에 맞춰 크기조정, 리팩토링 필요
+        //다이얼로그 사용자 폰에 맞춰 크기조정
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay

@@ -44,8 +44,7 @@ class GuideNameDialogFragment : DialogFragment() {
 
         guideSharedViewModel = ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
 
-        Log.d("네임은", "${guideSharedViewModel.guidePageNumberLiveData.value}")
-
+      
         //이전으로버튼 클릭이벤트
         binding.dialogNameTvBack.setOnClickListener {
             guideSharedViewModel.guideButtonClickListener("BACK")
@@ -57,9 +56,9 @@ class GuideNameDialogFragment : DialogFragment() {
         //완료버튼 클릭이벤트
         binding.dialogNameTvComplete.setOnClickListener {
 
-           if(binding.dialogNameEt.text.isBlank()) StyleableToast.makeText(requireActivity(), "이름을 입력해주세요", R.style.toast_custom).show()
+           if(binding.dialogNameEt.text.isBlank()) StyleableToast.makeText(requireActivity(), "이름을 입력해주세요", R.style.toast_common).show()
 
-           else {guideSharedViewModel.setPetName(binding.dialogNameEt.text.toString())
+           else { guideSharedViewModel.setPetName(binding.dialogNameEt.text.toString())
             Log.d("바뀝니다", "${guideSharedViewModel.guidePageNumberLiveData.value}")
             dismiss()}
 

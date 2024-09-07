@@ -48,7 +48,7 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        gallerySharedViewModel.loadGalleryList()
+//        gallerySharedViewModel.loadGalleryList()
 Log.d("데이터 있나?", "${gallerySharedViewModel.galleryListLiveData.value}")
 
         initDialog()
@@ -75,8 +75,7 @@ Log.d("데이터 있나?", "${gallerySharedViewModel.galleryListLiveData.value}"
             //추가버튼 클릭이벤트 : 상세페이지로 이동하여 사진 추가
             galleryIvAdd.setOnClickListener {
                 gallerySharedViewModel.changeLayoutMode("ADD")
-                showPhoto()
-            }
+                GalleryEditFragment().show(childFragmentManager, "GALLERY_ADD_FRAGMENT")            }
         }
     }
 
@@ -86,6 +85,13 @@ Log.d("데이터 있나?", "${gallerySharedViewModel.galleryListLiveData.value}"
         //갤러리 리스트 변화감지
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
             galleryRecyclerViewAdapter.updateList(it)
+        }
+
+        gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
+            when(it) {
+                "ADD","EDIT" -> GalleryEditFragment().show(childFragmentManager, "GALLERY_EDIT_FRAGMENT")
+                "READ" -> GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
+            }
         }
 
         //삭제모드 변화감지
@@ -113,7 +119,8 @@ Log.d("데이터 있나?", "${gallerySharedViewModel.galleryListLiveData.value}"
                 when(gallerySharedViewModel.removeModeLiveData.value) {
                     "COMPLETE" -> {
                         gallerySharedViewModel.changeLayoutMode("Read")
-                        showPhoto()
+                        GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
+
                     }
                 }
                 gallerySharedViewModel.updateGalleryList(item, position)
@@ -129,16 +136,7 @@ Log.d("데이터 있나?", "${gallerySharedViewModel.galleryListLiveData.value}"
         binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-    //Photo Fragment 띄우는 함수
-    private fun showPhoto() {
-        PhotoFragment().show(childFragmentManager, "PHOTO_FRAGMENT")
 
-//        childFragmentManager.beginTransaction()
-//            .replace(R.id.gallery_photo_container, PhotoFragment())
-//            .setReorderingAllowed(true)
-//            .addToBackStack(null)
-//            .commit()
-    }
 
 
     private fun removePhoto() {

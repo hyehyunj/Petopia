@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_ivory"
     tools:context=".presentation.register.signup.SignupFragment">
 
     <LinearLayout
@@ -25,7 +26,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/signup_nickname">
+            android:hint="@string/signup_nickname"
+            app:boxBackgroundColor="@color/translucent_white"
+
+            app:boxStrokeColor="@color/main_blue"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_signup_nickname"
@@ -36,7 +42,14 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/signup_id">
+            android:layout_marginTop="4dp"
+            android:hint="@string/signup_id"
+
+            app:boxBackgroundColor="@color/translucent_white"
+
+            app:boxStrokeColor="@color/main_blue"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_signup_id"
@@ -47,7 +60,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/signup_password">
+            android:layout_marginTop="4dp"
+            android:hint="@string/signup_password"
+
+            app:boxBackgroundColor="@color/translucent_white"
+            app:boxStrokeColor="@color/main_blue"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_signup_password"
@@ -59,7 +78,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/signup_password_check">
+            android:layout_marginTop="4dp"
+            android:hint="@string/signup_password_check"
+            app:boxBackgroundColor="@color/translucent_white"
+
+            app:boxStrokeColor="@color/main_blue"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_signup_password_check"
@@ -71,7 +96,13 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/signup_email">
+            android:layout_marginTop="4dp"
+            android:hint="@string/signup_email"
+            app:boxBackgroundColor="@color/translucent_white"
+
+            app:boxStrokeColor="@color/main_blue"
+            app:boxStrokeWidth="2dp"
+            app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_signup_email"
@@ -97,12 +128,12 @@
 
             <ImageView
                 android:id="@+id/btn_viewmore"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginEnd="20dp"
-                android:src="@drawable/image_plus"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="16dp"
+                android:src="@drawable/icon_plus"
                 app:layout_constraintBottom_toBottomOf="@id/cb_check_agree_all"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/terms_checkbox_layout"
                 app:layout_constraintTop_toTopOf="@id/cb_check_agree_all" />
 
             <CheckBox
@@ -169,20 +200,20 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:text="text"
                 android:background="@drawable/sel_btn_square_white_blue"
-                android:elevation="5dp" />
+                android:elevation="5dp"
+                android:text="@string/common_cancel" />
 
             <TextView
                 android:id="@+id/btn_signup_check"
+                style="@style/common_btn_16_bold_white"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
-                android:text="text"
                 android:background="@drawable/sel_btn_square_blue_white"
-                style="@style/common_btn_16_bold_white" />
+                android:text="@string/common_complete" />
 
 
         </LinearLayout>

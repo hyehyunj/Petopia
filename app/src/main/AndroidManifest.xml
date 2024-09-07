@@ -19,7 +19,6 @@
             android:name=".presentation.register.RegisterActivity"
             android:exported="false">
 
-
         </activity>
 
 
