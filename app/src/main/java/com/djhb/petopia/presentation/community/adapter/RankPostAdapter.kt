@@ -24,10 +24,15 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
     }
 }) {
 
+//    private val rankMedalImages = mutableListOf(
+//        R.drawable.icon_1st_rank_temp,
+//        R.drawable.icon_2nd_rank_temp,
+//        R.drawable.icon_3rd_rank_temp
+//    )
     private val rankMedalImages = mutableListOf(
-        R.drawable.icon_1st_rank_temp,
-        R.drawable.icon_2nd_rank_temp,
-        R.drawable.icon_3rd_rank_temp
+        R.drawable.bg_guide_appearance_blue,
+        R.drawable.bg_guide_appearance_blue,
+        R.drawable.bg_guide_appearance_blue
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankPostHolder {
@@ -52,7 +57,8 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
         }
 
         if(item.imageUris.size == 0)
-            holder.mainImage.setImageResource(R.drawable.icon_no_image_temp)
+//            holder.mainImage.setImageResource(R.drawable.icon_no_image_temp)
+            holder.mainImage.setBackgroundColor(R.drawable.bg_guide_appearance_blue)
         else{
             Glide
                 .with(holder.mainImage.context)

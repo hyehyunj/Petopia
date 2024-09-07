@@ -56,7 +56,7 @@
         android:id="@+id/ivLike"
         android:layout_width="17dp"
         android:layout_height="17dp"
-        android:background="@drawable/icon_community_like_temp"
+        android:background="@color/skyblue"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@+id/tvCreatedDate"
         app:layout_constraintTop_toTopOf="@+id/tvCreatedDate" />
@@ -75,7 +75,7 @@
         android:id="@+id/ivViewCount"
         android:layout_width="17dp"
         android:layout_height="17dp"
-        android:background="@drawable/icon_community_comment_temp"
+        android:background="@color/skyblue"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@+id/tvLikeCount"
         app:layout_constraintTop_toTopOf="@+id/tvLikeCount" />
