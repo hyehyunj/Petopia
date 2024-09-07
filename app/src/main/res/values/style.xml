@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Contact Detail Alert Dialog-->
-
-    <!--    <style name="dialog" parent="Theme.AppCompat.Dialog">-->
-    <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
-    <!--    </style>-->
-
     <!-- Text(common) -->
     <style name="common_text_14_dark_gray">
         <item name="android:textSize">14sp</item>
@@ -93,7 +87,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <!-- Point Text -->
+    <!-- Text(Point) -->
 
     <style name="point_text_16_dark_gray">
         <item name="android:textSize">16sp</item>
@@ -218,7 +212,22 @@
 
     <style name="toast_warning">
         <item name="stTextBold">true</item>
-        <item name="stTextColor">#F4363C</item>
+        <item name="stTextColor">#F3D25B</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/white</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">#F3D25B</item>
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stGravity">center</item>
+        top or center
+        <item name="stRadius">20dp</item>
+    </style>
+
+
+    <style name="toast_error">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">#F84661</item>
         <item name="stTextSize">14sp</item>
         <item name="stColorBackground">@color/white</item>
         <item name="stStrokeWidth">3dp</item>

@@ -61,7 +61,7 @@ class SigninFragment : Fragment() {
                     StyleableToast.makeText(
                         requireActivity(),
                         "로그인 실패",
-                        R.style.toast_warning
+                        R.style.toast_error
                     ).show()
                 }
             )
