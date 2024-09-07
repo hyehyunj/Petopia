@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.register.signup
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.djhb.petopia.data.remote.SignRepositoryImpl
 import com.djhb.petopia.databinding.FragmentSignupBinding
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signin.SigninFragment
+import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.launch
 
 
@@ -93,8 +95,7 @@ class SignupFragment : Fragment() {
             if (isfilled()) {
                 usersignindata()
             } else {
-                Toast.makeText(requireContext(), "회원가입 실패", Toast.LENGTH_SHORT)
-                    .show() //확인용 추후 변경 예정
+                Log.d("SignupFragment", "회원가입 정보를 확인해주세요.")
             }
 
 
@@ -128,18 +129,30 @@ class SignupFragment : Fragment() {
 
         for ((fieldName, value) in field) {
             if (value.isEmpty()) {
-                Toast.makeText(requireContext(), "${fieldName}을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "${fieldName}을 입력해주세요.",
+                    R.style.toast_custom
+                ).show()
                 return false
             }
         }
 
         if (userPassword != userPasswordCheck) {
-            Toast.makeText(requireContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+            StyleableToast.makeText(
+                requireActivity(),
+                "비밀번호가 일치하지 않습니다.",
+                R.style.toast_custom
+            ).show()
             return false
         }
 
         if (!binding.cbCheckAgreeAll.isChecked) {
-            Toast.makeText(requireContext(), "모든 약관에 동의해주세요.", Toast.LENGTH_SHORT).show()
+            StyleableToast.makeText(
+                requireActivity(),
+                "모든 약관에 동의해주세요.",
+                R.style.toast_custom
+            ).show()
             return false
         }
 
@@ -156,7 +169,11 @@ class SignupFragment : Fragment() {
 
         lifecycleScope.launch {
             registerViewModel.createUser(user)
-            Toast.makeText(requireContext(), "회원가입 성공", Toast.LENGTH_SHORT).show()
+            StyleableToast.makeText(
+                requireActivity(),
+                "회원가입 성공",
+                R.style.toast_custom
+            ).show()
             parentFragmentManager.beginTransaction()
                 .replace(R.id.register_fragment_container, SigninFragment())
                 .addToBackStack(null)

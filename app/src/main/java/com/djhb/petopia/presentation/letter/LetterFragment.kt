@@ -55,7 +55,6 @@ class LetterFragment : DialogFragment() {
         letterViewModel =
             ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
-
         val curentUser = getCurrentUser()
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
@@ -92,6 +91,7 @@ class LetterFragment : DialogFragment() {
         letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
                 letterViewModel.setSelectedLetter(item)
+                letterViewModel.selectBackground(letterListRecyclerViewAdapter.currentList.indexOf(item))
                 showLetterDetailFragment()
 
             }, itemLongClickListener = { item ->
@@ -105,7 +105,6 @@ class LetterFragment : DialogFragment() {
         manager.reverseLayout = true
         manager.stackFromEnd = true
     }
-
 
 
     private fun initDialog() {
@@ -137,6 +136,7 @@ class LetterFragment : DialogFragment() {
     fun onLetterSaved(letterModel: LetterModel) {
         Log.d("LetterFragment", "편지 저장: $letterModel")
         letterViewModel.addLetterList(letterModel)
+
 
     }
 

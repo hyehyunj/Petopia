@@ -31,7 +31,7 @@
 
             app:boxStrokeColor="@color/main_blue"
             app:boxStrokeWidth="2dp"
-            app:hintTextColor="@color/main_blue">
+            app:hintTextColor="@color/gray">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_signup_nickname"

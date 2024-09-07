@@ -12,9 +12,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.databinding.FragmentMemoryWriteBinding
+import io.github.muddz.styleabletoast.StyleableToast
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -122,7 +124,11 @@ class MemoryWriteFragment(
             (parentFragment as? MemoryFragment)?.onMemorySaved(memory)
             parentFragmentManager.beginTransaction().remove(this).commit()
         } else {
-            Log.d("MemoryWriteFragment", "제목 또는 내용이 비어있습니다.")
+            StyleableToast.makeText(
+                requireActivity(),
+                "항목이 비어있습니다.",
+                R.style.toast_custom
+            ).show()
         }
     }
 

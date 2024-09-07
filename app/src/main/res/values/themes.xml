@@ -11,9 +11,8 @@
     <!-- Splash screen theme. -->
     <style name="Theme.Petopia.Android.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
         <item name="postSplashScreenTheme">@style/Base.Theme.Petopia</item>
-
     </style>
 
     <style name="Theme.Petopia" parent="Base.Theme.Petopia" />

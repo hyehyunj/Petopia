@@ -12,10 +12,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.R
 import com.djhb.petopia.data.LetterModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.remote.LetterRepositoryImpl
 import com.djhb.petopia.databinding.FragmentLetterWriteBinding
+import io.github.muddz.styleabletoast.StyleableToast
 
 class LetterWriteFragment(
     private val isEditMode: Boolean = false,
@@ -24,7 +26,6 @@ class LetterWriteFragment(
     private var _binding: FragmentLetterWriteBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var letterPadViewModel: LetterPadViewModel
     private lateinit var letterViewModel: LetterViewModel
     private var letterToEdit: LetterModel? = null
 
@@ -47,6 +48,11 @@ class LetterWriteFragment(
                 binding.etLetterWriteTitle.setText(selectedLetter.title)
                 binding.etLetterWriteContent.setText(selectedLetter.content)
             }
+            letterViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
+                resId?.let {
+                    binding.letterWriteLayout.setBackgroundResource(it)
+                }
+            }
         }
         return binding.root
     }
@@ -55,9 +61,8 @@ class LetterWriteFragment(
         super.onViewCreated(view, savedInstanceState)
 
         //편지지 선택
-        letterPadViewModel =
-            ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java)
-        letterPadViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
+
+        letterViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
             resId?.let {
                 binding.letterWriteLayout.setBackgroundResource(it)
             }
@@ -124,7 +129,11 @@ class LetterWriteFragment(
             (parentFragment as? LetterFragment)?.onLetterSaved(letterModel)
             parentFragmentManager.beginTransaction().remove(this).commit()
         } else {
-            Log.d("LetterWriteFragment", "제목 또는 내용이 비어있습니다.")
+            StyleableToast.makeText(
+                requireActivity(),
+                "항목을 모두 입력해주세요",
+                R.style.toast_custom
+            ).show()
         }
     }
 

@@ -15,6 +15,7 @@ import com.djhb.petopia.databinding.FragmentSigninBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signup.SignupFragment
+import io.github.muddz.styleabletoast.StyleableToast
 
 
 class SigninFragment : Fragment() {
@@ -48,14 +49,22 @@ class SigninFragment : Fragment() {
             registerViewModel.signing(userInputId, userInputPassword,
                 onSuccess = {
                     //로그인 성공
-                    Toast.makeText(requireContext(), "로그인 성공", Toast.LENGTH_SHORT).show()
+                    StyleableToast.makeText(
+                        requireActivity(),
+                        "로그인 완료",
+                        R.style.toast_custom
+                    ).show()
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 },
                 onFailure = {
                     //로그인 실패
-                    Toast.makeText(requireContext(), "로그인 실패", Toast.LENGTH_SHORT).show()
+                    StyleableToast.makeText(
+                        requireActivity(),
+                        "아이디 또는 비밀번호를 확인해주세요.",
+                        R.style.toast_custom
+                    ).show()
                 }
             )
         }

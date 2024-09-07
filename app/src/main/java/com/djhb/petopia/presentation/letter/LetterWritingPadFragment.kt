@@ -13,6 +13,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LetterModel
+import com.djhb.petopia.data.remote.LetterRepositoryImpl
 import com.djhb.petopia.databinding.FragmentLetterWritingPadBinding
 
 
@@ -21,7 +23,7 @@ class LetterWritingPadFragment : DialogFragment() {
     private var _binding: FragmentLetterWritingPadBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var letterPadViewModel: LetterPadViewModel
+    private lateinit var letterViewModel: LetterViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,8 +36,13 @@ class LetterWritingPadFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        letterPadViewModel =
-            ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java)
+//        letterPadViewModel =
+//            ViewModelProvider(requireActivity()).get(LetterPadViewModel::class.java)
+
+        val letterRepository = LetterRepositoryImpl()
+        val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
+        letterViewModel =
+            ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
         arguments?.getInt("selectedBackground")?.let { resId ->
             binding.root.setBackgroundResource(resId)
@@ -69,7 +76,7 @@ class LetterWritingPadFragment : DialogFragment() {
             R.drawable.testpad3
         )
         val adapter = LetterWritepadAdapter(backgroungList) { selectedBackground ->
-            letterPadViewModel.selectBackground(selectedBackground)
+            letterViewModel.selectBackground(selectedBackground)
 
             dismiss()
             showLetterWriteFragment()
