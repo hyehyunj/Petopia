@@ -101,7 +101,7 @@ class GuideFragment : Fragment() {
             Log.d("상태", "${mainHomeGuideSharedViewModel.guideStateLiveData.value}")
             when (it) {
                 8 -> {
-                    mainHomeGuideSharedViewModel.getPetData()
+//                    mainHomeGuideSharedViewModel.getPetData()
                     binding.apply {
                         guideTvProgressText.isVisible = false
                         guideIvProgressBar.isVisible = false

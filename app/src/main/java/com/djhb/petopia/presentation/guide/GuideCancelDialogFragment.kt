@@ -42,7 +42,7 @@ class GuideCancelDialogFragment : DialogFragment() {
         binding.dialogTvAction.setOnClickListener {
             when (homePetopiaGuideSharedViewModel.guideStateLiveData.value) {
                 "ESSENTIAL" -> homePetopiaGuideSharedViewModel.updateGuideState("NONE")
-                "OPTIONAL" -> homePetopiaGuideSharedViewModel.updateGuideState("DONE")
+                "ESSENTIAL_DONE","OPTIONAL" -> homePetopiaGuideSharedViewModel.updateGuideState("DONE")
             }
             parentFragmentManager.beginTransaction()
                 .remove(GuideFragment())

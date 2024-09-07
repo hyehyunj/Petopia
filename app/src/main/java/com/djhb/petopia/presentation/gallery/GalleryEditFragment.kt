@@ -31,7 +31,7 @@ class GalleryEditFragment : DialogFragment() {
     private val binding get() = _binding
     private lateinit var sharedViewModel: GallerySharedViewModel
     private val pickMedia =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(1)) { uri ->
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uri ->
             if (uri.isNotEmpty()) {
                 binding.galleryEditIvTitle.setImageURI(uri[0])
                 sharedViewModel.considerNewPhoto(uri)
