@@ -132,7 +132,7 @@ class LetterWriteFragment(
             StyleableToast.makeText(
                 requireActivity(),
                 "항목을 모두 입력해주세요",
-                R.style.toast_custom
+                R.style.toast_warning
             ).show()
         }
     }

@@ -127,7 +127,7 @@ class MemoryWriteFragment(
             StyleableToast.makeText(
                 requireActivity(),
                 "항목이 비어있습니다.",
-                R.style.toast_custom
+                R.style.toast_warning
             ).show()
         }
     }

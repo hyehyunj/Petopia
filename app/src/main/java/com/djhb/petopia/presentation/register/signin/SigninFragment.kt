@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -52,7 +51,7 @@ class SigninFragment : Fragment() {
                     StyleableToast.makeText(
                         requireActivity(),
                         "로그인 완료",
-                        R.style.toast_custom
+                        R.style.toast_common
                     ).show()
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
@@ -63,7 +62,7 @@ class SigninFragment : Fragment() {
                     StyleableToast.makeText(
                         requireActivity(),
                         "아이디 또는 비밀번호를 확인해주세요.",
-                        R.style.toast_custom
+                        R.style.toast_warning
                     ).show()
                 }
             )
@@ -78,10 +77,6 @@ class SigninFragment : Fragment() {
         }
 
     }
-
-//    private fun hideKeyboard(){
-//        InputMethodManager.
-//    }
 
 
 }

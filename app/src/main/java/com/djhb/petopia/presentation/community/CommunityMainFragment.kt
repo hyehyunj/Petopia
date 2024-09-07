@@ -1,31 +1,20 @@
 package com.djhb.petopia.presentation.community
 
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.replace
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.djhb.petopia.databinding.FragmentImageTestBinding
-import com.bumptech.glide.Glide
 import com.djhb.petopia.R
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.databinding.FragmentCommunityMainBinding
-import com.djhb.petopia.databinding.PostHeaderBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.community.adapter.PostAdapter
 import com.djhb.petopia.presentation.community.adapter.RankPostAdapter
-import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 
 
@@ -50,9 +39,49 @@ class CommunityMainFragment : Fragment() {
 
     private val viewModel: CommunityViewModel by activityViewModels()
 
+    private val mainActivity: MainActivity by lazy {
+        requireActivity() as MainActivity
+    }
+
     private val rankPostAdapter by lazy {
-        RankPostAdapter{ key ->
-            Toast.makeText(requireActivity(), "key = ${key}", Toast.LENGTH_SHORT).show()
+        RankPostAdapter{ post ->
+//            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
+
+            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
+            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
+
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_sub_frame, detailFragment)
+                .addToBackStack(null)
+                .commit()
+
+            lifecycleScope.launch {
+                viewModel.updatePost(postAddedViewCount)
+            }
+
+            mainActivity.hideViewPager()
+
+        }
+    }
+
+    private val allPostAdapter by lazy {
+        PostAdapter{ post ->
+//            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
+
+            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
+            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.main_sub_frame, detailFragment)
+                .addToBackStack(null)
+                .commit()
+
+            lifecycleScope.launch {
+                viewModel.updatePost(postAddedViewCount)
+            }
+
+            mainActivity.hideViewPager()
         }
     }
 
@@ -84,19 +113,15 @@ class CommunityMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initView()
         initObserve()
         initListener()
-
-                
-        
-
     }
 
     private fun initView(){
         lifecycleScope.launch {
             viewModel.createRankList()
+            viewModel.createAllList()
         }
     }
 
@@ -116,7 +141,6 @@ class CommunityMainFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
 
-            val mainActivity = requireActivity() as MainActivity
             mainActivity.hideViewPager()
         }
     }
@@ -126,14 +150,18 @@ class CommunityMainFragment : Fragment() {
             Log.i("CommunityMainFragment", "observe rank : ${it}")
             rankPostAdapter.submitList(it)
         }
-
-        viewModel.isCompleteRankPost.observe(viewLifecycleOwner){
-            viewModel.listRankPost()
+        viewModel.searchPost.observe(viewLifecycleOwner){
+            allPostAdapter.submitList(it)
         }
+
+//        viewModel.isCompleteRankPost.observe(viewLifecycleOwner){
+//            viewModel.listRankPost()
+//        }
     }
 
     private fun initAdapter(){
         binding.recyclerViewQuestionRank.adapter = rankPostAdapter
+        binding.recyclerViewQuestionMain.adapter = allPostAdapter
 //        binding.recyclerViewQuestionRank.layoutManager = LinearLayoutManager(requireActivity())
     }
 

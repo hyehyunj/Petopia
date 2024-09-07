@@ -18,4 +18,8 @@
 
     <!-- memory_sample 색상-->
     <color name="skyblue">#65C7FB</color>
+
+
+    <!-- community 색상 -->
+    <color name="comment_add_background">#77000000</color>
 </resources>
