@@ -74,6 +74,10 @@ class MemoryFragment() : DialogFragment() {
         memoryViewModel.setMemoryTitle(currentTitle)
 
 
+        if (memoryViewModel.isMemorySaved.value == true) {
+            binding.memoryTodayMemoryLayout.visibility = View.GONE
+        }
+
 
         binding.memoryTodayMemoryLayout.setOnClickListener {
             setMemoryWriteFragment() // 메모리 작성 프래그먼트 이동
@@ -124,7 +128,7 @@ class MemoryFragment() : DialogFragment() {
                 listRecyclerViewAdapter.toggleDeleteMode()
             }
             Log.d("MemoryFragment", "${listRecyclerViewAdapter.isCleared}")
-            if(!listRecyclerViewAdapter.isCleared){
+            if (!listRecyclerViewAdapter.isCleared) {
                 listRecyclerViewAdapter.clearSelections()
             }
 
@@ -165,6 +169,8 @@ class MemoryFragment() : DialogFragment() {
         binding.rvMemoryList.layoutManager = LinearLayoutManager(requireContext())
         manager.reverseLayout = true
         manager.stackFromEnd = true
+
+
     }
 
     //다이얼로그 크기 조절 함수
@@ -199,6 +205,13 @@ class MemoryFragment() : DialogFragment() {
     fun onMemorySaved(memory: Memory) {
         Log.d("MemoryFragment", "메모리 저장: $memory")
         memoryViewModel.addMemoryList(memory)
+
+        memoryViewModel.memoryListLiveData.value.let { updateList ->
+            listRecyclerViewAdapter.submitList(updateList)
+        }
+        binding.rvMemoryList.smoothScrollToPosition(0)
+
+        binding.memoryTodayMemoryLayout.visibility = View.GONE
 
     }
 

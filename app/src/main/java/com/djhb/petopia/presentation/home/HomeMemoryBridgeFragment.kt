@@ -70,8 +70,6 @@ class HomeMemoryBridgeFragment : Fragment() {
             memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
                 if (it == true) {
                     binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
-//                    binding.homeMemoryBridgeTvMemoryBtn.setText("전체보기")
-
                 }
 
             }

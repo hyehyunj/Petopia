@@ -134,7 +134,7 @@ class MemoryWriteFragment(
             it.title = title
             it.content = content
             memoryViewModel.updateMemoryList(it)
-            memoryViewModel.setMemorySaved(true)
+            memoryViewModel.setMemorySaved(false)
             onMemorySaved?.invoke(it)
             (parentFragment as? MemoryFragment)?.onMemorySaved(it)
             parentFragmentManager.beginTransaction().remove(this).commit()
