@@ -14,7 +14,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.PostRankHolderBinding
 
-class RankPostAdapter(private val onClick: (key: String) -> Unit): ListAdapter<PostModel,RankPostAdapter.RankPostHolder>(object : DiffUtil.ItemCallback<PostModel>(){
+class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel,RankPostAdapter.RankPostHolder>(object : DiffUtil.ItemCallback<PostModel>(){
     override fun areItemsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
         return oldItem.key == newItem.key
     }
@@ -48,7 +48,7 @@ class RankPostAdapter(private val onClick: (key: String) -> Unit): ListAdapter<P
         holder.rankImage.setImageResource(rankMedalImages[position])
 
         holder.binding.root.setOnClickListener {
-            onClick(item.key)
+            onClick(item)
         }
 
         if(item.imageUris.size == 0)

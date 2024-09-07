@@ -57,6 +57,7 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.10.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.10.0")
     implementation ("com.github.skydoves:powerspinner:1.2.6")
+    implementation ("me.relex:circleindicator:2.1.6")
 
     implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.dataconnect)

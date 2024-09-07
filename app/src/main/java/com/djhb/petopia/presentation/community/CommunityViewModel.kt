@@ -19,6 +19,7 @@ class CommunityViewModel : ViewModel() {
 
     private val _searchPosts = MutableLiveData<MutableList<PostModel>>()
     val searchPost get() = _searchPosts
+    var searchPostResult = mutableListOf<PostModel>()
 
     private val _postImageUris = MutableLiveData<MutableList<String>>()
     val postImageUris get() = _postImageUris
@@ -32,24 +33,45 @@ class CommunityViewModel : ViewModel() {
             val selectRankPosts = postRepository.selectRankPosts()
             Log.i("CommunityViewModel", "createRankList 2")
             Log.i("CommunityViewModel", "selectRankPosts = ${selectRankPosts}")
-            for ((index, post) in selectRankPosts.withIndex()) {
+            for (post in selectRankPosts) {
                 rankPostResult.add(postRepository.selectPostMainImage(post))
-                if(index == selectRankPosts.size-1)
-                    isCompleteRankPost.value = true
             }
 //            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
 //            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
+            _rankPosts.value = rankPostResult
+
+//            val selectRankPosts = async { postRepository.selectRankPosts() }
+//            val result = selectRankPosts.await()
+//            for ((index, model) in result.withIndex()) {
+//                val includedImages = async { postRepository.selectPostMainImage(model) }
+//                rankPostResult.add(includedImages.await())
+//                if(index == result.size-1)
+//                    isCompleteRankPost.value = true
+//            }
+
+
         }
-
-
-
-
 //        viewModelScope.launch {
 //            val rankPosts = async { postRepository.selectRankPosts()
 //            }
 //            rankPostResult = rankPosts.await()
 //            Log.i("CommunityViewModel", "rankPostResult.size = ${rankPostResult.size}")
 //        }
+    }
+
+    fun createAllList(){
+        viewModelScope.launch {
+            val selectRankPosts = postRepository.selectPosts()
+            Log.i("CommunityViewModel", "createRankList 2")
+            Log.i("CommunityViewModel", "selectRankPosts.size = ${selectRankPosts.size}")
+            for (post in selectRankPosts) {
+                searchPostResult.add(postRepository.selectPostMainImage(post))
+            }
+
+//            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
+//            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
+            _searchPosts.value = searchPostResult
+        }
     }
 
     fun listRankPost(){
@@ -63,5 +85,11 @@ class CommunityViewModel : ViewModel() {
 ////            Log.i("CommunityViewModel", "rankPost.size = ${_rankPosts.value?.size}")
 ////        }
 //    }
+
+    fun updatePost(post: PostModel) {
+        viewModelScope.launch {
+            postRepository.updatePost(post)
+        }
+    }
 
 }

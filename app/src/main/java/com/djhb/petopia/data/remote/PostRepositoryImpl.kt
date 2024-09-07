@@ -8,8 +8,15 @@ import com.djhb.petopia.data.PostModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -55,7 +62,7 @@ class PostRepositoryImpl : PostRepository {
 
             storeReference
                 .orderBy("viewCount", Query.Direction.DESCENDING)
-                .limit(4)
+                .limit(3)
                 .get().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.i("PostRepositoryImpl", "success select rank question post : ${task}")
@@ -154,6 +161,85 @@ class PostRepositoryImpl : PostRepository {
                     continuation.resumeWithException(it)
                 }
 //            Log.d("PostRepositoryImpl", "selectPostMainImage posts = ${posts}")
+        }
+    }
+
+    override suspend fun selectDetailImages(key: String): MutableList<String> {
+        return suspendCancellableCoroutine { continuation ->
+
+            storageReference.child(key).listAll().addOnCompleteListener { task ->
+
+                if(task.isSuccessful) {
+                    val imageUris = mutableListOf<String>()
+                    val items = task.result.items
+                    for (item in items) {
+                        item.downloadUrl.addOnCompleteListener { uri ->
+                            Log.i("PostRepositoryImpl", "uri = ${uri}")
+                            imageUris.add(uri.result.toString())
+                        }.addOnFailureListener {
+                            continuation.resumeWithException(it)
+                        }
+                    }
+
+                    continuation.resume(imageUris)
+                    return@addOnCompleteListener
+                } else {
+                    continuation.resumeWithException(Exception("Unknown error"))
+                }
+
+            }.addOnFailureListener {
+                continuation.resumeWithException(it)
+            }
+
+        }
+    }
+
+//    override suspend fun selectDetailImages(key: String): List<String> {
+//
+//        return coroutineScope {
+//            val imageUris = mutableListOf<Deferred<String>>()
+//
+//            storageReference.child(key).listAll().addOnCompleteListener { task ->
+//                Log.d("PostRepositoryImpl", "success get uri list size = ${task.result.items.size}")
+//                if (task.isSuccessful) {
+//                    val items = task.result.items
+//                    for (item in items) {
+//                        imageUris.add(async { selectDownloadUri(item) })
+//                    }
+//                }
+//            }
+//            imageUris.awaitAll()
+//        }
+//    }
+
+//    override suspend fun selectDetailImages(key: String): MutableList<String> {
+//        return CoroutineScope(Dispatchers.Default).async {
+//            val imageUris = mutableListOf<String>()
+//            storageReference.child(key).listAll().addOnCompleteListener { task ->
+//                if(task.isSuccessful) {
+//                    val items = task.result.items
+//                    for (item in items) {
+//                        val uri = async { selectDownloadUri(item) }.await()
+//                        imageUris.add(uri)
+//                    }
+//                }
+//            }
+//            imageUris
+//        }.await()
+//    }
+
+
+
+    override suspend fun selectDownloadUri(item: StorageReference): String {
+        return suspendCancellableCoroutine { continuation ->
+            item.downloadUrl.addOnCompleteListener { uri ->
+                Log.i("PostRepositoryImpl", "uri = ${uri.result}")
+                continuation.resume(uri.result.toString())
+                return@addOnCompleteListener
+            }.addOnFailureListener {
+                Log.d("PostRepositoryImpl", "fail downloadUri = ${it}")
+                continuation.resumeWithException(it)
+            }
         }
     }
 
