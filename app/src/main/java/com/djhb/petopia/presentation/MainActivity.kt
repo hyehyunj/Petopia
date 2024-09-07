@@ -35,21 +35,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-//액티비티 공유 뷰모델 갖다 쓰세요~!
-        //private val sharedViewModel : MainViewModel by activityViewModels()
+
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
-            Log.d("액티비티 종료?", "${it}")
             when (it) {
-                "DONE" -> {
-                    finishGuideFragment()
-                }
-                "ESSENTIAL" -> binding.mainViewPager.isUserInputEnabled = false
+                "NONE" -> binding.mainViewPager.isUserInputEnabled = true
+                "ESSENTIAL","ESSENTIAL_DONE","OPTIONAL" -> binding.mainViewPager.isUserInputEnabled = false
+                "DONE" -> finishGuideFragment()
             }
         }
 
         mainHomeGuideSharedViewModel.guideFunctionLiveData.observe(this) {
-            Log.d("지금 프래그먼트는", "${mainHomeGuideSharedViewModel.currentHomeLiveData.value}")
-//            binding.mainViewPager.isUserInputEnabled = false
             when (it) {
                 "MOVE_MEMORY_BRIDGE", "MOVE_EARTH"-> {
                     binding.mainViewPager.isUserInputEnabled = true
@@ -61,6 +56,9 @@ class MainActivity : AppCompatActivity() {
                         }
                     })
                 }
+                "MEMORY_BRIDGE", "CLOUD" -> binding.mainViewPager.isUserInputEnabled = false
+
+
             }
 
         }
@@ -79,13 +77,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun cancelGuide() {
-
-//            supportFragmentManager.beginTransaction()
-//            .replace(R.id.main_signin_container, DialogFragment()
-//            )
-//            .setReorderingAllowed(true)
-//            .addToBackStack(null)
-//            .commit()
         GuideCancelDialogFragment().show(supportFragmentManager, "GUIDE_CANCEL_DIALOG_FRAGMENT")
 
     }

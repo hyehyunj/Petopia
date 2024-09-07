@@ -102,9 +102,7 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
-
-                "MEMORY" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = false
-
+                "MOVE_EARTH" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = true
             }
         }
 
@@ -117,17 +115,15 @@ class HomeMemoryBridgeFragment : Fragment() {
             StyleableToast.makeText(
                 requireActivity(),
                 "아래로 이동해주세요.",
-                R.style.toast_custom
+                R.style.toast_common
             ).show()
         else StyleableToast.makeText(
             requireActivity(),
             "가이드 종료 후 이용 가능합니다.",
-            R.style.toast_custom
+            R.style.toast_common
         )
             .show()
     }
-
-
 
 
     private fun initAnimation() {
@@ -135,12 +131,12 @@ class HomeMemoryBridgeFragment : Fragment() {
             AnimationUtils.loadAnimation(requireContext(), R.anim.move_under)
         )
         binding.homeMemoryBridgeIvEmotion.startAnimation(
-        AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
+            AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
         )
-                binding.homeMemoryBridgeMemoryEffectShine1.startAnimation(
+        binding.homeMemoryBridgeMemoryEffectShine1.startAnimation(
             AnimationUtils.loadAnimation(requireContext(), R.anim.shine1)
         )
-                binding.homeMemoryBridgeMemoryEffectShine2.startAnimation(
+        binding.homeMemoryBridgeMemoryEffectShine2.startAnimation(
             AnimationUtils.loadAnimation(requireContext(), R.anim.shine2)
         )
         binding.homeMemoryBridgeMemoryEffectShine3.startAnimation(
@@ -170,6 +166,6 @@ class HomeMemoryBridgeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initAnimation()
-        
+
     }
 }

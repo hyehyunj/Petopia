@@ -79,27 +79,26 @@
             app:layout_constraintStart_toStartOf="@+id/guide_appearance_dialog_rg"
             app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rg" />
 
-        <TextView
+        <ImageView
             android:id="@+id/guide_appearance_dialog_tv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="이전으로"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/sel_btn_left"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rv" />
+
 
 
         <TextView
             android:id="@+id/guide_appearance_dialog_tv_complete"
-            style="@style/common_btn_16_bold_white"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="120dp"
+            android:layout_height="66dp"
+            android:text="@string/common_complete"
             android:layout_margin="16dp"
             android:background="@drawable/sel_btn_round_square_blue_white"
-            android:gravity="center"
-            android:text="확인"
+            style="@style/common_btn_16_bold_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
