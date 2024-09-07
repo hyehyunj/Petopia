@@ -15,6 +15,7 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
     private val _memoryListLiveData = MutableLiveData<List<Memory>>()
     val memoryListLiveData: LiveData<List<Memory>> = _memoryListLiveData
 
+
     private val memoryItems = mutableListOf<Memory>()
 
     // 메모리 제목
@@ -40,6 +41,10 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
 
     fun setMemoryTitle(title: String) {
         _memoryTitle.value = title
+    }
+
+    fun getMemoryTitle(): String? {
+        return _memoryTitle.value
     }
 
     fun setMemorySaved(isSaved: Boolean) {

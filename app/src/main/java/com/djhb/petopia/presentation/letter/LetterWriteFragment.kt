@@ -48,11 +48,7 @@ class LetterWriteFragment(
                 binding.etLetterWriteTitle.setText(selectedLetter.title)
                 binding.etLetterWriteContent.setText(selectedLetter.content)
             }
-            letterViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
-                resId?.let {
-                    binding.letterWriteLayout.setBackgroundResource(it)
-                }
-            }
+
         }
         return binding.root
     }
@@ -62,11 +58,6 @@ class LetterWriteFragment(
 
         //편지지 선택
 
-        letterViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
-            resId?.let {
-                binding.letterWriteLayout.setBackgroundResource(it)
-            }
-        }
 
         initDialog()
 

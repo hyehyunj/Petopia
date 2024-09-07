@@ -82,7 +82,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-storage-ktx")
 
+    //to splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
+    //to workmanager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

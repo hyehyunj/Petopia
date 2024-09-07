@@ -35,6 +35,7 @@ class ListRecyclerViewAdapter(
         }
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoryViewHolder {
         val binding = RecyclerviewMemoryListBinding.inflate(
             LayoutInflater.from(parent.context),
@@ -48,6 +49,10 @@ class ListRecyclerViewAdapter(
         val reversePosition = itemCount - position
         val item = getItem(position)
         holder.bind(item, reversePosition)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     inner class MemoryViewHolder(
@@ -110,4 +115,6 @@ class ListRecyclerViewAdapter(
         selcetedItems.clear() // 선택된 항목 초기화
         notifyDataSetChanged() // 어댑터에 변경 알림
     }
+
+
 }

@@ -64,7 +64,7 @@ class LetterFragment : DialogFragment() {
         letterViewModel.loadLetterList(curentUser)
 
         binding.letterIvAdd.setOnClickListener {
-            showLetterWritingPadFragment()
+            showLetterWriteFragment()
         }
 
         binding.btnLetterExit.setOnClickListener {
@@ -91,7 +91,11 @@ class LetterFragment : DialogFragment() {
         letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
                 letterViewModel.setSelectedLetter(item)
-                letterViewModel.selectBackground(letterListRecyclerViewAdapter.currentList.indexOf(item))
+                letterViewModel.selectBackground(
+                    letterListRecyclerViewAdapter.currentList.indexOf(
+                        item
+                    )
+                )
                 showLetterDetailFragment()
 
             }, itemLongClickListener = { item ->
@@ -150,7 +154,17 @@ class LetterFragment : DialogFragment() {
     }
 
     private fun showLetterDetailFragment() {
+
+        letterViewModel.selectBackgroundResId.observe(viewLifecycleOwner) { resId ->
+            resId?.let {
+                val args = Bundle().apply {
+                    putInt("selectedBackground", it)
+                }
+                LetterDetailFragment().arguments = args
+            }
+        }
         LetterDetailFragment().show(childFragmentManager, "DETAIL_DIALOG")
+
     }
 
     private fun showDeleteDialog(letterModel: LetterModel) {
@@ -162,6 +176,10 @@ class LetterFragment : DialogFragment() {
         }
         deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
 
+    }
+
+    private fun showLetterWriteFragment() {
+        LetterWriteFragment().show(parentFragmentManager, "LETTER_WRITE_FRAGMENT")
     }
 
 }

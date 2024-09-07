@@ -1,20 +1,28 @@
 package com.djhb.petopia.presentation.home
 
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.djhb.petopia.R
 import com.djhb.petopia.presentation.memory.MemoryViewModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
 import com.djhb.petopia.presentation.memory.MemoryFragment
 import io.github.muddz.styleabletoast.StyleableToast
+import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 
 class HomeMemoryBridgeFragment : Fragment() {
@@ -30,7 +38,9 @@ class HomeMemoryBridgeFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+
+
         return binding.root
     }
 
@@ -40,7 +50,25 @@ class HomeMemoryBridgeFragment : Fragment() {
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
-        binding.homeMemoryBridgeTvMemoryTitle.setText("오늘의 메모리")
+        val memoryRepository = MemoryRepositoryImpl()
+        val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
+
+        memoryViewModel =
+            ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
+
+        loadMemory()
+        scheduledMemory()
+
+
+        memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
+            Log.d("memoryText", text)
+            binding.homeMemoryBridgeTvMemoryTitle.text = text
+        }
+
+        val currentTitle = binding.homeMemoryBridgeTvMemoryTitle.text.toString()
+        memoryViewModel.setMemoryTitle(currentTitle)
+
+        //binding.homeMemoryBridgeTvMemoryTitle.setText("오늘의 메모리")
 //        binding.homeMemoryBridgeTvMemoryBtn.setText("작성하기")
 
         homeMemoryBridgeButtonClickListener()
@@ -73,8 +101,6 @@ class HomeMemoryBridgeFragment : Fragment() {
                 }
 
             }
-
-
         }
 
 
@@ -84,6 +110,49 @@ class HomeMemoryBridgeFragment : Fragment() {
 //        }
 
 
+    }
+
+    private fun scheduledMemory() {
+        val currentDate = Calendar.getInstance()
+
+        val targetDate = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 10)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        if (currentDate.after(targetDate)) {
+            targetDate.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
+        val initialDelay = targetDate.timeInMillis - currentDate.timeInMillis
+
+
+        Log.d("initialDelay", initialDelay.toString())
+
+        val workRequest =
+            PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(1, TimeUnit.DAYS).setInitialDelay(
+                initialDelay,
+                TimeUnit.MILLISECONDS
+            ).build()
+
+        WorkManager.getInstance(requireContext()).enqueue(workRequest)
+
+
+    }
+
+
+    private fun loadMemory() {
+        val sharedPreferences =
+            requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
+        val memoryText = sharedPreferences.getString("memoryText", null)
+
+
+        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+        memoryViewModel.setMemoryTitle(memoryText.toString())
+
+
+
+        Log.d("memoryText", memoryText.toString())
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
@@ -166,4 +235,5 @@ class HomeMemoryBridgeFragment : Fragment() {
         initAnimation()
 
     }
+
 }

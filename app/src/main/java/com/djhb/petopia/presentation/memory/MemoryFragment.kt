@@ -70,8 +70,11 @@ class MemoryFragment() : DialogFragment() {
         val currentUser = getCurrentUser()
         memoryViewModel.loadMemoryList(currentUser)
 
-        var currentTitle = binding.tvTodayMemoryContent.text.toString()
-        memoryViewModel.setMemoryTitle(currentTitle)
+        memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
+            binding.tvTodayMemoryContent.text = text
+        }
+        var currentTitle = memoryViewModel.memoryTitle.value
+        memoryViewModel.setMemoryTitle(currentTitle.toString())
 
 
         if (memoryViewModel.isMemorySaved.value == true) {
@@ -211,7 +214,7 @@ class MemoryFragment() : DialogFragment() {
         }
         binding.rvMemoryList.smoothScrollToPosition(0)
 
-        binding.memoryTodayMemoryLayout.visibility = View.GONE
+//        binding.memoryTodayMemoryLayout.visibility = View.GONE
 
     }
 
