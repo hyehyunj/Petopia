@@ -34,9 +34,8 @@ class CommunityDetailViewModel: ViewModel() {
     }
 
     suspend fun createComment(comment: CommentModel){
-        Log.i("CommunityDetailViewModel", "before add commentsResult.hashcode = ${commentsResult.hashCode()}")
         commentsResult.add(0, commentRepository.createComment(comment))
-        Log.i("CommunityDetailViewModel", "after add commentsResult.hashcode = ${commentsResult.hashCode()}")
+//        Log.i("CommunityDetailViewModel", "after add commentsResult.hashcode = ${commentsResult.hashCode()}")
         _comments.value = commentsResult
     }
 
