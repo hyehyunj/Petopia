@@ -5,26 +5,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import com.djhb.petopia.data.GuideLocalDataSource
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PetLocalDatasource
 import com.djhb.petopia.data.PetModel
-import com.djhb.petopia.data.UserModel
-import com.djhb.petopia.data.remote.GuideRepository
-import com.djhb.petopia.data.remote.GuideRepositoryImpl
 import com.djhb.petopia.data.remote.PetRepository
 import com.djhb.petopia.data.remote.PetRepositoryImpl
-import com.djhb.petopia.presentation.guide.GuideSharedViewModel
+import com.djhb.petopia.data.remote.SignRepository
+import com.djhb.petopia.data.remote.SignRepositoryImpl
+import kotlinx.coroutines.launch
 
 
 //펫토피아 뷰모델
-class MainHomeGuideSharedViewModel (
-    private val guideRepository: GuideRepository,
-   private val petRepository: PetRepository
+class MainHomeGuideSharedViewModel(
+    private val signRepository: SignRepository,
+    private val petRepository: PetRepository
 ) :
     ViewModel() {
 
-        private val user = UserModel()
+    private val user = LoginData
 
     //가이드 상태 :
     //NONE 가이드 미진행
@@ -47,24 +47,61 @@ class MainHomeGuideSharedViewModel (
     val currentHomeLiveData: LiveData<Int> = _currentHomeLiveData
 
     //유저 반려동물 :
-    private val _userPetLiveData = MutableLiveData<PetModel>()
-    val userPetLiveData: LiveData<PetModel> = _userPetLiveData
+    private val _userPetLiveData = MutableLiveData<PetModel?>()
+    val userPetLiveData: LiveData<PetModel?> = _userPetLiveData
+
 
     //가이드 상태를 업데이트 해주는 함수
     fun updateGuideState(state: String) {
         _guideStateLiveData.value = state
     }
 
-    //가이드 상태를 업데이트 해주는 함수
+    //가이드 기능설명을 업데이트 해주는 함수
     fun updateGuideFunction(function: String) {
         _guideFunctionLiveData.value = function
     }
 
 
-    //유저 반려동물 정보를 불러오는 함수
-    fun getPetData() {
-        _userPetLiveData.value = petRepository.getPetData()
+    //유저 정보를 불러오는 함수
+    fun getUser(): Boolean {
+        Log.d("유저정보", "${user.loginUser.completedGuide}")
+        Log.d("유저정보", "${user.loginUser.id}")
+        Log.d("유저정보", "${user.loginUser.pet}")
+        var skipGuide: Boolean
+        if (user.loginUser.completedGuide) {
+            getPetData()
+            _guideStateLiveData.value = "DONE"
+            skipGuide = true
+        } else {
+            _guideStateLiveData.value = "NONE"
+            skipGuide = false
+        }
+        _userPetLiveData.value = user.loginUser.pet
+        return skipGuide
+    }
+
+    //유저 정보를 입력하는 함수
+    fun setPetData() {
+        _userPetLiveData.value = petRepository.getPetData().copy(id = user.loginUser.id)
+        user.loginUser.pet = _userPetLiveData.value
+        user.loginUser.completedGuide = true
+        Log.d("유저입력됨?", "${user.loginUser.completedGuide}")
+        viewModelScope.launch {
+            signRepository.updateUser(user.loginUser)
+        }
         Log.d("반려동물", "${_userPetLiveData.value}")
+    }
+
+    //유저 정보를 불러오는 함수
+    private fun getPetData() {
+        _userPetLiveData.value = user.loginUser.pet
+    }
+
+
+
+    //유저 이름을 불러오는 함수
+    fun getUserName(): String {
+        return user.loginUser.name
     }
 
 
@@ -93,14 +130,10 @@ class MainHomeGuideSharedViewModel (
 //    }
 
 
-
-
-
-
 }
 
 class MainHomeGuideSharedViewModelFactory : ViewModelProvider.Factory {
-    private val guideRepository = GuideRepositoryImpl(GuideLocalDataSource)
+    private val signRepository = SignRepositoryImpl()
     private val petRepository = PetRepositoryImpl(PetLocalDatasource)
     override fun <T : ViewModel> create(
         modelClass: Class<T>,
@@ -108,7 +141,7 @@ class MainHomeGuideSharedViewModelFactory : ViewModelProvider.Factory {
     ): T {
 
         return MainHomeGuideSharedViewModel(
-            guideRepository,
+            signRepository,
             petRepository
         ) as T
     }
