@@ -69,7 +69,6 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         }
 
         binding.guideAppearanceDialogTvComplete.setOnClickListener {
-            Log.d("외모", "${guideSharedViewModel.appearanceListLiveData.value}")
             if (guideSharedViewModel.preparedPetData(1)) {
                 guideSharedViewModel.guideButtonClickListener("NEXT")
                 dismiss()
@@ -86,7 +85,6 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             com.djhb.petopia.presentation.guide.GuideAppearanceDialogRecyclerViewAdapter(
                 guideSharedViewModel.appearanceListLiveData.value ?: listOf(),
                 itemClickListener = { item, position ->
-                    Log.d("클릭된", "${item}")
                     guideSharedViewModel.updateSelected(item.copy(selected = true),position)
                     guideSharedViewModel.setPetAppearance(item.name)
                 })

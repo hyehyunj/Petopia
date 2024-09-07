@@ -40,7 +40,8 @@ class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<P
         }
 
         if(item.imageUris.size == 0)
-            holder.mainImage.setImageResource(R.drawable.icon_no_image_temp)
+//            holder.mainImage.setImageResource(R.drawable.icon_no_image_temp)
+            holder.mainImage.setImageResource(R.drawable.bg_guide_appearance_blue)
         else{
             Glide
                 .with(holder.mainImage.context)

@@ -49,9 +49,9 @@ class CommunityCreateFragment : Fragment() {
         FragmentCommunityCreateBinding.inflate(layoutInflater)
     }
 
-    private val postRepository: PostRepository by lazy {
-        PostRepositoryImpl()
-    }
+//    private val postRepository: PostRepository by lazy {
+//        PostRepositoryImpl()
+//    }
 
     private val mainActivity: MainActivity by lazy {
         requireActivity() as MainActivity
@@ -195,7 +195,8 @@ class CommunityCreateFragment : Fragment() {
                 lifecycleScope.launch {
                     imageUris.removeAt(0)
                     Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
-                    postRepository.createPost(PostModel(title, content, loginUser), imageUris)
+//                    postRepository.createPost(PostModel(title, content, loginUser), imageUris)
+                    viewModel.createPost(PostModel(title, content, loginUser), imageUris)
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     mainActivity.showViewPager()
                     requireActivity().supportFragmentManager.popBackStack()

@@ -34,9 +34,7 @@ class CommunityDetailViewModel: ViewModel() {
     }
 
     suspend fun createComment(comment: CommentModel){
-        Log.i("CommunityDetailViewModel", "before add commentsResult.hashcode = ${commentsResult.hashCode()}")
         commentsResult.add(0, commentRepository.createComment(comment))
-        Log.i("CommunityDetailViewModel", "after add commentsResult.hashcode = ${commentsResult.hashCode()}")
         _comments.value = commentsResult
     }
 
@@ -48,18 +46,12 @@ class CommunityDetailViewModel: ViewModel() {
 
     suspend fun updateComment(comment: CommentModel) {
         commentRepository.updateComment(comment)
-        Log.i("CommentDetailViewModel", "before commentsResult.hashCode = ${commentsResult.hashCode()}")
-        Log.i("CommentDetailViewModel", "before commentsResult.size = ${commentsResult.size}")
         for ((commentIndex, commentModel) in commentsResult.withIndex()) {
             if(commentModel.key == comment.key) {
-                Log.i("CommentDetailViewModel", "parameter comment.content = ${comment.content}")
-                Log.i("CommentDetailViewModel", "commentsResult comment.content = ${commentsResult[commentIndex].content}")
-
                 commentsResult[commentIndex] = comment
                 break
             }
         }
-        Log.i("CommentDetailViewModel", "after commentsResult.hashCode = ${commentsResult.hashCode()}")
         _comments.value = commentsResult
     }
 

@@ -49,7 +49,6 @@ class GuideAppearanceDialogRecyclerViewAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PetAppearanceModel, position: Int) {
-            Log.d("포지션","${item.selected}")
             if(item.selected) {binding.guideAppearanceDialogHolder.setBackgroundResource(R.drawable.bg_guide_appearance_blue)
             binding.guideAppearanceDialogTv.setTextColor(Color.WHITE)}
             else {binding.guideAppearanceDialogHolder.setBackgroundResource(R.drawable.bg_guide_appearance_white)
@@ -64,10 +63,6 @@ class GuideAppearanceDialogRecyclerViewAdapter(
         }
     }
 
-
-    fun updateSelectedIndex(index: Int) {
-
-    }
 }
 
 

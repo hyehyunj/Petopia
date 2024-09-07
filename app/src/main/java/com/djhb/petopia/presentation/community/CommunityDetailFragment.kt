@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
@@ -14,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.DateFormatUtils
+import com.djhb.petopia.R
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
@@ -21,8 +23,9 @@ import com.djhb.petopia.databinding.FragmentCommunityDetailBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.DetailCommentAdapter
 import com.djhb.petopia.presentation.community.adapter.DetailImageAdapter
-import com.djhb.petopia.presentation.community.adapter.DetailImagePagerAdapter
 import com.djhb.petopia.presentation.community.adapter.OnClickComment
+import com.djhb.petopia.presentation.community.dialogFragment.CommentAddDialogFragment
+import com.djhb.petopia.presentation.community.dialogFragment.PostDeleteDialogFragment
 import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
 
@@ -48,16 +51,16 @@ class CommunityDetailFragment : Fragment() {
         requireActivity() as MainActivity
     }
 
-//    private val backPressedCallback = object : OnBackPressedCallback(true) {
-//        override fun handleOnBackPressed() {
-//
-//
-//            if(isEnabled) {
-//                isEnabled = false
-//                mainActivity.showViewPager()
-//            }
-//        }
-//    }
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+
+
+            if(isEnabled) {
+                isEnabled = false
+                mainActivity.showViewPager()
+            }
+        }
+    }
 
     private val commentAdapter: DetailCommentAdapter by lazy {
         DetailCommentAdapter(object: OnClickComment{
@@ -74,14 +77,23 @@ class CommunityDetailFragment : Fragment() {
             }
 
             override fun onClickDelete(key: String) {
-                lifecycleScope.launch {
-                    viewModel.deleteComment(key)
+
+                val deleteDialogFragment = PostDeleteDialogFragment(key) { key ->
+                    lifecycleScope.launch {
+                        communityViewModel.deletePost(key)
+                    }
                 }
+
+                deleteDialogFragment.show(childFragmentManager, "DELETE POST")
+//                lifecycleScope.launch {
+//                    detailViewModel.deleteComment(key)
+//                }
             }
         })
     }
 
-    private val viewModel: CommunityDetailViewModel by activityViewModels()
+    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
+    private val communityViewModel: CommunityViewModel by activityViewModels()
 
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPagerAdapter: DetailImageAdapter
@@ -137,9 +149,9 @@ class CommunityDetailFragment : Fragment() {
 
             binding.rvComment.adapter = commentAdapter
 
-            viewModel.selectAllCommentFromPost(post.key)
+            detailViewModel.selectAllCommentFromPost(post.key)
 
-//            requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), backPressedCallback)
+            requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), backPressedCallback)
 
         }
 
@@ -163,7 +175,7 @@ class CommunityDetailFragment : Fragment() {
                 Toast.makeText(requireActivity(), "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch {
-                    viewModel.createComment(CommentModel(post.key, LoginData.loginUser, comment))
+                    detailViewModel.createComment(CommentModel(post.key, LoginData.loginUser, comment))
                 }
             }
         }
@@ -172,13 +184,35 @@ class CommunityDetailFragment : Fragment() {
             mainActivity.showViewPager()
         }
 
-        binding.btnDelete.setOnClickListener {
 
+        if(post.writer.id == LoginData.loginUser.id) {
+            binding.btnDelete.visibility = ImageView.VISIBLE
+            binding.btnEdit.visibility = ImageView.VISIBLE
+
+            binding.btnDelete.setOnClickListener {
+                lifecycleScope.launch {
+                    communityViewModel.deletePost(post.key)
+                }
+
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_sub_frame,CommunityMainFragment())
+                    .commit()
+            }
+
+            binding.btnEdit.setOnClickListener {
+
+            }
+
+        } else {
+            binding.btnDelete.visibility = ImageView.GONE
+            binding.btnEdit.visibility = ImageView.GONE
         }
+
     }
 
     private fun initObserver(){
-        viewModel.comments.observe(viewLifecycleOwner) {
+        detailViewModel.comments.observe(viewLifecycleOwner) {
             Log.i("${this::class.java}", "observe comments.size = ${it.size}")
 //            commentAdapter.submitList(viewModel.commentsResult)
 //            commentAdapter.submitList(it.toMutableList())
