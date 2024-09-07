@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="10dp"
-    android:background="@drawable/sel_btn_guide_appearance"
     android:layout_margin="4dp">
 
 

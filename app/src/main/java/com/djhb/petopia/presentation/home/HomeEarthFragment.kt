@@ -57,7 +57,7 @@ class HomeEarthFragment : Fragment() {
 
         }
 
-        //메모리버튼 클릭이벤트 : 클릭시 커뮤니티 이동
+        //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
 
             childFragmentManager.beginTransaction()

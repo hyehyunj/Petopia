@@ -22,12 +22,12 @@
 
         <TextView
             android:id="@+id/guide_relation_dialog_tv_title"
+            style="@style/point_text_24_dark_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="반려동물을 생각했을 때\n떠오르는 이미지를 선택해주세요."
-         style="@style/point_text_24_dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,77 +35,79 @@
 
         <RadioGroup
             android:id="@+id/guide_relation_dialog_rg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guide_relation_dialog_tv_title" >
+            app:layout_constraintTop_toBottomOf="@+id/guide_relation_dialog_tv_title">
 
-        <RadioButton
-            android:id="@+id/guide_relation_dialog_rb_child"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="24dp"
-            android:text="아이처럼\n사랑스러운"
-            android:button="@android:color/transparent"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintDimensionRatio="1:1"
-             />
+            <RadioButton
+                android:id="@+id/guide_relation_dialog_rb_child"
+                style="@style/guide_text_dialog"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:background="@drawable/sel_btn_guide_appearance"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:layout_margin="16dp"
+                android:text="사랑스러운\n아이"/>
 
-        <RadioButton
-            android:id="@+id/guide_relation_dialog_rb_younger"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="24dp"
-            android:text="동생처럼\n귀여운"
-            android:button="@android:color/transparent"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@+id/guide_relation_dialog_rb_friend"
-            app:layout_constraintStart_toEndOf="@+id/guide_relation_dialog_rb_child"
-            app:layout_constraintTop_toTopOf="@+id/guide_relation_dialog_rb_child" />
+            <RadioButton
+                android:id="@+id/guide_relation_dialog_rb_younger"
+                style="@style/guide_text_dialog"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:background="@drawable/sel_btn_guide_appearance"
+                android:button="@android:color/transparent"
+                android:gravity="center"
+                android:padding="24dp"
+                android:text="귀여운\n동생"
+                app:layout_constraintEnd_toStartOf="@+id/guide_relation_dialog_rb_friend"
+                app:layout_constraintStart_toEndOf="@+id/guide_relation_dialog_rb_child"
+                app:layout_constraintTop_toTopOf="@+id/guide_relation_dialog_rb_child" />
 
-        <RadioButton
-            android:id="@+id/guide_relation_dialog_rb_friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="친구처럼\n친근한"
-            android:button="@android:color/transparent"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/guide_relation_dialog_rb_child"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/guide_relation_dialog_rb_younger"
-            app:layout_constraintTop_toTopOf="@+id/guide_relation_dialog_rb_child" />
+            <RadioButton
+                android:id="@+id/guide_relation_dialog_rb_friend"
+                style="@style/guide_text_dialog"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:background="@drawable/sel_btn_guide_appearance"
+                android:button="@android:color/transparent"
+                android:padding="24dp"
+                android:layout_margin="16dp"
+                android:text="친한\n친구"
+                app:layout_constraintBottom_toBottomOf="@+id/guide_relation_dialog_rb_child"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guide_relation_dialog_rb_younger"
+                app:layout_constraintTop_toTopOf="@+id/guide_relation_dialog_rb_child" />
 
         </RadioGroup>
 
-        <TextView
+        <ImageView
             android:id="@+id/guide_relation_dialog_tv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="이전으로"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/sel_btn_left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guide_relation_dialog_rg" />
 
         <TextView
             android:id="@+id/guide_relation_dialog_tv_complete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:text="완료"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_width="120dp"
+            android:layout_height="66dp"
+            android:text="@string/common_complete"
+            android:layout_margin="16dp"
+            android:background="@drawable/sel_btn_round_square_blue_white"
+            style="@style/common_btn_16_bold_white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guide_relation_dialog_rg" />

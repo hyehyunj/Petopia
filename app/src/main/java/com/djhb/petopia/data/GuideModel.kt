@@ -1,9 +1,10 @@
 package com.djhb.petopia.data
 
 data class GuideModel(
-    val progressBar: Int = 3,
+    val progressBar: String = "",
     val progressText: String = "",
-    val guideStory: String,
-    val dialog: Int,
-    val completeFirstGuide: Boolean = false
+    val guideStory: String = "",
+    val dialog: String = "",
+    val function: String = "",
+    val status: String = ""
 )
