@@ -8,14 +8,15 @@ import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.remote.CommentRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CommunityDetailViewModel: ViewModel() {
 
-    private val _imageUris = MutableLiveData<MutableList<String>>()
+    private val _imageUris = MutableLiveData<List<String>>()
     val imageUris get() = _imageUris
 
-    var imageUriResults = listOf<String>()
+    var imageUriResults = mutableListOf<String>()
 
     private val _comments = MutableLiveData<MutableList<CommentModel>>()
     val comments get() = _comments
@@ -28,8 +29,18 @@ class CommunityDetailViewModel: ViewModel() {
 
     suspend fun selectDetailImageUris(key: String) {
         viewModelScope.launch {
-            imageUriResults = postRepository.selectDetailImages(key)
+//            imageUriResults = async { postRepository.selectDetailImages(key)}.await()
+//            Log.i("CommunityDetailViewModel", "imageUriResults.size = ${imageUriResults.size}")
+//            _imageUris.value = imageUriResults
 //            _imageUris.value = ima
+            imageUriResults.clear()
+            val imageUris = postRepository.selectDetailImagesTest(key)
+
+            for (imageUri in imageUris) {
+                imageUriResults.add(postRepository.selectDownloadUri(imageUri))
+            }
+
+            _imageUris.value = imageUriResults
         }
     }
 

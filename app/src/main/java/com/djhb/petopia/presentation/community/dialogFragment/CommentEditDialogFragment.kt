@@ -23,10 +23,10 @@ import kotlinx.coroutines.launch
 
 /**
  * A simple [Fragment] subclass.
- * Use the [CommentAddDialogFragment.newInstance] factory method to
+ * Use the [CommentEditDialogFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class CommentAddDialogFragment : DialogFragment() {
+class CommentEditDialogFragment : DialogFragment() {
     // TODO: Rename and change types of parameters
     private val ARG_PARAM1 = "comment"
 
@@ -136,7 +136,7 @@ class CommentAddDialogFragment : DialogFragment() {
 
         @JvmStatic
         fun newInstance(comment: CommentModel) =
-            CommentAddDialogFragment().apply {
+            CommentEditDialogFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_PARAM1, comment)
                 }
