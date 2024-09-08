@@ -1,85 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:layout_margin="15dp"
+    android:layout_margin="16dp"
     android:background="@drawable/border_round"
     android:elevation="3dp">
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        style="@style/point_text_24_dark_gray"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="start"
         android:maxLines="1"
         android:text="3개월 포숑 사료 추천부탁드립니다"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:layout_marginStart="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/ivMainImage"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/ivMainImage" />
 
     <TextView
         android:id="@+id/tvWriter"
+        style="@style/point_text_20_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="jaeseon"
-        android:textSize="12sp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintStart_toStartOf="@+id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tvCreatedDate"
-        />
+        app:layout_constraintStart_toStartOf="@+id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <TextView
         android:id="@+id/tvCreatedDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="24.08.03"
-        android:textSize="12sp"
         android:layout_marginStart="5dp"
+        android:text="24.08.03"
+        style="@style/common_text_14_gray"
         app:layout_constraintStart_toEndOf="@+id/tvWriter"
         app:layout_constraintTop_toTopOf="@+id/tvWriter"
-        />
+        app:layout_constraintBottom_toBottomOf="@+id/tvWriter"/>
 
     <ImageView
         android:id="@+id/ivLike"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:background="@color/skyblue"
-        android:layout_marginStart="5dp"
-        app:layout_constraintStart_toEndOf="@+id/tvCreatedDate"
+        android:layout_width="16dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/icon_heart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1.1"
+        app:layout_constraintEnd_toStartOf="@+id/tvLikeCount"
         app:layout_constraintTop_toTopOf="@+id/tvCreatedDate" />
 
     <TextView
         android:id="@+id/tvLikeCount"
+        style="@style/common_text_14_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:text="100"
-        android:textSize="13sp"
-        android:layout_marginStart="2dp"
-        app:layout_constraintStart_toEndOf="@+id/ivLike"
+        app:layout_constraintBottom_toBottomOf="@+id/ivLike"
+        app:layout_constraintEnd_toStartOf="@+id/ivViewCount"
         app:layout_constraintTop_toTopOf="@+id/ivLike" />
 
     <ImageView
         android:id="@+id/ivViewCount"
-        android:layout_width="17dp"
-        android:layout_height="17dp"
-        android:background="@color/skyblue"
-        android:layout_marginStart="5dp"
-        app:layout_constraintStart_toEndOf="@+id/tvLikeCount"
+        android:layout_width="0dp"
+        android:layout_height="16dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/icon_community_view_count"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLikeCount"
+        app:layout_constraintDimensionRatio="1.3:1"
+        app:layout_constraintEnd_toStartOf="@+id/tvViewCount"
         app:layout_constraintTop_toTopOf="@+id/tvLikeCount" />
 
     <TextView
         android:id="@+id/tvViewCount"
+        style="@style/common_text_14_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="100"
-        android:textSize="13sp"
-        android:layout_marginStart="2dp"
-        app:layout_constraintStart_toEndOf="@+id/ivViewCount"
+        app:layout_constraintBottom_toBottomOf="@+id/ivViewCount"
+        app:layout_constraintEnd_toEndOf="@+id/tvTitle"
         app:layout_constraintTop_toTopOf="@+id/ivViewCount" />
 
 
@@ -87,8 +92,8 @@
         android:id="@+id/ivMainImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_margin="16dp"
         android:background="@drawable/border_round"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

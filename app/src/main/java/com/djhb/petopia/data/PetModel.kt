@@ -10,7 +10,7 @@ data class PetModel(
     val petAppearance : PetAppearance,
     val petRelation : PetRelation,
     val id: String = "",
-    val createdDate : Long,
-    var updatedDate: Long,
-    val uId: String = UUID.randomUUID().toString()
+    val createdDate : Long = System.currentTimeMillis(),
+    var updatedDate: Long = System.currentTimeMillis(),
+    var uid: String = UUID.randomUUID().toString()
 ) : Parcelable

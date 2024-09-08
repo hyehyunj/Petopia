@@ -1,18 +1,25 @@
 package com.djhb.petopia.presentation.gallery
 
+import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +37,28 @@ class GalleryEditFragment : DialogFragment() {
     }
     private val binding get() = _binding
     private lateinit var sharedViewModel: GallerySharedViewModel
+
+//    private val imageUris = mutableListOf<Uri>()
+//    private val imageLauncher =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == RESULT_OK && result.data != null) {
+//                imageUris.clear()
+//                val clipData = result.data?.clipData
+//                if (clipData == null) {
+//                    val uri = result.data?.data
+//                    if (uri != null) {
+//                        imageUris.add(uri)
+//                    }
+//                } else {
+//                    for (itemIndex in 0 until clipData.itemCount) {
+//                        imageUris.add(clipData.getItemAt(itemIndex).uri)
+//                    }
+//                }
+//                binding.galleryEditIvTitle.setImageURI(imageUris[0])
+//                sharedViewModel.considerNewPhoto(imageUris)
+//            }
+//        }
+
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uri ->
             if (uri.isNotEmpty()) {
@@ -84,6 +113,24 @@ class GalleryEditFragment : DialogFragment() {
 //                    Toast.makeText(requireContext(),"최대 6장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show()
 //                    return@setOnClickListener
 //                }
+//                if (ContextCompat.checkSelfPermission(
+//                        requireActivity(),
+//                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+//                    )
+//                    == PackageManager.PERMISSION_DENIED
+//                ) {
+//                    requireActivity().requestPermissions(
+//                        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+//                        1
+//                    )
+//                }
+//                val intent = Intent(Intent.ACTION_PICK)
+//                intent.setDataAndType(
+//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+//                )
+//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+//                imageLauncher.launch(intent)
+//            }
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드

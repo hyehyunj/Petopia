@@ -28,7 +28,6 @@
             android:layout_height="wrap_content"
             android:hint="@string/signup_nickname"
             app:boxBackgroundColor="@color/translucent_white"
-
             app:boxStrokeColor="@color/main_blue"
             app:boxStrokeWidth="2dp"
             app:hintTextColor="@color/gray">

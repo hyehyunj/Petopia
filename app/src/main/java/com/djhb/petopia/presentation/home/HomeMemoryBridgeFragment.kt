@@ -56,7 +56,9 @@ class HomeMemoryBridgeFragment : Fragment() {
         memoryViewModel =
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
+
         loadMemory()
+
         scheduledMemory()
 
 
@@ -86,22 +88,23 @@ class HomeMemoryBridgeFragment : Fragment() {
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
+
+        memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
+//            if (it == true) {
+//
+//
+//            }
+
+        }
         binding.homeMemoryBridgeMemoryContainer.setOnClickListener {
             if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
                 toastMoveUnder() else setMemoryFragment()
 
+            // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
+            binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
 
             Log.d("memorybuttonclick", "메모리버튼 클릭")
 
-            // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
-
-            memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
-                if (it == true) {
-                    binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
-                    Log.d("memorySaved", "${memoryViewModel.isMemorySaved.value}")
-                }
-
-            }
         }
 
 
@@ -131,7 +134,10 @@ class HomeMemoryBridgeFragment : Fragment() {
         Log.d("initialDelay", initialDelay.toString())
 
         val workRequest =
-            PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(1, TimeUnit.DAYS).setInitialDelay(
+            PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(
+                1,
+                TimeUnit.DAYS
+            ).setInitialDelay(
                 initialDelay,
                 TimeUnit.MILLISECONDS
             ).build()
