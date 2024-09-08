@@ -48,7 +48,7 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        gallerySharedViewModel.loadGalleryList()
+//        gallerySharedViewModel.loadGalleryList()
 
         initDialog()
     }

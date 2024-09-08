@@ -125,6 +125,8 @@ class CommunityMainFragment : Fragment() {
             viewModel.selectRankList()
             viewModel.selectAllList()
         }
+        binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
+        binding.recyclerViewQuestionRank.isNestedScrollingEnabled = false
     }
 
     private fun initListener(){
