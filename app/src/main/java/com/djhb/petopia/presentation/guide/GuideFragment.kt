@@ -97,8 +97,6 @@ class GuideFragment : Fragment() {
 
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
             guideViewModel.makeGuideModel()
-            Log.d("페이지", "${guideViewModel.guidePageNumberLiveData.value}")
-            Log.d("상태", "${mainHomeGuideSharedViewModel.guideStateLiveData.value}")
             when (it) {
                 8 -> {
 //                    mainHomeGuideSharedViewModel.getPetData()
@@ -160,7 +158,6 @@ class GuideFragment : Fragment() {
                     .commit()
         }
         mainHomeGuideSharedViewModel.currentHomeLiveData.observe(viewLifecycleOwner) {
-            Log.d("프래그먼트", "${guideViewModel.guidePageNumberLiveData.value}")
             when (it) {
                 0
 

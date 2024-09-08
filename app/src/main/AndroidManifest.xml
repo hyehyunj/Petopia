@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Petopia"
+        android:theme="@style/Theme.Petopia.Android.Splash"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".presentation.register.RegisterActivity"
@@ -25,6 +27,7 @@
         <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
+
             <intent-filter>
 
                 <action android:name="android.intent.action.MAIN" />

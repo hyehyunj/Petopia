@@ -72,7 +72,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             if (guideSharedViewModel.preparedPetData(1)) {
                 guideSharedViewModel.guideButtonClickListener("NEXT")
                 dismiss()
-            } else StyleableToast.makeText(requireActivity(), "외형을 선택해주세요", R.style.toast_common)
+            } else StyleableToast.makeText(requireActivity(), "외형을 선택해주세요", R.style.toast_warning)
                 .show()
         }
 

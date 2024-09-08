@@ -82,7 +82,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:maxLines="2"
-            android:text="처음만난 그날은 기분이 어땠나요?"
+            android:text="sample"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

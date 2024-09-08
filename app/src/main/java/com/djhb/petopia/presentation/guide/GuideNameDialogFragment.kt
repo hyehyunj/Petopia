@@ -56,10 +56,9 @@ class GuideNameDialogFragment : DialogFragment() {
         //완료버튼 클릭이벤트
         binding.dialogNameTvComplete.setOnClickListener {
 
-           if(binding.dialogNameEt.text.isBlank()) StyleableToast.makeText(requireActivity(), "이름을 입력해주세요", R.style.toast_common).show()
+           if(binding.dialogNameEt.text.isBlank()) StyleableToast.makeText(requireActivity(), "이름을 입력해주세요", R.style.toast_warning).show()
 
            else { guideSharedViewModel.setPetName(binding.dialogNameEt.text.toString())
-            Log.d("바뀝니다", "${guideSharedViewModel.guidePageNumberLiveData.value}")
             dismiss()}
 
         }
