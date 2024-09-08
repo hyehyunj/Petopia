@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.remote.PostRepositoryImpl
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
 
 class CommunityViewModel : ViewModel() {
@@ -35,18 +36,34 @@ class CommunityViewModel : ViewModel() {
 
     }
 
+    fun createPostImages(post: PostModel, imageUris: MutableList<String>) {
+        viewModelScope.launch {
+            postRepository.createPostImages(post, imageUris)
+        }
+    }
+
 
     fun selectRankList() {
 
         viewModelScope.launch {
             rankPostResult.clear()
-//            Log.i("CommunityViewModel", "createRankList 1")
-            val selectRankPosts = postRepository.selectRankPosts()
-//            Log.i("CommunityViewModel", "createRankList 2")
-//            Log.i("CommunityViewModel", "selectRankPosts = ${selectRankPosts}")
-            for (post in selectRankPosts) {
-                rankPostResult.add(postRepository.selectPostMainImage(post))
+            rankPostResult = postRepository.selectRankPosts()
+//            _rankPosts.value = rankPostResult
+
+            val imageUris = mutableListOf<StorageReference?>()
+
+            for (post in rankPostResult) {
+                post.imageUris.clear()
+                imageUris.add(postRepository.selectPostMainImage(post))
             }
+
+            for ((uriIndex, uri) in imageUris.withIndex()) {
+                Log.i("CommunityViewModel", "rank uri = ${uri}")
+                if(uri != null) {
+                    rankPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+                }
+            }
+
 //            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
 //            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
             _rankPosts.value = rankPostResult
@@ -73,12 +90,27 @@ class CommunityViewModel : ViewModel() {
     fun selectAllList(){
         viewModelScope.launch {
             searchPostResult.clear()
-            val allPosts = postRepository.selectPosts()
-            Log.i("CommunityViewModel", "createRankList 2")
-            Log.i("CommunityViewModel", "selectRankPosts.size = ${allPosts.size}")
-            for (post in allPosts) {
-                searchPostResult.add(postRepository.selectPostMainImage(post))
+//            val allPosts = postRepository.selectPosts()
+            searchPostResult = postRepository.selectPosts()
+
+            val imageUris = mutableListOf<StorageReference?>()
+
+            for (post in searchPostResult) {
+                post.imageUris.clear()
+                imageUris.add(postRepository.selectPostMainImage(post))
             }
+
+            for ((uriIndex, uri) in imageUris.withIndex()) {
+                Log.i("CommunityViewModel", "rank uri = ${uri}")
+                if(uri != null) {
+                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+                }
+            }
+//            Log.i("CommunityViewModel", "createRankList 2")
+//            Log.i("CommunityViewModel", "selectRankPosts.size = ${allPosts.size}")
+//            for (post in allPosts) {
+//                searchPostResult.add(postRepository.selectPostMainImage(post))
+//            }
 
 //            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
 //            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
@@ -121,6 +153,12 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
+    fun addPostViewCount(postKey: String) {
+        viewModelScope.launch {
+            postRepository.addPostViewCount(postKey)
+        }
+    }
+
     fun deletePost(postKey: String) {
         viewModelScope.launch {
             postRepository.deletePost(postKey)
@@ -135,6 +173,12 @@ class CommunityViewModel : ViewModel() {
                 post.key == postKey
             }
             _searchPosts.value = searchPostResult
+        }
+    }
+
+    fun deletePostImages(postKey: String){
+        viewModelScope.launch {
+            postRepository.deletePostImages(postKey)
         }
     }
 

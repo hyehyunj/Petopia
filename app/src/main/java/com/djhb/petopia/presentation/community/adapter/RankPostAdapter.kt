@@ -16,10 +16,14 @@ import com.djhb.petopia.databinding.PostRankHolderBinding
 
 class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel,RankPostAdapter.RankPostHolder>(object : DiffUtil.ItemCallback<PostModel>(){
     override fun areItemsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
+//        Log.i("RankPostAdapter", "oldItem.imageUris = ${oldItem.imageUris.hashCode()}")
+//        Log.i("RankPostAdapter", "newItem.imageUris = ${newItem.imageUris.hashCode()}")
         return oldItem.key == newItem.key
+                && oldItem.imageUris.size == newItem.imageUris.size
     }
 
     override fun areContentsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
+//        Log.i("RankPostAdapter", "oldItem == newItem : ${oldItem == newItem}")
         return oldItem == newItem
     }
 }) {
@@ -36,14 +40,15 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankPostHolder {
+        Log.i("RankPostAdapter", "onCreateViewHolder")
         val binding = PostRankHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RankPostHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RankPostHolder, position: Int) {
-
         val item = getItem(position)
-        Log.i("RankPostAdapter", "item = ${item}")
+        Log.i("RankPostAdapter", "onBindViewHolder : ${item}")
+//        Log.i("RankPostAdapter", "item = ${item}")
 
         holder.title.text = item.title
         holder.viewCount.text = item.viewCount.toString()

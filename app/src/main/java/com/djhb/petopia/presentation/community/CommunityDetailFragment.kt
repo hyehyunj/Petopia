@@ -24,10 +24,11 @@ import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.DetailCommentAdapter
 import com.djhb.petopia.presentation.community.adapter.DetailImageAdapter
 import com.djhb.petopia.presentation.community.adapter.OnClickComment
-import com.djhb.petopia.presentation.community.dialogFragment.CommentAddDialogFragment
+import com.djhb.petopia.presentation.community.dialogFragment.CommentEditDialogFragment
 import com.djhb.petopia.presentation.community.dialogFragment.PostDeleteDialogFragment
 import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
+import me.relex.circleindicator.CircleIndicator3
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -69,7 +70,7 @@ class CommunityDetailFragment : Fragment() {
 //                    viewModel.updateComment(comment)
 //                }
 
-                val commentAddDialogFragment = CommentAddDialogFragment.newInstance(comment)
+                val commentAddDialogFragment = CommentEditDialogFragment.newInstance(comment)
                 commentAddDialogFragment.show(
                     requireActivity().supportFragmentManager,
                     "addCommentDialog"
@@ -77,17 +78,9 @@ class CommunityDetailFragment : Fragment() {
             }
 
             override fun onClickDelete(key: String) {
-
-                val deleteDialogFragment = PostDeleteDialogFragment(key) { key ->
-                    lifecycleScope.launch {
-                        communityViewModel.deletePost(key)
-                    }
+                lifecycleScope.launch {
+                    detailViewModel.deleteComment(key)
                 }
-
-                deleteDialogFragment.show(childFragmentManager, "DELETE POST")
-//                lifecycleScope.launch {
-//                    detailViewModel.deleteComment(key)
-//                }
             }
         })
     }
@@ -97,7 +90,7 @@ class CommunityDetailFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPagerAdapter: DetailImageAdapter
-    private lateinit var indicator: CircleIndicator
+    private lateinit var indicator: CircleIndicator3
     private lateinit var key: String
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -125,9 +118,9 @@ class CommunityDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
-        initListener()
         initObserver()
+        initListener()
+        initView()
 
 
     }
@@ -135,8 +128,8 @@ class CommunityDetailFragment : Fragment() {
     private fun initView(){
         lifecycleScope.launch {
 
-            val imageUris = mutableListOf("https://firebasestorage.googleapis.com/v0/b/petopia-92b56.appspot.com/o/questionPost%2F88f60ac7-ca6f-4474-a65f-409dd6ed9edb%2F20240904_01.png?alt=media&token=d0ded94c-6ddc-453e-b52c-d94329148fd3",
-                "https://firebasestorage.googleapis.com/v0/b/petopia-92b56.appspot.com/o/questionPost%2F7c27e5cb-0d35-4343-b4ce-ce403c1485c0%2F20240905_01.png?alt=media&token=42bc100a-2b0b-4eed-8c6f-61d48de1b743")
+//            val imageUris = mutableListOf("https://firebasestorage.googleapis.com/v0/b/petopia-92b56.appspot.com/o/questionPost%2F88f60ac7-ca6f-4474-a65f-409dd6ed9edb%2F20240904_01.png?alt=media&token=d0ded94c-6ddc-453e-b52c-d94329148fd3",
+//                "https://firebasestorage.googleapis.com/v0/b/petopia-92b56.appspot.com/o/questionPost%2F7c27e5cb-0d35-4343-b4ce-ce403c1485c0%2F20240905_01.png?alt=media&token=42bc100a-2b0b-4eed-8c6f-61d48de1b743")
 
 //            viewModel.selectDetailImageUris(key)
             viewPager = binding.vpImage
@@ -144,10 +137,15 @@ class CommunityDetailFragment : Fragment() {
             viewPagerAdapter = DetailImageAdapter()
 //            Log.i("CommunityDetailFragment", "imageUriResults = ${viewModel.imageUriResults}")
 //            viewPagerAdapter.submitList(viewModel.imageUriResults)
-            viewPagerAdapter.submitList(imageUris)
+//            viewPagerAdapter.submitList(imageUris)
+            detailViewModel.selectDetailImageUris(post.key)
             viewPager.adapter = viewPagerAdapter
 
             binding.rvComment.adapter = commentAdapter
+            val indicatorDetail = binding.indicatorDetail
+            indicatorDetail.setViewPager(viewPager)
+//            Log.i("CommunityDetailFragment", "imageUris.value.size = ${detailViewModel.imageUris.value?.size}")
+            indicatorDetail.createIndicators(detailViewModel.imageUris.value?.size?:0, 0)
 
             detailViewModel.selectAllCommentFromPost(post.key)
 
@@ -189,19 +187,35 @@ class CommunityDetailFragment : Fragment() {
             binding.btnDelete.visibility = ImageView.VISIBLE
             binding.btnEdit.visibility = ImageView.VISIBLE
 
+//            binding.btnDelete.setOnClickListener {
+//                lifecycleScope.launch {
+//                    communityViewModel.deletePost(post.key)
+//                }
+//
+//
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.main_sub_frame,CommunityMainFragment())
+//                    .commit()
+//            }
+
             binding.btnDelete.setOnClickListener {
-                lifecycleScope.launch {
-                    communityViewModel.deletePost(post.key)
+                val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
+                    lifecycleScope.launch {
+                        communityViewModel.deletePost(key)
+                        communityViewModel.deletePostImages(key)
+                    }
                 }
-
-
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .replace(R.id.main_sub_frame,CommunityMainFragment())
-                    .commit()
+                deleteDialogFragment.show(childFragmentManager, "DELETE POST")
             }
 
             binding.btnEdit.setOnClickListener {
-
+                val editFragment = CommunityEditFragment.newInstance(post)
+                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
+                requireActivity().supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.main_sub_frame, editFragment)
+                    .addToBackStack(null)
+                    .commit()
             }
 
         } else {
@@ -213,10 +227,16 @@ class CommunityDetailFragment : Fragment() {
 
     private fun initObserver(){
         detailViewModel.comments.observe(viewLifecycleOwner) {
-            Log.i("${this::class.java}", "observe comments.size = ${it.size}")
+            Log.i("CommunityDetailFragment", "observe comments.size = ${it.size}")
 //            commentAdapter.submitList(viewModel.commentsResult)
 //            commentAdapter.submitList(it.toMutableList())
             commentAdapter.submitList(it.toMutableList())
+        }
+
+        detailViewModel.imageUris.observe(viewLifecycleOwner) {
+            Log.i("CommunityDetailFragment", "observe imageUris.size = ${it.size}")
+            viewPagerAdapter.submitList(it.toMutableList())
+            binding.indicatorDetail.createIndicators(it.size, 0)
         }
     }
 
