@@ -23,7 +23,9 @@ import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentGalleryReadBinding
 import io.github.muddz.styleabletoast.StyleableToast
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.Locale
 
 //포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
 class GalleryReadFragment : DialogFragment() {
@@ -48,11 +50,11 @@ class GalleryReadFragment : DialogFragment() {
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-         sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
-                    readOnlyMode(
-                        currentPhoto
-                    )
-                }
+            sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+                readOnlyMode(
+                    currentPhoto
+                )
+            }
 
 
         }
@@ -69,17 +71,20 @@ class GalleryReadFragment : DialogFragment() {
         binding.apply {
             galleryReadIvTitle.setImageURI(item.imageUris[0].toUri())
             galleryReadTvTitle.text = item.titleText
-            galleryReadTvCalendar.text = item.photoDate
+
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
+            val date = dateFormat.format(item.updatedDate)
+            galleryReadTvCalendar.text = date
 
             //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
             galleryReadIvAction.setOnClickListener {
-                    sharedViewModel.changeLayoutMode("EDIT")
+                sharedViewModel.changeLayoutMode("EDIT")
                 dismiss()
                 GalleryEditFragment().show(parentFragmentManager, "")
 
-                }
             }
         }
+    }
 
     private fun initDialog() {
         val windowManager =

@@ -58,13 +58,14 @@ class HomeMemoryBridgeFragment : Fragment() {
 
 
         loadMemory()
-
         scheduledMemory()
 
 
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
             Log.d("memoryText", text)
-            binding.homeMemoryBridgeTvMemoryTitle.text = text
+            if (memoryViewModel.isMemorySaved.value == false) {
+                binding.homeMemoryBridgeTvMemoryTitle.text = text
+            }
         }
 
         val currentTitle = binding.homeMemoryBridgeTvMemoryTitle.text.toString()
@@ -88,23 +89,20 @@ class HomeMemoryBridgeFragment : Fragment() {
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
-
-        memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
-//            if (it == true) {
-//
-//
-//            }
-
-        }
         binding.homeMemoryBridgeMemoryContainer.setOnClickListener {
             if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
                 toastMoveUnder() else setMemoryFragment()
 
-            // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
-            binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
 
             Log.d("memorybuttonclick", "메모리버튼 클릭")
 
+            // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
+
+            memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
+                if (it == true) {
+                    binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+                }
+            }
         }
 
 
