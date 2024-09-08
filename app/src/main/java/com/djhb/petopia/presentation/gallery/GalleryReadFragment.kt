@@ -72,9 +72,9 @@ class GalleryReadFragment : DialogFragment() {
             galleryReadIvTitle.setImageURI(item.imageUris[0].toUri())
             galleryReadTvTitle.text = item.titleText
 
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
-            val date = dateFormat.format(item.updatedDate)
-            galleryReadTvCalendar.text = date
+//            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
+//            val date = dateFormat.format(item.updatedDate)
+            galleryReadTvCalendar.text = item.photoDate
 
             //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
             galleryReadIvAction.setOnClickListener {
