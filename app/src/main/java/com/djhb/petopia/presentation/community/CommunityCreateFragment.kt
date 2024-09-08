@@ -29,6 +29,8 @@ import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
 import com.djhb.petopia.presentation.community.adapter.OnclickImage
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -140,6 +142,8 @@ class CommunityCreateFragment : Fragment() {
         initListener()
         initObserveModel()
 
+        val imageFormat = SimpleDateFormat("yyyyMMdd", Locale.KOREA)
+        Log.i("CommunityCreateFragment", "currentDate = ${imageFormat.format(System.currentTimeMillis())}")
 //        val user = UserModel("devTest", "11qqaa..")
 //
 //        val comment1 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", LoginData.loginUser, "content1")
@@ -182,9 +186,9 @@ class CommunityCreateFragment : Fragment() {
         binding.btnComplete.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val content = binding.etContent.text.toString()
-            Log.i("CommunityCreateFragment", "click complete")
-            Log.i("CommunityCreateFragment", "title = ${title}")
-            Log.i("CommunityCreateFragment", "content = ${content}")
+//            Log.i("CommunityCreateFragment", "click complete")
+//            Log.i("CommunityCreateFragment", "title = ${title}")
+//            Log.i("CommunityCreateFragment", "content = ${content}")
             if (title.isBlank() && content.isBlank())
                 Toast.makeText(requireActivity(), "제목, 내용을 확인해주세요.", Toast.LENGTH_SHORT).show()
             else if (title.isBlank())

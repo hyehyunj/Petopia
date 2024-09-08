@@ -68,8 +68,9 @@ class CommunityMainFragment : Fragment() {
     private val allPostAdapter by lazy {
         PostAdapter{ post ->
 //            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
-
+//            Log.i("CommunityMainFramgment", "before copy imageUris.size = ${post.imageUris.size}")
             val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
+//            Log.i("CommunityMainFramgment", "after copy imageUris.size = ${postAddedViewCount.imageUris.size}")
             val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -78,7 +79,8 @@ class CommunityMainFragment : Fragment() {
                 .commit()
 
             lifecycleScope.launch {
-                viewModel.updatePost(postAddedViewCount)
+//                viewModel.updatePost(postAddedViewCount)
+                viewModel.addPostViewCount(postAddedViewCount.key)
             }
 
             mainActivity.hideViewPager()
@@ -148,6 +150,11 @@ class CommunityMainFragment : Fragment() {
     private fun initObserve(){
         viewModel.rankPosts.observe(viewLifecycleOwner) {
             Log.i("CommunityMainFragment", "observe rank : ${it}")
+//            Log.i("CommunityMainFragment", "observe rank.hashCode : ${it.hashCode()}")
+//            for (postModel in it) {
+//                Log.i("CommunityMainFragment", "observe rank postModel.hashCode : ${postModel.hashCode()}")
+//            }
+
             rankPostAdapter.submitList(it.toMutableList())
         }
         viewModel.searchPost.observe(viewLifecycleOwner){
