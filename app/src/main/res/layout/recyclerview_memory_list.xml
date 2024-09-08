@@ -21,12 +21,11 @@
 
     <TextView
         android:id="@+id/tv_memory_list_date"
-        style="@style/common_text_14_white"
+        style="@style/common_text_14_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="YYYY-MM-dd"
-        android:textColor="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="@+id/tv_memory_list_number"
         app:layout_constraintStart_toEndOf="@id/tv_memory_list_number"
         app:layout_constraintTop_toTopOf="@id/tv_memory_list_number" />
@@ -44,7 +43,7 @@
 
     <TextView
         android:id="@+id/tv_memory_list_title"
-        style="@style/common_text_16_dark_gray"
+        style="@style/point_text_24_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

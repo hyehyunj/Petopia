@@ -104,7 +104,7 @@ class SignupFragment : Fragment() {
                 StyleableToast.makeText(
                     requireActivity(),
                     "회원가입 실패",
-                    R.style.toast_warning
+                    R.style.toast_error
                 ).show()//확인용 추후 변경 예정
             }
 
@@ -142,7 +142,7 @@ class SignupFragment : Fragment() {
                 StyleableToast.makeText(
                     requireActivity(),
                     "${fieldName}을 입력해주세요.",
-                    R.style.toast_warning
+                    R.style.toast_error
                 ).show()
                 return false
             }
@@ -152,7 +152,7 @@ class SignupFragment : Fragment() {
             StyleableToast.makeText(
                 requireActivity(),
                 "비밀번호가 일치하지 않습니다.",
-                R.style.toast_warning
+                R.style.toast_error
             ).show()
             return false
         }
@@ -161,7 +161,7 @@ class SignupFragment : Fragment() {
             StyleableToast.makeText(
                 requireActivity(),
                 "모든 약관에 동의해주세요.",
-                R.style.toast_warning
+                R.style.toast_error
             ).show()
             return false
         }

@@ -30,7 +30,7 @@ class GalleryRepositoryImpl : GalleryRepository {
             var isFailStorage = false
 //            val imageName = DateFormatUtils.convertToImageFormat(gallery.createdDate) + "_01.png"
 //            RTReference.child(gallery.uId).setValue(gallery).addOnFailureListener {
-            reference.document(gallery.uId).set(gallery).addOnFailureListener {
+            reference.document(gallery.uid).set(gallery).addOnFailureListener {
 //                continuation.resumeWithException(it)
                 isFailRT = true
 //                continuation.resume(false)
@@ -41,12 +41,12 @@ class GalleryRepositoryImpl : GalleryRepository {
                 val imageName =
                     DateFormatUtils.convertToImageFormat(gallery.createdDate) + "_0" + (index + 1) + ".png"
                 val uploadTask =
-                    storageReference.child(gallery.uId).child(imageName).putFile(imageUri.toUri())
+                    storageReference.child(gallery.uid).child(imageName).putFile(imageUri.toUri())
                 uploadTask.addOnFailureListener {
                     isFailStorage = false
                     if (!isFailRT) {
 //                        RTReference.child(gallery.uId).removeValue()
-                        reference.document(gallery.uId).delete()
+                        reference.document(gallery.uid).delete()
 //                    continuation.resume(false)
                         continuation.resumeWithException(Exception("fail create gallery"))
                     }
@@ -101,7 +101,7 @@ class GalleryRepositoryImpl : GalleryRepository {
     override suspend fun selectGalleryImages(galleryList: MutableList<GalleryModel>): MutableList<GalleryModel> {
         return suspendCancellableCoroutine { continuation ->
             for (gallery in galleryList) {
-                val key = gallery.uId
+                val key = gallery.uid
                 Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
                 storageReference.child(key).listAll().addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -132,7 +132,7 @@ class GalleryRepositoryImpl : GalleryRepository {
 
     override suspend fun selectAllGalleryImages(gallery: GalleryModel): GalleryModel {
         return suspendCancellableCoroutine { continuation ->
-            val key = gallery.uId
+            val key = gallery.uid
             Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
             storageReference.child(key).listAll().addOnCompleteListener { task ->
                 if (task.isSuccessful) {

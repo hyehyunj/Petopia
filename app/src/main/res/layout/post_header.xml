@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:background="@drawable/post_border_line">
+    android:background="@drawable/bg_ivory">
 
     <ImageView
         android:id="@+id/ivBack"
@@ -34,6 +33,7 @@
         android:id="@+id/ivSearch"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_margin="16dp"
         android:src="@drawable/icon_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
