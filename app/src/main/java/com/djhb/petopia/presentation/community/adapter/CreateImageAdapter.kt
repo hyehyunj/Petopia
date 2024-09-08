@@ -40,7 +40,7 @@ class CreateImageAdapter(private val onClickImage: OnclickImage): ListAdapter<St
         val item = getItem(position)
         if(position == 0) {
             holder.btnDelete.visibility = ImageView.GONE
-            holder.image.setImageResource(R.drawable.icon_album)
+            holder.image.setImageResource(R.drawable.img_community_add_photo)
             holder.binding.root.setOnClickListener {
                 onClickImage.onClickAddImage()
             }
