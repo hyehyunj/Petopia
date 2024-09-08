@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -38,34 +39,34 @@ class GalleryEditFragment : DialogFragment() {
     private val binding get() = _binding
     private lateinit var sharedViewModel: GallerySharedViewModel
 
-//    private val imageUris = mutableListOf<Uri>()
-//    private val imageLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK && result.data != null) {
-//                imageUris.clear()
-//                val clipData = result.data?.clipData
-//                if (clipData == null) {
-//                    val uri = result.data?.data
-//                    if (uri != null) {
-//                        imageUris.add(uri)
-//                    }
-//                } else {
-//                    for (itemIndex in 0 until clipData.itemCount) {
-//                        imageUris.add(clipData.getItemAt(itemIndex).uri)
-//                    }
-//                }
-//                binding.galleryEditIvTitle.setImageURI(imageUris[0])
-//                sharedViewModel.considerNewPhoto(imageUris)
-//            }
-//        }
-
-    private val pickMedia =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uri ->
-            if (uri.isNotEmpty()) {
-                binding.galleryEditIvTitle.setImageURI(uri[0])
-                sharedViewModel.considerNewPhoto(uri)
+    private val imageUris = mutableListOf<Uri>()
+    private val imageLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK && result.data != null) {
+                imageUris.clear()
+                val clipData = result.data?.clipData
+                if (clipData == null) {
+                    val uri = result.data?.data
+                    if (uri != null) {
+                        imageUris.add(uri)
+                    }
+                } else {
+                    for (itemIndex in 0 until clipData.itemCount) {
+                        imageUris.add(clipData.getItemAt(itemIndex).uri)
+                    }
+                }
+                binding.galleryEditIvTitle.setImageURI(imageUris[0])
+                sharedViewModel.considerNewPhoto(imageUris)
             }
         }
+
+//    private val pickMedia =
+//        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uri ->
+//            if (uri.isNotEmpty()) {
+//                binding.galleryEditIvTitle.setImageURI(uri[0])
+//                sharedViewModel.considerNewPhoto(uri)
+//            }
+//        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -109,30 +110,28 @@ class GalleryEditFragment : DialogFragment() {
         binding.apply {
             //사진 클릭이벤트 : 사용자의 갤러리에서 선택한 사진으로 사진을 업로드
             galleryEditIvTitle.setOnClickListener {
-//                if (uriList.count() == 6) {
-//                    Toast.makeText(requireContext(),"최대 6장까지 선택 가능합니다.", Toast.LENGTH_SHORT).show()
-//                    return@setOnClickListener
-//                }
-//                if (ContextCompat.checkSelfPermission(
-//                        requireActivity(),
-//                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-//                    )
-//                    == PackageManager.PERMISSION_DENIED
-//                ) {
-//                    requireActivity().requestPermissions(
-//                        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-//                        1
-//                    )
-//                }
-//                val intent = Intent(Intent.ACTION_PICK)
-//                intent.setDataAndType(
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-//                )
-//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-//                imageLauncher.launch(intent)
-//            }
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                if (ContextCompat.checkSelfPermission(
+                        requireActivity(),
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    )
+                    == PackageManager.PERMISSION_DENIED
+                ) {
+                    requireActivity().requestPermissions(
+                        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                        1
+                    )
+                }
+
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                intent.setDataAndType(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
+                )
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+                imageLauncher.launch(intent)
             }
+//                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+//            }
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
             galleryEditIvCalendar.setOnClickListener {
 
