@@ -10,17 +10,19 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:background="@drawable/shape_post_create_form"
+        android:backgroundTint="@color/gray"
         android:orientation="horizontal"
+        android:clipToOutline="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <android.widget.Button
         android:id="@+id/ivDeleteImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/icon_cancellation_black"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/icon_cancellation_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
