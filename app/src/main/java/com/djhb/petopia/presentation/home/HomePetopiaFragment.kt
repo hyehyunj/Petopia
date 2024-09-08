@@ -1,11 +1,15 @@
 package com.djhb.petopia.presentation.home
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -43,15 +47,102 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
+
         mainHomeGuideViewModel.getUser()
 //        if () getUserAndPet()
+
+//구름 애니메이션
+        initCloudAnimation()
+//꽃 애니메이션
+        initFlowerAnimation()
+
+
         mainHomeGuideViewModel.userPetLiveData.observe(viewLifecycleOwner) {
             getUserAndPet()
         }
 
 
     }
+//구름 애니메이션
+    private fun initCloudAnimation() {
+        binding.homeImgClould.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // 레이아웃이 그려진 후 실행
+                binding.homeImgClould.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
+                val displayMetrics = DisplayMetrics()
+                requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
+                val screenWidth = displayMetrics.widthPixels
+
+                val cloudWidth = binding.homeImgClould.width.toFloat()
+                val endTranslationX = -(cloudWidth + screenWidth)
+
+                // 애니메이션 설정
+                val cloudAnimator = ObjectAnimator.ofFloat(binding.homeImgClould, "translationX", 0f, endTranslationX)
+                cloudAnimator.duration = 150000
+                cloudAnimator.repeatCount = ObjectAnimator.INFINITE
+                cloudAnimator.repeatMode = ObjectAnimator.RESTART
+                cloudAnimator.interpolator = LinearInterpolator()
+                cloudAnimator.start()
+            }
+        })
+    }
+    //꽃 애니메이션
+    private fun initFlowerAnimation() {
+
+
+        // flower2 애니메이션(left)
+        val flower2Animator = ObjectAnimator.ofFloat(binding.homeLeftFlower2, "rotation", -5f, 5f)
+        flower2Animator.duration = 2200
+        flower2Animator.repeatCount = ObjectAnimator.INFINITE
+        flower2Animator.repeatMode = ObjectAnimator.REVERSE
+        flower2Animator.start()
+
+        // flower3 애니메이션(left)
+        val flower3Animator = ObjectAnimator.ofFloat(binding.homeLeftFlower3, "rotation", -5f, 5f)
+        flower3Animator.duration = 2400
+        flower3Animator.repeatCount = ObjectAnimator.INFINITE
+        flower3Animator.repeatMode = ObjectAnimator.REVERSE
+        flower3Animator.start()
+
+        // flower4 애니메이션(left)
+        val flower4Animator = ObjectAnimator.ofFloat(binding.homeLeftFlower4, "rotation", -5f, 5f)
+        flower4Animator.duration = 2600
+        flower4Animator.repeatCount = ObjectAnimator.INFINITE
+        flower4Animator.repeatMode = ObjectAnimator.REVERSE
+        flower4Animator.start()
+
+
+
+        // flower2 애니메이션 (right)
+        val rightFlower2Animator = ObjectAnimator.ofFloat(binding.homeRightFlower2, "rotation", -5f, 5f)
+        rightFlower2Animator.duration = 2300
+        rightFlower2Animator.repeatCount = ObjectAnimator.INFINITE
+        rightFlower2Animator.repeatMode = ObjectAnimator.REVERSE
+        rightFlower2Animator.start()
+
+        // flower3 애니메이션 (right)
+        val rightFlower3Animator = ObjectAnimator.ofFloat(binding.homeRightFlower3, "rotation", -5f, 5f)
+        rightFlower3Animator.duration = 2500
+        rightFlower3Animator.repeatCount = ObjectAnimator.INFINITE
+        rightFlower3Animator.repeatMode = ObjectAnimator.REVERSE
+        rightFlower3Animator.start()
+
+        // flower4 애니메이션 (right)
+        val rightFlower4Animator = ObjectAnimator.ofFloat(binding.homeRightFlower4, "rotation", -5f, 5f)
+        rightFlower4Animator.duration = 2700
+        rightFlower4Animator.repeatCount = ObjectAnimator.INFINITE
+        rightFlower4Animator.repeatMode = ObjectAnimator.REVERSE
+        rightFlower4Animator.start()
+
+        // flower5 애니메이션 (right)
+        val rightFlower5Animator = ObjectAnimator.ofFloat(binding.homeRightFlower5, "rotation", -5f, 5f)
+        rightFlower5Animator.duration = 2900
+        rightFlower5Animator.repeatCount = ObjectAnimator.INFINITE
+        rightFlower5Animator.repeatMode = ObjectAnimator.REVERSE
+        rightFlower5Animator.start()
+
+    }
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun homePetopiaButtonClickListener() {
         //갤러리버튼 클릭이벤트 : 클릭시 갤러리 이동
