@@ -2,6 +2,7 @@ package com.djhb.petopia.presentation.community.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -40,8 +41,7 @@ class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<P
         }
 
         if(item.imageUris.size == 0)
-//            holder.mainImage.setImageResource(R.drawable.icon_no_image_temp)
-            holder.mainImage.setImageResource(R.drawable.bg_guide_appearance_blue)
+            holder.mainImage.visibility = ImageView.INVISIBLE
         else{
             Glide
                 .with(holder.mainImage.context)

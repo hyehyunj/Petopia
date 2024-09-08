@@ -109,7 +109,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 _currentPhotoListLiveData.value?.copy(
                     imageUris = photoList
                 ) ?: GalleryModel(
-                    "", UserModel(), 0, 0, imageUris = photoList
+                    "", writer = user, 0, 0, imageUris = photoList
                 )
         }
     }
@@ -174,7 +174,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             }
         }
         _galleryListLiveData.value = galleryList
-//        saveGalleryList()
+        saveGalleryList()
 
     }
 

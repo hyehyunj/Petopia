@@ -4,6 +4,7 @@ import android.text.format.DateUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -34,9 +35,9 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
 //        R.drawable.icon_3rd_rank_temp
 //    )
     private val rankMedalImages = mutableListOf(
-        R.drawable.bg_guide_appearance_blue,
-        R.drawable.bg_guide_appearance_blue,
-        R.drawable.bg_guide_appearance_blue
+        R.drawable.icon_community_1,
+        R.drawable.icon_community_2,
+        R.drawable.icon_community_3
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankPostHolder {
@@ -62,8 +63,7 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
         }
 
         if(item.imageUris.size == 0)
-//            holder.mainImage.setImageResource(R.drawable.icon_no_image_temp)
-            holder.mainImage.setBackgroundColor(R.drawable.bg_guide_appearance_blue)
+            holder.mainImage.visibility = ImageView.INVISIBLE
         else{
             Glide
                 .with(holder.mainImage.context)
