@@ -98,6 +98,7 @@ class HomeMemoryBridgeFragment : Fragment() {
             memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
                 if (it == true) {
                     binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+                    Log.d("memorySaved", "${memoryViewModel.isMemorySaved.value}")
                 }
 
             }
@@ -147,9 +148,10 @@ class HomeMemoryBridgeFragment : Fragment() {
         val memoryText = sharedPreferences.getString("memoryText", null)
 
 
-        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
-        memoryViewModel.setMemoryTitle(memoryText.toString())
-
+        if (memoryViewModel.isMemorySaved.value != true) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+            memoryViewModel.setMemoryTitle(memoryText.toString())
+        }
 
 
         Log.d("memoryText", memoryText.toString())

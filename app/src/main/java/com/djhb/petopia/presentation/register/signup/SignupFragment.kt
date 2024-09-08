@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.register.signup
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -101,11 +102,7 @@ class SignupFragment : Fragment() {
             if (isfilled()) {
                 usersignindata()
             } else {
-                StyleableToast.makeText(
-                    requireActivity(),
-                    "회원가입 실패",
-                    R.style.toast_warning
-                ).show()//확인용 추후 변경 예정
+                Log.d("회원가입", "회원가입 실패")
             }
 
 
