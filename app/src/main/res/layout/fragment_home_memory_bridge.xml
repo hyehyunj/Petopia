@@ -14,29 +14,29 @@
         android:layout_height="200dp"
         android:src="@drawable/img_shining_1"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/home_memory_bridge_memory_effect_shine2"
         android:layout_width="0dp"
         android:layout_height="200dp"
-        android:src="@drawable/img_shining_1"
-        app:layout_constraintDimensionRatio="1:1"
         android:rotation="180"
+        android:src="@drawable/img_shining_1"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/home_memory_bridge_memory_effect_shine3"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
-        app:layout_constraintDimensionRatio="1:1"
-        android:src="@drawable/img_shining_1"
         android:rotation="-180"
+        android:src="@drawable/img_shining_1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -101,6 +101,16 @@
         app:layout_constraintStart_toStartOf="@+id/home_memory_bridge_memory_container" />
 
     <ImageView
+        android:id="@+id/home_memory_bridge_iv_emotion2"
+        android:layout_width="140dp"
+        android:layout_height="230dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/img_red_balloon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
         android:id="@+id/home_memory_bridge_iv_arrow_under"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -109,6 +119,111 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_memory_bridge_feelings_container"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_translucent_white_square"
+        android:padding="9dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/feelings_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/kotra_hope"
+            android:text="지금 내 기분은?"
+            android:textSize="28sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/emj_smile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/emj_smile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feelings_text" />
+
+        <ImageView
+            android:id="@+id/emj_whirl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:src="@drawable/emj_whirl"
+            app:layout_constraintBottom_toBottomOf="@id/emj_smile"
+            app:layout_constraintStart_toEndOf="@id/emj_smile"
+            app:layout_constraintTop_toTopOf="@id/emj_smile" />
+
+        <ImageView
+            android:id="@+id/emj_gloomy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:src="@drawable/emj_gloomy"
+            app:layout_constraintBottom_toBottomOf="@id/emj_smile"
+            app:layout_constraintStart_toEndOf="@id/emj_whirl"
+            app:layout_constraintTop_toTopOf="@id/emj_smile" />
+
+        <ImageView
+            android:id="@+id/emj_soso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:src="@drawable/emj_soso"
+            app:layout_constraintBottom_toBottomOf="@id/emj_smile"
+            app:layout_constraintStart_toEndOf="@id/emj_gloomy"
+            app:layout_constraintTop_toTopOf="@id/emj_smile" />
+
+        <ImageView
+            android:id="@+id/emj_happy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/emj_happy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emj_smile" />
+
+        <ImageView
+            android:id="@+id/emj_bad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:src="@drawable/emj_bad"
+            app:layout_constraintBottom_toBottomOf="@id/emj_happy"
+            app:layout_constraintStart_toEndOf="@id/emj_happy"
+            app:layout_constraintTop_toTopOf="@id/emj_happy" />
+
+        <ImageView
+            android:id="@+id/emj_sick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="33dp"
+            android:src="@drawable/emj_sick"
+            app:layout_constraintBottom_toBottomOf="@id/emj_happy"
+            app:layout_constraintStart_toEndOf="@id/emj_bad"
+            app:layout_constraintTop_toTopOf="@id/emj_happy" />
+
+        <ImageView
+            android:id="@+id/emj_sad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:src="@drawable/emj_sad"
+            app:layout_constraintBottom_toBottomOf="@id/emj_happy"
+            app:layout_constraintStart_toEndOf="@id/emj_sick"
+            app:layout_constraintTop_toTopOf="@id/emj_happy" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
         android:id="@+id/home_memory_bridge_container"

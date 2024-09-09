@@ -1,5 +1,7 @@
 package com.djhb.petopia.presentation.home
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
 import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -46,6 +49,18 @@ class HomeMemoryBridgeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//감벙버튼 활성화
+        binding.homeMemoryBridgeIvEmotion.setOnClickListener {
+            if (binding.homeMemoryBridgeFeelingsContainer.visibility == View.GONE) {
+                binding.homeMemoryBridgeFeelingsContainer.visibility = View.VISIBLE
+                binding.homeMemoryBridgeFeelingsContainer.alpha = 0f
+                binding.homeMemoryBridgeFeelingsContainer.animate()
+                    .alpha(1f)  // 완전히 보이도록 애니메이션
+                    .setDuration(500)
+                    .setListener(null)
+            }
+        }
+
 
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
@@ -210,6 +225,23 @@ class HomeMemoryBridgeFragment : Fragment() {
             AnimationUtils.loadAnimation(requireContext(), R.anim.shine3)
         )
 
+        //풍선2 애니메이션 y축
+        val floatAnimator = ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationY", 0f, -30f, 0f)
+        floatAnimator.duration = 2000 //
+        floatAnimator.repeatMode = ValueAnimator.REVERSE
+        floatAnimator.repeatCount = ValueAnimator.INFINITE
+        floatAnimator.interpolator = LinearInterpolator()
+
+
+        //풍선2 애니메이션 x축
+        val floatAnimatorX = ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationX", 0f, -10f, 10f, 0f)
+        floatAnimatorX.duration = 3000
+        floatAnimatorX.repeatMode = ValueAnimator.REVERSE
+        floatAnimatorX.repeatCount = ValueAnimator.INFINITE
+        floatAnimatorX.interpolator = LinearInterpolator()
+
+        floatAnimator.start()
+        floatAnimatorX.start()
 //        binding.homeMemoryBridgeMemoryContainer.startAnimation(
 //            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
 //        )
