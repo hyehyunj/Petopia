@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:text="text"
+            android:text=""
             app:layout_constraintBottom_toTopOf="@+id/gallery_read_tv_calendar"
             app:layout_constraintEnd_toEndOf="@+id/gallery_read_iv_title"
             app:layout_constraintStart_toStartOf="@+id/gallery_read_iv_title"

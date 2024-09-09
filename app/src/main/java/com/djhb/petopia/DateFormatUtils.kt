@@ -1,6 +1,8 @@
 package com.djhb.petopia
 
+import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 object DateFormatUtils {
@@ -20,5 +22,4 @@ object DateFormatUtils {
     fun convertToImageFormat(milliSeconds: Long): String {
         return imageFormat.format(milliSeconds)
     }
-
 }

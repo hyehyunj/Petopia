@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center"
-            android:text="반려동물을 생각했을 때\n떠오르는 이미지를 선택해주세요."
+            android:text="@string/guide_select_relation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +54,7 @@
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:layout_margin="16dp"
-                android:text="사랑스러운\n아이"/>
+                android:text="@string/guide_relation_child"/>
 
             <RadioButton
                 android:id="@+id/guide_relation_dialog_rb_younger"
@@ -66,7 +66,7 @@
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:padding="24dp"
-                android:text="귀여운\n동생"
+                android:text="@string/guide_relation_younger"
                 app:layout_constraintEnd_toStartOf="@+id/guide_relation_dialog_rb_friend"
                 app:layout_constraintStart_toEndOf="@+id/guide_relation_dialog_rb_child"
                 app:layout_constraintTop_toTopOf="@+id/guide_relation_dialog_rb_child" />
@@ -81,7 +81,7 @@
                 android:button="@android:color/transparent"
                 android:padding="24dp"
                 android:layout_margin="16dp"
-                android:text="친한\n친구"
+                android:text="@string/guide_relation_friend"
                 app:layout_constraintBottom_toBottomOf="@+id/guide_relation_dialog_rb_child"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/guide_relation_dialog_rb_younger"

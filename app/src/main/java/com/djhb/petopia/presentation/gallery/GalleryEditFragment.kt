@@ -17,14 +17,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.SimpleItemAnimator
+import com.bumptech.glide.Glide
+import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentGlleryEditBinding
 import io.github.muddz.styleabletoast.StyleableToast
-import java.time.LocalDateTime
 
 //포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
 class GalleryEditFragment : DialogFragment() {
@@ -41,7 +39,9 @@ class GalleryEditFragment : DialogFragment() {
                 val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     uri.forEach{context?.contentResolver?.takePersistableUriPermission(it, flag)}
                 binding.galleryEditIvTitle.setImageURI(uri[0])
-                if(uri.size == 2)binding.galleryEditIvTitle2.setImageURI(uri[1])
+                if(uri.size == 2)binding.galleryEditIvTitle2.setImageURI(uri[1]) else
+                    binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
+
                 gallerySharedViewModel.considerNewPhoto(uri)
             }
         }
@@ -95,36 +95,45 @@ class GalleryEditFragment : DialogFragment() {
 
     //추가 or 편집모드 함수 : 레이아웃을 입력가능한 모드로 구성한다.
     private fun addOrEditMode(layoutMode: String, item: GalleryModel) {
-
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
             binding.apply {
-                galleryEditIvTitle.setImageURI(item.imageUris[0].toUri())
-                galleryEditIvTitle2.setImageURI(item.imageUris[1].toUri())
                 galleryEditEtTitle.setText(item.titleText)
-//                photoTvCalendar.text = item.date
+                if(item.imageUris.size>1) {
+                Glide.with(requireParentFragment())
+                    .load(item.imageUris[1].toUri())
+                    .centerCrop()
+                    .into(galleryEditIvTitle2) } else {
+                    Glide.with(requireParentFragment())
+                        .load(item.imageUris[0].toUri())
+                        .centerCrop()
+                        .into(galleryEditIvTitle)
+
+                   binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
+
+                    }
+                galleryEditTvCalendarInput.text = item.photoDate
+
+
             }
         }
         binding.apply {
             //사진 클릭이벤트 : 사용자의 갤러리에서 선택한 사진으로 사진을 업로드
-            galleryEditIvTitle.setOnClickListener {
-                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-            }
-            galleryEditIvTitle2.setOnClickListener {
+            galleryEditTvAdd.setOnClickListener {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
 
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
-            galleryEditIvCalendar.setOnClickListener {
+            galleryEditTvCalendar.setOnClickListener {
 
                 val calendar = Calendar.getInstance()
                 val year = calendar.get(Calendar.YEAR)
                 val month = calendar.get(Calendar.MONTH)
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
-                    binding.galleryEditIvCalendar.text = "${yy}. ${mm + 1}. ${dd}"
+                    binding.galleryEditTvCalendarInput.text = "${yy}. ${mm + 1}. ${dd}"
                 }
-                gallerySharedViewModel.considerNewPhoto(LocalDateTime.of(year, month + 1, day, 0, 0, 0))
+                gallerySharedViewModel.considerNewPhotoDate("${year}.${month + 1}.${day}")
                 val picker = DatePickerDialog(requireContext(), listener, year, month, day)
                 picker.show()
             }
@@ -132,7 +141,7 @@ class GalleryEditFragment : DialogFragment() {
             //완료버튼 : 새로운 사진으로 등록 또는 변경 후 읽기전용모드로 전환한다.
             galleryEditTvComplete.apply {
                 setOnClickListener {
-                    gallerySharedViewModel.considerNewPhoto(binding.galleryEditEtTitle.text.toString())
+                    gallerySharedViewModel.considerNewPhotoTitle(binding.galleryEditEtTitle.text.toString())
                     if (gallerySharedViewModel.prepared()) {
                         gallerySharedViewModel.updateNewGallery(
                             item.index

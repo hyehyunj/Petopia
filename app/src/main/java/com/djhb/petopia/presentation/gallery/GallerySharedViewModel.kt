@@ -14,7 +14,6 @@ import com.djhb.petopia.data.remote.GalleryRepositoryImpl
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 //갤러리와 포토의 공유 뷰모델
 class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
@@ -143,28 +142,15 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
-    fun considerNewPhoto(dateTime: LocalDateTime) {
+    fun considerNewPhotoDate(dateTime: String) {
         newPhotoList = newPhotoList.copy(
-            photoDate = dateTime.toString()
+            photoDate = dateTime
         )
-//        when (_layoutModeLiveData.value) {
-//            "ADD" -> {
-//                newPhotoList = newPhotoList.copy(
-//                    createdDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-//                )
-//            }
-//
-//            "EDIT" -> {
-//                newPhotoList = newPhotoList.copy(
-//                    updatedDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-//                )
-//            }
-//        }
     }
 
 
     //등록 또는 변경될 가능성이 있는 사진의 제목을 담는 함수
-    fun considerNewPhoto(editText: String) {
+    fun considerNewPhotoTitle(editText: String) {
         when (_layoutModeLiveData.value) {
             "ADD" -> {
                 newPhotoList = newPhotoList.copy(
@@ -221,12 +207,21 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
 
             "COMPLETE" -> {
+                var list = removePhotoList.filter { it.checked }
+
+
+                viewModelScope.launch {
+                for(i in list) {
+                    galleryRepository.deleteGallery(i.uid)
+                }}
                 removePhotoList.removeIf { it.checked }
+
 //        removePhotoList.forEach { removePhoto ->
 //            galleryList.removeIf { it.uId == removePhoto.uId }
 //        }
 
                 _galleryListLiveData.value = removePhotoList
+
 
             }
         }

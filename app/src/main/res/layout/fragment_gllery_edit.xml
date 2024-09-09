@@ -19,21 +19,49 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/gallery_edit_tv_image_title"
+        style="@style/common_text_16_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="사진"
+        app:layout_constraintStart_toStartOf="@+id/gallery_edit_tv_exit"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_exit" />
+
+
+
+    <TextView
+        android:id="@+id/gallery_edit_tv_add"
+        style="@style/common_text_14_white"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/sel_btn_round_square_blue_white"
+        android:gravity="center"
+        android:text="입력"
+        app:layout_constraintBottom_toBottomOf="@+id/gallery_edit_tv_image_title"
+        app:layout_constraintStart_toEndOf="@+id/gallery_edit_tv_image_title"
+        app:layout_constraintTop_toTopOf="@+id/gallery_edit_tv_image_title" />
+
+
+
+
     <ImageView
         android:id="@+id/gallery_edit_iv_title_background"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:background="@drawable/img_round_square"
-        android:src="@drawable/icon_album"
-        android:padding="40dp"
         android:clipToOutline="true"
+        android:padding="40dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/icon_album"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@+id/gallery_edit_iv_title_2_background"
         app:layout_constraintHorizontal_weight="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_exit" />
+        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_image_title" />
 
     <ImageView
         android:id="@+id/gallery_edit_iv_title"
@@ -42,12 +70,11 @@
         android:background="@drawable/bg_translucent_white_square"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/gallery_edit_iv_title_background"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/gallery_edit_iv_title_background"
         app:layout_constraintEnd_toEndOf="@+id/gallery_edit_iv_title_background"
         app:layout_constraintStart_toStartOf="@+id/gallery_edit_iv_title_background"
-        app:layout_constraintBottom_toBottomOf="@+id/gallery_edit_iv_title_background"
-      />
+        app:layout_constraintTop_toTopOf="@+id/gallery_edit_iv_title_background" />
 
     <ImageView
         android:id="@+id/gallery_edit_iv_title_2_background"
@@ -55,15 +82,15 @@
         android:layout_height="0dp"
         android:layout_margin="20dp"
         android:background="@drawable/img_round_square"
-        android:src="@drawable/icon_album"
-        android:padding="40dp"
         android:clipToOutline="true"
+        android:padding="40dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/icon_album"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="0.5"
         app:layout_constraintStart_toEndOf="@+id/gallery_edit_iv_title_background"
-        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_exit" />
+        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_image_title" />
 
     <ImageView
         android:id="@+id/gallery_edit_iv_title_2"
@@ -72,12 +99,12 @@
         android:background="@drawable/bg_translucent_white_square"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/gallery_edit_iv_title_2_background"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintTop_toTopOf="@+id/gallery_edit_iv_title_2_background"
         app:layout_constraintEnd_toEndOf="@+id/gallery_edit_iv_title_2_background"
         app:layout_constraintStart_toStartOf="@+id/gallery_edit_iv_title_2_background"
-        app:layout_constraintBottom_toBottomOf="@+id/gallery_edit_iv_title_2_background"
-        />
+        app:layout_constraintTop_toTopOf="@+id/gallery_edit_iv_title_2_background" />
+
 
     <!--        <androidx.recyclerview.widget.RecyclerView-->
     <!--            android:id="@+id/gallery_edit_rv"-->
@@ -88,21 +115,52 @@
     <!--            app:layout_constraintStart_toStartOf="parent"-->
     <!--            app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_exit" />-->
 
-
     <TextView
-        android:id="@+id/gallery_edit_iv_calendar"
-        style="@style/common_text_16_dark_gray"
+        android:id="@+id/gallery_edit_tv_calendar_title"
+        style="@style/common_text_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="날짜설정   "
-        app:drawableEndCompat="@drawable/icon_calendar"
-        app:layout_constraintBottom_toTopOf="@+id/gallery_edit_et_title"
-        app:layout_constraintEnd_toEndOf="@+id/gallery_edit_iv_title_2_background"
+        android:layout_marginTop="24dp"
+        android:text="@string/common_date"
         app:layout_constraintStart_toStartOf="@+id/gallery_edit_iv_title_background"
         app:layout_constraintTop_toBottomOf="@+id/gallery_edit_iv_title_background" />
+
+
+    <TextView
+        android:id="@+id/gallery_edit_tv_calendar"
+        style="@style/common_text_14_white"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/sel_btn_round_square_blue_white"
+        android:gravity="center"
+        android:text="@string/common_input"
+        app:layout_constraintBottom_toBottomOf="@+id/gallery_edit_tv_calendar_title"
+        app:layout_constraintStart_toEndOf="@+id/gallery_edit_tv_calendar_input"
+        app:layout_constraintTop_toTopOf="@+id/gallery_edit_tv_calendar_title" />
+
+    <TextView
+        android:id="@+id/gallery_edit_tv_calendar_input"
+        style="@style/common_text_18_bold_dark_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/album_select_date"
+        app:layout_constraintStart_toEndOf="@+id/gallery_edit_tv_calendar_title"
+        app:layout_constraintTop_toTopOf="@+id/gallery_edit_tv_calendar_title"
+        app:layout_constraintBottom_toBottomOf="@+id/gallery_edit_tv_calendar_title"/>
+
+
+    <TextView
+        android:id="@+id/gallery_edit_tv_title"
+        style="@style/common_text_16_bold_blue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/common_title"
+        app:layout_constraintEnd_toEndOf="@+id/gallery_edit_iv_title_2_background"
+        app:layout_constraintStart_toStartOf="@+id/gallery_edit_iv_title_background"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_calendar_input" />
 
 
     <EditText
@@ -110,17 +168,15 @@
         style="@style/common_text_16_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:background="@drawable/shape_post_create_form"
         android:ems="16"
         android:gravity="center"
-        android:hint="사진의 제목을 입력해주세요."
+        android:hint="@string/gallery_please_enter_title"
         android:inputType="text"
         android:maxLength="16"
-        app:layout_constraintBottom_toTopOf="@+id/gallery_edit_tv_complete"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_iv_calendar" />
+        app:layout_constraintEnd_toEndOf="@+id/gallery_edit_iv_title_2_background"
+        app:layout_constraintStart_toStartOf="@+id/gallery_edit_tv_title"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_edit_tv_title" />
 
 
     <TextView
