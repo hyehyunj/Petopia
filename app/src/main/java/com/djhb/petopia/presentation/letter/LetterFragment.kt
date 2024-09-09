@@ -25,8 +25,12 @@ import com.djhb.petopia.databinding.FragmentLetterBinding
 
 
 class LetterFragment : DialogFragment() {
-    private var _binding: FragmentLetterBinding? = null
-    private val binding get() = _binding!!
+
+    private val _binding: FragmentLetterBinding by lazy {
+        FragmentLetterBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
+
 //    private lateinit var homeSharedViewModel: HomeSharedViewModel
 
     private lateinit var letterViewModel: LetterViewModel
@@ -37,7 +41,6 @@ class LetterFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLetterBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -136,11 +139,6 @@ class LetterFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     fun onLetterSaved(letterModel: LetterModel) {

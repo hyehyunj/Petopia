@@ -12,14 +12,15 @@ import com.djhb.petopia.databinding.FragmentPersonalTermBinding
 
 class PersonalTermFragment : Fragment() {
 
-    private var _binding: FragmentPersonalTermBinding? = null
-    private val binding get() = _binding!!
+    private val _binding: FragmentPersonalTermBinding by lazy {
+        FragmentPersonalTermBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentPersonalTermBinding.inflate(inflater, container, false)
         return binding.root
     }
 
