@@ -65,7 +65,8 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 galleryRepository.selectInitGalleryList(user)
             }
             val documents = list.await()
-            lastSnapshot = documents[documents.size -1]
+            if(documents.size > 0)
+                lastSnapshot = documents[documents.size -1]
             val successList = galleryRepository.convertToGalleryModel(documents)
 
             val imageUris = mutableListOf<StorageReference?>()

@@ -241,11 +241,11 @@
 
     <style name="toast_warning">
         <item name="stTextBold">true</item>
-        <item name="stTextColor">#F3D25B</item>
+        <item name="stTextColor">@color/warning</item>
         <item name="stTextSize">14sp</item>
         <item name="stColorBackground">@color/white</item>
         <item name="stStrokeWidth">3dp</item>
-        <item name="stStrokeColor">#F3D25B</item>
+        <item name="stStrokeColor">@color/warning</item>
         <item name="stLength">SHORT</item>
         LONG or SHORT
         <item name="stGravity">center</item>
@@ -256,11 +256,11 @@
 
     <style name="toast_error">
         <item name="stTextBold">true</item>
-        <item name="stTextColor">#F84661</item>
+        <item name="stTextColor">@color/error</item>
         <item name="stTextSize">14sp</item>
         <item name="stColorBackground">@color/white</item>
         <item name="stStrokeWidth">3dp</item>
-        <item name="stStrokeColor">#F4363C</item>
+        <item name="stStrokeColor">@color/error</item>
         <item name="stLength">SHORT</item>
         LONG or SHORT
         <item name="stGravity">center</item>

@@ -56,13 +56,16 @@ class HomeMemoryBridgeFragment : Fragment() {
         memoryViewModel =
             ViewModelProvider(requireActivity(), factory).get(MemoryViewModel::class.java)
 
+
         loadMemory()
         scheduledMemory()
 
 
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
             Log.d("memoryText", text)
-            binding.homeMemoryBridgeTvMemoryTitle.text = text
+            if (memoryViewModel.isMemorySaved.value == false) {
+                binding.homeMemoryBridgeTvMemoryTitle.text = text
+            }
         }
 
         val currentTitle = binding.homeMemoryBridgeTvMemoryTitle.text.toString()
@@ -99,7 +102,6 @@ class HomeMemoryBridgeFragment : Fragment() {
                 if (it == true) {
                     binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
                 }
-
             }
         }
 
@@ -130,7 +132,10 @@ class HomeMemoryBridgeFragment : Fragment() {
         Log.d("initialDelay", initialDelay.toString())
 
         val workRequest =
-            PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(1, TimeUnit.DAYS).setInitialDelay(
+            PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(
+                1,
+                TimeUnit.DAYS
+            ).setInitialDelay(
                 initialDelay,
                 TimeUnit.MILLISECONDS
             ).build()
@@ -147,9 +152,10 @@ class HomeMemoryBridgeFragment : Fragment() {
         val memoryText = sharedPreferences.getString("memoryText", null)
 
 
-        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
-        memoryViewModel.setMemoryTitle(memoryText.toString())
-
+        if (memoryViewModel.isMemorySaved.value != true) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+            memoryViewModel.setMemoryTitle(memoryText.toString())
+        }
 
 
         Log.d("memoryText", memoryText.toString())
