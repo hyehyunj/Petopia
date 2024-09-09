@@ -35,8 +35,12 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     private val _currentPhotoListLiveData = MutableLiveData<GalleryModel>()
     val currentPhotoLiveData: LiveData<GalleryModel> = _currentPhotoListLiveData
 
+
     //새로운 사진 : 임시 저장 데이터, 완료시 선택된 사진의 값으로 교체된다.
+    private val _newPhotoListLiveData = MutableLiveData<List<Uri>>()
+    val newPhotoListLiveData: LiveData<List<Uri>> = _newPhotoListLiveData
     private lateinit var newPhotoList: GalleryModel
+
 
     //삭제모드 : "REMOVE" 삭제, "COMPLETE" 완료(기본값)
     private val _removeModeLiveData = MutableLiveData("COMPLETE")
@@ -111,6 +115,13 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         }
 
     }
+//fun newPhotoListChange(uri: List<Uri>, position: Int) : List<Uri> {
+//     = listOf()
+//     = uri
+//
+//    return
+//}
+
 
     //등록 또는 변경될 가능성이 있는 새로운 사진을 담는 함수
     fun considerNewPhoto(uriList: List<Uri>) {
@@ -127,6 +138,9 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 )
         }
     }
+
+
+
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
     fun considerNewPhoto(dateTime: LocalDateTime) {

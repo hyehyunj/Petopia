@@ -65,9 +65,6 @@ class MainHomeGuideSharedViewModel(
 
     //유저 정보를 불러오는 함수
     fun getUser(): Boolean {
-        Log.d("유저정보", "${user.loginUser.completedGuide}")
-        Log.d("유저정보", "${user.loginUser.id}")
-        Log.d("유저정보", "${user.loginUser.pet}")
         var skipGuide: Boolean
         if (user.loginUser.completedGuide) {
             getPetData()

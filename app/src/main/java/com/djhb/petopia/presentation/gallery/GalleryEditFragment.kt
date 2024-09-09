@@ -1,29 +1,25 @@
 package com.djhb.petopia.presentation.gallery
 
-import android.app.Activity.RESULT_OK
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentGlleryEditBinding
@@ -37,36 +33,16 @@ class GalleryEditFragment : DialogFragment() {
         FragmentGlleryEditBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var sharedViewModel: GallerySharedViewModel
-
-//    private val imageUris = mutableListOf<Uri>()
-//    private val imageLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK && result.data != null) {
-//                imageUris.clear()
-//                val clipData = result.data?.clipData
-//                if (clipData == null) {
-//                    val uri = result.data?.data
-//                    if (uri != null) {
-//                        imageUris.add(uri)
-//                    }
-//                } else {
-//                    for (itemIndex in 0 until clipData.itemCount) {
-//                        imageUris.add(clipData.getItemAt(itemIndex).uri)
-//                    }
-//                }
-//                binding.galleryEditIvTitle.setImageURI(imageUris[0])
-//                sharedViewModel.considerNewPhoto(imageUris)
-//            }
-//        }
-
+//    private lateinit var galleryEditRecyclerViewAdapter: GalleryEditRecyclerViewAdapter
+    private lateinit var gallerySharedViewModel: GallerySharedViewModel
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uri ->
             if (uri.isNotEmpty()) {
                 val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     uri.forEach{context?.contentResolver?.takePersistableUriPermission(it, flag)}
                 binding.galleryEditIvTitle.setImageURI(uri[0])
-                sharedViewModel.considerNewPhoto(uri)
+                if(uri.size == 2)binding.galleryEditIvTitle2.setImageURI(uri[1])
+                gallerySharedViewModel.considerNewPhoto(uri)
             }
         }
 
@@ -74,7 +50,8 @@ class GalleryEditFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedViewModel =
+//        initAdapter()
+        gallerySharedViewModel =
             ViewModelProvider(requireParentFragment()).get(GallerySharedViewModel::class.java)
         return binding.root
     }
@@ -83,8 +60,8 @@ class GalleryEditFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
-        sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-           sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+        gallerySharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
+           gallerySharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
                     addOrEditMode(
                         it, currentPhoto
                     )
@@ -98,6 +75,24 @@ class GalleryEditFragment : DialogFragment() {
         }
     }
 
+
+    //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
+//    private fun initAdapter() {
+//        galleryEditRecyclerViewAdapter = GalleryEditRecyclerViewAdapter(
+//            gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
+//            //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
+//            itemClickListener = { item, position ->
+//            },
+//            itemLongClickListener = { item, position ->  },
+//        )
+//        binding.galleryEditRv.adapter = galleryEditRecyclerViewAdapter
+//        binding.galleryEditRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//    }
+
+
+
+
+
     //추가 or 편집모드 함수 : 레이아웃을 입력가능한 모드로 구성한다.
     private fun addOrEditMode(layoutMode: String, item: GalleryModel) {
 
@@ -105,6 +100,7 @@ class GalleryEditFragment : DialogFragment() {
         if (layoutMode == "EDIT") {
             binding.apply {
                 galleryEditIvTitle.setImageURI(item.imageUris[0].toUri())
+                galleryEditIvTitle2.setImageURI(item.imageUris[1].toUri())
                 galleryEditEtTitle.setText(item.titleText)
 //                photoTvCalendar.text = item.date
             }
@@ -112,28 +108,12 @@ class GalleryEditFragment : DialogFragment() {
         binding.apply {
             //사진 클릭이벤트 : 사용자의 갤러리에서 선택한 사진으로 사진을 업로드
             galleryEditIvTitle.setOnClickListener {
-//                if (ContextCompat.checkSelfPermission(
-//                        requireActivity(),
-//                        android.Manifest.permission.READ_EXTERNAL_STORAGE
-//                    )
-//                    == PackageManager.PERMISSION_DENIED
-//                ) {
-//                    requireActivity().requestPermissions(
-//                        arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-//                        1
-//                    )
-//                }
-//
-//                val intent = Intent(Intent.ACTION_PICK)
-//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                intent.setDataAndType(
-//                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-//                )
-//                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-//                imageLauncher.launch(intent)
-//            }
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
+            galleryEditIvTitle2.setOnClickListener {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            }
+
             //달력 클릭이벤트 : 사용자가 선택한 날짜로 사진의 날짜를 업로드
             galleryEditIvCalendar.setOnClickListener {
 
@@ -144,7 +124,7 @@ class GalleryEditFragment : DialogFragment() {
                 val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
                     binding.galleryEditIvCalendar.text = "${yy}. ${mm + 1}. ${dd}"
                 }
-                sharedViewModel.considerNewPhoto(LocalDateTime.of(year, month + 1, day, 0, 0, 0))
+                gallerySharedViewModel.considerNewPhoto(LocalDateTime.of(year, month + 1, day, 0, 0, 0))
                 val picker = DatePickerDialog(requireContext(), listener, year, month, day)
                 picker.show()
             }
@@ -152,13 +132,13 @@ class GalleryEditFragment : DialogFragment() {
             //완료버튼 : 새로운 사진으로 등록 또는 변경 후 읽기전용모드로 전환한다.
             galleryEditTvComplete.apply {
                 setOnClickListener {
-                    sharedViewModel.considerNewPhoto(binding.galleryEditEtTitle.text.toString())
-                    if (sharedViewModel.prepared()) {
-                        sharedViewModel.updateNewGallery(
+                    gallerySharedViewModel.considerNewPhoto(binding.galleryEditEtTitle.text.toString())
+                    if (gallerySharedViewModel.prepared()) {
+                        gallerySharedViewModel.updateNewGallery(
                             item.index
                         )
                         setBackgroundResource(R.drawable.icon_write)
-                        sharedViewModel.changeLayoutMode("READ")
+                        gallerySharedViewModel.changeLayoutMode("READ")
                         dismiss()
                     } else StyleableToast.makeText(
                         requireActivity(),
