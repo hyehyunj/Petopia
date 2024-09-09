@@ -6,6 +6,7 @@ import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.Table
 import com.djhb.petopia.data.PostModel
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -167,29 +168,53 @@ class PostRepositoryImpl : PostRepository {
 //        }
 //    }
 
-    override suspend fun selectPosts(): MutableList<PostModel> {
-        return withContext(Dispatchers.IO) {
-
+    //    override suspend fun selectPosts(): MutableList<PostModel> {
+//        return withContext(Dispatchers.IO) {
+//
+//            val snapshot = storeReference
+//                .orderBy("createdDate", Query.Direction.DESCENDING)
+//                .get()
+//                .await()
+//
+//            val allPosts = mutableListOf<PostModel>()
+//            for (document in snapshot.documents) {
+//                val hashMap = document.data as HashMap<*, *>
+//                val gson = Gson()
+//                val toJson = gson.toJson(hashMap)
+//                val fromJson = gson.fromJson(toJson, PostModel::class.java)
+//                allPosts.add(fromJson)
+//            }
+//
+//            Log.i("PostRepositoryImpl", "rankPosts = ${allPosts}")
+//            allPosts
+//        }
+//    }
+    override suspend fun selectInitPosts(): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO){
             val snapshot = storeReference
                 .orderBy("createdDate", Query.Direction.DESCENDING)
+                .limit(10)
                 .get()
                 .await()
 
-            val allPosts = mutableListOf<PostModel>()
-            for (document in snapshot.documents) {
-                val hashMap = document.data as HashMap<*, *>
-                val gson = Gson()
-                val toJson = gson.toJson(hashMap)
-                val fromJson = gson.fromJson(toJson, PostModel::class.java)
-                allPosts.add(fromJson)
-            }
-
-            Log.i("PostRepositoryImpl", "rankPosts = ${allPosts}")
-            allPosts
+            snapshot.documents
         }
     }
 
-//    override suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel> {
+    override suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO){
+            val snapshot = storeReference
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .startAfter(lastSnapshot)
+                .limit(10)
+                .get()
+                .await()
+
+            snapshot.documents
+        }
+    }
+
+    //    override suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel> {
 //        return suspendCancellableCoroutine { continuation ->
 //            for (post in posts) {
 //                storageReference.child(post.key).listAll().addOnCompleteListener { task ->
@@ -464,5 +489,17 @@ class PostRepositoryImpl : PostRepository {
         }.addOnFailureListener {
             Log.d("PostRepositoryImpl", "fail deletePostImage = ${it}")
         }
+    }
+
+    override fun convertToPostModel(documents: List<DocumentSnapshot>): MutableList<PostModel> {
+            val allPosts = mutableListOf<PostModel>()
+            for (document in documents) {
+                val hashMap = document.data as HashMap<*, *>
+                val gson = Gson()
+                val toJson = gson.toJson(hashMap)
+                val fromJson = gson.fromJson(toJson, PostModel::class.java)
+                allPosts.add(fromJson)
+            }
+        return allPosts
     }
 }

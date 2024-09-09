@@ -8,6 +8,7 @@ import com.djhb.petopia.Table
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.data.UserModel
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.StorageReference
@@ -71,36 +72,86 @@ class GalleryRepositoryImpl : GalleryRepository {
 //        storageReference.child(gallery.key).
     }
 
-    override suspend fun selectGalleryList(user: UserModel): MutableList<GalleryModel> {
-        return suspendCancellableCoroutine { continuation ->
+    override suspend fun selectInitGalleryList(user: UserModel): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO) {
             Log.i("GalleryRepositoryImpl", "start selectGalleryList")
-            val galleryList = mutableListOf<GalleryModel>()
+//            val galleryList = mutableListOf<GalleryModel>()
 
 //            RTReference.orderByChild("writer/id").equalTo(user.id).get().addOnCompleteListener {
-            reference
-                .orderBy("createdDate", Query.Direction.DESCENDING)
-                .orderBy("writer.id")
+            val snapshot = reference
                 .whereEqualTo("writer.id", user.id)
                 .whereLessThan("createdDate", 999999999999999)
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .orderBy("writer.id")
+                .limit(10)
                 .get()
-                .addOnCompleteListener {
-                    val result = it.result
-                    Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
-                    for (child in result.documents) {
-                        val value = child.data as HashMap<*, *>
-                        val gson = Gson()
-                        val toJson = gson.toJson(value)
-                        val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
-                        galleryList.add(fromJson)
-                    }
-                    Log.i("GalleryRepositoryImpl", "galleryList.size = ${galleryList.size}")
-                    continuation.resume(galleryList)
-                    return@addOnCompleteListener
-                }.addOnFailureListener {
-                    continuation.resumeWithException(it)
-                }
+                .await()
+
+            snapshot.documents
+
+//            val result = it.result
+//            Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
+//            for (child in result.documents) {
+//                val value = child.data as HashMap<*, *>
+//                val gson = Gson()
+//                val toJson = gson.toJson(value)
+//                val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
+//                galleryList.add(fromJson)
+//            }
+//            Log.i("GalleryRepositoryImpl", "galleryList.size = ${galleryList.size}")
         }
     }
+
+    override suspend fun selectGalleryList(user: UserModel, lastSnapshot: DocumentSnapshot): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO) {
+            Log.i("GalleryRepositoryImpl", "start selectGalleryList")
+//            val galleryList = mutableListOf<GalleryModel>()
+
+//            RTReference.orderByChild("writer/id").equalTo(user.id).get().addOnCompleteListener {
+            val snapshot = reference
+                .whereEqualTo("writer.id", user.id)
+                .whereLessThan("createdDate", 999999999999999)
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .orderBy("writer.id")
+                .startAfter(lastSnapshot)
+                .limit(10)
+                .get()
+                .await()
+
+            snapshot.documents
+        }
+    }
+
+//    override suspend fun selectGalleryList(user: UserModel, documents: List<DocumentSnapshot>): List<DocumentSnapshot> {
+//        return suspendCancellableCoroutine { continuation ->
+//            Log.i("GalleryRepositoryImpl", "start selectGalleryList")
+//            val galleryList = mutableListOf<GalleryModel>()
+//
+////            RTReference.orderByChild("writer/id").equalTo(user.id).get().addOnCompleteListener {
+//            reference
+//                .orderBy("createdDate", Query.Direction.DESCENDING)
+//                .orderBy("writer.id")
+//                .whereEqualTo("writer.id", user.id)
+//                .whereLessThan("createdDate", 999999999999999)
+//                .get()
+//                .addOnCompleteListener {
+//                    val result = it.result
+//                    Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
+//                    for (child in result.documents) {
+//                        val value = child.data as HashMap<*, *>
+//                        val gson = Gson()
+//                        val toJson = gson.toJson(value)
+//                        val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
+//                        galleryList.add(fromJson)
+//                    }
+//                    Log.i("GalleryRepositoryImpl", "galleryList.size = ${galleryList.size}")
+//                    continuation.resume(galleryList)
+//                    return@addOnCompleteListener
+//                }.addOnFailureListener {
+//                    continuation.resumeWithException(it)
+//                }
+//        }
+//    }
 
 //    override suspend fun selectGalleryMainImages(galleryList: MutableList<GalleryModel>): MutableList<GalleryModel> {
 //        return suspendCancellableCoroutine { continuation ->
@@ -152,32 +203,51 @@ class GalleryRepositoryImpl : GalleryRepository {
     }
 
 
-    override suspend fun selectAllGalleryImages(gallery: GalleryModel): GalleryModel {
+    override suspend fun selectDetailGalleryImages(uid: String): List<StorageReference> {
         return suspendCancellableCoroutine { continuation ->
-            val key = gallery.uid
-            Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
-            storageReference.child(key).listAll().addOnCompleteListener { task ->
+//            val key = gallery.uid
+            Log.i("GalleryRepositoryImpl", "gallery key = ${uid}")
+            storageReference.child(uid).listAll().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val items = task.result.items
-                    Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
-                    for (item in items) {
-//                            Log.d("GalleryRepositoryImpl", "${item.name}")
-                        item.downloadUrl.addOnCompleteListener { uri ->
-                            gallery.imageUris.add(uri.result.toString())
-                        }
-                    }
+                    continuation.resume(task.result.items)
                 } else {
                     continuation.resumeWithException(
                         task.exception ?: Exception("Unknown error occurred")
                     )
                 }
-                continuation.resume(gallery)
                 return@addOnCompleteListener
             }.addOnFailureListener {
                 continuation.resumeWithException(it)
             }
         }
     }
+
+//    override suspend fun selectDetailGalleryImages(gallery: GalleryModel): GalleryModel {
+//        return suspendCancellableCoroutine { continuation ->
+//            val key = gallery.uid
+//            Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
+//            storageReference.child(key).listAll().addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    val items = task.result.items
+//                    Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
+//                    for (item in items) {
+////                            Log.d("GalleryRepositoryImpl", "${item.name}")
+//                        item.downloadUrl.addOnCompleteListener { uri ->
+//                            gallery.imageUris.add(uri.result.toString())
+//                        }
+//                    }
+//                } else {
+//                    continuation.resumeWithException(
+//                        task.exception ?: Exception("Unknown error occurred")
+//                    )
+//                }
+//                continuation.resume(gallery)
+//                return@addOnCompleteListener
+//            }.addOnFailureListener {
+//                continuation.resumeWithException(it)
+//            }
+//        }
+//    }
 
     override suspend fun selectDownloadUri(item: StorageReference): String {
         return withContext(Dispatchers.IO) {
@@ -228,7 +298,20 @@ class GalleryRepositoryImpl : GalleryRepository {
             }.addOnFailureListener {
                 continuation.resumeWithException(it)
             }
-
         }
+    }
+
+    override fun convertToGalleryModel(documents: List<DocumentSnapshot>): MutableList<GalleryModel> {
+
+        val galleryList = mutableListOf<GalleryModel>()
+
+        for (child in documents) {
+                val value = child.data as HashMap<*, *>
+                val gson = Gson()
+                val toJson = gson.toJson(value)
+                val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
+                galleryList.add(fromJson)
+            }
+        return galleryList
     }
 }

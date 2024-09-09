@@ -16,14 +16,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.djhb.petopia.data.CommentModel
-import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.UserModel
-import com.djhb.petopia.data.remote.PostRepository
-import com.djhb.petopia.data.remote.PostRepositoryImpl
 import com.djhb.petopia.databinding.FragmentCommunityCreateBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
@@ -202,7 +196,7 @@ class CommunityCreateFragment : Fragment() {
 //                    postRepository.createPost(PostModel(title, content, loginUser), imageUris)
                     viewModel.createPost(PostModel(title, content, loginUser), imageUris)
                     viewModel.selectRankList()
-                    viewModel.selectAllList()
+                    viewModel.selectInitPostList()
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     mainActivity.showViewPager()
                     requireActivity().supportFragmentManager.popBackStack()
