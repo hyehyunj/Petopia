@@ -77,7 +77,34 @@ class SigninFragment : Fragment() {
                 .commit()
         }
 
+        //미구현 버튼들
+
+        binding.btnIdSearch.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnPasswordSearch.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnKakaoSignin.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnGoogleSignin.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnNaverSignin.setOnClickListener {
+            showUndoToast()
+        }
     }
 
-
+    fun showUndoToast() {
+        StyleableToast.makeText(
+            requireActivity(),
+            getString(R.string.messege_undo),
+            R.style.toast_undo
+        ).show()
+    }
 }
