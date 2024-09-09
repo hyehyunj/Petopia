@@ -26,6 +26,8 @@ import com.djhb.petopia.presentation.community.adapter.DetailImageAdapter
 import com.djhb.petopia.presentation.community.adapter.OnClickComment
 import com.djhb.petopia.presentation.community.dialogFragment.CommentEditDialogFragment
 import com.djhb.petopia.presentation.community.dialogFragment.PostDeleteDialogFragment
+import com.djhb.petopia.presentation.gallery.GalleryFragment
+import com.djhb.petopia.presentation.report.ReportFragment
 import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
 import me.relex.circleindicator.CircleIndicator3
@@ -167,6 +169,11 @@ class CommunityDetailFragment : Fragment() {
     }
 
     private fun initListener(){
+        binding.ivReport.setOnClickListener {
+            ReportFragment().show(childFragmentManager, "REPORT_FRAGMENT")
+        }
+
+
         binding.btnAddComment.setOnClickListener {
             val comment = binding.etComment.text.toString()
             if(comment.isBlank()) {
@@ -197,6 +204,9 @@ class CommunityDetailFragment : Fragment() {
 //                    .replace(R.id.main_sub_frame,CommunityMainFragment())
 //                    .commit()
 //            }
+
+
+
 
             binding.btnDelete.setOnClickListener {
                 val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
