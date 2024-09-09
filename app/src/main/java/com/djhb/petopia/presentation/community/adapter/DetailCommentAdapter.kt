@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LoginData
-import com.djhb.petopia.databinding.PostCommnetHolderBinding
+import com.djhb.petopia.databinding.PostCommentHolderBinding
 
 
 interface OnClickComment{
@@ -29,7 +29,7 @@ class DetailCommentAdapter(private val onClickComment: OnClickComment)
 }) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
-        val binding = PostCommnetHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = PostCommentHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CommentHolder(binding)
     }
 
@@ -60,7 +60,7 @@ class DetailCommentAdapter(private val onClickComment: OnClickComment)
 
     }
 
-    class CommentHolder(val binding: PostCommnetHolderBinding): ViewHolder(binding.root){
+    class CommentHolder(val binding: PostCommentHolderBinding): ViewHolder(binding.root){
         val content = binding.tvContent
         val writer = binding.tvWriter
         val createdDate = binding.tvCreatedDate
