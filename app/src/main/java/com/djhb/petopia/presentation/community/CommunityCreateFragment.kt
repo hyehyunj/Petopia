@@ -201,6 +201,8 @@ class CommunityCreateFragment : Fragment() {
                     Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
 //                    postRepository.createPost(PostModel(title, content, loginUser), imageUris)
                     viewModel.createPost(PostModel(title, content, loginUser), imageUris)
+                    viewModel.selectRankList()
+                    viewModel.selectAllList()
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
                     mainActivity.showViewPager()
                     requireActivity().supportFragmentManager.popBackStack()

@@ -26,26 +26,27 @@ class PostRepositoryImpl : PostRepository {
     private val storeReference = Firebase.firestore.collection(Table.QUESTION_POST.tableName)
     private val storageReference = Firebase.storage.getReference(Table.QUESTION_POST.tableName)
 
-    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>): Boolean {
+    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>): PostModel {
         return suspendCancellableCoroutine { continuation ->
             var isFailToStore = false
             storeReference.document(post.key).set(post).addOnCompleteListener {
-                Log.i("PostRepositoryImpl", "success create question post : ${it}")
+                Log.i("PostRepositoryImpl", "success create question post : ${it.result}")
             }.addOnFailureListener {
                 isFailToStore = true
                 Log.e("PostRepositoryImpl", "fail create question post : ${it}")
+                continuation.resumeWithException(it)
+                return@addOnFailureListener
             }
 
-            if (isFailToStore) {
-                continuation.resume(false)
-                return@suspendCancellableCoroutine
-            }
+            if (isFailToStore)
+                continuation.resumeWithException(Exception("fail create post"))
+
 
             CoroutineScope(Dispatchers.Default).launch {
                 createPostImages(post, imageUris)
             }
 
-            continuation.resume(true)
+//            continuation.resume(post)
         }
     }
 

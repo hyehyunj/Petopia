@@ -15,6 +15,7 @@ import com.djhb.petopia.databinding.FragmentCommunityMainBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.PostAdapter
 import com.djhb.petopia.presentation.community.adapter.RankPostAdapter
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
@@ -124,6 +125,7 @@ class CommunityMainFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.selectRankList()
             viewModel.selectAllList()
+//            async { viewModel.selectAllImageList()}.await()
         }
         binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
         binding.recyclerViewQuestionRank.isNestedScrollingEnabled = false
@@ -161,7 +163,16 @@ class CommunityMainFragment : Fragment() {
         }
         viewModel.searchPost.observe(viewLifecycleOwner){
             Log.i("CommunityMainFragment", "observe search : ${it}")
-            allPostAdapter.submitList(it.toMutableList())
+            lifecycleScope.launch {
+                allPostAdapter.submitList(it.toMutableList())
+                async { viewModel.selectAllImageList()}.await()
+            }
+        }
+
+        viewModel.postImageUris.observe(viewLifecycleOwner) {
+            Log.i("CommunityMainFragment", "observe postImageUris : ${it}")
+            viewModel.combinePostToImages(it)
+            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
         }
 
 //        viewModel.isCompleteRankPost.observe(viewLifecycleOwner){
