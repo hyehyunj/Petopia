@@ -9,7 +9,6 @@
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\yoojs\.android\avd\Pixel_7_API_33.avd" />
-
             </handle>
           </Target>
         </DropdownSelection>

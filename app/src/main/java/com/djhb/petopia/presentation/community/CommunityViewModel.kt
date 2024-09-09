@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.remote.PostRepositoryImpl
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.launch
+import java.util.Collections
 
 class CommunityViewModel : ViewModel() {
 
@@ -19,12 +21,14 @@ class CommunityViewModel : ViewModel() {
 
     private val _searchPosts = MutableLiveData<MutableList<PostModel>>()
     val searchPost get() = _searchPosts
-    var searchPostResult = mutableListOf<PostModel>()
+    var searchPostResult = Collections.synchronizedList(mutableListOf<PostModel>())
 
     private val _postImageUris = MutableLiveData<MutableList<String>>()
     val postImageUris get() = _postImageUris
 
     private val postRepository = PostRepositoryImpl()
+
+    private lateinit var lastSnapshot: DocumentSnapshot
 
     suspend fun createPost(post: PostModel, imageUris: MutableList<String>){
 
@@ -96,13 +100,19 @@ class CommunityViewModel : ViewModel() {
 //        }
     }
 
-    suspend fun selectAllList(){
+    suspend fun selectInitPostList(){
 //        Log.i("CommunityViewModel", "start1 selectAllList()")
         viewModelScope.launch {
             Log.i("CommunityViewModel", "123. start selectAllList()")
             searchPostResult.clear()
 //            val allPosts = postRepository.selectPosts()
-            searchPostResult = postRepository.selectPosts()
+//            searchPostResult = postRepository.selectPosts()
+
+            val documents = postRepository.selectInitPosts()
+
+            lastSnapshot = documents[documents.size-1]
+
+            searchPostResult = postRepository.convertToPostModel(documents)
 
 //            val imageUris = mutableListOf<StorageReference?>()
 //
@@ -130,12 +140,35 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
-    fun selectAllImageList(){
+    suspend fun selectNextPostList() {
+//        Log.i("CommunityViewModel", "start1 selectAllList()")
+        viewModelScope.launch {
+            Log.i("CommunityViewModel", "123. start selectNextPostList()")
+//            searchPostResult.clear()
+//            val allPosts = postRepository.selectPosts()
+//            searchPostResult = postRepository.selectPosts()
+
+            val documents = postRepository.selectNextPosts(lastSnapshot)
+            if(documents.size > 0) {
+                lastSnapshot = documents[documents.size - 1]
+                searchPostResult.addAll(postRepository.convertToPostModel(documents))
+                _searchPosts.value = searchPostResult
+            }
+        }
+    }
+
+    suspend fun selectAllImageList(){
         viewModelScope.launch {
             Log.i("CommunityViewModel", "123. start selectAllImageList()")
             val references = mutableListOf<StorageReference?>()
 
-            for (post in searchPostResult) {
+//            for (post in searchPostResult) {
+//                post.imageUris.clear()
+//                references.add(postRepository.selectPostMainImage(post))
+//            }
+
+            for(searchIndex in 0..searchPostResult.size-1) {
+                val post = searchPostResult[searchIndex]
                 post.imageUris.clear()
                 references.add(postRepository.selectPostMainImage(post))
             }

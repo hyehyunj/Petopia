@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.djhb.petopia.R
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.databinding.FragmentCommunityMainBinding
@@ -124,7 +126,7 @@ class CommunityMainFragment : Fragment() {
     private fun initView(){
         lifecycleScope.launch {
             viewModel.selectRankList()
-            viewModel.selectAllList()
+            viewModel.selectInitPostList()
 //            async { viewModel.selectAllImageList()}.await()
         }
         binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
@@ -149,6 +151,28 @@ class CommunityMainFragment : Fragment() {
 
             mainActivity.hideViewPager()
         }
+
+//        binding.recyclerViewQuestionMain.addOnScrollListener(object : OnScrollListener(){
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if(!recyclerView.canScrollVertically(1)) {
+//                    lifecycleScope.launch {
+//                        viewModel.selectNextPostList()
+//                    }
+//                }
+//            }
+//        })
+
+        binding.svMain.setOnScrollChangeListener { view, scrollX, scrollY, oldScrollX, oldScrollY ->
+
+            if(!view.canScrollVertically(1)) {
+                lifecycleScope.launch {
+                    viewModel.selectNextPostList()
+                }
+            }
+
+        }
+
     }
 
     private fun initObserve(){

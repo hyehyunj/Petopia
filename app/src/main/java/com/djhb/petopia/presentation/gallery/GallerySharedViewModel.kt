@@ -11,10 +11,10 @@ import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.remote.GalleryRepository
 import com.djhb.petopia.data.remote.GalleryRepositoryImpl
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.time.LocalDateTime
 
 //갤러리와 포토의 공유 뷰모델
 class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
@@ -33,10 +33,15 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
     //현재 보고있는 사진 : uri.toString() 갤러리 사진 단일 또는 다수
     private val _currentPhotoListLiveData = MutableLiveData<GalleryModel>()
-    val currentPhotoLiveData: LiveData<GalleryModel> = _currentPhotoListLiveData
+//    val currentPhotoLiveData: LiveData<GalleryModel> = _currentPhotoListLiveData
+    val currentPhotoLiveData get() = _currentPhotoListLiveData
+
 
     //새로운 사진 : 임시 저장 데이터, 완료시 선택된 사진의 값으로 교체된다.
+    private val _newPhotoListLiveData = MutableLiveData<List<Uri>>()
+    val newPhotoListLiveData: LiveData<List<Uri>> = _newPhotoListLiveData
     private lateinit var newPhotoList: GalleryModel
+
 
     //삭제모드 : "REMOVE" 삭제, "COMPLETE" 완료(기본값)
     private val _removeModeLiveData = MutableLiveData("COMPLETE")
@@ -49,16 +54,19 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     private val _checkedPhotoLiveData = MutableLiveData<Int>()
     val checkedPhotoLiveData: LiveData<Int> = _checkedPhotoLiveData
 
+    private val galleryListResult = mutableListOf<GalleryModel>()
 
 
+    private lateinit var lastSnapshot: DocumentSnapshot
 
-    //데이터베이스에서 사용자의 갤러리를 불러오는 함수
-    fun loadGalleryList() {
+    fun loadInitGalleryList() {
         viewModelScope.launch {
             val list = async {
-                galleryRepository.selectGalleryList(user)
+                galleryRepository.selectInitGalleryList(user)
             }
-            val successList = list.await()
+            val documents = list.await()
+            lastSnapshot = documents[documents.size -1]
+            val successList = galleryRepository.convertToGalleryModel(documents)
 
             val imageUris = mutableListOf<StorageReference?>()
 
@@ -73,7 +81,40 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             }
 
 //            _galleryListLiveData.value = galleryRepository.selectGalleryMainImages(successList).toList()
-            _galleryListLiveData.value = successList.toList()
+
+            galleryListResult.addAll(successList)
+//            _galleryListLiveData.value = successList.toList()
+            _galleryListLiveData.value = galleryListResult.toList()
+        }
+    }
+
+    //데이터베이스에서 사용자의 갤러리를 불러오는 함수
+    fun loadGalleryList() {
+        viewModelScope.launch {
+            val list = async {
+                galleryRepository.selectGalleryList(user, lastSnapshot)
+            }
+            val documents = list.await()
+
+            val successList = galleryRepository.convertToGalleryModel(documents)
+
+            val imageUris = mutableListOf<StorageReference?>()
+
+            for (galleryModel in successList) {
+                galleryModel.imageUris.clear()
+                imageUris.add(galleryRepository.selectGalleryMainImages(galleryModel.uid))
+            }
+
+            for ((uriIndex, uri) in imageUris.withIndex()) {
+                if(uri != null)
+                    successList[uriIndex].imageUris.add(galleryRepository.selectDownloadUri(uri))
+            }
+
+//            _galleryListLiveData.value = galleryRepository.selectGalleryMainImages(successList).toList()
+
+            galleryListResult.addAll(successList)
+//            _galleryListLiveData.value = successList.toList()
+            _galleryListLiveData.value = galleryListResult.toList()
         }
     }
 
@@ -111,6 +152,13 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         }
 
     }
+//fun newPhotoListChange(uri: List<Uri>, position: Int) : List<Uri> {
+//     = listOf()
+//     = uri
+//
+//    return
+//}
+
 
     //등록 또는 변경될 가능성이 있는 새로운 사진을 담는 함수
     fun considerNewPhoto(uriList: List<Uri>) {
@@ -128,29 +176,19 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         }
     }
 
+
+
+
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
-    fun considerNewPhoto(dateTime: LocalDateTime) {
+    fun considerNewPhotoDate(dateTime: String) {
         newPhotoList = newPhotoList.copy(
-            photoDate = dateTime.toString()
+            photoDate = dateTime
         )
-//        when (_layoutModeLiveData.value) {
-//            "ADD" -> {
-//                newPhotoList = newPhotoList.copy(
-//                    createdDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-//                )
-//            }
-//
-//            "EDIT" -> {
-//                newPhotoList = newPhotoList.copy(
-//                    updatedDate = dateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-//                )
-//            }
-//        }
     }
 
 
     //등록 또는 변경될 가능성이 있는 사진의 제목을 담는 함수
-    fun considerNewPhoto(editText: String) {
+    fun considerNewPhotoTitle(editText: String) {
         when (_layoutModeLiveData.value) {
             "ADD" -> {
                 newPhotoList = newPhotoList.copy(
@@ -180,7 +218,10 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             "ADD" -> {
                 _currentPhotoListLiveData.value =
                     newPhotoList
-                galleryList.add(0, _currentPhotoListLiveData.value!!)
+                viewModelScope.launch {
+                    galleryRepository.createGallery(_currentPhotoListLiveData.value!!)
+                    galleryList.add(0, _currentPhotoListLiveData.value!!)
+                }
             }
             "EDIT" -> {
                 _currentPhotoListLiveData.value = newPhotoList
@@ -207,12 +248,21 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
 
             "COMPLETE" -> {
+                var list = removePhotoList.filter { it.checked }
+
+
+                viewModelScope.launch {
+                for(i in list) {
+                    galleryRepository.deleteGallery(i.uid)
+                }}
                 removePhotoList.removeIf { it.checked }
+
 //        removePhotoList.forEach { removePhoto ->
 //            galleryList.removeIf { it.uId == removePhoto.uId }
 //        }
 
                 _galleryListLiveData.value = removePhotoList
+
 
             }
         }

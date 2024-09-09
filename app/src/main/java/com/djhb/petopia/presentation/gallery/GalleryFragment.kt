@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentGalleryBinding
 
 
@@ -43,12 +44,12 @@ class GalleryFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.i("GalleryFragment", "start GalleryFragment")
         //버튼 클릭이벤트
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        gallerySharedViewModel.loadGalleryList()
+        gallerySharedViewModel.loadInitGalleryList()
 
         initDialog()
     }
@@ -86,6 +87,7 @@ class GalleryFragment : DialogFragment() {
 
         //갤러리 리스트 변화감지
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
+            Log.d("???", "${gallerySharedViewModel.galleryListLiveData.value}")
             galleryRecyclerViewAdapter.updateList(it)
         }
 
@@ -114,6 +116,7 @@ class GalleryFragment : DialogFragment() {
 
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
     private fun initAdapter() {
+        Log.d("?", "${gallerySharedViewModel.galleryListLiveData.value}")
         galleryRecyclerViewAdapter = GalleryRecyclerViewAdapter(
             gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
             //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
@@ -173,6 +176,8 @@ class GalleryFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        gallerySharedViewModel.loadInitGalleryList()
     }
 
 }
