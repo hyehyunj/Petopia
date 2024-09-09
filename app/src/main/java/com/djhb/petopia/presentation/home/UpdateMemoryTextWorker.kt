@@ -11,18 +11,22 @@ class UpdateMemoryTextWorker(context: Context, workerParams: WorkerParameters) :
     override fun doWork(): Result {
         Log.d("UpdateMemoryTextWorker", "doWork() called")
 
-        val dummyText: MutableList<String> = mutableListOf()
-        dummyText.add("첫만남의 기분은 어땠나요?")
-        dummyText.add("가장 좋아했던 간식은 무엇인가요")
-        dummyText.add("1111111111?")
-        dummyText.add("22222222222?")
-        dummyText.add("333333333333?")
-        dummyText.add("44444444444444?")
-        dummyText.add("5555555555555555?")
-        dummyText.add("666666666666666666?")
-        dummyText.add("기억에 남는 산책장소는 어디인가요?")
+        val memoryText: MutableList<String> = mutableListOf()
+        memoryText.add("우리 친구와의 첫만남은 어땠나요?")
+        memoryText.add("친구가 가장 좋아했던 간식은 무엇인가요?")
+        memoryText.add("친구의 특별한 습관이 있었나요?")
+        memoryText.add("친구의 최애 장난감은 무엇인가요?")
+        memoryText.add("기억에 남는 산책장소는 어디인가요?")
+        memoryText.add("친구가 좋아하는 음식은 무엇인가요?")
+        memoryText.add("친구가 집에서 제일 편안해하던 장소는 어디였나요?")
+        memoryText.add("가장 그리운 모습은 무엇인가요?")
+        memoryText.add("가장 좋아하던 산책 루틴이 있었나요?")
+        memoryText.add("친구는 어떤 장난을 가장 좋아했나요?")
+        memoryText.add("당신을 처음 보고 했던 행동은 무엇이었나요?")
 
-        val selectedText = dummyText.random()
+
+
+        val selectedText = memoryText.random()
 
         val sharedPreferences =
             applicationContext.getSharedPreferences("Memory", Context.MODE_PRIVATE)
