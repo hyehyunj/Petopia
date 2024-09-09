@@ -98,17 +98,16 @@ class GalleryEditFragment : DialogFragment() {
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
             binding.apply {
+                Glide.with(requireParentFragment())
+                    .load(item.imageUris[0].toUri())
+                    .centerCrop()
+                    .into(galleryEditIvTitle)
                 galleryEditEtTitle.setText(item.titleText)
                 if(item.imageUris.size>1) {
                 Glide.with(requireParentFragment())
                     .load(item.imageUris[1].toUri())
                     .centerCrop()
                     .into(galleryEditIvTitle2) } else {
-                    Glide.with(requireParentFragment())
-                        .load(item.imageUris[0].toUri())
-                        .centerCrop()
-                        .into(galleryEditIvTitle)
-
                    binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
 
                     }

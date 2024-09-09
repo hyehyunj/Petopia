@@ -9,6 +9,8 @@
     <string name="common_memory_bridge">메모리브릿지</string>
     <string name="common_earth">지구</string>
 
+    <string name="common_sign_in">로그인</string>
+    <string name="common_sign_up">회원가입</string>
     <string name="common_home">홈</string>
     <string name="common_community">커뮤니티</string>
     <string name="common_my">마이</string>
@@ -16,25 +18,25 @@
     <string name="common_memory">메모리</string>
     <string name="common_letter">편지</string>
     <string name="common_setting">설정</string>
-    <string name="common_sign_in">로그인</string>
-    <string name="common_sign_up">회원가입</string>
-    <string name="common_complete">완료</string>
-    <string name="common_cancel">취소</string>
 
+    <string name="common_date">날짜</string>
+    <string name="common_title">제목</string>
     <string name="common_id">아이디</string>
     <string name="common_password">비밀번호</string>
     <string name="common_name">이름</string>
 
+    <string name="common_input">입력</string>
+    <string name="common_complete">완료</string>
+    <string name="common_cancel">취소</string>
+    <string name="common_delete">삭제</string>
+    <string name="common_ask_delete">삭제하시겠습니까?</string>
+
+
 
     <!--  SignUp : 회원가입에서 사용되는 String -->
     <string name="signup_nickname">닉네임</string>
-    <string name="signup_id">아이디</string>
-    <string name="signup_password">비밀번호</string>
     <string name="signup_password_check">비밀번호 확인</string>
     <string name="signup_email">이메일</string>
-    <string name="signup">회원가입</string>
-    <string name="signup_btn_complete">완료</string>
-    <string name="signup_btn_cancel">취소</string>
     <string name="signup_agree_all">[필수] 만 14세 이상이며 모두 동의 합니다.</string>
     <string name="signup_terms">이용약관</string>
     <string name="signup_read_all"><u>전체보기</u></string>
@@ -43,7 +45,6 @@
     <!--  SignIn : 로그인에서 사용되는 String  -->
     <string name="signin_id_search">아이디 찾기</string>
     <string name="signin_password_search">비밀번호 찾기</string>
-    <string name="signin_btn_login">로그인</string>
     <string name="signin_autologin_guide">다른 계정으로 간편 로그인</string>
     <string name="signin_by_google">Google로 로그인</string>
     <string name="signin_by_kakao">KakaoTalk으로 로그인</string>
@@ -55,8 +56,17 @@
 
     <!--  Home : 홈에서 사용되는 String  -->
 
-
-    <!--  Community : 커뮤니티에서 사용되는 String  -->
+    <!--  Guide : 가이드에서 사용되는 String  -->
+    <string name="guide_select_appearance">가장 비슷한 외모로 선택해주세요.</string>
+    <string name="guide_dog">강아지</string>
+    <string name="guide_cat">고양이</string>
+    <string name="guide_select_name">반려동물의 이름을 입력해주세요.</string>
+    <string name="guide_text_limit_20">20글자 이내</string>
+    <string name="guide_select_relation">반려동물을 생각했을 때\n떠오르는 이미지를 선택해주세요.</string>
+    <string name="guide_relation_child">사랑스러운\n아이</string>
+    <string name="guide_relation_younger">귀여운\n동생</string>
+    <string name="guide_relation_friend">친한\n친구</string>
+    <string name="guide_start">연결하기</string>
 
 
     <!--  Memory : 메모리에서 사용되는 String  -->
@@ -79,9 +89,12 @@
     <string name="letter_content_sample">내용을 입력해주세요</string>
     <string name="letter_write_list_title">편지쓰기</string>
     <string name="letter_pad_title">편지지 선택</string>
-    <string name="letter_write_detail_title">편지</string>
 
     <!--  Gallery : 갤러리에서 사용되는 String  -->
+    <string name="gallery_please_enter_title">사진의 제목을 입력해주세요.</string>
+    <string name="common_album">앨범</string>
+    <string name="album_select_date">날짜를 선택해주세요.</string>
+
 
     <!-- Community : 게시판에서 사용되는 String-->
     <string name="community_question_name">글쓰기(질문 게시판)</string>
@@ -92,24 +105,8 @@
     <string name="community_detail_comment_edit">댓글 수정</string>
     <string name="community_detail_delete"><u>삭제</u></string>
     <string name="community_detail_hint_comment">댓글을 입력하세요</string>
-    <string name="common_date">날짜</string>
-    <string name="common_input">입력</string>
-    <string name="common_title">제목</string>
-    <string name="gallery_please_enter_title">사진의 제목을 입력해주세요.</string>
-    <string name="common_album">앨범</string>
-    <string name="common_ask_delete">삭제하시겠습니까?</string>
-    <string name="common_delete">삭제</string>
-    <string name="guide_select_appearance">가장 비슷한 외모로 선택해주세요.</string>
-    <string name="guide_dog">강아지</string>
-    <string name="guide_cat">고양이</string>
-    <string name="guide_select_name">반려동물의 이름을 입력해주세요.</string>
-    <string name="guide_text_limit_20">20글자 이내</string>
-    <string name="guide_select_relation">반려동물을 생각했을 때\n떠오르는 이미지를 선택해주세요.</string>
-    <string name="guide_relation_child">사랑스러운\n아이</string>
-    <string name="guide_relation_younger">귀여운\n동생</string>
-    <string name="guide_relation_friend">친한\n친구</string>
-    <string name="guide_start">연결하기</string>
-    <string name="album_select_date">날짜를 선택해주세요.</string>
+
+
 
     <!--  Setting : 설정에서 사용되는 String  -->
 
