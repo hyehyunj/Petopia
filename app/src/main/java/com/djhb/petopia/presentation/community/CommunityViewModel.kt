@@ -26,12 +26,18 @@ class CommunityViewModel : ViewModel() {
 
     private val postRepository = PostRepositoryImpl()
 
-    fun createPost(post: PostModel, imageUris: MutableList<String>){
+    suspend fun createPost(post: PostModel, imageUris: MutableList<String>){
 
         viewModelScope.launch {
+
+            Log.i("CommunityViewModel", "start createPost")
             postRepository.createPost(post, imageUris)
-            selectRankList()
-            selectAllList()
+            Log.i("CommunityViewModel", "before add create post = ${searchPostResult.size}")
+//            searchPostResult.add(0, post)
+//            Log.i("CommunityViewModel", "after add create post = ${searchPostResult.size}")
+//            _searchPosts.value = searchPostResult
+//            selectRankList()
+//            selectAllList()
         }
 
     }
@@ -43,9 +49,11 @@ class CommunityViewModel : ViewModel() {
     }
 
 
-    fun selectRankList() {
+    suspend fun selectRankList() {
 
+//        Log.i("CommunityViewModel", "start1 selectRankList()")
         viewModelScope.launch {
+            Log.i("CommunityViewModel", "123. start selectRankList()")
             rankPostResult.clear()
             rankPostResult = postRepository.selectRankPosts()
 //            _rankPosts.value = rankPostResult
@@ -67,6 +75,7 @@ class CommunityViewModel : ViewModel() {
 //            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
 //            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
             _rankPosts.value = rankPostResult
+            Log.i("CommunityViewModel", "123. end selectRankList()")
 
 //            val selectRankPosts = async { postRepository.selectRankPosts() }
 //            val result = selectRankPosts.await()
@@ -87,25 +96,27 @@ class CommunityViewModel : ViewModel() {
 //        }
     }
 
-    fun selectAllList(){
+    suspend fun selectAllList(){
+//        Log.i("CommunityViewModel", "start1 selectAllList()")
         viewModelScope.launch {
+            Log.i("CommunityViewModel", "123. start selectAllList()")
             searchPostResult.clear()
 //            val allPosts = postRepository.selectPosts()
             searchPostResult = postRepository.selectPosts()
 
-            val imageUris = mutableListOf<StorageReference?>()
-
-            for (post in searchPostResult) {
-                post.imageUris.clear()
-                imageUris.add(postRepository.selectPostMainImage(post))
-            }
-
-            for ((uriIndex, uri) in imageUris.withIndex()) {
-                Log.i("CommunityViewModel", "rank uri = ${uri}")
-                if(uri != null) {
-                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
-                }
-            }
+//            val imageUris = mutableListOf<StorageReference?>()
+//
+//            for (post in searchPostResult) {
+//                post.imageUris.clear()
+//                imageUris.add(postRepository.selectPostMainImage(post))
+//            }
+//
+//            for ((uriIndex, uri) in imageUris.withIndex()) {
+//                Log.i("CommunityViewModel", "rank uri = ${uri}")
+//                if(uri != null) {
+//                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+//                }
+//            }
 //            Log.i("CommunityViewModel", "createRankList 2")
 //            Log.i("CommunityViewModel", "selectRankPosts.size = ${allPosts.size}")
 //            for (post in allPosts) {
@@ -115,7 +126,44 @@ class CommunityViewModel : ViewModel() {
 //            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
 //            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
             _searchPosts.value = searchPostResult
+            Log.i("CommunityViewModel", "123. end selectAllList()")
         }
+    }
+
+    fun selectAllImageList(){
+        viewModelScope.launch {
+            Log.i("CommunityViewModel", "123. start selectAllImageList()")
+            val references = mutableListOf<StorageReference?>()
+
+            for (post in searchPostResult) {
+                post.imageUris.clear()
+                references.add(postRepository.selectPostMainImage(post))
+            }
+
+            val imageUris = mutableListOf<String>()
+
+            for ((uriIndex, uri) in references.withIndex()) {
+                Log.i("CommunityViewModel", "rank uri = ${uri}")
+                if(uri != null) {
+//                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+                    imageUris.add(postRepository.selectDownloadUri(uri))
+                } else
+                    imageUris.add("")
+            }
+            _postImageUris.value = imageUris
+            Log.i("CommunityViewModel", "123. end selectAllImageList()")
+//            _searchPosts.value = searchPostResult
+        }
+    }
+
+    fun combinePostToImages(imageUris: MutableList<String>){
+        Log.i("CommunityViewModel", "123. start combinePostToImages()")
+        for ((uriIndex, imageUri) in imageUris.withIndex()) {
+            if(imageUri != "")
+                searchPostResult[uriIndex].imageUris.add(imageUri)
+        }
+//        _searchPosts.value = searchPostResult
+        Log.i("CommunityViewModel", "123. end combinePostToImages()")
     }
 
     fun listRankPost(){
@@ -153,13 +201,13 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
-    fun addPostViewCount(postKey: String) {
+    suspend fun addPostViewCount(postKey: String) {
         viewModelScope.launch {
             postRepository.addPostViewCount(postKey)
         }
     }
 
-    fun deletePost(postKey: String) {
+    suspend fun deletePost(postKey: String) {
         viewModelScope.launch {
             postRepository.deletePost(postKey)
 
@@ -176,7 +224,7 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
-    fun deletePostImages(postKey: String){
+    suspend fun deletePostImages(postKey: String){
         viewModelScope.launch {
             postRepository.deletePostImages(postKey)
         }

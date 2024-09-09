@@ -10,9 +10,13 @@ import com.djhb.petopia.data.UserModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
@@ -98,37 +102,55 @@ class GalleryRepositoryImpl : GalleryRepository {
         }
     }
 
-    override suspend fun selectGalleryImages(galleryList: MutableList<GalleryModel>): MutableList<GalleryModel> {
-        return suspendCancellableCoroutine { continuation ->
-            for (gallery in galleryList) {
-                val key = gallery.uid
-                Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
-                storageReference.child(key).listAll().addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val items = task.result.items
-                        Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
-                        items[0].downloadUrl.addOnCompleteListener { uri ->
-                            gallery.imageUris.add(uri.result.toString())
-                        }
-//                        for (item in items) {
-////                            Log.d("GalleryRepositoryImpl", "${item.name}")
-//                            item.downloadUrl.addOnCompleteListener{ uri ->
-//                                gallery.imageUris.add(uri.result.toString())
-//                            }
-//                            break // 리스트에 출력되는 대표 이미지 1개만 추가
+//    override suspend fun selectGalleryMainImages(galleryList: MutableList<GalleryModel>): MutableList<GalleryModel> {
+//        return suspendCancellableCoroutine { continuation ->
+//            for (gallery in galleryList) {
+//                val key = gallery.uid
+//                Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
+//                storageReference.child(key).listAll().addOnCompleteListener { task ->
+//                    if (task.isSuccessful) {
+//                        val items = task.result.items
+//                        Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
+//                        items[0].downloadUrl.addOnCompleteListener { uri ->
+//                            gallery.imageUris.add(uri.result.toString())
 //                        }
-                    } else {
-                        continuation.resumeWithException(
-                            task.exception ?: Exception("Unknown error occurred")
-                        )
-                    }
-                }.addOnFailureListener {
-                    continuation.resumeWithException(it)
-                }
-            }
-            continuation.resume(galleryList)
+////                        for (item in items) {
+//////                            Log.d("GalleryRepositoryImpl", "${item.name}")
+////                            item.downloadUrl.addOnCompleteListener{ uri ->
+////                                gallery.imageUris.add(uri.result.toString())
+////                            }
+////                            break // 리스트에 출력되는 대표 이미지 1개만 추가
+////                        }
+//                    } else {
+//                        continuation.resumeWithException(
+//                            task.exception ?: Exception("Unknown error occurred")
+//                        )
+//                    }
+//                }.addOnFailureListener {
+//                    continuation.resumeWithException(it)
+//                }
+//            }
+//            continuation.resume(galleryList)
+//        }
+//    }
+
+    override suspend fun selectGalleryMainImages(galleryUid: String): StorageReference? {
+
+        return withContext(Dispatchers.IO) {
+            Log.i("GalleryRepositoryImpl", "gallery key = ${galleryUid}")
+            val items = storageReference
+                .child(galleryUid)
+                .listAll()
+                .await()
+                .items
+
+            if(items.size > 0)
+                items[0]
+            else
+                null
         }
     }
+
 
     override suspend fun selectAllGalleryImages(gallery: GalleryModel): GalleryModel {
         return suspendCancellableCoroutine { continuation ->
@@ -154,6 +176,12 @@ class GalleryRepositoryImpl : GalleryRepository {
             }.addOnFailureListener {
                 continuation.resumeWithException(it)
             }
+        }
+    }
+
+    override suspend fun selectDownloadUri(item: StorageReference): String {
+        return withContext(Dispatchers.IO) {
+            item.downloadUrl.await().toString()
         }
     }
 
