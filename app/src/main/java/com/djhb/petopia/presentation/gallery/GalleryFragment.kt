@@ -44,12 +44,12 @@ class GalleryFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.i("GalleryFragment", "start GalleryFragment")
         //버튼 클릭이벤트
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        gallerySharedViewModel.loadGalleryList()
+        gallerySharedViewModel.loadInitGalleryList()
 
         initDialog()
     }
@@ -176,6 +176,8 @@ class GalleryFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        gallerySharedViewModel.loadInitGalleryList()
     }
 
 }
