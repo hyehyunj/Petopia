@@ -22,6 +22,7 @@ class SignupFragment : Fragment() {
 
     private var _binding: FragmentSignupBinding? = null
     private val binding get() = _binding!!
+    var isViewMoreClicked = false
 
     private val registerViewModel: RegisterViewModel by activityViewModels {
         RegisterViewModel.RegisterViewModelFactory(SignRepositoryImpl())
@@ -45,39 +46,35 @@ class SignupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         //약관 더보기 버튼
         binding.btnViewmore.setOnClickListener {
-            binding.cbCheckTerms.visibility = View.VISIBLE
-            binding.btnReadTerms.visibility = View.VISIBLE
-            binding.cbPersonalInfoTerm.visibility = View.VISIBLE
-            binding.btnReadTerms2.visibility = View.VISIBLE
+            if (!isViewMoreClicked) {
+                makeTermsVisible()
+                isViewMoreClicked = true
+            } else {
+                makeTermsGone()
+                isViewMoreClicked = false
+            }
         }
 
         //약관 체크 관련
         binding.cbCheckTerms.setOnClickListener {
-            if (binding.cbCheckTerms.isChecked && binding.cbPersonalInfoTerm.isChecked) {
-                binding.cbCheckAgreeAll.isChecked = true
-            } else if (!binding.cbCheckTerms.isChecked || !binding.cbPersonalInfoTerm.isChecked) {
-                binding.cbCheckAgreeAll.isChecked = false
-            }
+            updateAllCheckBox()
         }
         binding.cbPersonalInfoTerm.setOnClickListener {
-            if (binding.cbCheckTerms.isChecked && binding.cbPersonalInfoTerm.isChecked) {
-                binding.cbCheckAgreeAll.isChecked = true
-            } else if (!binding.cbCheckTerms.isChecked || !binding.cbPersonalInfoTerm.isChecked) {
-                binding.cbCheckAgreeAll.isChecked = false
-            }
+            updateAllCheckBox()
         }
 
         binding.cbCheckAgreeAll.setOnClickListener {
-            if (binding.cbCheckAgreeAll.isChecked) {
-                binding.cbCheckTerms.isChecked = true
-                binding.cbPersonalInfoTerm.isChecked = true
-            } else {
-                binding.cbCheckTerms.isChecked = false
-                binding.cbPersonalInfoTerm.isChecked = false
+
+            if (!isViewMoreClicked) {
+                makeTermsVisible()
+                isViewMoreClicked = true
             }
+
+            val isChecked = binding.cbCheckAgreeAll.isChecked
+            binding.cbCheckTerms.isChecked = isChecked
+            binding.cbPersonalInfoTerm.isChecked = isChecked
         }
 
         binding.btnReadTerms.setOnClickListener {
@@ -87,12 +84,6 @@ class SignupFragment : Fragment() {
         binding.btnReadTerms2.setOnClickListener {
             setPersonalTermFragment()
         }
-
-//        if (binding.cbCheckAgreeAll.isChecked) {
-//            binding.btnSignupCheck.isEnabled = true
-//        } else {
-//            binding.btnSignupCheck.isEnabled = false
-//        }
 
         binding.btnSignupCheck.setOnClickListener {
             // 회원가입 완료 ->
@@ -118,6 +109,7 @@ class SignupFragment : Fragment() {
         }
 
     }
+
 
     private fun isfilled(): Boolean {
         userNickname = binding.etSignupNickname.text.toString()
@@ -190,16 +182,39 @@ class SignupFragment : Fragment() {
 
     private fun setTermFragment() {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.register_fragment_container, TermFragment())
+            .hide(this)
+            .add(R.id.register_fragment_container, TermFragment())
             .addToBackStack(null)
             .commit()
     }
 
     private fun setPersonalTermFragment() {
         parentFragmentManager.beginTransaction()
-            .replace(R.id.register_fragment_container, PersonalTermFragment())
+            .hide(this)
+            .add(R.id.register_fragment_container, PersonalTermFragment())
             .addToBackStack(null)
             .commit()
 
     }
+
+    private fun makeTermsVisible() {
+        binding.cbCheckTerms.visibility = View.VISIBLE
+        binding.btnReadTerms.visibility = View.VISIBLE
+        binding.cbPersonalInfoTerm.visibility = View.VISIBLE
+        binding.btnReadTerms2.visibility = View.VISIBLE
+    }
+
+    private fun makeTermsGone() {
+        binding.cbCheckTerms.visibility = View.GONE
+        binding.btnReadTerms.visibility = View.GONE
+        binding.cbPersonalInfoTerm.visibility = View.GONE
+        binding.btnReadTerms2.visibility = View.GONE
+    }
+
+    private fun updateAllCheckBox() {
+        binding.cbCheckAgreeAll.isChecked =
+            binding.cbCheckTerms.isChecked && binding.cbPersonalInfoTerm.isChecked
+    }
+
+
 }

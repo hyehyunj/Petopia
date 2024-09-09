@@ -154,7 +154,7 @@
                 android:layout_marginStart="30dp"
                 android:text="@string/signup_terms"
                 android:textSize="16sp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@id/cb_check_agree_all"
                 app:layout_constraintTop_toBottomOf="@id/cb_check_agree_all" />
 
@@ -165,7 +165,7 @@
                 android:layout_marginEnd="20dp"
                 android:text="@string/signup_read_all"
                 android:textSize="16sp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/cb_check_terms"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cb_check_terms" />
@@ -177,7 +177,7 @@
                 android:layout_marginStart="30dp"
                 android:text="@string/signup_personal_info_term"
                 android:textSize="16sp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cb_check_terms" />
 
@@ -188,7 +188,7 @@
                 android:layout_marginEnd="20dp"
                 android:text="@string/signup_read_all"
                 android:textSize="16sp"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/cb_personal_info_term"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/cb_personal_info_term" />
