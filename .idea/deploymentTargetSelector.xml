@@ -4,17 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-<<<<<<< HEAD
-        <DropdownSelection timestamp="2024-09-06T11:09:37.492527Z">
+        <DropdownSelection timestamp="2024-09-08T10:23:17.613424Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/Users/jeonghyehyun/.android/avd/Pixel_7_API_33.avd" />
-=======
-        <DropdownSelection timestamp="2024-09-06T14:21:21.574192900Z">
-          <Target type="DEFAULT_BOOT">
-            <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\choi\.android\avd\Pixel_7_API_33.avd" />
->>>>>>> feature/home_animation
             </handle>
           </Target>
         </DropdownSelection>
