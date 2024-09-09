@@ -10,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 
@@ -44,6 +46,15 @@ class HomeEarthFragment : Fragment() {
     private fun homeEarthButtonClickListener() {
         //설정버튼 클릭이벤트 : 클릭시 설정 이동
         binding.homeEarthIvMy.setOnClickListener {
+
+//            if(LoginData.loginUser.authority == Authority.ADMIN)
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.main_sub_frame, GuideFragment()
+                    )
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit()
 
         }
 
