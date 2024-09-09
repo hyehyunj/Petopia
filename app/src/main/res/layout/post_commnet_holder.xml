@@ -34,14 +34,27 @@
         app:layout_constraintEnd_toStartOf="@id/tvDeleteComment"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
+    <ImageView
+        android:id="@+id/ivReport"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="12dp"
+        android:src="@drawable/icon_siren"
+        app:layout_constraintTop_toTopOf="@+id/tvWriter"
+        app:layout_constraintBottom_toBottomOf="@+id/tvWriter"
+        app:layout_constraintStart_toEndOf="@+id/tvWriter"/>
+
     <TextView
         android:id="@+id/tvWriter"
         style="@style/point_text_20_gray"
         android:layout_width="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_height="wrap_content"
         android:text="작성자"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tvCreatedDate"
         app:layout_constraintTop_toBottomOf="@+id/tvContent" />
 
     <TextView
@@ -49,10 +62,9 @@
         style="@style/common_text_12_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:text="2024.01.01"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvWriter"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvContent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
