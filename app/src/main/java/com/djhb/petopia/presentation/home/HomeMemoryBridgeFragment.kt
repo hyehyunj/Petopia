@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
+import android.widget.ImageView
 import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -49,18 +50,6 @@ class HomeMemoryBridgeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//감벙버튼 활성화
-        binding.homeMemoryBridgeIvEmotion.setOnClickListener {
-            if (binding.homeMemoryBridgeFeelingsContainer.visibility == View.GONE) {
-                binding.homeMemoryBridgeFeelingsContainer.visibility = View.VISIBLE
-                binding.homeMemoryBridgeFeelingsContainer.alpha = 0f
-                binding.homeMemoryBridgeFeelingsContainer.animate()
-                    .alpha(1f)  // 완전히 보이도록 애니메이션
-                    .setDuration(500)
-                    .setListener(null)
-            }
-        }
-
 
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
@@ -74,7 +63,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         loadMemory()
         scheduledMemory()
 
-
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
             Log.d("memoryText", text)
             binding.homeMemoryBridgeTvMemoryTitle.text = text
@@ -83,17 +71,137 @@ class HomeMemoryBridgeFragment : Fragment() {
         val currentTitle = binding.homeMemoryBridgeTvMemoryTitle.text.toString()
         memoryViewModel.setMemoryTitle(currentTitle)
 
-        //binding.homeMemoryBridgeTvMemoryTitle.setText("오늘의 메모리")
-//        binding.homeMemoryBridgeTvMemoryBtn.setText("작성하기")
-
         homeMemoryBridgeButtonClickListener()
         homeMemoryBridgeDataObserver()
 
+        // 초기 상태로 설정
+        resetEmojiState()
+
+        // `homeMemoryBridgeIvEmotion` 클릭 시 이모지를 다시 보이도록 설정
+        binding.homeMemoryBridgeIvEmotion.setOnClickListener {
+            resetEmojiState() // 클릭 시 이모지를 초기화
+            binding.homeMemoryBridgeFeelingsContainer.visibility = View.VISIBLE
+            binding.feelingsText.visibility = View.VISIBLE
+            binding.emjSmile.visibility = View.VISIBLE
+            binding.emjWhirl.visibility = View.VISIBLE
+            binding.emjGloomy.visibility = View.VISIBLE
+            binding.emjSoso.visibility = View.VISIBLE
+            binding.emjHappy.visibility = View.VISIBLE
+            binding.emjBad.visibility = View.VISIBLE
+            binding.emjSick.visibility = View.VISIBLE
+            binding.emjSad.visibility = View.VISIBLE
+        }
+
+        setupEmojiClickListeners()
+    }
+
+    private fun setupEmojiClickListeners() {
+        val emojiViews = listOf(
+            binding.emjSmile,
+            binding.emjWhirl,
+            binding.emjGloomy,
+            binding.emjSoso,
+            binding.emjHappy,
+            binding.emjBad,
+            binding.emjSick,
+            binding.emjSad
+        )
+
+
+        emojiViews.forEach { emoji ->
+            emoji.setOnClickListener {
+                // 선택된 이모지를 확대, 다른 이모지는 GONE
+                animateSelectedEmoji(emoji)
+
+                binding.homeMemoryBridgeFeelingsContainer.visibility = View.GONE
+                // 나머지 이모지 및 텍스트 숨기기
+                emojiViews.filter { it != emoji }.forEach { otherEmoji ->
+                    otherEmoji.visibility = View.GONE
+                }
+                binding.feelingsText.visibility = View.GONE
+            }
+        }
+    }
+
+    // 선택된 이모지를 중앙에 배치하고 확대
+    private fun animateSelectedEmoji(selectedEmoji: ImageView) {
+        // 이모지를 확대 및 중앙으로 이동시키기 위한 애니메이션
+        val scaleXAnimator = ObjectAnimator.ofFloat(selectedEmoji, "scaleX", 1f, 3f)
+        val scaleYAnimator = ObjectAnimator.ofFloat(selectedEmoji, "scaleY", 1f, 3f)
+
+        // 이모지의 마진을 제거하여 중앙 배치
+        val layoutParams = selectedEmoji.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.setMargins(0, 0, 0, 0)
+        selectedEmoji.layoutParams = layoutParams
+
+        // 이모지를 부모 레이아웃의 중앙으로 배치
+        val parentView = binding.root
+        val centerX = (parentView.width / 2) - (selectedEmoji.width * 1.5f / 2)
+        val centerY = (parentView.height / 2) - (selectedEmoji.height * 1.5f / 2)
+
+        val moveXAnimator = ObjectAnimator.ofFloat(selectedEmoji, "x", selectedEmoji.x, centerX)
+        val moveYAnimator = ObjectAnimator.ofFloat(selectedEmoji, "y", selectedEmoji.y, centerY)
+
+        // Y축 애니메이션
+        val floatAnimatorY = ObjectAnimator.ofFloat(selectedEmoji, "translationY", 0f, -50f, 0f)
+        floatAnimatorY.duration = 2000
+        floatAnimatorY.repeatMode = ValueAnimator.REVERSE
+        floatAnimatorY.repeatCount = ValueAnimator.INFINITE
+        floatAnimatorY.interpolator = LinearInterpolator()
+
+        // 애니메이션 실행
+        moveXAnimator.duration = 500
+        moveYAnimator.duration = 500
+        scaleXAnimator.duration = 500
+        scaleYAnimator.duration = 500
+
+        moveXAnimator.start()
+        moveYAnimator.start()
+        scaleXAnimator.start()
+        scaleYAnimator.start()
+
+        // 이모지 애니메이션 시작
+        floatAnimatorY.start()
+        selectedEmoji.tag = listOf(scaleXAnimator, scaleYAnimator, floatAnimatorY, moveXAnimator, moveYAnimator)
+        selectedEmoji.isClickable = false
+        selectedEmoji.isFocusable = false
+    }
+
+
+
+    // 이모지 상태 초기화 함수
+    private fun resetEmojiState() {
+        // 모든 이모지를 초기화
+        val emojiViews = listOf(
+            binding.emjSmile,
+            binding.emjWhirl,
+            binding.emjGloomy,
+            binding.emjSoso,
+            binding.emjHappy,
+            binding.emjBad,
+            binding.emjSick,
+            binding.emjSad
+        )
+
+        emojiViews.forEach { emoji ->
+            // 애니메이션 중지
+            (emoji.tag as? List<ObjectAnimator>)?.forEach { it.cancel() }
+
+            // 이모지  초기화
+            emoji.scaleX = 1f
+            emoji.scaleY = 1f
+            emoji.translationX = 0f
+            emoji.translationY = 0f
+            emoji.visibility = View.GONE // 초기gone설정
+        }
+
+        // feelings_container와 텍스트 다시 보이도록 설정
+        binding.homeMemoryBridgeFeelingsContainer.visibility = View.GONE
+        binding.feelingsText.visibility = View.GONE
     }
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun homeMemoryBridgeButtonClickListener() {
-
         val memoryRepository = MemoryRepositoryImpl()
         val factory = MemoryViewModel.MemoryViewModelFactory(memoryRepository)
 
@@ -105,26 +213,20 @@ class HomeMemoryBridgeFragment : Fragment() {
             if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
                 toastMoveUnder() else setMemoryFragment()
 
-
             Log.d("memorybuttonclick", "메모리버튼 클릭")
 
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
-
             memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
                 if (it == true) {
-                    binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+                    binding.homeMemoryBridgeTvMemoryTitle.text = "메모리북 기록 완료"
                 }
-
             }
         }
 
-
-        //편지버튼 클릭이벤트 : 클릭시 편지 이동e
+        //편지버튼 클릭이벤트 : 클릭시 편지 이동
 //        binding.homeMemoryBridgeBtnLetter.setOnClickListener {
 //            setLetterFragment()
 //        }
-
-
     }
 
     private fun scheduledMemory() {
@@ -141,7 +243,6 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         val initialDelay = targetDate.timeInMillis - currentDate.timeInMillis
 
-
         Log.d("initialDelay", initialDelay.toString())
 
         val workRequest =
@@ -151,29 +252,20 @@ class HomeMemoryBridgeFragment : Fragment() {
             ).build()
 
         WorkManager.getInstance(requireContext()).enqueue(workRequest)
-
-
     }
-
 
     private fun loadMemory() {
         val sharedPreferences =
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
         val memoryText = sharedPreferences.getString("memoryText", null)
 
-
         binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
         memoryViewModel.setMemoryTitle(memoryText.toString())
-
-
 
         Log.d("memoryText", memoryText.toString())
     }
 
-    //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun homeMemoryBridgeDataObserver() {
-        //가이드 상태 변화감지 : 가이드 상태에 따라 화면구성 변경
-
         mainHomeGuideViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "OPTIONAL" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = false
@@ -181,16 +273,12 @@ class HomeMemoryBridgeFragment : Fragment() {
             }
         }
 
-
         mainHomeGuideViewModel.guideFunctionLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "MOVE_EARTH" -> binding.homeMemoryBridgeIvArrowUnder.isVisible = true
             }
         }
-
-
     }
-
 
     private fun toastMoveUnder() {
         if (mainHomeGuideViewModel.guideFunctionLiveData.value == "MOVE_EARTH")
@@ -203,10 +291,8 @@ class HomeMemoryBridgeFragment : Fragment() {
             requireActivity(),
             "가이드 종료 후 이용 가능합니다.",
             R.style.toast_common
-        )
-            .show()
+        ).show()
     }
-
 
     private fun initAnimation() {
         binding.homeMemoryBridgeIvArrowUnder.startAnimation(
@@ -215,37 +301,46 @@ class HomeMemoryBridgeFragment : Fragment() {
         binding.homeMemoryBridgeIvEmotion.startAnimation(
             AnimationUtils.loadAnimation(requireContext(), R.anim.ballon)
         )
-        binding.homeMemoryBridgeMemoryEffectShine1.startAnimation(
-            AnimationUtils.loadAnimation(requireContext(), R.anim.shine1)
-        )
-        binding.homeMemoryBridgeMemoryEffectShine2.startAnimation(
-            AnimationUtils.loadAnimation(requireContext(), R.anim.shine2)
-        )
-        binding.homeMemoryBridgeMemoryEffectShine3.startAnimation(
-            AnimationUtils.loadAnimation(requireContext(), R.anim.shine3)
-        )
-
-        //풍선2 애니메이션 y축
-        val floatAnimator = ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationY", 0f, -30f, 0f)
-        floatAnimator.duration = 2000 //
-        floatAnimator.repeatMode = ValueAnimator.REVERSE
-        floatAnimator.repeatCount = ValueAnimator.INFINITE
-        floatAnimator.interpolator = LinearInterpolator()
 
 
-        //풍선2 애니메이션 x축
+
+        //  반짝이는 효과
+        val alphaAnimator = ObjectAnimator.ofFloat(binding.bridgeShiny1, "alpha", 1f, 0f, 1f)
+        alphaAnimator.duration = 2500 //2.5초에 한번
+        alphaAnimator.repeatMode = ValueAnimator.REVERSE
+        alphaAnimator.repeatCount = ValueAnimator.INFINITE
+
+        //위아래 둥둥효과
+        val floatAnimator_Y = ObjectAnimator.ofFloat(binding.bridgeShiny1, "translationY", 0f, -50f, 0f, 50f, 0f)
+        floatAnimator_Y.duration = 5000
+        floatAnimator_Y.repeatMode = ValueAnimator.REVERSE
+        floatAnimator_Y.repeatCount = ValueAnimator.INFINITE
+        floatAnimator_Y.interpolator = LinearInterpolator()
+
+        // 애니메이션 시작
+
+        alphaAnimator.start()
+        floatAnimator_Y.start()
+
+        val floatAnimatorY = ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationY", 0f, -30f, 0f)
+        floatAnimatorY.duration = 2000
+        floatAnimatorY.repeatMode = ValueAnimator.REVERSE
+        floatAnimatorY.repeatCount = ValueAnimator.INFINITE
+        floatAnimatorY.interpolator = LinearInterpolator()
+
         val floatAnimatorX = ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationX", 0f, -10f, 10f, 0f)
         floatAnimatorX.duration = 3000
         floatAnimatorX.repeatMode = ValueAnimator.REVERSE
         floatAnimatorX.repeatCount = ValueAnimator.INFINITE
         floatAnimatorX.interpolator = LinearInterpolator()
 
-        floatAnimator.start()
+        floatAnimatorY.start()
         floatAnimatorX.start()
+
+        // 메모리 컨테이너 애니메이션 (주석 처리됨)
 //        binding.homeMemoryBridgeMemoryContainer.startAnimation(
 //            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
 //        )
-
     }
 
     private fun setMemoryFragment() {
@@ -257,7 +352,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         MemoryFragment().show(childFragmentManager, "MEMORY_FRAGMENT")
     }
 
-
 //    private fun setLetterFragment() {
 //        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
 //    }
@@ -265,7 +359,5 @@ class HomeMemoryBridgeFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         initAnimation()
-
     }
-
 }
