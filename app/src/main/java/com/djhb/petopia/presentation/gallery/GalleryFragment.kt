@@ -29,6 +29,10 @@ class GalleryFragment : DialogFragment() {
         FragmentGalleryBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
+
+
+
+
     private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
         GallerySharedViewModelFactory()
     }
