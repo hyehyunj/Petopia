@@ -41,14 +41,14 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RankPostHolder {
-        Log.i("RankPostAdapter", "onCreateViewHolder")
+//        Log.i("RankPostAdapter", "onCreateViewHolder")
         val binding = PostRankHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RankPostHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RankPostHolder, position: Int) {
         val item = getItem(position)
-        Log.i("RankPostAdapter", "onBindViewHolder : ${item}")
+//        Log.i("RankPostAdapter", "onBindViewHolder : ${item}")
 //        Log.i("RankPostAdapter", "item = ${item}")
 
         holder.title.text = item.title
