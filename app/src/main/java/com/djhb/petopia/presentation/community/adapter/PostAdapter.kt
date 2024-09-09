@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.community.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -15,15 +16,19 @@ import com.djhb.petopia.databinding.PostHolderBinding
 
 class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel, PostAdapter.PostItem>(object: DiffUtil.ItemCallback<PostModel>(){
     override fun areItemsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
-        return oldItem.key == newItem.key
+//        Log.i("PostAdapter", "areItemsTheSame = ${oldItem.key == newItem.key}")
+        return oldItem.key == newItem.key && oldItem.imageUris == newItem.imageUris
     }
 
     override fun areContentsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
+//        Log.i("PostAdapter", "areContentTheSame = ${oldItem == newItem}")
+//        Log.i("PostAdapter", "----------------------")
         return oldItem == newItem
     }
 }) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItem {
+//        Log.i("PostAdapter", "itemCount = ${itemCount}")
         val binding = PostHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostItem(binding)
     }

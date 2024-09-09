@@ -81,6 +81,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-appcheck-safetynet:16.0.0")
 
     //to splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")

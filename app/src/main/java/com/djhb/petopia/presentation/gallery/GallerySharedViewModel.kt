@@ -9,9 +9,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.data.LoginData
-import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.GalleryRepository
 import com.djhb.petopia.data.remote.GalleryRepositoryImpl
+import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -59,7 +59,21 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 galleryRepository.selectGalleryList(user)
             }
             val successList = list.await()
-            _galleryListLiveData.value = galleryRepository.selectGalleryImages(successList).toList()
+
+            val imageUris = mutableListOf<StorageReference?>()
+
+            for (galleryModel in successList) {
+                galleryModel.imageUris.clear()
+                imageUris.add(galleryRepository.selectGalleryMainImages(galleryModel.uid))
+            }
+
+            for ((uriIndex, uri) in imageUris.withIndex()) {
+                if(uri != null)
+                    successList[uriIndex].imageUris.add(galleryRepository.selectDownloadUri(uri))
+            }
+
+//            _galleryListLiveData.value = galleryRepository.selectGalleryMainImages(successList).toList()
+            _galleryListLiveData.value = successList.toList()
         }
     }
 
@@ -174,7 +188,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             }
         }
         _galleryListLiveData.value = galleryList
-//        saveGalleryList()
+        saveGalleryList()
 
     }
 

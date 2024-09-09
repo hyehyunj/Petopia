@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.RecyclerviewGalleryHolderBinding
 
@@ -49,7 +50,14 @@ class GalleryRecyclerViewAdapter(
         fun bind(item: GalleryModel, position: Int, removeMode: String) {
 
             binding.apply {
-                galleryHolderIvTitle.setImageURI(item.imageUris[0].toUri())
+//                Log.i("GalleryRecyclerViewAdapter", "uri = ${item.imageUris[0].toUri()}")
+//                galleryHolderIvTitle.setImageURI(item.imageUris[0].toUri())
+
+                Glide.with(galleryHolderTvTitle.context)
+                    .load(item.imageUris[0].toUri())
+                    .centerCrop()
+                    .into(galleryHolderIvTitle)
+
                 galleryHolderTvTitle.text = item.titleText
 //                binding.galleryHolderIvChecked.isVisible = false
                 when (removeMode) {

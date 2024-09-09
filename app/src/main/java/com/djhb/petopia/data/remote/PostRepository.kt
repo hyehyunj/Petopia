@@ -5,7 +5,7 @@ import com.google.firebase.storage.StorageReference
 
 interface PostRepository {
 
-    suspend fun createPost(post: PostModel, imageUris: MutableList<String>): Boolean
+    suspend fun createPost(post: PostModel, imageUris: MutableList<String>): PostModel
     suspend fun createPostImages(post: PostModel, imageUris: MutableList<String>): Boolean
     suspend fun selectRankPosts(): MutableList<PostModel>
     suspend fun selectPosts(): MutableList<PostModel>
