@@ -268,4 +268,18 @@
         <item name="stRadius">20dp</item>
     </style>
 
+    <style name="toast_undo">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">@color/undo</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/white</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">@color/undo</item>
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stGravity">center</item>
+        top or center
+        <item name="stRadius">20dp</item>
+    </style>
+
 </resources>

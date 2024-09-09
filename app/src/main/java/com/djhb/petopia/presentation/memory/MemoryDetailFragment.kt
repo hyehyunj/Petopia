@@ -19,8 +19,11 @@ import java.util.Locale
 
 class MemoryDetailFragment : DialogFragment() {
 
-    private var _binding: FragmentMemoryDetailBinding? = null
-    private val binding get() = _binding!!
+
+    private val _binding: FragmentMemoryDetailBinding by lazy {
+        FragmentMemoryDetailBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     private lateinit var memoryViewModel: MemoryViewModel
     private var memoryToEdit: Memory? = null
@@ -29,7 +32,6 @@ class MemoryDetailFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMemoryDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -66,11 +68,6 @@ class MemoryDetailFragment : DialogFragment() {
             dismiss()
         }
 
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun initDialog() {

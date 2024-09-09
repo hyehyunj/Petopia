@@ -77,6 +77,11 @@ class HomeMemoryBridgeFragment : Fragment() {
         homeMemoryBridgeButtonClickListener()
         homeMemoryBridgeDataObserver()
 
+        // 미구현 버튼
+        binding.homeMemoryBridgeIvEmotion.setOnClickListener {
+            showUndoToast()
+        }
+
     }
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
@@ -231,6 +236,13 @@ class HomeMemoryBridgeFragment : Fragment() {
         MemoryFragment().show(childFragmentManager, "MEMORY_FRAGMENT")
     }
 
+    fun showUndoToast() {
+        StyleableToast.makeText(
+            requireActivity(),
+            getString(R.string.messege_undo),
+            R.style.toast_undo
+        ).show()
+    }
 
 //    private fun setLetterFragment() {
 //        LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")

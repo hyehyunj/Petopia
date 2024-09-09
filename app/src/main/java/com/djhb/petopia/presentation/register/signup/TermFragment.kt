@@ -17,14 +17,15 @@ import com.djhb.petopia.presentation.dialog.DialogFragment
 
 class TermFragment : Fragment() {
 
-    private var _binding: FragmentTermBinding? = null
-    private val binding get() = _binding!!
+    private val _binding: FragmentTermBinding by lazy {
+        FragmentTermBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTermBinding.inflate(inflater, container, false)
         return binding.root
     }
 

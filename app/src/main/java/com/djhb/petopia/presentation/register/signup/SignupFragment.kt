@@ -20,8 +20,14 @@ import kotlinx.coroutines.launch
 
 class SignupFragment : Fragment() {
 
-    private var _binding: FragmentSignupBinding? = null
-    private val binding get() = _binding!!
+//    private var _binding: FragmentSignupBinding? = null
+//    private val binding get() = _binding!!
+
+    private val _binding: FragmentSignupBinding by lazy {
+        FragmentSignupBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
+
     var isViewMoreClicked = false
 
     private val registerViewModel: RegisterViewModel by activityViewModels {
@@ -39,7 +45,6 @@ class SignupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSignupBinding.inflate(inflater, container, false)
         return binding.root
     }
 

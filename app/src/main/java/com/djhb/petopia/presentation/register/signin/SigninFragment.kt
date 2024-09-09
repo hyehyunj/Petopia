@@ -19,8 +19,10 @@ import io.github.muddz.styleabletoast.StyleableToast
 
 class SigninFragment : Fragment() {
 
-    private var _binding: FragmentSigninBinding? = null
-    private val binding get() = _binding!!
+    private val _binding: FragmentSigninBinding by lazy {
+        FragmentSigninBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     private val signRepository = SignRepositoryImpl()
     private val registerViewModel: RegisterViewModel by activityViewModels {
@@ -32,7 +34,6 @@ class SigninFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSigninBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -76,7 +77,34 @@ class SigninFragment : Fragment() {
                 .commit()
         }
 
+        //미구현 버튼들
+
+        binding.btnIdSearch.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnPasswordSearch.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnKakaoSignin.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnGoogleSignin.setOnClickListener {
+            showUndoToast()
+        }
+
+        binding.btnNaverSignin.setOnClickListener {
+            showUndoToast()
+        }
     }
 
-
+    fun showUndoToast() {
+        StyleableToast.makeText(
+            requireActivity(),
+            getString(R.string.messege_undo),
+            R.style.toast_undo
+        ).show()
+    }
 }

@@ -17,6 +17,7 @@ import com.djhb.petopia.databinding.FragmentCommunityMainBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.PostAdapter
 import com.djhb.petopia.presentation.community.adapter.RankPostAdapter
+import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -139,7 +140,11 @@ class CommunityMainFragment : Fragment() {
         }
 
         binding.header.ivSearch.setOnClickListener {
-            Toast.makeText(requireActivity(), "click search", Toast.LENGTH_SHORT).show()
+            StyleableToast.makeText(
+                requireActivity(),
+                getString(R.string.messege_undo),
+                R.style.toast_undo
+            ).show()
         }
 
         binding.btnCreatePost.setOnClickListener {

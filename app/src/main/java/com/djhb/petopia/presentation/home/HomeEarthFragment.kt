@@ -17,6 +17,7 @@ import com.djhb.petopia.presentation.admin.AdminFragment
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
+import io.github.muddz.styleabletoast.StyleableToast
 
 class HomeEarthFragment : Fragment() {
     private val _binding: FragmentHomeEarthBinding by lazy {
@@ -61,12 +62,12 @@ class HomeEarthFragment : Fragment() {
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
         binding.homeEarthIvCloudLeft.setOnClickListener {
-
+            showUndoToast()
         }
 
         //우측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
         binding.homeEarthIvCloudRight.setOnClickListener {
-
+            showUndoToast()
         }
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
@@ -97,7 +98,13 @@ class HomeEarthFragment : Fragment() {
 
     }
 
-
-
-
+    fun showUndoToast() {
+        StyleableToast.makeText(
+            requireActivity(),
+            getString(R.string.messege_undo),
+            R.style.toast_undo
+        ).show()
     }
+
+
+}
