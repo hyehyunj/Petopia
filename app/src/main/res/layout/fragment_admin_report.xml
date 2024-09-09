@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_ivory"
+    tools:context=".presentation.admin.AdminReportFragment">
+
+    <ImageView
+        android:id="@+id/admin_report_iv_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:src="@drawable/sel_btn_left"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/admin_report_tv_title"
+        style="@style/common_text_20_bold_dark_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="신고내역"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_report_iv_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/admin_report_iv_back" />
+
+    <TextView
+        android:id="@+id/admin_report_tv_reporter_title"
+        style="@style/common_text_16_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="신고자"
+        app:layout_constraintStart_toStartOf="@id/admin_report_iv_back"
+        app:layout_constraintTop_toBottomOf="@id/admin_report_iv_back" />
+
+    <TextView
+        android:id="@+id/admin_report_tv_reporter"
+        style="@style/common_text_16_bold_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="ㅁㅁㅁ"
+        app:layout_constraintTop_toTopOf="@+id/admin_report_tv_reporter_title"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_report_tv_reporter_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/admin_report_tv_reporter_title"/>
+
+
+
+    <TextView
+        android:id="@+id/admin_report_tv_target_title"
+        style="@style/common_text_16_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="대상자"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_reporter_title"
+        app:layout_constraintTop_toBottomOf="@id/admin_report_tv_reporter" />
+
+    <TextView
+        android:id="@+id/admin_report_tv_target"
+        style="@style/common_text_16_bold_dark_gray"
+        android:textColor="@color/warning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="ㅁㅁㅁ"
+        app:layout_constraintTop_toTopOf="@+id/admin_report_tv_target_title"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_report_tv_target_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/admin_report_tv_target_title"/>
+
+    <TextView
+        android:id="@+id/admin_report_tv_content_type_title"
+        style="@style/common_text_16_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="대상"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_reporter_title"
+        app:layout_constraintTop_toBottomOf="@id/admin_report_tv_target" />
+
+    <TextView
+        android:id="@+id/admin_report_tv_content_type"
+        style="@style/common_text_16_bold_dark_gray"
+        android:textColor="@color/warning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="ㅁㅁㅁ"
+        app:layout_constraintTop_toTopOf="@+id/admin_report_tv_content_type_title"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_report_tv_content_type_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_reporter"/>
+
+    <TextView
+        android:id="@+id/admin_report_tv_content_uid"
+        style="@style/common_text_16_bold_dark_gray"
+        android:textColor="@color/warning"
+        android:layout_width="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_height="wrap_content"
+        android:text="ㅁㅁㅁ"
+        app:layout_constraintTop_toBottomOf="@+id/admin_report_tv_content_type"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_content_type"/>
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/admin_report_tv_reason_title"
+        style="@style/common_text_16_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="사유"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_reporter_title"
+        app:layout_constraintTop_toBottomOf="@id/admin_report_tv_content_uid" />
+
+    <TextView
+        android:id="@+id/admin_report_tv_reason"
+        style="@style/common_text_16_bold_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="ㅁㅁㅁ"
+        app:layout_constraintTop_toTopOf="@+id/admin_report_tv_reason_title"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_report_tv_reason_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_reporter"/>
+
+
+    <TextView
+        android:id="@+id/admin_report_tv_description_title"
+        style="@style/common_text_16_bold_blue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내용"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_reporter_title"
+        app:layout_constraintTop_toBottomOf="@id/admin_report_tv_reason" />
+
+    <TextView
+        android:id="@+id/admin_report_tv_description"
+        style="@style/common_text_16_bold_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:text="ㅁㅁㅁ"
+        app:layout_constraintTop_toBottomOf="@+id/admin_report_tv_description_title"
+        app:layout_constraintBottom_toTopOf="@+id/report_tv_report"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/admin_report_tv_description_title"/>
+
+
+
+
+    <TextView
+        android:id="@+id/report_tv_report"
+        style="@style/common_btn_16_bold_white"
+        android:layout_width="120dp"
+        android:layout_height="66dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/sel_btn_round_square_blue_white"
+        android:text="@string/common_complete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

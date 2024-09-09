@@ -13,6 +13,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.admin.AdminFragment
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
@@ -50,7 +51,7 @@ class HomeEarthFragment : Fragment() {
 //            if(LoginData.loginUser.authority == Authority.ADMIN)
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
                     .replace(
-                        R.id.main_sub_frame, GuideFragment()
+                        R.id.main_sub_frame, AdminFragment()
                     )
                     .setReorderingAllowed(true)
                     .addToBackStack(null)
