@@ -128,7 +128,7 @@
                     style="@style/common_btn_16_bold_blue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/signup"
+                    android:text="@string/common_sign_up"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/divider2"

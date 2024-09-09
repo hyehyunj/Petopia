@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="@string/signup_id"
+            android:hint="@string/common_id"
 
             app:boxBackgroundColor="@color/translucent_white"
 
@@ -66,7 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="@string/signup_password"
+            android:hint="@string/common_password"
 
             app:boxBackgroundColor="@color/translucent_white"
             app:boxStrokeColor="@color/main_blue"

@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="가장 비슷한 외모로 선택해주세요."
+            android:text="@string/guide_select_appearance"
             style="@style/point_text_24_dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
                 android:background="@drawable/sel_btn_guide_appearance_left"
                 android:button="@android:color/transparent"
                 android:gravity="center"
-                android:text="강아지" />
+                android:text="@string/guide_dog" />
 
 
             <RadioButton
@@ -63,7 +63,7 @@
                 android:background="@drawable/sel_btn_guide_appearance_right"
                 android:button="@android:color/transparent"
                 android:gravity="center"
-                android:text="고양이"
+                android:text="@string/guide_cat"
                 style="@style/guide_text_dialog"
  />
 
