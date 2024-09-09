@@ -10,8 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.admin.AdminFragment
+import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 import io.github.muddz.styleabletoast.StyleableToast
@@ -45,7 +48,16 @@ class HomeEarthFragment : Fragment() {
     private fun homeEarthButtonClickListener() {
         //설정버튼 클릭이벤트 : 클릭시 설정 이동
         binding.homeEarthIvMy.setOnClickListener {
-            showUndoToast()
+
+//            if(LoginData.loginUser.authority == Authority.ADMIN)
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.main_sub_frame, AdminFragment()
+                    )
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit()
+
         }
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
