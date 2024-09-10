@@ -65,27 +65,28 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 galleryRepository.selectInitGalleryList(user)
             }
             val documents = list.await()
-            if(documents.size > 0)
-                lastSnapshot = documents[documents.size -1]
-            val successList = galleryRepository.convertToGalleryModel(documents)
+            if(documents.size > 0) {
+                lastSnapshot = documents[documents.size - 1]
+                val successList = galleryRepository.convertToGalleryModel(documents)
 
-            val imageUris = mutableListOf<StorageReference?>()
+                val imageUris = mutableListOf<StorageReference?>()
 
-            for (galleryModel in successList) {
-                galleryModel.imageUris.clear()
-                imageUris.add(galleryRepository.selectGalleryMainImages(galleryModel.uid))
-            }
+                for (galleryModel in successList) {
+                    galleryModel.imageUris.clear()
+                    imageUris.add(galleryRepository.selectGalleryMainImages(galleryModel.uid))
+                }
 
-            for ((uriIndex, uri) in imageUris.withIndex()) {
-                if(uri != null)
-                    successList[uriIndex].imageUris.add(galleryRepository.selectDownloadUri(uri))
-            }
+                for ((uriIndex, uri) in imageUris.withIndex()) {
+                    if (uri != null)
+                        successList[uriIndex].imageUris.add(galleryRepository.selectDownloadUri(uri))
+                }
 
 //            _galleryListLiveData.value = galleryRepository.selectGalleryMainImages(successList).toList()
 
-            galleryListResult.addAll(successList)
+                galleryListResult.addAll(successList)
 //            _galleryListLiveData.value = successList.toList()
-            _galleryListLiveData.value = galleryListResult.toList()
+                _galleryListLiveData.value = galleryListResult.toList()
+            }
         }
     }
 

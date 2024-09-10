@@ -14,6 +14,8 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentGalleryBinding
@@ -79,6 +81,17 @@ class GalleryFragment : DialogFragment() {
             galleryIvAdd.setOnClickListener {
                 gallerySharedViewModel.changeLayoutMode("ADD")
                 GalleryEditFragment().show(childFragmentManager, "GALLERY_ADD_FRAGMENT")            }
+
+
+            galleryRv.addOnScrollListener(object: OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if(!recyclerView.canScrollVertically(1)) {
+                        gallerySharedViewModel.loadGalleryList()
+                    }
+                }
+            })
+
         }
     }
 

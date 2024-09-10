@@ -17,7 +17,10 @@ import com.djhb.petopia.databinding.PostHolderBinding
 class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel, PostAdapter.PostItem>(object: DiffUtil.ItemCallback<PostModel>(){
     override fun areItemsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
 //        Log.i("PostAdapter", "areItemsTheSame = ${oldItem.key == newItem.key}")
-        return oldItem.key == newItem.key && oldItem.imageUris == newItem.imageUris
+//        Log.i("PostAdapter", "oldItem.imageUris = ${oldItem.imageUris}")
+//        Log.i("PostAdapter", "areItemsTheSame = ${oldItem.key == newItem.key}")
+
+        return oldItem.key == newItem.key && oldItem.imageUris.hashCode() == newItem.imageUris.hashCode()
     }
 
     override fun areContentsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
@@ -44,6 +47,8 @@ class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<P
         holder.binding.root.setOnClickListener {
             onClick(item)
         }
+
+//        Log.i("PostAdapter", "uri = ${item.imageUris}")
 
         if(item.imageUris.size == 0)
             holder.mainImage.visibility = ImageView.INVISIBLE
