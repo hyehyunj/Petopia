@@ -25,9 +25,11 @@ class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : View
     private val _selectBackgroundResId = MutableLiveData<Int?>()
     val selectBackgroundResId: MutableLiveData<Int?> = _selectBackgroundResId
 
-    private lateinit var lastSnapshot: DocumentSnapshot
+//    무한스크롤관련
+//    private lateinit var lastSnapshot: DocumentSnapshot
 
-    private var letterListResult = mutableListOf<LetterModel>()
+    //무한스크롤 관련
+//    private var letterListResult = mutableListOf<LetterModel>()
 
     fun selectBackground(resId: Int) {
         _selectBackgroundResId.value = resId
@@ -40,31 +42,26 @@ class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : View
     fun addLetterList(letterModel: LetterModel) {
         viewModelScope.launch {
             letterRepository.createLetter(letterModel)
-            loadInitLetterList(letterModel.writer)
+            loadLetterList(letterModel.writer)
         }
     }
 
-    fun loadInitLetterList(user: UserModel) {
-        viewModelScope.launch {
-            val documents = letterRepository.selectInitLetterList(user)
-            if (documents.size > 0) {
-                lastSnapshot = documents[documents.size - 1]
-//            val memoryList = letterRepository.convertToLetterModel(documents)
-                letterListResult = letterRepository.convertToLetterModel(documents)
-                _letterListLiveData.value = letterListResult
-            }
-        }
-    }
+//    fun loadInitLetterList(user: UserModel) {
+//        viewModelScope.launch {
+//            val documents = letterRepository.selectInitLetterList(user)
+//            if (documents.size > 0) {
+//                lastSnapshot = documents[documents.size - 1]
+////            val memoryList = letterRepository.convertToLetterModel(documents)
+//                letterListResult = letterRepository.convertToLetterModel(documents)
+//                _letterListLiveData.value = letterListResult
+//            }
+//        }
+//    }
 
     fun loadLetterList(user: UserModel) {
         viewModelScope.launch {
-            val documents = letterRepository.selectLetterList(user, lastSnapshot)
-            if (documents.size > 0) {
-                val memoryList = letterRepository.convertToLetterModel(documents)
-                letterListResult.addAll(memoryList)
-                lastSnapshot = documents[documents.size - 1]
-                _letterListLiveData.value = letterListResult
-            }
+            val letterList = letterRepository.selectLetterList(user)
+            _letterListLiveData.value = letterList
         }
     }
 
@@ -82,7 +79,7 @@ class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : View
                 _letterListLiveData.value = currentLetter
             }
             letterRepository.updateLetter(letterModel)
-            loadInitLetterList(letterModel.writer)
+            loadLetterList(letterModel.writer)
         }
     }
 

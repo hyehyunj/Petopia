@@ -67,7 +67,7 @@ class LetterFragment : DialogFragment() {
         }
 
         val curentUser = getCurrentUser()
-        letterViewModel.loadInitLetterList(curentUser)
+        letterViewModel.loadLetterList(curentUser)
 
 
 
@@ -131,7 +131,7 @@ class LetterFragment : DialogFragment() {
             binding.btnLetterDelete2.visibility = View.GONE
         }
 
-        letterViewModel.loadInitLetterList(getCurrentUser())
+        letterViewModel.loadLetterList(getCurrentUser())
         letterListRecyclerViewAdapter.notifyDataSetChanged()
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -224,7 +224,7 @@ class LetterFragment : DialogFragment() {
 
     fun onLetterUpdated(updatedLetter: LetterModel) {
         letterViewModel.updateLetterList(updatedLetter)
-        letterViewModel.loadInitLetterList(getCurrentUser())
+        letterViewModel.loadLetterList(getCurrentUser())
     }
 
     private fun showLetterDetailFragment() {

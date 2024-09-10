@@ -8,7 +8,7 @@ interface LetterRepository {
 
     suspend fun createLetter(letterModel: LetterModel)
     suspend fun selectInitLetterList(user: UserModel): List<DocumentSnapshot>
-    suspend fun selectLetterList(user: UserModel, snapshot: DocumentSnapshot): List<DocumentSnapshot>
+    suspend fun selectLetterList(user: UserModel): MutableList<LetterModel>
     suspend fun updateLetter(letterModel: LetterModel)
     suspend fun deleteLetter(key: String)
     fun convertToLetterModel(documents: List<DocumentSnapshot>): MutableList<LetterModel>

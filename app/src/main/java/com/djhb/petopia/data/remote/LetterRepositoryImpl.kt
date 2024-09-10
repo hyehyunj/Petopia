@@ -10,8 +10,11 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 class LetterRepositoryImpl: LetterRepository {
 
@@ -39,49 +42,49 @@ class LetterRepositoryImpl: LetterRepository {
         }
     }
 
-    override suspend fun selectLetterList(user: UserModel, snapshot: DocumentSnapshot): List<DocumentSnapshot> {
-        return withContext(Dispatchers.IO) {
-            val resultSnapshot = reference
-                .whereEqualTo("writer.id", user.id)
-                .orderBy("writer.id")
-                .orderBy("createdDate", Query.Direction.DESCENDING)
-                .startAfter(snapshot)
-                .limit(10)
-                .get()
-                .await()
-
-            resultSnapshot.documents
-        }
-    }
-
-//    override suspend fun selectInitLetterList(user: UserModel): MutableList<LetterModel> {
-//        return suspendCancellableCoroutine { continuation ->
-//            reference
+//    override suspend fun selectLetterList(user: UserModel, snapshot: DocumentSnapshot): List<DocumentSnapshot> {
+//        return withContext(Dispatchers.IO) {
+//            val resultSnapshot = reference
 //                .whereEqualTo("writer.id", user.id)
 //                .orderBy("writer.id")
 //                .orderBy("createdDate", Query.Direction.DESCENDING)
+//                .startAfter(snapshot)
+//                .limit(10)
 //                .get()
-//                .addOnCompleteListener { task ->
-//                    val letters = mutableListOf<LetterModel>()
-//                    if(task.isSuccessful) {
-//                        val documents = task.result.documents
-//                        for (document in documents) {
-//                            val hashMap = document.data as HashMap<*, *>
-//                            val gson = Gson()
-//                            val toJson = gson.toJson(hashMap)
-//                            val fromJson = gson.fromJson(toJson, LetterModel::class.java)
-//                            letters.add(fromJson)
-//                        }
-//                        continuation.resume(letters)
-//                        return@addOnCompleteListener
-//                    } else {
-//                        continuation.resumeWithException(task.exception ?: Exception("Unknown error occurred"))
-//                    }
-//                }.addOnFailureListener {
-//                    continuation.resumeWithException(it)
-//                }
+//                .await()
+//
+//            resultSnapshot.documents
 //        }
 //    }
+
+    override suspend fun selectLetterList(user: UserModel): MutableList<LetterModel> {
+        return suspendCancellableCoroutine { continuation ->
+            reference
+                .whereEqualTo("writer.id", user.id)
+                .orderBy("writer.id")
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .get()
+                .addOnCompleteListener { task ->
+                    val letters = mutableListOf<LetterModel>()
+                    if(task.isSuccessful) {
+                        val documents = task.result.documents
+                        for (document in documents) {
+                            val hashMap = document.data as HashMap<*, *>
+                            val gson = Gson()
+                            val toJson = gson.toJson(hashMap)
+                            val fromJson = gson.fromJson(toJson, LetterModel::class.java)
+                            letters.add(fromJson)
+                        }
+                        continuation.resume(letters)
+                        return@addOnCompleteListener
+                    } else {
+                        continuation.resumeWithException(task.exception ?: Exception("Unknown error occurred"))
+                    }
+                }.addOnFailureListener {
+                    continuation.resumeWithException(it)
+                }
+        }
+    }
 //
 //    override suspend fun selectLetterList(user: UserModel, snapshot: DocumentSnapshot): MutableList<LetterModel> {
 //        return suspendCancellableCoroutine { continuation ->
