@@ -121,7 +121,6 @@ class MemoryFragment() : DialogFragment() {
                 binding.btnImageDeleteCancel.visibility = View.GONE
                 binding.btnMemoryDelete.visibility = View.VISIBLE
                 binding.btnMemoryDelete2.visibility = View.GONE
-
                 listRecyclerViewAdapter.clearSelections()
             }
             memoryViewModel.memoryListLiveData.value.let { updateList ->
@@ -259,7 +258,7 @@ class MemoryFragment() : DialogFragment() {
         deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->
-            listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
+            listRecyclerViewAdapter.submitList(updateList)
         }
 
     }

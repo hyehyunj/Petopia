@@ -1,11 +1,13 @@
 package com.djhb.petopia.presentation.letter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.data.LetterModel
+import com.djhb.petopia.data.Memory
 import com.djhb.petopia.databinding.RecyclerviewLetterListBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -14,6 +16,12 @@ class LetterListRecyclerViewAdapter(
     private val itemClickListener: (item: LetterModel) -> Unit,
     private val itemLongClickListener: (item: LetterModel) -> Unit
 ) : ListAdapter<LetterModel, LetterListRecyclerViewAdapter.LetterListViewHolder>(diffUtil) {
+
+    val selcetedItems = mutableListOf<LetterModel>()
+
+    var isDeleteMode = false
+    var isCleared = false
+
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<LetterModel>() {
@@ -45,7 +53,11 @@ class LetterListRecyclerViewAdapter(
     ) {
         val reversePosition = itemCount - position
         val item = getItem(position)
-        holder.bind(item,reversePosition)
+        holder.bind(item, reversePosition)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun getItemCount(): Int {
@@ -57,6 +69,7 @@ class LetterListRecyclerViewAdapter(
         private val itemClickListener: (item: LetterModel) -> Unit,
         private val itemLongClickListener: (item: LetterModel) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(item: LetterModel, reversePosition: Int) {
             binding.tvLetterListTitle.text = item.title
             binding.tvLetterListContent.text = item.content
@@ -66,14 +79,48 @@ class LetterListRecyclerViewAdapter(
             val date = dateFormat.format(item.createdDate)
             binding.tvLetterListDate.text = date
 
-            binding.letterListViewHolder.setOnClickListener {
-                itemClickListener(item)
+            if (isCleared) {
+                binding.ivLetterDeleteCheck.visibility = View.GONE
             }
-            binding.letterListViewHolder.setOnLongClickListener {
-                itemLongClickListener(item)
-                true
+
+            binding.letterListViewHolder.setOnClickListener {
+
+                if (isDeleteMode) {
+                    toggleSelection(item)
+                    binding.ivLetterDeleteCheck.visibility =
+                        if (selcetedItems.contains(item)) View.VISIBLE else View.GONE
+                } else {
+                    itemClickListener(item)
+                }
             }
 
         }
+    }
+
+    fun toggleDeleteMode() {
+        isDeleteMode = !isDeleteMode
+        isCleared = false
+        selcetedItems.clear()
+        notifyDataSetChanged()
+    }
+
+    fun toggleSelection(item: LetterModel) {
+        if (selcetedItems.contains(item)) {
+            selcetedItems.remove(item)
+        } else {
+            selcetedItems.add(item)
+        }
+        notifyDataSetChanged()
+    }
+
+    fun getSelectedItems(): List<LetterModel> {
+        return selcetedItems.toList()
+    }
+
+    fun clearSelections() {
+        isCleared = true
+        selcetedItems.clear() // 선택된 항목 초기화
+        notifyDataSetChanged() // 어댑터에 변경 알림
+
     }
 }

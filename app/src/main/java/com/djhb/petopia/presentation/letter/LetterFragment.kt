@@ -41,6 +41,7 @@ class LetterFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        initAdapter()
         return binding.root
     }
 
@@ -49,7 +50,7 @@ class LetterFragment : DialogFragment() {
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
 
-        initAdapter()
+
         initDialog()
 
 
@@ -59,16 +60,27 @@ class LetterFragment : DialogFragment() {
         letterViewModel =
             ViewModelProvider(requireActivity(), factory).get(LetterViewModel::class.java)
 
-        val curentUser = getCurrentUser()
+
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
             letterListRecyclerViewAdapter.submitList(letterList)
         }
 
-        letterViewModel.loadInitLetterList(curentUser)
+        val curentUser = getCurrentUser()
+        letterViewModel.loadLetterList(curentUser)
+
+
 
         binding.letterIvAdd.setOnClickListener {
             showLetterWriteFragment()
+            if (letterListRecyclerViewAdapter.isDeleteMode) {
+                letterListRecyclerViewAdapter.toggleDeleteMode()
+                binding.btnImageDeleteCancel.visibility = View.GONE
+                binding.btnLetterDelete.visibility = View.VISIBLE
+                binding.btnLetterDelete2.visibility = View.GONE
+                letterListRecyclerViewAdapter.clearSelections()
+            }
+
         }
 
         binding.btnLetterExit.setOnClickListener {
@@ -76,7 +88,50 @@ class LetterFragment : DialogFragment() {
                 .remove(this).commit()
         }
 
-        letterViewModel.loadInitLetterList(getCurrentUser())
+        binding.btnLetterDelete.setOnClickListener {
+            letterListRecyclerViewAdapter.toggleDeleteMode()
+            binding.btnImageDeleteCancel.visibility = View.VISIBLE
+            binding.btnLetterDelete.visibility = View.GONE
+            binding.btnLetterDelete2.visibility = View.VISIBLE
+        }
+
+        binding.btnLetterDelete2.setOnClickListener {
+            if (letterListRecyclerViewAdapter.isDeleteMode) {
+                val selectedItems = letterListRecyclerViewAdapter.getSelectedItems()
+                Log.d("LetterFragment", "selectedItems : ${selectedItems}")
+                selectedItems.forEach { item ->
+                    letterViewModel.deleteLetterList(item)
+                    Log.d("LetterFragment", "deletedLetter : ${item}")
+                }
+
+                Log.d("LetterFragment", "letterList : ${letterViewModel.letterListLiveData.value}")
+
+                letterListRecyclerViewAdapter.toggleDeleteMode()
+
+                binding.btnImageDeleteCancel.visibility = View.GONE
+                binding.btnLetterDelete.visibility = View.VISIBLE
+                binding.btnLetterDelete2.visibility = View.GONE
+                letterListRecyclerViewAdapter.clearSelections()
+            }
+            letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
+                letterListRecyclerViewAdapter.submitList(letterList)
+            }
+        }
+
+        binding.btnImageDeleteCancel.setOnClickListener {
+            if (letterListRecyclerViewAdapter.isDeleteMode) {
+                letterListRecyclerViewAdapter.toggleDeleteMode()
+            }
+
+            if (!letterListRecyclerViewAdapter.isCleared) {
+                letterListRecyclerViewAdapter.clearSelections()
+            }
+            binding.btnImageDeleteCancel.visibility = View.GONE
+            binding.btnLetterDelete.visibility = View.VISIBLE
+            binding.btnLetterDelete2.visibility = View.GONE
+        }
+
+        letterViewModel.loadLetterList(getCurrentUser())
         letterListRecyclerViewAdapter.notifyDataSetChanged()
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -88,11 +143,11 @@ class LetterFragment : DialogFragment() {
                 }
             })
 
-        binding.rvLetterList.addOnScrollListener(object: OnScrollListener(){
+        binding.rvLetterList.addOnScrollListener(object : OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                if(!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1)) {
                     Log.i("LetterFragment", "end scroll")
                     letterViewModel.loadLetterList(curentUser)
                 }
@@ -110,7 +165,6 @@ class LetterFragment : DialogFragment() {
                 showLetterDetailFragment()
 
             }, itemLongClickListener = { item ->
-
                 showDeleteDialog(item)
             })
 
@@ -170,7 +224,7 @@ class LetterFragment : DialogFragment() {
 
     fun onLetterUpdated(updatedLetter: LetterModel) {
         letterViewModel.updateLetterList(updatedLetter)
-        letterViewModel.loadInitLetterList(getCurrentUser())
+        letterViewModel.loadLetterList(getCurrentUser())
     }
 
     private fun showLetterDetailFragment() {
@@ -182,11 +236,16 @@ class LetterFragment : DialogFragment() {
     private fun showDeleteDialog(letterModel: LetterModel) {
         val deleteDialog = LetterDeleteDialog(letterModel) { deletedLetter ->
             letterViewModel.deleteLetterList(deletedLetter)
+
             letterViewModel.letterListLiveData.value.let { updateList ->
                 letterListRecyclerViewAdapter.submitList(updateList)
             }
         }
         deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
+
+        letterViewModel.letterListLiveData.value.let { updateList ->
+            letterListRecyclerViewAdapter.submitList(updateList)
+        }
 
     }
 
