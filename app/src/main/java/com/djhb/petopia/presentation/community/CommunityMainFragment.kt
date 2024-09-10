@@ -17,6 +17,7 @@ import com.djhb.petopia.databinding.FragmentCommunityMainBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.PostAdapter
 import com.djhb.petopia.presentation.community.adapter.RankPostAdapter
+import com.djhb.petopia.presentation.home.HomeEarthFragment
 import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -48,7 +49,7 @@ class CommunityMainFragment : Fragment() {
     }
 
     private val rankPostAdapter by lazy {
-        RankPostAdapter{ post ->
+        RankPostAdapter { post ->
 //            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
 
             val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
@@ -70,7 +71,7 @@ class CommunityMainFragment : Fragment() {
     }
 
     private val allPostAdapter by lazy {
-        PostAdapter{ post ->
+        PostAdapter { post ->
 //            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
 //            Log.i("CommunityMainFramgment", "before copy imageUris.size = ${post.imageUris.size}")
             val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
@@ -124,7 +125,7 @@ class CommunityMainFragment : Fragment() {
         initListener()
     }
 
-    private fun initView(){
+    private fun initView() {
         lifecycleScope.launch {
             viewModel.selectRankList()
             viewModel.selectInitPostList()
@@ -134,9 +135,12 @@ class CommunityMainFragment : Fragment() {
         binding.recyclerViewQuestionRank.isNestedScrollingEnabled = false
     }
 
-    private fun initListener(){
-        binding.header.ivBack.setOnClickListener{
-            Toast.makeText(requireActivity(), "click back", Toast.LENGTH_SHORT).show()
+    private fun initListener() {
+        binding.header.ivBack.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.home_earth_container, HomeEarthFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
         binding.header.ivSearch.setOnClickListener {
@@ -170,7 +174,7 @@ class CommunityMainFragment : Fragment() {
 
         binding.svMain.setOnScrollChangeListener { view, scrollX, scrollY, oldScrollX, oldScrollY ->
 
-            if(!view.canScrollVertically(1)) {
+            if (!view.canScrollVertically(1)) {
                 lifecycleScope.launch {
                     viewModel.selectNextPostList()
                 }
@@ -180,7 +184,7 @@ class CommunityMainFragment : Fragment() {
 
     }
 
-    private fun initObserve(){
+    private fun initObserve() {
         viewModel.rankPosts.observe(viewLifecycleOwner) {
             Log.i("CommunityMainFragment", "observe rank : ${it}")
 //            Log.i("CommunityMainFragment", "observe rank.hashCode : ${it.hashCode()}")
@@ -190,11 +194,11 @@ class CommunityMainFragment : Fragment() {
 
             rankPostAdapter.submitList(it.toMutableList())
         }
-        viewModel.searchPost.observe(viewLifecycleOwner){
+        viewModel.searchPost.observe(viewLifecycleOwner) {
             Log.i("CommunityMainFragment", "observe search : ${it}")
             lifecycleScope.launch {
                 allPostAdapter.submitList(it.toMutableList())
-                async { viewModel.selectAllImageList()}.await()
+                async { viewModel.selectAllImageList() }.await()
             }
         }
 
@@ -209,7 +213,7 @@ class CommunityMainFragment : Fragment() {
 //        }
     }
 
-    private fun initAdapter(){
+    private fun initAdapter() {
         binding.recyclerViewQuestionRank.adapter = rankPostAdapter
         binding.recyclerViewQuestionMain.adapter = allPostAdapter
 //        binding.recyclerViewQuestionRank.layoutManager = LinearLayoutManager(requireActivity())
