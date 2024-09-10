@@ -62,7 +62,8 @@ class CommunityMainFragment : Fragment() {
                 .commit()
 
             lifecycleScope.launch {
-                viewModel.updatePost(postAddedViewCount)
+//                viewModel.updatePost(postAddedViewCount)
+                viewModel.addPostViewCount(postAddedViewCount.key)
             }
 
             mainActivity.hideViewPager()
@@ -186,7 +187,7 @@ class CommunityMainFragment : Fragment() {
 
     private fun initObserve() {
         viewModel.rankPosts.observe(viewLifecycleOwner) {
-            Log.i("CommunityMainFragment", "observe rank : ${it}")
+//            Log.i("CommunityMainFragment", "observe rank : ${it}")
 //            Log.i("CommunityMainFragment", "observe rank.hashCode : ${it.hashCode()}")
 //            for (postModel in it) {
 //                Log.i("CommunityMainFragment", "observe rank postModel.hashCode : ${postModel.hashCode()}")
@@ -194,18 +195,47 @@ class CommunityMainFragment : Fragment() {
 
             rankPostAdapter.submitList(it.toMutableList())
         }
-        viewModel.searchPost.observe(viewLifecycleOwner) {
-            Log.i("CommunityMainFragment", "observe search : ${it}")
+        viewModel.searchPost.observe(viewLifecycleOwner){
+//            Log.i("CommunityMainFragment", "123. observe search : ${it}")
             lifecycleScope.launch {
-                allPostAdapter.submitList(it.toMutableList())
-                async { viewModel.selectAllImageList() }.await()
+//                allPostAdapter.submitList(it.toMutableList())
+                allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
+//                async { viewModel.selectAllImageList()}.await()
+//                viewModel.selectAllImageList()
             }
         }
 
         viewModel.postImageUris.observe(viewLifecycleOwner) {
-            Log.i("CommunityMainFragment", "observe postImageUris : ${it}")
-            viewModel.combinePostToImages(it)
+//            Log.i("CommunityMainFragment", "123. observe postImageUris : ${it}")
+//            for (postModel in allPostAdapter.currentList) {
+//                Log.i("CommunityMainFragment", "before postImageUris adapter element = ${postModel}")
+//            }
+            viewModel.combinePostToImages(it.toMutableList())
+//            Log.i("CommunityMainFragment", "it == livedata.value : ${it == viewModel.postImageUris.value}")
+//            Log.i("CommunityMainFragment", "it == livedata.value : ${it.hashCode() == viewModel.postImageUris.value.hashCode()}")
+//            for (postModel in viewModel.searchPostResult) {
+//                Log.i("CommunityMainFragment", "searchResult = ${postModel}")
+//            }
+//            for (postModel in allPostAdapter.currentList) {
+//                Log.i("CommunityMainFragment", "after postImageUris adapter element = ${postModel}")
+//            }
+//            allPostAdapter.notifyDataSetChanged()
             allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
+        }
+
+        viewModel.searchPostWithImages.observe(viewLifecycleOwner) {
+//            Log.i("CommunityMainFragment", "123. observe searchPostWithImages : ${it}")
+//            Log.i("CommunityMainFragment", "123. adapterList.hashCode = ${allPostAdapter.currentList.hashCode()}")
+//            for (postModel in allPostAdapter.currentList) {
+//                Log.i("CommunityMainFragment", "adapter element = ${postModel}")
+//            }
+//            Log.i("CommunityMainFragment", "123. livedate.hashCode : ${it.hashCode()}")
+//            Log.i("CommunityMainFragment", "123. livedate.toList.hashCode. : ${it.toMutableList().hashCode()}")
+//            Log.i("CommunityMainFragment", "123. viewModel.searchPostResult.hashCode : ${viewModel.searchPostResult.hashCode()}")
+//            Log.i("CommunityMainFragment", "123. viewModel.searchPostResult.toMutableList().hashCode : ${viewModel.searchPostResult.toMutableList().hashCode()}")
+
+//            allPostAdapter.submitList(it.toList())
+//            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
         }
 
 //        viewModel.isCompleteRankPost.observe(viewLifecycleOwner){

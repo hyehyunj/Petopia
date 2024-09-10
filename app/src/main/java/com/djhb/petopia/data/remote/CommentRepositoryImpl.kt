@@ -36,7 +36,7 @@ class CommentRepositoryImpl: CommentRepository {
 
             reference
                 .whereEqualTo("postKey", postKey)
-                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .orderBy("createdDate", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener { task ->
                     val comments = mutableListOf<CommentModel>()

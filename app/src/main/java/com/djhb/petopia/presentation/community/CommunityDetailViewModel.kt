@@ -45,7 +45,8 @@ class CommunityDetailViewModel: ViewModel() {
     }
 
     suspend fun createComment(comment: CommentModel){
-        commentsResult.add(0, commentRepository.createComment(comment))
+//        commentsResult.add(0, commentRepository.createComment(comment))
+        commentsResult.add(commentRepository.createComment(comment))
         _comments.value = commentsResult
     }
 

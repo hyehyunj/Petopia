@@ -1,6 +1,5 @@
 package com.djhb.petopia.presentation.letter
 
-import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
@@ -11,12 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.databinding.adapters.AbsListViewBindingAdapter.OnScroll
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.djhb.petopia.data.LetterModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
@@ -65,7 +65,7 @@ class LetterFragment : DialogFragment() {
             letterListRecyclerViewAdapter.submitList(letterList)
         }
 
-        letterViewModel.loadLetterList(curentUser)
+        letterViewModel.loadInitLetterList(curentUser)
 
         binding.letterIvAdd.setOnClickListener {
             showLetterWriteFragment()
@@ -76,7 +76,7 @@ class LetterFragment : DialogFragment() {
                 .remove(this).commit()
         }
 
-        letterViewModel.loadLetterList(getCurrentUser())
+        letterViewModel.loadInitLetterList(getCurrentUser())
         letterListRecyclerViewAdapter.notifyDataSetChanged()
 
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -87,6 +87,18 @@ class LetterFragment : DialogFragment() {
                         .remove(this@LetterFragment).commit()
                 }
             })
+
+        binding.rvLetterList.addOnScrollListener(object: OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if(!recyclerView.canScrollVertically(1)) {
+                    Log.i("LetterFragment", "end scroll")
+                    letterViewModel.loadLetterList(curentUser)
+                }
+
+            }
+        })
 
     }
 
@@ -158,7 +170,7 @@ class LetterFragment : DialogFragment() {
 
     fun onLetterUpdated(updatedLetter: LetterModel) {
         letterViewModel.updateLetterList(updatedLetter)
-        letterViewModel.loadLetterList(getCurrentUser())
+        letterViewModel.loadInitLetterList(getCurrentUser())
     }
 
     private fun showLetterDetailFragment() {
