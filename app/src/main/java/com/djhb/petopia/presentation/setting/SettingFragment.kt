@@ -13,6 +13,8 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentSettingBinding
+import com.djhb.petopia.presentation.register.signin.SigninFragment
+import com.djhb.petopia.presentation.register.signup.SignupFragment
 
 
 class SettingFragment : DialogFragment() {
@@ -39,7 +41,7 @@ class SettingFragment : DialogFragment() {
                 dismiss()
             }
             btnSettingLogout.setOnClickListener {
-                dismiss()
+                loguout()
             }
             btnSettingDeleteAccount.setOnClickListener {
                 dismiss()
@@ -62,5 +64,12 @@ class SettingFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    private fun loguout(){
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.main_sub_frame, SigninFragment())
+            .commit()
+
     }
 }
