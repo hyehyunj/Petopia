@@ -61,7 +61,7 @@ class CommunityDetailFragment : Fragment() {
         override fun handleOnBackPressed() {
 
 
-            if(isEnabled) {
+            if (isEnabled) {
                 isEnabled = false
                 mainActivity.showViewPager()
             }
@@ -69,7 +69,7 @@ class CommunityDetailFragment : Fragment() {
     }
 
     private val commentAdapter: DetailCommentAdapter by lazy {
-        DetailCommentAdapter(object: OnClickComment{
+        DetailCommentAdapter(object : OnClickComment {
             override fun onClickEdit(comment: CommentModel) {
 //                lifecycleScope.launch {
 //                    viewModel.updateComment(comment)
@@ -98,19 +98,19 @@ class CommunityDetailFragment : Fragment() {
 
     private val detailViewModel: CommunityDetailViewModel by activityViewModels()
     private val communityViewModel: CommunityViewModel by activityViewModels()
+    private val reportViewModel: ReportViewModel by activityViewModels()
 
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPagerAdapter: DetailImageAdapter
     private lateinit var indicator: CircleIndicator3
     private lateinit var key: String
-    private lateinit var reportViewModel: ReportViewModel
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            post = it.getParcelable(ARG_PARAM1, PostModel::class.java)?: PostModel()
+            post = it.getParcelable(ARG_PARAM1, PostModel::class.java) ?: PostModel()
         }
     }
 
@@ -138,7 +138,7 @@ class CommunityDetailFragment : Fragment() {
 
     }
 
-    private fun initView(){
+    private fun initView() {
         lifecycleScope.launch {
 
 //            val imageUris = mutableListOf("https://firebasestorage.googleapis.com/v0/b/petopia-92b56.appspot.com/o/questionPost%2F88f60ac7-ca6f-4474-a65f-409dd6ed9edb%2F20240904_01.png?alt=media&token=d0ded94c-6ddc-453e-b52c-d94329148fd3",
@@ -158,11 +158,14 @@ class CommunityDetailFragment : Fragment() {
             val indicatorDetail = binding.indicatorDetail
             indicatorDetail.setViewPager(viewPager)
 //            Log.i("CommunityDetailFragment", "imageUris.value.size = ${detailViewModel.imageUris.value?.size}")
-            indicatorDetail.createIndicators(detailViewModel.imageUris.value?.size?:0, 0)
+            indicatorDetail.createIndicators(detailViewModel.imageUris.value?.size ?: 0, 0)
 
             detailViewModel.selectAllCommentFromPost(post.key)
 
-            requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), backPressedCallback)
+            requireActivity().onBackPressedDispatcher.addCallback(
+                requireActivity(),
+                backPressedCallback
+            )
 
         }
 
@@ -179,7 +182,7 @@ class CommunityDetailFragment : Fragment() {
         binding.indicatorDetail.setViewPager(viewPager)
     }
 
-    private fun initListener(){
+    private fun initListener() {
         binding.ivReport.setOnClickListener {
             ReportFragment().show(childFragmentManager, "REPORT_FRAGMENT")
         }
@@ -187,11 +190,17 @@ class CommunityDetailFragment : Fragment() {
 
         binding.btnAddComment.setOnClickListener {
             val comment = binding.etComment.text.toString()
-            if(comment.isBlank()) {
+            if (comment.isBlank()) {
                 Toast.makeText(requireActivity(), "댓글을 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch {
-                    detailViewModel.createComment(CommentModel(post.key, LoginData.loginUser, comment))
+                    detailViewModel.createComment(
+                        CommentModel(
+                            post.key,
+                            LoginData.loginUser,
+                            comment
+                        )
+                    )
                 }
             }
         }
@@ -201,7 +210,7 @@ class CommunityDetailFragment : Fragment() {
         }
 
 
-        if(post.writer.id == LoginData.loginUser.id) {
+        if (post.writer.id == LoginData.loginUser.id) {
             binding.btnDelete.visibility = ImageView.VISIBLE
             binding.btnEdit.visibility = ImageView.VISIBLE
 
@@ -215,8 +224,6 @@ class CommunityDetailFragment : Fragment() {
 //                    .replace(R.id.main_sub_frame,CommunityMainFragment())
 //                    .commit()
 //            }
-
-
 
 
             binding.btnDelete.setOnClickListener {
@@ -245,7 +252,7 @@ class CommunityDetailFragment : Fragment() {
         }
     }
 
-    private fun initObserver(){
+    private fun initObserver() {
         detailViewModel.comments.observe(viewLifecycleOwner) {
             Log.i("CommunityDetailFragment", "observe comments.size = ${it.size}")
 //            commentAdapter.submitList(viewModel.commentsResult)
@@ -259,8 +266,6 @@ class CommunityDetailFragment : Fragment() {
             binding.indicatorDetail.createIndicators(it.size, 0)
         }
     }
-
-
 
 
     companion object {

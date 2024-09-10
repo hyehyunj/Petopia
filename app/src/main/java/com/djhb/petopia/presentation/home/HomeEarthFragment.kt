@@ -17,6 +17,7 @@ import com.djhb.petopia.presentation.admin.AdminFragment
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
+import com.djhb.petopia.presentation.setting.SettingFragment
 import io.github.muddz.styleabletoast.StyleableToast
 
 class HomeEarthFragment : Fragment() {
@@ -49,7 +50,7 @@ class HomeEarthFragment : Fragment() {
         //설정버튼 클릭이벤트 : 클릭시 설정 이동
         binding.homeEarthIvMy.setOnClickListener {
 
-//            if(LoginData.loginUser.authority == Authority.ADMIN)
+            if (LoginData.loginUser.authority == Authority.ADMIN) {
                 (activity as MainActivity).supportFragmentManager.beginTransaction()
                     .replace(
                         R.id.main_sub_frame, AdminFragment()
@@ -57,7 +58,15 @@ class HomeEarthFragment : Fragment() {
                     .setReorderingAllowed(true)
                     .addToBackStack(null)
                     .commit()
-
+            } else {
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.main_sub_frame, SettingFragment()
+                    )
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit()
+            }
         }
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동

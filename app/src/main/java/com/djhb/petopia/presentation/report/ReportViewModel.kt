@@ -12,6 +12,7 @@ class ReportViewModel : ViewModel() {
     private val _reportReasonDetail = MutableLiveData<String>()
     val reportReasonDetail get() = _reportReasonDetail
 
+
     private val _reportModelLiveData = MutableLiveData<ReportModel>()
     val reportModelLiveData get() = _reportModelLiveData
 

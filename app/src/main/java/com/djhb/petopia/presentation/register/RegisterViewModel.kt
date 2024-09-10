@@ -64,6 +64,15 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
         }
     }
 
+    fun isIdExist(
+        id: String, onResult: (Boolean) -> Unit
+    ) {
+        viewModelScope.launch {
+            val user = signRepository.selectUser(id)
+            onResult(user != null)
+        }
+    }
+
     fun createUser(user: UserModel) {
         viewModelScope.launch {
             signRepository.createUser(user)
