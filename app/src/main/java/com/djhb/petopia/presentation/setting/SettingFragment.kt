@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.setting
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -13,6 +14,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentSettingBinding
+import com.djhb.petopia.presentation.register.RegisterActivity
 import com.djhb.petopia.presentation.register.signin.SigninFragment
 import com.djhb.petopia.presentation.register.signup.SignupFragment
 
@@ -66,10 +68,13 @@ class SettingFragment : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    private fun loguout(){
-        parentFragmentManager.beginTransaction()
-            .replace(R.id.main_sub_frame, SigninFragment())
-            .commit()
+    private fun loguout() {
+        //다이얼로그를 닫고 이동
+        dismiss()
 
+        //RegisterActivity 재실행
+        val intent = Intent(requireContext(), RegisterActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
 }
