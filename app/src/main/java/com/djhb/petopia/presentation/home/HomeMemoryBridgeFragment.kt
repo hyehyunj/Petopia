@@ -141,24 +141,21 @@ class HomeMemoryBridgeFragment : Fragment() {
             PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(
                 1,
                 TimeUnit.DAYS
-            ).setInitialDelay(
-                initialDelay,
-                TimeUnit.MILLISECONDS
             ).build()
 
         WorkManager.getInstance(requireContext()).enqueue(workRequest)
 
-        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<UpdateMemoryTextWorker>().build()
-        WorkManager.getInstance(requireContext()).enqueue(oneTimeWorkRequest)
+//        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<UpdateMemoryTextWorker>().build()
+//        WorkManager.getInstance(requireContext()).enqueue(oneTimeWorkRequest)
 
         //처음에 데이터가 없을때 한번만 실행
-        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
-            .observe(viewLifecycleOwner) { workInfo ->
-                if (workInfo.state.isFinished) {
-                    scheduledMemory()
-                    loadMemory()
-                }
-            }
+//        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+//            .observe(viewLifecycleOwner) { workInfo ->
+//                if (workInfo.state.isFinished) {
+//                    scheduledMemory()
+//                    loadMemory()
+//                }
+//            }
     }
 
 
