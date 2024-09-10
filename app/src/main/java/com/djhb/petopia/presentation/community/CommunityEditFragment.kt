@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.djhb.petopia.R
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.FragmentCommunityEditBinding
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
@@ -157,11 +158,15 @@ class CommunityEditFragment : Fragment() {
                 Toast.makeText(requireActivity(), "본문을 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 viewModel.updatePost(post.copy(title = title, content = content))
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_sub_frame, CommunityMainFragment())
+                    .commit()
             }
         }
 
         binding.btnCancel.setOnClickListener {
-
+            requireActivity().supportFragmentManager.popBackStack()
         }
     }
 

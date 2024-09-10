@@ -115,7 +115,7 @@ class CommunityViewModel : ViewModel() {
     suspend fun selectInitPostList(){
 //        Log.i("CommunityViewModel", "start1 selectAllList()")
         viewModelScope.launch {
-            Log.i("CommunityViewModel", "123. start selectAllList()")
+            Log.i("CommunityViewModel", "123. start selectInitAllList()")
             searchPostResult.clear()
             addedSearchResult.clear()
 //            val allPosts = postRepository.selectPosts()
@@ -182,9 +182,14 @@ class CommunityViewModel : ViewModel() {
                     } else
                         imageUris.add("")
                 }
+
+                for (postModel in addedSearchResult) {
+                    Log.i("CommunityViewModel", "addSearchResult = ${postModel}")
+                }
+
                 _postImageUris.value = imageUris
 
-//            Log.i("CommunityViewModel", "123. end selectAllList()")
+            Log.i("CommunityViewModel", "123. end selectInitAllList()")
             }
         }
     }
