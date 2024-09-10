@@ -8,10 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.LetterModel
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.LetterRepository
+import com.djhb.petopia.data.remote.LetterRepositoryImpl
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.launch
 
-class LetterViewModel(private val letterRepository: LetterRepository) : ViewModel() {
+class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : ViewModel() {
     private val _letterListLiveData = MutableLiveData<List<LetterModel>>()
     val letterListLiveData: LiveData<List<LetterModel>> = _letterListLiveData
 
@@ -46,7 +47,7 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
     fun loadInitLetterList(user: UserModel) {
         viewModelScope.launch {
             val documents = letterRepository.selectInitLetterList(user)
-            if(documents.size > 0) {
+            if (documents.size > 0) {
                 lastSnapshot = documents[documents.size - 1]
 //            val memoryList = letterRepository.convertToLetterModel(documents)
                 letterListResult = letterRepository.convertToLetterModel(documents)
@@ -58,15 +59,14 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
     fun loadLetterList(user: UserModel) {
         viewModelScope.launch {
             val documents = letterRepository.selectLetterList(user, lastSnapshot)
-            if(documents.size > 0) {
+            if (documents.size > 0) {
                 val memoryList = letterRepository.convertToLetterModel(documents)
                 letterListResult.addAll(memoryList)
-                lastSnapshot = documents[documents.size-1]
+                lastSnapshot = documents[documents.size - 1]
                 _letterListLiveData.value = letterListResult
             }
         }
     }
-
 
 
     fun setLetterSaved(isSaved: Boolean) {
@@ -89,11 +89,11 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
     fun deleteLetterList(letterModel: LetterModel) {
         viewModelScope.launch {
             letterRepository.deleteLetter(letterModel.key)
-            loadInitLetterList(letterModel.writer)
+            loadLetterList(letterModel.writer)
         }
     }
 
-    class LetterViewModelFactory(private val letterRepository: LetterRepository) :
+    class LetterViewModelFactory(private val letterRepository: LetterRepositoryImpl) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(LetterViewModel::class.java)) {
