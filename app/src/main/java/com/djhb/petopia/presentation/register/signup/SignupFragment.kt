@@ -26,7 +26,7 @@ class SignupFragment : Fragment() {
 
     var isViewMoreClicked = false
 
-//    private val registerViewModel: RegisterViewModel by activityViewModels {
+    //    private val registerViewModel: RegisterViewModel by activityViewModels {
 //        RegisterViewModel.RegisterViewModelFactory(SignRepositoryImpl())
 //    }
     private val registerViewModel: RegisterViewModel by activityViewModels()
@@ -140,7 +140,7 @@ class SignupFragment : Fragment() {
             }
         }
 
-        if (userPassword.length < 8 && userPasswordCheck.length < 8) {
+        if (userPassword.length < 8 || userPasswordCheck.length < 8) {
             StyleableToast.makeText(
                 requireActivity(),
                 "비밀번호는 8자리 이상이어야 합니다.",
