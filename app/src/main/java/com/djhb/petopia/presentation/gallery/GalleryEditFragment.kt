@@ -131,8 +131,8 @@ class GalleryEditFragment : DialogFragment() {
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
                     binding.galleryEditTvCalendarInput.text = "${yy}. ${mm + 1}. ${dd}"
+                    gallerySharedViewModel.considerNewPhotoDate("${yy}.${mm + 1}.${dd}")
                 }
-                gallerySharedViewModel.considerNewPhotoDate("${year}.${month + 1}.${day}")
                 val picker = DatePickerDialog(requireContext(), listener, year, month, day)
                 picker.show()
             }
