@@ -52,7 +52,7 @@
 
             <TextView
                 android:id="@+id/tv_memory_write_question"
-                style="@style/point_text_32_dark_gray"
+                style="@style/point_text_24_dark_gray"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"

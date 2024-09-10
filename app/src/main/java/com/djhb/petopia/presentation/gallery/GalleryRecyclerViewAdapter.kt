@@ -48,14 +48,16 @@ class GalleryRecyclerViewAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: GalleryModel, position: Int, removeMode: String) {
+
             binding.apply {
 //                Log.i("GalleryRecyclerViewAdapter", "uri = ${item.imageUris[0].toUri()}")
 //                galleryHolderIvTitle.setImageURI(item.imageUris[0].toUri())
 
+                if(item.imageUris.size > 0) {
                 Glide.with(galleryHolderTvTitle.context)
                     .load(item.imageUris[0].toUri())
                     .centerCrop()
-                    .into(galleryHolderIvTitle)
+                    .into(galleryHolderIvTitle) }
                 galleryHolderTvTitle.text = item.titleText
 //                binding.galleryHolderIvChecked.isVisible = false
                 when (removeMode) {
