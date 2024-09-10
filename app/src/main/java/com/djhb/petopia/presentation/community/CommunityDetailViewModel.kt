@@ -75,4 +75,6 @@ class CommunityDetailViewModel: ViewModel() {
         _comments.value = commentsResult
     }
 
+
+
 }

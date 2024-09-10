@@ -10,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.R
 import com.djhb.petopia.data.UserModel
-import com.djhb.petopia.data.remote.SignRepositoryImpl
 import com.djhb.petopia.databinding.FragmentSignupBinding
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signin.SigninFragment
@@ -27,9 +26,11 @@ class SignupFragment : Fragment() {
 
     var isViewMoreClicked = false
 
-    private val registerViewModel: RegisterViewModel by activityViewModels {
-        RegisterViewModel.RegisterViewModelFactory(SignRepositoryImpl())
-    }
+//    private val registerViewModel: RegisterViewModel by activityViewModels {
+//        RegisterViewModel.RegisterViewModelFactory(SignRepositoryImpl())
+//    }
+    private val registerViewModel: RegisterViewModel by activityViewModels()
+
 
     private lateinit var userNickname: String
     private lateinit var userId: String
@@ -172,7 +173,7 @@ class SignupFragment : Fragment() {
         val user = UserModel(
             id = userId,
             password = userPassword,
-            name = userNickname,
+            nickname = userNickname,
             email = userEmail
         )
         registerViewModel.isIdExist(userId) { onResult ->

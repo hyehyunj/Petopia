@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 data class UserModel(
     val id: String = "",
     var password: String = "",
-    var name: String = "",
     var nickname: String = "",
     var email: String = "",
     var reportList : List<ReportModel>? = null,

@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/tv_letter_list_number"
-        style="@style/common_btn_16_bold_blue"
+        style="@style/common_text_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"

@@ -20,6 +20,7 @@ import com.djhb.petopia.ReportContentType
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
+import com.djhb.petopia.data.ReportModel
 import com.djhb.petopia.databinding.FragmentCommunityDetailBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.DetailCommentAdapter
@@ -88,8 +89,16 @@ class CommunityDetailFragment : Fragment() {
                 }
             }
 
-            override fun onClickReport(key: String) {
-                reportViewModel.setContent(ReportContentType.QUESTION_COMMENT, key)
+            override fun onClickReport(key: String, targetUserId: String) {
+//                reportViewModel.setContent(ReportContentType.QUESTION_COMMENT, key)
+                reportViewModel.setContent(ReportModel(
+                        reporterId = LoginData.loginUser.id,
+                        targetUserId = targetUserId,
+                        contentType = ReportContentType.QUESTION_COMMENT,
+                        contentUid = key
+                    )
+                )
+                Log.i("CommunityDetailFragment", "click post report")
                 ReportFragment().show(childFragmentManager, "REPORT_FRAGMENT")
             }
 
@@ -184,6 +193,14 @@ class CommunityDetailFragment : Fragment() {
 
     private fun initListener() {
         binding.ivReport.setOnClickListener {
+//            reportViewModel.setContent(ReportContentType.QUESTION_POST, post.key)
+            reportViewModel.setContent(ReportModel(
+                    reporterId = LoginData.loginUser.id,
+                    targetUserId = post.writer.id,
+                    contentType = ReportContentType.QUESTION_POST,
+                    contentUid = post.key
+                )
+            )
             ReportFragment().show(childFragmentManager, "REPORT_FRAGMENT")
         }
 

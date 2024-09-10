@@ -12,6 +12,7 @@ interface PostRepository {
 //    suspend fun selectPosts(): MutableList<PostModel>
     suspend fun selectInitPosts(): List<DocumentSnapshot>
     suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot): List<DocumentSnapshot>
+    suspend fun selectPostFromUser(userId: String): MutableList<PostModel>
 //    suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel>
     suspend fun selectPostMainImage(post: PostModel): StorageReference?
 //    suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<String>

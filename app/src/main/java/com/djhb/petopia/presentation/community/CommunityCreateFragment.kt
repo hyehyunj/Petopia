@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.databinding.FragmentCommunityCreateBinding
@@ -84,7 +85,7 @@ class CommunityCreateFragment : Fragment() {
                     imageUris.removeIf {
                         it == uri
                     }
-                    viewModel.postImageUris.value = imageUris
+                    viewModel.postAddImageUris.value = imageUris
                 }
             })
     }
@@ -106,12 +107,12 @@ class CommunityCreateFragment : Fragment() {
                         imageUris.add(clipData.getItemAt(itemIndex).uri.toString())
                     }
                 }
-                viewModel.postImageUris.value = imageUris
+                viewModel.postAddImageUris.value = imageUris
             }
         }
 
-    private val loginUser =
-        UserModel("testId", "testPassword", "name1", "nickname1", "email@gmail.com")
+//    private val loginUser =
+//        UserModel("testId", "testPassword", "name1", "nickname1", "email@gmail.com")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -167,7 +168,7 @@ class CommunityCreateFragment : Fragment() {
         binding.recyclerViewAddImage.adapter = createImageAdapter
 //        binding.recyclerViewAddImage.layoutManager = LinearLayoutManager(requireActivity())
         Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
-        viewModel.postImageUris.value = imageUris
+        viewModel.postAddImageUris.value = imageUris
 
 //        createImageAdapter.submitList(imageUris)
 
@@ -194,7 +195,7 @@ class CommunityCreateFragment : Fragment() {
                     imageUris.removeAt(0)
                     Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
 //                    postRepository.createPost(PostModel(title, content, loginUser), imageUris)
-                    viewModel.createPost(PostModel(title, content, loginUser), imageUris)
+                    viewModel.createPost(PostModel(title, content, LoginData.loginUser), imageUris)
                     viewModel.selectRankList()
                     viewModel.selectInitPostList()
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
@@ -260,10 +261,10 @@ class CommunityCreateFragment : Fragment() {
     }
 
     private fun initObserveModel(){
-        viewModel.postImageUris.observe(viewLifecycleOwner) {
+        viewModel.postAddImageUris.observe(viewLifecycleOwner) {
             Log.i("CommunityCreateFragment", "observe postImageUris")
-            Log.i("CommunityCreateFragment", "postImageUris.size = ${viewModel.postImageUris.value?.size}")
-            for (imageUris1 in viewModel.postImageUris.value?: mutableListOf()) {
+            Log.i("CommunityCreateFragment", "postImageUris.size = ${viewModel.postAddImageUris.value?.size}")
+            for (imageUris1 in viewModel.postAddImageUris.value?: mutableListOf()) {
                 Log.i("CommunityCreateFragment", "uri = ${imageUris1}")
             }
 //            createImageAdapter.submitList(viewModel.postImageUris.value?.toMutableList())

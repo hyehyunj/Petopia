@@ -7,18 +7,22 @@ import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.admin.AdminFragment
+import com.djhb.petopia.presentation.admin.AdminViewModel
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 import com.djhb.petopia.presentation.setting.SettingFragment
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.launch
 
 class HomeEarthFragment : Fragment() {
     private val _binding: FragmentHomeEarthBinding by lazy {
@@ -26,6 +30,7 @@ class HomeEarthFragment : Fragment() {
     }
     private val binding get() = _binding
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
+    private val adminViewModel: AdminViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

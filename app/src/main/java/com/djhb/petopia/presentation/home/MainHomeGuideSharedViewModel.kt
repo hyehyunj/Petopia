@@ -15,7 +15,6 @@ import com.djhb.petopia.data.remote.PetRepositoryImpl
 import com.djhb.petopia.data.remote.SignRepository
 import com.djhb.petopia.data.remote.SignRepositoryImpl
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 
 //펫토피아 뷰모델
@@ -99,7 +98,7 @@ class MainHomeGuideSharedViewModel(
 
     //유저 이름을 불러오는 함수
     fun getUserName(): String {
-        return user.loginUser.name
+        return user.loginUser.nickname
     }
 
 

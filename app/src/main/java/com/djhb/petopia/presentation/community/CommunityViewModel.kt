@@ -8,8 +8,10 @@ import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.remote.PostRepositoryImpl
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Collections
 
 class CommunityViewModel : ViewModel() {
@@ -30,7 +32,11 @@ class CommunityViewModel : ViewModel() {
     private val _postImageUris = MutableLiveData<MutableList<String>>()
     val postImageUris get() = _postImageUris
 
+    private val _postAddImageUris = MutableLiveData<MutableList<String>>()
+    val postAddImageUris get() = _postAddImageUris
+
     private var addedSearchResult = mutableListOf<PostModel>()
+
 
     private val postRepository = PostRepositoryImpl()
 
@@ -348,6 +354,13 @@ class CommunityViewModel : ViewModel() {
         viewModelScope.launch {
             postRepository.deletePostImages(postKey)
         }
+    }
+
+    suspend fun selectPostFromUser(userId: String): MutableList<PostModel> {
+        return withContext(Dispatchers.IO) {
+            async { postRepository.selectPostFromUser(userId)}.await()
+        }
+
     }
 
 
