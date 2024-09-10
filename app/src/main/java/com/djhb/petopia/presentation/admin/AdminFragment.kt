@@ -27,6 +27,8 @@ class AdminFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         initAdapter()
 
         return binding.root
@@ -44,20 +46,18 @@ class AdminFragment : Fragment() {
         //뒤로가기버튼 클릭이벤트 :
         binding.adminIvBack.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
-                    .remove(this@AdminFragment)
-                    .commit()
-            }
-
+                .remove(this@AdminFragment)
+                .commit()
         }
+
+    }
 
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun adminDataObserver() {
 
 
-
     }
-
 
 
     //어댑터 초기화 함수 :
@@ -65,16 +65,16 @@ class AdminFragment : Fragment() {
         adminRecyclerViewAdapter = AdminRecyclerViewAdapter(
             adminViewModel.reportListLiveData.value ?: listOf(),
             itemClickListener = { item, position ->
-
-                        AdminReportFragment().show(childFragmentManager, "ADMIN_REPORT_FRAGMENT")
-                },
+                adminViewModel.selectReport(item)
+                AdminReportFragment().show(childFragmentManager, "ADMIN_REPORT_FRAGMENT")
+            },
             itemLongClickListener = { item, position -> },
         )
 
         binding.galleryRv.adapter = adminRecyclerViewAdapter
-        binding.galleryRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.galleryRv.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
-
 
 
 }

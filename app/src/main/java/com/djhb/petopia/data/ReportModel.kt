@@ -11,7 +11,7 @@ data class ReportModel(
     val uid: String,
     val reporterId: String,
     val targetUserId: String,
-    val blockType: BlockType,
+//    val blockType: BlockType,
     val reasonType: ReportReasonType,
     val reasonDescription: String,
     val contentType: ReportContentType,

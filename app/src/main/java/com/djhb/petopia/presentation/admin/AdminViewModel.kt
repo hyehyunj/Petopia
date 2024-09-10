@@ -35,6 +35,24 @@ class AdminViewModel(private val adminRepository: AdminRepository) :
     val reportDetailLiveData: LiveData<ReportModel> = _reportDetailLiveData
 
 
+    fun selectReport(report: ReportModel) {
+        _reportDetailLiveData.value = report
+
+    }
+
+    //신고리스트 불러오기
+    fun loadInitReportList() {
+        viewModelScope.launch {
+
+            //신고리스트 결과 담기
+//            _reportListLiveData.value =
+        }
+    }
+
+
+
+
+
 }
 
 
