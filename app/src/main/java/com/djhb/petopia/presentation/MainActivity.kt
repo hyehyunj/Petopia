@@ -7,19 +7,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.ActivityMainBinding
+import com.djhb.petopia.presentation.admin.AdminExileDialogFragment
 import com.djhb.petopia.presentation.dialog.DialogFragment
 import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
-import com.djhb.petopia.presentation.guide.GuideSharedViewModel
-import com.djhb.petopia.presentation.guide.GuideSharedViewModelFactory
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
-import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity() {
 
@@ -89,8 +86,11 @@ class MainActivity : AppCompatActivity() {
 
     fun cancelGuide() {
         GuideCancelDialogFragment().show(supportFragmentManager, "GUIDE_CANCEL_DIALOG_FRAGMENT")
-
     }
+    fun exileUser() {
+        AdminExileDialogFragment().show(supportFragmentManager, "ADMIN_EXILE_DIALOG_FRAGMENT")
+    }
+
 //    fun clearGuide() {
 //        binding.mainViewPager.isUserInputEnabled = true
 //        supportFragmentManager.beginTransaction()
