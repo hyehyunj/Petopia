@@ -26,7 +26,6 @@ class CommunityDetailViewModel: ViewModel() {
     private val postRepository = PostRepositoryImpl()
     private val commentRepository = CommentRepositoryImpl()
 
-
     suspend fun selectDetailImageUris(key: String) {
         viewModelScope.launch {
 //            imageUriResults = async { postRepository.selectDetailImages(key)}.await()
