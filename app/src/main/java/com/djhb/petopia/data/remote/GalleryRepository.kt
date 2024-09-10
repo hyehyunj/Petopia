@@ -13,7 +13,7 @@ interface GalleryRepository {
     suspend fun createGallery(gallery: GalleryModel): Boolean
 //    suspend fun selectGalleryList(user: UserModel): MutableList<GalleryModel>
     suspend fun selectInitGalleryList(user: UserModel): List<DocumentSnapshot>
-//    suspend fun selectGalleryList(user: UserModel, lastSnapshot: DocumentSnapshot): List<DocumentSnapshot>
+    suspend fun selectGalleryList(user: UserModel, lastSnapshot: DocumentSnapshot): List<DocumentSnapshot>
 //    suspend fun selectGalleryMainImages(galleryList: MutableList<GalleryModel>) : MutableList<GalleryModel>
     suspend fun selectGalleryMainImages(galleryUid : String) : StorageReference?
 //    suspend fun selectDetailGalleryImages(gallery: GalleryModel) : GalleryModel
@@ -21,5 +21,5 @@ interface GalleryRepository {
     suspend fun selectDownloadUri(item: StorageReference): String
     suspend fun updateGallery(gallery: GalleryModel, imageUri: Uri)
     suspend fun deleteGallery(galleryKey: String): Boolean
-//    fun convertToGalleryModel(documents: List<DocumentSnapshot>): MutableList<GalleryModel>
+    fun convertToGalleryModel(documents: List<DocumentSnapshot>): MutableList<GalleryModel>
 }

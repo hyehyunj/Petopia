@@ -23,9 +23,6 @@ import com.djhb.petopia.databinding.FragmentGalleryBinding
 
 class GalleryFragment : DialogFragment() {
 
-    companion object {
-        private const val TAG = "GalleryFragment"
-    }
     private lateinit var galleryRecyclerViewAdapter: GalleryRecyclerViewAdapter
     private val _binding: FragmentGalleryBinding by lazy {
         FragmentGalleryBinding.inflate(layoutInflater)
@@ -55,7 +52,7 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        gallerySharedViewModel.loadGalleryList()
+        gallerySharedViewModel.loadInitGalleryList()
 
         initDialog()
     }
@@ -73,7 +70,6 @@ class GalleryFragment : DialogFragment() {
             }
             //삭제버튼 클릭이벤트 : 체크박스 활성화
             galleryIvRemove.setOnClickListener {
-                Log.d(TAG, "")
                 gallerySharedViewModel.changeRemoveMode()
 //                when(gallerySharedViewModel.removeModeLiveData.value) {
 //                    "REMOVE" -> galleryRecyclerViewAdapter.updateRemoveMode("REMOVE")

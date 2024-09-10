@@ -71,7 +71,6 @@ class GalleryRepositoryImpl : GalleryRepository {
 
 //        storageReference.child(gallery.key).
     }
-
     override suspend fun selectInitGalleryList(user: UserModel): List<DocumentSnapshot> {
         return withContext(Dispatchers.IO) {
             Log.i("GalleryRepositoryImpl", "start selectGalleryList")
@@ -88,6 +87,7 @@ class GalleryRepositoryImpl : GalleryRepository {
                 .await()
 
             snapshot.documents
+
 
 //            val result = it.result
 //            Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
