@@ -11,6 +11,7 @@ data class UserModel(
     var name: String = "",
     var nickname: String = "",
     var email: String = "",
+    var reportList : List<ReportModel>? = null,
     var pet: PetModel? = null,
     var completedGuide: Boolean = false,
     val createdDate: Long = System.currentTimeMillis(),
