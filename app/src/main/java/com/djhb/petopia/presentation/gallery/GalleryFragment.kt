@@ -55,7 +55,7 @@ class GalleryFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        gallerySharedViewModel.loadInitGalleryList()
+        gallerySharedViewModel.loadGalleryList()
 
         initDialog()
     }
@@ -193,8 +193,6 @@ class GalleryFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        gallerySharedViewModel.loadInitGalleryList()
     }
 
 }
