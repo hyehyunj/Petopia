@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.gallery
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -53,8 +54,6 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     val checkedPhotoLiveData: LiveData<Int> = _checkedPhotoLiveData
 
 
-
-
     //데이터베이스에서 사용자의 갤러리를 불러오는 함수
     fun loadGalleryList() {
         viewModelScope.launch {
@@ -71,7 +70,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             }
 
             for ((uriIndex, uri) in imageUris.withIndex()) {
-                if(uri != null)
+                if (uri != null)
                     successList[uriIndex].imageUris.add(galleryRepository.selectDownloadUri(uri))
             }
 
@@ -91,12 +90,17 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     //진입경로에 따라 레이아웃 모드를 변경해주는 함수
     fun changeLayoutMode(layoutMode: String) {
         _layoutModeLiveData.value = layoutMode
-        if (layoutMode == "ADD") { //추가를 위한 새로운 객체 생성
-            newPhotoList = GalleryModel(
-                "", writer = user, imageUris = mutableListOf()
-            )
-            _currentPhotoListLiveData.value = newPhotoList
+        when (layoutMode) {
+            "ADD" -> {
+                newPhotoList = GalleryModel(
+                    "", writer = user, imageUris = mutableListOf()
+                )
+                _currentPhotoListLiveData.value = newPhotoList
+            }
+            "EDIT" -> newPhotoList = _currentPhotoListLiveData.value ?: GalleryModel(
+                "", writer = user)
         }
+
     }
 
     //선택된 사진을 상세페이지로 보여주기 위해 담거나, 삭제모드일 경우 임시 저장 변수에 담아주는 함수
@@ -105,41 +109,24 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             "REMOVE" -> {
                 if (removePhotoList[position].checked) {
                     removePhotoList[position] = photoList.copy(checked = false)
-                    _checkedPhotoLiveData.value = position}
-                else {
+                    _checkedPhotoLiveData.value = position
+                } else {
                     removePhotoList[position] = photoList.copy(checked = true)
-                    _checkedPhotoLiveData.value = position}
+                    _checkedPhotoLiveData.value = position
+                }
             }
+
             "COMPLETE" -> _currentPhotoListLiveData.value = photoList.copy(index = position)
         }
 
     }
-//fun newPhotoListChange(uri: List<Uri>, position: Int) : List<Uri> {
-// = listOf()
-// = uri
-//
-// return
-//}
-
 
     //등록 또는 변경될 가능성이 있는 새로운 사진을 담는 함수
     fun considerNewPhoto(uriList: List<Uri>) {
         val photoList = mutableListOf<String>()
         uriList.forEach { photoList.add(it.toString()) }
-
-        when (_layoutModeLiveData.value) {
-            "ADD" -> newPhotoList = newPhotoList.copy(imageUris = photoList)
-            "EDIT" -> newPhotoList =
-                _currentPhotoListLiveData.value?.copy(
-                    imageUris = photoList
-                ) ?: GalleryModel(
-                    "", writer = user, 0, 0, imageUris = photoList
-                )
-        }
+            newPhotoList = newPhotoList.copy(imageUris = photoList)
     }
-
-
-
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
     fun considerNewPhotoDate(dateTime: String) {
@@ -148,27 +135,14 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         )
     }
 
-
     //등록 또는 변경될 가능성이 있는 사진의 제목을 담는 함수
     fun considerNewPhotoTitle(editText: String) {
-        when (_layoutModeLiveData.value) {
-            "ADD" -> {
                 newPhotoList = newPhotoList.copy(
                     titleText = editText
                 )
-            }
-
-            "EDIT" -> {
-                newPhotoList = newPhotoList.copy(
-                    titleText = editText
-                )
-            }
-        }
     }
 
-
-
-    fun prepared() : Boolean {
+    fun prepared(): Boolean {
         return newPhotoList.imageUris.isNotEmpty() && newPhotoList.titleText.isNotEmpty()
     }
 
@@ -181,14 +155,15 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 _currentPhotoListLiveData.value =
                     newPhotoList
                 galleryList.add(0, _currentPhotoListLiveData.value!!)
+                saveGalleryList()
             }
+
             "EDIT" -> {
                 _currentPhotoListLiveData.value = newPhotoList
                 galleryList[index] = _currentPhotoListLiveData.value!!
             }
         }
         _galleryListLiveData.value = galleryList
-        saveGalleryList()
 
     }
 
@@ -202,7 +177,8 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     //사진 삭제가 반영된 리스트로 교체하는 함수
     fun updateRemoveGalleryList(mode: String) {
         when (mode) {
-            "REMOVE" -> {removePhotoList = _galleryListLiveData.value!!.toMutableList()
+            "REMOVE" -> {
+                removePhotoList = _galleryListLiveData.value!!.toMutableList()
             }
 
 
@@ -211,9 +187,10 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
 
                 viewModelScope.launch {
-                    for(i in list) {
+                    for (i in list) {
                         galleryRepository.deleteGallery(i.uid)
-                    }}
+                    }
+                }
                 removePhotoList.removeIf { it.checked }
 
 // removePhotoList.forEach { removePhoto ->
@@ -227,9 +204,6 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         }
     }
 }
-
-
-
 
 
 class GallerySharedViewModelFactory : ViewModelProvider.Factory {

@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         mainHomeGuideSharedViewModel.updateGuideState("ESSENTIAL")
         supportFragmentManager.beginTransaction()
             .replace(
-                R.id.main_sub_frame, GuideFragment()
+                R.id.main_guide_frame, GuideFragment()
             )
             .setReorderingAllowed(true)
             .addToBackStack(null)
@@ -131,7 +131,6 @@ class MainActivity : AppCompatActivity() {
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {
         binding.mainViewPager.isUserInputEnabled = true
-        moveToPetopia()
         supportFragmentManager.beginTransaction()
             .remove(GuideFragment())
             .commit()

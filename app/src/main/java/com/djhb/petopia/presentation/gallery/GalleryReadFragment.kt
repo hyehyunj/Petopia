@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.Locale
 
-//포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
+//갤러리 읽기전용 프래그먼트 : 갤러리에서 사진 조회할 때 나타나는 프래그먼트
 class GalleryReadFragment : DialogFragment() {
 
     private val _binding: FragmentGalleryReadBinding by lazy {
@@ -59,6 +59,8 @@ class GalleryReadFragment : DialogFragment() {
                     currentPhoto
                 )
             }
+            Log.d("왜","${sharedViewModel.currentPhotoLiveData.value}")
+
 
 
         }
@@ -71,7 +73,7 @@ class GalleryReadFragment : DialogFragment() {
 
     //읽기전용 모드 함수 : 레이아웃을 입력 불가능한 모드로 구성한다.
     private fun readOnlyMode(item: GalleryModel) {
-
+Log.d("왜","${item}")
         binding.apply {
 //            Glide.with(requireParentFragment())
 //                .load(item.imageUris[0].toUri())
