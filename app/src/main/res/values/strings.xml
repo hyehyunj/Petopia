@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Petopia</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="messege_undo">추후 업데이트 예정</string>
 
 
     <!--  Common : 공통적으로 사용되는 String   -->

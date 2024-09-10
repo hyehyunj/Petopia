@@ -70,6 +70,17 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
         }
     }
 
+    fun deleteUser(
+        id: String,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit
+    ) {
+        viewModelScope.launch {
+            signRepository.deleteUser(id)
+        }
+    }
+
+
     class RegisterViewModelFactory(
         private val signRepository: SignRepository
     ) : ViewModelProvider.Factory {

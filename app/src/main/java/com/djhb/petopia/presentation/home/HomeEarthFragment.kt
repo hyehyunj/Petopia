@@ -10,10 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.admin.AdminFragment
+import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
+import io.github.muddz.styleabletoast.StyleableToast
 
 class HomeEarthFragment : Fragment() {
     private val _binding: FragmentHomeEarthBinding by lazy {
@@ -45,16 +49,25 @@ class HomeEarthFragment : Fragment() {
         //설정버튼 클릭이벤트 : 클릭시 설정 이동
         binding.homeEarthIvMy.setOnClickListener {
 
+//            if(LoginData.loginUser.authority == Authority.ADMIN)
+                (activity as MainActivity).supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.main_sub_frame, AdminFragment()
+                    )
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit()
+
         }
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
         binding.homeEarthIvCloudLeft.setOnClickListener {
-
+            showUndoToast()
         }
 
         //우측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
         binding.homeEarthIvCloudRight.setOnClickListener {
-
+            showUndoToast()
         }
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
@@ -85,7 +98,13 @@ class HomeEarthFragment : Fragment() {
 
     }
 
-
-
-
+    fun showUndoToast() {
+        StyleableToast.makeText(
+            requireActivity(),
+            getString(R.string.messege_undo),
+            R.style.toast_undo
+        ).show()
     }
+
+
+}

@@ -150,7 +150,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/gray" />
+                android:background="@color/gray"
+                android:visibility="invisible" />
 
 
         </LinearLayout>
@@ -163,6 +164,7 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:text="@string/signin_autologin_guide"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/btn_google_signin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -177,6 +179,7 @@
             android:elevation="5dp"
             android:padding="16dp"
             android:src="@drawable/icon_google"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btn_naver_signin"
@@ -192,6 +195,7 @@
             android:elevation="5dp"
             android:padding="20dp"
             android:src="@drawable/icon_naver"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btn_kakao_signin"
@@ -204,10 +208,11 @@
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:background="@drawable/bg_round_yellow"
-            android:elevation="5dp"
             android:clipToOutline="true"
+            android:elevation="5dp"
             android:padding="6dp"
             android:src="@drawable/img_kakao"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"

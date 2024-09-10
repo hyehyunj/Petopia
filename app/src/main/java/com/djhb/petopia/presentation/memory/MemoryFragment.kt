@@ -26,10 +26,12 @@ import com.djhb.petopia.databinding.FragmentMemoryBinding
 
 class MemoryFragment() : DialogFragment() {
 
-    private var _binding: FragmentMemoryBinding? = null
-    private val binding get() = _binding!!
-
     private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
+    private val _binding: FragmentMemoryBinding by lazy {
+        FragmentMemoryBinding.inflate(layoutInflater)
+    }
+
+    private val binding get() = _binding
 
     //private lateinit var homeSharedViewModel: HomeSharedViewModel
 
@@ -39,13 +41,13 @@ class MemoryFragment() : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMemoryBinding.inflate(inflater, container, false)
+        initAdapter()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
+
         initDialog()
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
@@ -213,11 +215,6 @@ class MemoryFragment() : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     // 메모리 작성 프래그먼트 이동함수

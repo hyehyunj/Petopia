@@ -26,8 +26,11 @@ class MemoryWriteFragment(
     private val onMemorySaved: ((Memory) -> Unit)? = null
 ) : DialogFragment() {
 
-    private var _binding: FragmentMemoryWriteBinding? = null
-    private val binding get() = _binding!!
+
+    private val _binding: FragmentMemoryWriteBinding by lazy {
+        FragmentMemoryWriteBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     private lateinit var memoryViewModel: MemoryViewModel
     private var memoryToEdit: Memory? = null
@@ -37,7 +40,6 @@ class MemoryWriteFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMemoryWriteBinding.inflate(inflater, container, false)
 
         memoryViewModel = ViewModelProvider(requireActivity()).get(MemoryViewModel::class.java)
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { title ->
@@ -86,11 +88,6 @@ class MemoryWriteFragment(
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun initDialog() {
