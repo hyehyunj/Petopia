@@ -52,7 +52,7 @@ class ReportFragment : DialogFragment() {
                 dismiss()
             }
             //신고버튼 클릭이벤트
-            reportTvReport.setOnClickListener {
+            reportTvComplete.setOnClickListener {
 
             }
         }
