@@ -1,9 +1,12 @@
 package com.djhb.petopia.data
 
+import android.os.Parcelable
 import com.djhb.petopia.BlockType
 import com.djhb.petopia.ReportContentType
 import com.djhb.petopia.ReportReasonType
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ReportModel(
     val uid: String,
     val reporterId: String,
@@ -15,4 +18,4 @@ data class ReportModel(
     val contentUid: String,
     val createdDate: Long = System.currentTimeMillis(),
     val updatedDate: Long? = null
-)
+) : Parcelable
