@@ -18,7 +18,7 @@ import com.djhb.petopia.presentation.report.ReportFragment
 interface OnClickComment{
     fun onClickEdit(comment: CommentModel)
     fun onClickDelete(key: String)
-    fun onClickReport(key: String)
+    fun onClickReport(key: String, targetUserId: String)
 }
 
 class DetailCommentAdapter(private val onClickComment: OnClickComment)
@@ -62,7 +62,7 @@ class DetailCommentAdapter(private val onClickComment: OnClickComment)
             holder.editButton.visibility = TextView.GONE
             holder.deleteButton.visibility = TextView.GONE
             holder.reportButton.setOnClickListener {
-                onClickComment.onClickReport(item.key)
+                onClickComment.onClickReport(item.key, item.writer.id)
             }
         }
 

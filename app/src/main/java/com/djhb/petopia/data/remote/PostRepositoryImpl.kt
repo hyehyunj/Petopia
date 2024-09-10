@@ -214,6 +214,18 @@ class PostRepositoryImpl : PostRepository {
         }
     }
 
+    override suspend fun selectPostFromUser(userId: String): MutableList<PostModel> {
+        return withContext(Dispatchers.IO) {
+            val snapshot = storeReference
+                .whereEqualTo("writer.id", userId)
+                .orderBy("writer.id")
+                .get()
+                .await()
+
+            convertToPostModel(snapshot.documents)
+        }
+    }
+
     //    override suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel> {
 //        return suspendCancellableCoroutine { continuation ->
 //            for (post in posts) {

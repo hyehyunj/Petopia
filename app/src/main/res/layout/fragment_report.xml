@@ -42,6 +42,7 @@
         android:id="@+id/report_rg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:checkedButton="@+id/report_rb_1"
         app:layout_constraintStart_toStartOf="@id/report_tv_report_title"
         app:layout_constraintTop_toBottomOf="@id/report_tv_report_title">
 

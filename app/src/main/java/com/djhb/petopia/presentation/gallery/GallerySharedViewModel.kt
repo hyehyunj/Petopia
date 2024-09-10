@@ -221,7 +221,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
                 _currentPhotoListLiveData.value =
                     newPhotoList
                 viewModelScope.launch {
-                    galleryRepository.createGallery(_currentPhotoListLiveData.value!!)
+//                    galleryRepository.createGallery(_currentPhotoListLiveData.value!!)
                     galleryList.add(0, _currentPhotoListLiveData.value!!)
                 }
             }

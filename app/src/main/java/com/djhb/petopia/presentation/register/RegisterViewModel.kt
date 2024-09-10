@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.SignRepository
+import com.djhb.petopia.data.remote.SignRepositoryImpl
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val signRepository: SignRepository) : ViewModel() {
+class RegisterViewModel : ViewModel() {
+
 
     private val _userNickName = MutableLiveData<String>()
     val userNickName: LiveData<String> = _userNickName
@@ -32,6 +34,10 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
 
     private val _loginUser = MutableLiveData<UserModel?>()
     val loginUser: LiveData<UserModel?> = _loginUser
+
+    private val signRepository: SignRepository by lazy {
+        SignRepositoryImpl()
+    }
 
     fun setUserData(
         userNickname: String,
@@ -72,8 +78,6 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
 
     fun deleteUser(
         id: String,
-        onSuccess: () -> Unit,
-        onFailure: () -> Unit
     ) {
         viewModelScope.launch {
             signRepository.deleteUser(id)
@@ -81,15 +85,15 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
     }
 
 
-    class RegisterViewModelFactory(
-        private val signRepository: SignRepository
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return RegisterViewModel(signRepository) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
-        }
-    }
+//    class RegisterViewModelFactory(
+//        private val signRepository: SignRepository
+//    ) : ViewModelProvider.Factory {
+//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//            if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
+//                @Suppress("UNCHECKED_CAST")
+//                return RegisterViewModel(signRepository) as T
+//            }
+//            throw IllegalArgumentException("Unknown ViewModel class")
+//        }
+//    }
 }

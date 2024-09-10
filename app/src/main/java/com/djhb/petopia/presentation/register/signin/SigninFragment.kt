@@ -25,10 +25,10 @@ class SigninFragment : Fragment() {
     private val binding get() = _binding
 
     private val signRepository = SignRepositoryImpl()
-    private val registerViewModel: RegisterViewModel by activityViewModels {
-        RegisterViewModel.RegisterViewModelFactory(signRepository)
-    }
-
+//    private val registerViewModel: RegisterViewModel by activityViewModels {
+//        RegisterViewModel.RegisterViewModelFactory(signRepository)
+//    }
+    private val registerViewModel: RegisterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

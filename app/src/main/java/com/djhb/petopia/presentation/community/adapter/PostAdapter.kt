@@ -39,10 +39,12 @@ class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<P
     override fun onBindViewHolder(holder: PostItem, position: Int) {
         val item = getItem(position)
 
+        Log.i("PostAdapter", "item = ${item}")
+
         holder.title.text = item.title
         holder.viewCount.text = item.viewCount.toString()
         holder.likeCount.text = item.likeCount.toString()
-        holder.userId.text = item.writer.id
+        holder.userId.text = item.writer.nickname
         holder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)
         holder.binding.root.setOnClickListener {
             onClick(item)
