@@ -42,7 +42,10 @@ class CommunityMainFragment : Fragment() {
         FragmentCommunityMainBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: CommunityViewModel by activityViewModels()
+//    private val viewModel: CommunityViewModel by activityViewModels()
+    private val viewModel: CommunityViewModel by lazy {
+        CommunityViewModel()
+    }
 
     private val mainActivity: MainActivity by lazy {
         requireActivity() as MainActivity
@@ -58,7 +61,7 @@ class CommunityMainFragment : Fragment() {
             requireActivity().supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.main_sub_frame, detailFragment)
-                .addToBackStack(null)
+                .addToBackStack("questionMain")
                 .commit()
 
             lifecycleScope.launch {
@@ -128,8 +131,8 @@ class CommunityMainFragment : Fragment() {
 
     private fun initView() {
         lifecycleScope.launch {
-            viewModel.selectRankList()
-            viewModel.selectInitPostList()
+            async { viewModel.selectRankList()}.await()
+            async { viewModel.selectInitPostList()}.await()
 //            async { viewModel.selectAllImageList()}.await()
         }
         binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
@@ -206,7 +209,8 @@ class CommunityMainFragment : Fragment() {
         }
 
         viewModel.postImageUris.observe(viewLifecycleOwner) {
-//            Log.i("CommunityMainFragment", "123. observe postImageUris : ${it}")
+            Log.i("CommunityMainFragment", "123. observe postImageUris : ${it}")
+            Log.i("CommunityMainFragment", "123. observe postImageUris.size : ${it.size}")
 //            for (postModel in allPostAdapter.currentList) {
 //                Log.i("CommunityMainFragment", "before postImageUris adapter element = ${postModel}")
 //            }
