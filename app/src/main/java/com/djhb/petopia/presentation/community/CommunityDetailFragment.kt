@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.R
+import com.djhb.petopia.ReportContentType
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
@@ -27,7 +28,9 @@ import com.djhb.petopia.presentation.community.adapter.OnClickComment
 import com.djhb.petopia.presentation.community.dialogFragment.CommentEditDialogFragment
 import com.djhb.petopia.presentation.community.dialogFragment.PostDeleteDialogFragment
 import com.djhb.petopia.presentation.gallery.GalleryFragment
+import com.djhb.petopia.presentation.gallery.GallerySharedViewModel
 import com.djhb.petopia.presentation.report.ReportFragment
+import com.djhb.petopia.presentation.report.ReportViewModel
 import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator
 import me.relex.circleindicator.CircleIndicator3
@@ -84,6 +87,12 @@ class CommunityDetailFragment : Fragment() {
                     detailViewModel.deleteComment(key)
                 }
             }
+
+            override fun onClickReport(key: String) {
+                reportViewModel.setContent(ReportContentType.QUESTION_COMMENT, key)
+                ReportFragment().show(childFragmentManager, "REPORT_FRAGMENT")
+            }
+
         })
     }
 
@@ -94,6 +103,8 @@ class CommunityDetailFragment : Fragment() {
     private lateinit var viewPagerAdapter: DetailImageAdapter
     private lateinit var indicator: CircleIndicator3
     private lateinit var key: String
+    private lateinit var reportViewModel: ReportViewModel
+
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -232,7 +243,6 @@ class CommunityDetailFragment : Fragment() {
             binding.btnDelete.visibility = ImageView.GONE
             binding.btnEdit.visibility = ImageView.GONE
         }
-
     }
 
     private fun initObserver(){
@@ -249,6 +259,7 @@ class CommunityDetailFragment : Fragment() {
             binding.indicatorDetail.createIndicators(it.size, 0)
         }
     }
+
 
 
 

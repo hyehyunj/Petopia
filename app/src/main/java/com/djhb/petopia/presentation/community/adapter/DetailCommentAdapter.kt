@@ -2,6 +2,7 @@ package com.djhb.petopia.presentation.community.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,12 +10,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LoginData
+import com.djhb.petopia.data.ReportModel
 import com.djhb.petopia.databinding.PostCommentHolderBinding
+import com.djhb.petopia.presentation.report.ReportFragment
 
 
 interface OnClickComment{
     fun onClickEdit(comment: CommentModel)
     fun onClickDelete(key: String)
+    fun onClickReport(key: String)
 }
 
 class DetailCommentAdapter(private val onClickComment: OnClickComment)
@@ -52,10 +56,14 @@ class DetailCommentAdapter(private val onClickComment: OnClickComment)
             holder.deleteButton.setOnClickListener {
                 onClickComment.onClickDelete(item.key)
             }
+            holder.reportButton.visibility = ImageView.GONE
 
         } else{
             holder.editButton.visibility = TextView.GONE
             holder.deleteButton.visibility = TextView.GONE
+            holder.reportButton.setOnClickListener {
+                onClickComment.onClickReport(item.key)
+            }
         }
 
     }
@@ -66,5 +74,6 @@ class DetailCommentAdapter(private val onClickComment: OnClickComment)
         val createdDate = binding.tvCreatedDate
         val editButton = binding.tvEditComment
         val deleteButton = binding.tvDeleteComment
+        val reportButton = binding.ivReport
     }
 }
