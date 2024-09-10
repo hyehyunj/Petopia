@@ -158,10 +158,7 @@ class HomeMemoryBridgeFragment : Fragment() {
                     scheduledMemory()
                     loadMemory()
                 }
-
             }
-
-
     }
 
 
