@@ -12,6 +12,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.databinding.FragmentAdminReportBinding
+import com.djhb.petopia.presentation.MainActivity
 
 
 class AdminReportFragment : DialogFragment() {
@@ -52,7 +53,15 @@ class AdminReportFragment : DialogFragment() {
             adminReportIvBack.setOnClickListener {
                 dismiss()
             }
+            //계정삭제버튼 클릭이벤트 : 갤러리 종료
+            reportTvExile.setOnClickListener {
+                (activity as MainActivity).exileUser()
+            }
+
+
         }
+
+
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
