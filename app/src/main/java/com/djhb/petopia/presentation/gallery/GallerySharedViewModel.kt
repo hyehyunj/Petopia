@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.gallery
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -114,12 +115,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         }
 
     }
-//fun newPhotoListChange(uri: List<Uri>, position: Int) : List<Uri> {
-// = listOf()
-// = uri
-//
-// return
-//}
+
 
 
     //등록 또는 변경될 가능성이 있는 새로운 사진을 담는 함수
@@ -180,6 +176,8 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
             "ADD" -> {
                 _currentPhotoListLiveData.value =
                     newPhotoList
+                Log.d("뉴포토","${newPhotoList}")
+                Log.d("커런트포토","${_currentPhotoListLiveData.value}")
                 galleryList.add(0, _currentPhotoListLiveData.value!!)
             }
             "EDIT" -> {
@@ -189,7 +187,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
         }
         _galleryListLiveData.value = galleryList
         saveGalleryList()
-
+Log.d("사진담김?","${_currentPhotoListLiveData.value}")
     }
 
     //삭제 모드를 변경해주는 함수
