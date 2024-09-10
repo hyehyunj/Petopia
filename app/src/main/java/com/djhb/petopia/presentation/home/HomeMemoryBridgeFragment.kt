@@ -58,6 +58,7 @@ class HomeMemoryBridgeFragment : Fragment() {
 
 
         loadMemory()
+        Log.d("loadMemory", "memoryText: ${binding.homeMemoryBridgeTvMemoryTitle.text}")
         scheduledMemory()
 
 
@@ -147,7 +148,17 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         WorkManager.getInstance(requireContext()).enqueue(workRequest)
 
+        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<UpdateMemoryTextWorker>().build()
+        WorkManager.getInstance(requireContext()).enqueue(oneTimeWorkRequest)
 
+        //처음에 데이터가 없을때 한번만 실행
+        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
+            .observe(viewLifecycleOwner) { workInfo ->
+                if (workInfo.state.isFinished) {
+                    scheduledMemory()
+                    loadMemory()
+                }
+            }
     }
 
 
@@ -156,6 +167,9 @@ class HomeMemoryBridgeFragment : Fragment() {
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
         val memoryText = sharedPreferences.getString("memoryText", null)
 
+        Log.d("loadMemory", "memoryText: $memoryText")
+
+        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
 
         if (memoryViewModel.isMemorySaved.value != true) {
             binding.homeMemoryBridgeTvMemoryTitle.text = memoryText

@@ -19,9 +19,6 @@ import kotlinx.coroutines.launch
 
 class SignupFragment : Fragment() {
 
-//    private var _binding: FragmentSignupBinding? = null
-//    private val binding get() = _binding!!
-
     private val _binding: FragmentSignupBinding by lazy {
         FragmentSignupBinding.inflate(layoutInflater)
     }
@@ -143,6 +140,14 @@ class SignupFragment : Fragment() {
             }
         }
 
+        if (userPassword.length < 8 && userPasswordCheck.length < 8) {
+            StyleableToast.makeText(
+                requireActivity(),
+                "비밀번호는 8자리 이상이어야 합니다.",
+                R.style.toast_warning
+            ).show()
+        }
+
         if (userPassword != userPasswordCheck) {
             StyleableToast.makeText(
                 requireActivity(),
@@ -171,19 +176,29 @@ class SignupFragment : Fragment() {
             nickname = userNickname,
             email = userEmail
         )
-
-        lifecycleScope.launch {
-            registerViewModel.createUser(user)
-            StyleableToast.makeText(
-                requireActivity(),
-                "회원가입 성공",
-                R.style.toast_common
-            ).show()
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.register_fragment_container, SigninFragment())
-                .addToBackStack(null)
-                .commit()
+        registerViewModel.isIdExist(userId) { onResult ->
+            if (onResult) {
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "이미 존재하는 아이디입니다.",
+                    R.style.toast_warning
+                ).show()
+            } else {
+                lifecycleScope.launch {
+                    registerViewModel.createUser(user)
+                    StyleableToast.makeText(
+                        requireActivity(),
+                        "회원가입 성공",
+                        R.style.toast_common
+                    ).show()
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.register_fragment_container, SigninFragment())
+                        .addToBackStack(null)
+                        .commit()
+                }
+            }
         }
+
     }
 
     private fun setTermFragment() {
