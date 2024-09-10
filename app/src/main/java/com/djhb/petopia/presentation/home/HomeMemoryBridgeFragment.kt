@@ -1,5 +1,7 @@
 package com.djhb.petopia.presentation.home
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.app.NotificationManager
@@ -162,16 +164,30 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         // 이모지 애니메이션 시작
         floatAnimatorY.start()
-        selectedEmoji.tag = listOf(scaleXAnimator, scaleYAnimator, floatAnimatorY, moveXAnimator, moveYAnimator)
+        selectedEmoji.tag =
+            listOf(scaleXAnimator, scaleYAnimator, floatAnimatorY, moveXAnimator, moveYAnimator)
         selectedEmoji.isClickable = false
         selectedEmoji.isFocusable = false
+
+        //이모지 5초뒤 사라지기
+        selectedEmoji.postDelayed({
+            val fadeOutAnimator = ObjectAnimator.ofFloat(selectedEmoji, "alpha", 1f, 0f)
+            fadeOutAnimator.duration = 1000
+            fadeOutAnimator.start()
+
+            // 애니메이션이 끝난 후 뷰를 GONE으로 설정
+            fadeOutAnimator.addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {  // Animator 타입으로 변경
+                    selectedEmoji.visibility = View.GONE
+                    Log.d("FadeOutAnimator", "Emoji is set to GONE after fade out animation ends.")
+                }
+            })
+
+        }, 5000)
     }
-
-
 
     // 이모지 상태 초기화 함수
     private fun resetEmojiState() {
-        // 모든 이모지를 초기화
         val emojiViews = listOf(
             binding.emjSmile,
             binding.emjWhirl,
@@ -184,16 +200,18 @@ class HomeMemoryBridgeFragment : Fragment() {
         )
 
         emojiViews.forEach { emoji ->
-            // 애니메이션 중지
+            // 애니메이션 중지 (tag가 null이 아닌지 확인하고 안전하게 캐스팅)
             (emoji.tag as? List<ObjectAnimator>)?.forEach { it.cancel() }
 
-            // 이모지  초기화
+            // 이모지 초기화
             emoji.scaleX = 1f
             emoji.scaleY = 1f
             emoji.translationX = 0f
             emoji.translationY = 0f
-            emoji.visibility = View.GONE // 초기gone설정
+            emoji.alpha = 1f
+            emoji.visibility = View.GONE // 초기 GONE 설정
         }
+
 
         // feelings_container와 텍스트 다시 보이도록 설정
         binding.homeMemoryBridgeFeelingsContainer.visibility = View.GONE
@@ -303,7 +321,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         )
 
 
-
         //  반짝이는 효과
         val alphaAnimator = ObjectAnimator.ofFloat(binding.bridgeShiny1, "alpha", 1f, 0f, 1f)
         alphaAnimator.duration = 2500 //2.5초에 한번
@@ -311,7 +328,8 @@ class HomeMemoryBridgeFragment : Fragment() {
         alphaAnimator.repeatCount = ValueAnimator.INFINITE
 
         //위아래 둥둥효과
-        val floatAnimator_Y = ObjectAnimator.ofFloat(binding.bridgeShiny1, "translationY", 0f, -50f, 0f, 50f, 0f)
+        val floatAnimator_Y =
+            ObjectAnimator.ofFloat(binding.bridgeShiny1, "translationY", 0f, -50f, 0f, 50f, 0f)
         floatAnimator_Y.duration = 5000
         floatAnimator_Y.repeatMode = ValueAnimator.REVERSE
         floatAnimator_Y.repeatCount = ValueAnimator.INFINITE
@@ -322,13 +340,21 @@ class HomeMemoryBridgeFragment : Fragment() {
         alphaAnimator.start()
         floatAnimator_Y.start()
 
-        val floatAnimatorY = ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationY", 0f, -30f, 0f)
+        val floatAnimatorY =
+            ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationY", 0f, -30f, 0f)
         floatAnimatorY.duration = 2000
         floatAnimatorY.repeatMode = ValueAnimator.REVERSE
         floatAnimatorY.repeatCount = ValueAnimator.INFINITE
         floatAnimatorY.interpolator = LinearInterpolator()
 
-        val floatAnimatorX = ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion2, "translationX", 0f, -10f, 10f, 0f)
+        val floatAnimatorX = ObjectAnimator.ofFloat(
+            binding.homeMemoryBridgeIvEmotion2,
+            "translationX",
+            0f,
+            -10f,
+            10f,
+            0f
+        )
         floatAnimatorX.duration = 3000
         floatAnimatorX.repeatMode = ValueAnimator.REVERSE
         floatAnimatorX.repeatCount = ValueAnimator.INFINITE
