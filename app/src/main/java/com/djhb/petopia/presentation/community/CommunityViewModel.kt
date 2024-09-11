@@ -47,7 +47,9 @@ class CommunityViewModel : ViewModel() {
 
     private lateinit var lastSnapshot: DocumentSnapshot
 
-    var isProgressing = false
+//    var isProgressing = false
+    private val _isProgressing = MutableLiveData<Boolean>()
+    val isProgressing get() = _isProgressing
 
     suspend fun createPost(post: PostModel, imageUris: MutableList<String>){
 
@@ -132,7 +134,7 @@ class CommunityViewModel : ViewModel() {
             addedSearchResult.clear()
 //            val allPosts = postRepository.selectPosts()
 //            searchPostResult = postRepository.selectPosts()
-            isProgressing = true
+            _isProgressing.value = true
             var documents = postRepository.selectInitPosts()
             if (documents.size > 0) {
                 lastSnapshot = documents[documents.size - 1]
@@ -234,7 +236,8 @@ class CommunityViewModel : ViewModel() {
 //                _postImageUris.value = imageUris.toMutableList()
 //
 //            Log.i("CommunityViewModel", "123. end selectInitAllList()")
-            }
+            } else
+                isProgressing.value = false
         }
     }
 
@@ -246,7 +249,7 @@ class CommunityViewModel : ViewModel() {
 //            searchPostResult.clear()
 //            val allPosts = postRepository.selectPosts()
 //            searchPostResult = postRepository.selectPosts()
-            isProgressing = true
+            _isProgressing.value = true
             var documents = postRepository.selectNextPosts(lastSnapshot)
             if(documents.size > 0) {
                 lastSnapshot = documents[documents.size - 1]
@@ -309,7 +312,8 @@ class CommunityViewModel : ViewModel() {
 //
 //                _postImageUris.value = imageUris
 //                _searchPosts.value = searchPostResult
-            }
+            } else
+                isProgressing.value = false
         }
     }
 
@@ -365,7 +369,7 @@ class CommunityViewModel : ViewModel() {
 //        _searchPosts.value = searchPostResult
         searchPostResult.addAll(addedSearchResult)
         _searchPostWithImages.value = searchPostResult
-        isProgressing = false
+        isProgressing.value = false
 //        Log.i("CommunityViewModel", "123. end combinePostToImages()")
     }
 

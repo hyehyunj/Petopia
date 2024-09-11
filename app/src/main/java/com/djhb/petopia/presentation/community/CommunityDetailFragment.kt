@@ -182,6 +182,7 @@ class CommunityDetailFragment : Fragment() {
         // mvp 이후 활성화===
         binding.ivLike.visibility = ImageView.INVISIBLE
         binding.tvLike.visibility = TextView.INVISIBLE
+        binding.header.ivSearch.visibility = ImageView.INVISIBLE
         //=================
 
         if(post.writer.id == LoginData.loginUser.id)
@@ -225,6 +226,8 @@ class CommunityDetailFragment : Fragment() {
                             comment
                         )
                     )
+                    binding.svDetail.smoothScrollTo(0, view?.bottom?:0)
+                    binding.etComment.setText("")
                 }
             }
         }

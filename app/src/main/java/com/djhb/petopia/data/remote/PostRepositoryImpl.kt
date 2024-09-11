@@ -73,6 +73,7 @@ class PostRepositoryImpl : PostRepository {
                 val imageName =
                     DateFormatUtils.convertToImageFormat(post.createdDate) + "_0" + (index + 1) + ".png"
                 Log.i("PostRepositoryImpl", "createdDate = ${post.createdDate}")
+                Log.i("PostRepositoryImpl", "uri = ${imageUri}")
                 Log.i(
                     "PostRepositoryImpl",
                     "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}"

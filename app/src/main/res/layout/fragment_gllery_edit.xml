@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/gallery_edit_tv_image_title"
-        style="@style/common_text_16_bold_blue"
+        style="@style/common_text_16_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -117,7 +117,7 @@
 
     <TextView
         android:id="@+id/gallery_edit_tv_calendar_title"
-        style="@style/common_text_16_bold_blue"
+        style="@style/common_text_16_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -141,7 +141,7 @@
 
     <TextView
         android:id="@+id/gallery_edit_tv_calendar_input"
-        style="@style/common_text_18_bold_dark_gray"
+        style="@style/common_text_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -153,7 +153,7 @@
 
     <TextView
         android:id="@+id/gallery_edit_tv_title"
-        style="@style/common_text_16_bold_blue"
+        style="@style/common_text_16_bold_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"

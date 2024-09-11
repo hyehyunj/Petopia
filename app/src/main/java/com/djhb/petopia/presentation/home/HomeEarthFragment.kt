@@ -20,6 +20,7 @@ import com.djhb.petopia.presentation.admin.AdminViewModel
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
+import com.djhb.petopia.presentation.letter.LetterFragment
 import com.djhb.petopia.presentation.setting.SettingFragment
 import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.launch
@@ -56,21 +57,9 @@ class HomeEarthFragment : Fragment() {
         binding.homeEarthIvMy.setOnClickListener {
 
             if (LoginData.loginUser.authority == Authority.ADMIN) {
-                (activity as MainActivity).supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.main_sub_frame, AdminFragment()
-                    )
-                    .setReorderingAllowed(true)
-                    .addToBackStack(null)
-                    .commit()
+                AdminFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
             } else {
-                (activity as MainActivity).supportFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.main_sub_frame, SettingFragment()
-                    )
-                    .setReorderingAllowed(true)
-                    .addToBackStack(null)
-                    .commit()
+                SettingFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
             }
         }
 
@@ -86,7 +75,7 @@ class HomeEarthFragment : Fragment() {
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE") StyleableToast.makeText(
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE") StyleableToast.makeText(
                 requireActivity(),
                 "가이드 종료 후 이용 가능합니다.",
                 R.style.toast_common

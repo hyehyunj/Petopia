@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -50,6 +51,9 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
         val item = getItem(position)
 //        Log.i("RankPostAdapter", "onBindViewHolder : ${item}")
 //        Log.i("RankPostAdapter", "item = ${item}")
+
+        holder.binding.ivLike.visibility = ImageView.INVISIBLE
+        holder.binding.tvLikeCount.visibility = TextView.INVISIBLE
 
         holder.title.text = item.title
         holder.viewCount.text = item.viewCount.toString()

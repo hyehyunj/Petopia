@@ -36,7 +36,6 @@ class SettingFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initDialog()
 
         binding.apply {
             btnSettingExit.setOnClickListener {
@@ -69,7 +68,7 @@ class SettingFragment : DialogFragment() {
     }
 
     private fun loguout() {
-        clearSharedPreferences()
+        
         //다이얼로그를 닫고 이동
         dismiss()
 
@@ -79,9 +78,9 @@ class SettingFragment : DialogFragment() {
         startActivity(intent)
     }
 
-    fun clearSharedPreferences() {
-        val sharedPreferences =
-            requireContext().getSharedPreferences("MemoryisSaved", Context.MODE_PRIVATE)
-        sharedPreferences.edit().clear().apply()
+    override fun onResume() {
+        super.onResume()
+        initDialog()
+
     }
 }
