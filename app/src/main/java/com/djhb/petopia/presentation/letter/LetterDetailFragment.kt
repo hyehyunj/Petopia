@@ -60,7 +60,6 @@ class LetterDetailFragment : DialogFragment() {
             letterToEdit?.let {
                 updateLetterList(it)
                 letterDetailViewModel.updateLetterList(it)
-                Log.d("삭제 후 값", "${it}")
             }
             dismiss()
         }

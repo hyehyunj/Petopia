@@ -162,9 +162,7 @@ class MemoryFragment() : DialogFragment() {
             itemClickListener = { item ->
                 memoryViewModel.setSelectedMemory(item)
                 showDetailFragment()
-                Log.d("데이터", item.key)
             }, itemLongClickListener = { item ->
-                Log.d("MemoryFragment", "롱클릭")
                 showDeleteDialog(item)
 
                 //(activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
@@ -223,7 +221,6 @@ class MemoryFragment() : DialogFragment() {
 
     // 메모리작성프래그먼트에서 작성한 내용을 메모리리스트에 저장 함수
     fun onMemorySaved(memory: Memory) {
-        Log.d("MemoryFragment", "메모리 저장: $memory")
         memoryViewModel.addMemoryList(memory)
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->

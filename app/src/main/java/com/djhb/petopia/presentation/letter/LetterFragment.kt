@@ -208,7 +208,6 @@ class LetterFragment : DialogFragment() {
     }
 
     fun onLetterSaved(letterModel: LetterModel) {
-        Log.d("LetterFragment", "편지 저장: $letterModel")
         letterViewModel.addLetterList(letterModel)
 
         letterViewModel.letterListLiveData.value.let { updateList ->
@@ -239,7 +238,6 @@ class LetterFragment : DialogFragment() {
 
             letterViewModel.letterListLiveData.value.let { updateList ->
                 letterListRecyclerViewAdapter.submitList(updateList)
-                Log.d("삭제후","${updateList}")
             }
         }
         deleteDialog.show(childFragmentManager, "DELETE_DIALOG")

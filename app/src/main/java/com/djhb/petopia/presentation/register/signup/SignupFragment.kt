@@ -96,7 +96,7 @@ class SignupFragment : Fragment() {
             if (isfilled()) {
                 usersignindata()
             } else {
-                Log.d("회원가입", "회원가입 실패")
+                Log.d("SignupFragment", "signup fail")
             }
 
 

@@ -58,12 +58,10 @@ class HomeMemoryBridgeFragment : Fragment() {
 
 
         loadMemory()
-        Log.d("loadMemory", "memoryText: ${binding.homeMemoryBridgeTvMemoryTitle.text}")
         scheduledMemory()
 
 
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
-            Log.d("memoryText", text)
             if (memoryViewModel.isMemorySaved.value == false) {
                 binding.homeMemoryBridgeTvMemoryTitle.text = text
             }
@@ -100,7 +98,6 @@ class HomeMemoryBridgeFragment : Fragment() {
                 toastMoveUnder() else setMemoryFragment()
 
 
-            Log.d("memorybuttonclick", "메모리버튼 클릭")
 
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
 
