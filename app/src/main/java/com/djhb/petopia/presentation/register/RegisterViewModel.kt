@@ -93,6 +93,12 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
+    fun updateUser() {
+        viewModelScope.launch {
+            signRepository.updateUser(LoginData.loginUser)
+        }
+    }
+
 
 //    class RegisterViewModelFactory(
 //        private val signRepository: SignRepository

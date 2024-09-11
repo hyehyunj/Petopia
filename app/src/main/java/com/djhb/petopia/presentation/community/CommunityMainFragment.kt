@@ -116,7 +116,7 @@ class CommunityMainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val user = UserModel("id1", "password1", "name1", "nickname1")
+//        val user = UserModel("id1", "password1", "name1", "nickname1")
 //        val gallery = GalleryModel()
         initAdapter()
         return binding.root
@@ -178,9 +178,10 @@ class CommunityMainFragment : Fragment() {
 
         binding.svMain.setOnScrollChangeListener { view, scrollX, scrollY, oldScrollX, oldScrollY ->
 
-            if (!view.canScrollVertically(1)) {
+            if (!view.canScrollVertically(1) && !viewModel.isProgressing) {
                 lifecycleScope.launch {
-                    viewModel.selectNextPostList()
+//                    Log.i("12444", "end scroll")
+                    async { viewModel.selectNextPostList()}.await()
                 }
             }
 
@@ -204,13 +205,22 @@ class CommunityMainFragment : Fragment() {
 //                allPostAdapter.submitList(it.toMutableList())
                 allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
 //                async { viewModel.selectAllImageList()}.await()
-//                viewModel.selectAllImageList()
+                async { viewModel.selectAllImageList()}.await()
+            }
+        }
+
+        viewModel.addedSearchPost.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+//                allPostAdapter.submitList(it.toMutableList())
+//                allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
+//                async { viewModel.selectAllImageList()}.await()
+                async { viewModel.selectAllImageList()}.await()
             }
         }
 
         viewModel.postImageUris.observe(viewLifecycleOwner) {
-            Log.i("CommunityMainFragment", "123. observe postImageUris : ${it}")
-            Log.i("CommunityMainFragment", "123. observe postImageUris.size : ${it.size}")
+//            Log.i("CommunityMainFragment", "123. observe postImageUris : ${it}")
+//            Log.i("CommunityMainFragment", "123. observe postImageUris.size : ${it.size}")
 //            for (postModel in allPostAdapter.currentList) {
 //                Log.i("CommunityMainFragment", "before postImageUris adapter element = ${postModel}")
 //            }
@@ -238,7 +248,7 @@ class CommunityMainFragment : Fragment() {
 //            Log.i("CommunityMainFragment", "123. viewModel.searchPostResult.hashCode : ${viewModel.searchPostResult.hashCode()}")
 //            Log.i("CommunityMainFragment", "123. viewModel.searchPostResult.toMutableList().hashCode : ${viewModel.searchPostResult.toMutableList().hashCode()}")
 
-//            allPostAdapter.submitList(it.toList())
+            allPostAdapter.submitList(it.toList())
 //            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
         }
 

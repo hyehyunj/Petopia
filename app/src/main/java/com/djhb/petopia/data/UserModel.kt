@@ -10,7 +10,7 @@ data class UserModel(
     var password: String = "",
     var nickname: String = "",
     var email: String = "",
-    var reportList : List<ReportModel>? = null,
+    var reportList : MutableList<String> = mutableListOf(),
     var pet: PetModel? = null,
     var completedGuide: Boolean = false,
     val createdDate: Long = System.currentTimeMillis(),

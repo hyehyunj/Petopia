@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.CommentModel
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.remote.CommentRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
@@ -51,7 +52,13 @@ class CommunityDetailViewModel: ViewModel() {
 
     suspend fun selectAllCommentFromPost(postKey: String) {
         commentsResult.clear()
-        commentsResult.addAll(commentRepository.selectAllCommentsFromPost(postKey))
+        val posts = commentRepository.selectAllCommentsFromPost(postKey)
+
+        posts.removeIf {
+            LoginData.loginUser.reportList.contains(it.writer.id)
+        }
+
+        commentsResult.addAll(posts)
         _comments.value = commentsResult
     }
 
