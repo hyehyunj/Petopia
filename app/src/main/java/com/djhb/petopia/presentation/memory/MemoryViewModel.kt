@@ -35,6 +35,9 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
     private val _isModify = MutableLiveData<Boolean>()
     val isModify: LiveData<Boolean> = _isModify
 
+    private val _isProcessing = MutableLiveData<Boolean>()
+    val isProcessing get() = _isProcessing
+
     fun setMemoryDate(date: String) {
         _memoryDate.value = date
     }
@@ -68,8 +71,10 @@ class MemoryViewModel(private val memoryRepository: MemoryRepositoryImpl) : View
 
     fun loadMemoryList(user: UserModel) {
         viewModelScope.launch {
+            _isProcessing.value = true
             val memoryList = memoryRepository.selectMemoryList(user)
             _memoryListLiveData.value = memoryList
+            _isProcessing.value = false
         }
     }
 

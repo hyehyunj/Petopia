@@ -11,8 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
@@ -123,7 +125,12 @@ class GalleryFragment : DialogFragment() {
             galleryRecyclerViewAdapter.updateCheckedList(gallerySharedViewModel.removePhotoList.toList(), it)
         }
 
-
+        gallerySharedViewModel.isProcessing.observe(viewLifecycleOwner) { isProcessing ->
+            if(isProcessing)
+                binding.pbGallery.visibility = ProgressBar.VISIBLE
+            else
+                binding.pbGallery.visibility = ProgressBar.GONE
+        }
 
 
     }
