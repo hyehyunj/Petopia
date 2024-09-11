@@ -16,6 +16,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.presentation.memory.MemoryViewModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
@@ -33,6 +34,8 @@ class HomeMemoryBridgeFragment : Fragment() {
     private val binding get() = _binding
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
     private lateinit var memoryViewModel: MemoryViewModel
+
+    val user = LoginData.loginUser.id
 
 
     override fun onCreateView(
@@ -98,12 +101,15 @@ class HomeMemoryBridgeFragment : Fragment() {
                 toastMoveUnder() else setMemoryFragment()
 
 
-
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
 
             memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
                 if (it == true) {
                     binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+
+                    val sharedPreferences =
+                        requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
+                    sharedPreferences.edit().putBoolean("isSaved", true).apply()
                 }
             }
         }
@@ -119,7 +125,6 @@ class HomeMemoryBridgeFragment : Fragment() {
 
     private fun scheduledMemory() {
         val currentDate = Calendar.getInstance()
-
         val targetDate = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 10)
             set(Calendar.MINUTE, 0)
@@ -132,7 +137,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         val initialDelay = targetDate.timeInMillis - currentDate.timeInMillis
 
 
-
         val workRequest =
             PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(
                 1,
@@ -141,29 +145,29 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         WorkManager.getInstance(requireContext()).enqueue(workRequest)
 
-//        val oneTimeWorkRequest = OneTimeWorkRequestBuilder<UpdateMemoryTextWorker>().build()
-//        WorkManager.getInstance(requireContext()).enqueue(oneTimeWorkRequest)
-
-        //처음에 데이터가 없을때 한번만 실행
-//        WorkManager.getInstance(requireContext()).getWorkInfoByIdLiveData(oneTimeWorkRequest.id)
-//            .observe(viewLifecycleOwner) { workInfo ->
-//                if (workInfo.state.isFinished) {
-//                    scheduledMemory()
-//                    loadMemory()
-//                }
-//            }
     }
 
 
     private fun loadMemory() {
         val sharedPreferences =
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
+
+        val isSavedSharedPreferences =
+            requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
+        val isSaved = isSavedSharedPreferences.getBoolean("isSaved", false)
         val memoryText = sharedPreferences.getString("memoryText", null)
 
 
         binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
 
         if (memoryViewModel.isMemorySaved.value != true) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+            memoryViewModel.setMemoryTitle(memoryText.toString())
+        }
+
+        if (isSaved) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = "메모리북 기록 완료"
+        } else {
             binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
             memoryViewModel.setMemoryTitle(memoryText.toString())
         }

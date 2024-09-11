@@ -68,6 +68,7 @@ class SettingFragment : DialogFragment() {
     }
 
     private fun loguout() {
+        
         //다이얼로그를 닫고 이동
         dismiss()
 
@@ -80,5 +81,6 @@ class SettingFragment : DialogFragment() {
     override fun onResume() {
         super.onResume()
         initDialog()
+
     }
 }

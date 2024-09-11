@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.memory.MemoryDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,11 +25,11 @@
 
         <TextView
             android:id="@+id/tv_memory_detail_title"
+            style="@style/common_text_20_bold_dark_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/memory_list_title"
-            style="@style/common_text_20_bold_dark_gray"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -60,10 +60,11 @@
                 style="@style/point_text_24_dark_gray"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="2dp"
-                android:text="@string/memory_list_rv_title"
+                android:layout_marginTop="16dp"
+                android:gravity="start"
                 android:maxLines="2"
+                android:text="@string/memory_list_rv_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -74,8 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="20dp"
                 android:text="YYYY-MM-dd"
-                app:layout_constraintStart_toStartOf="@id/tv_memory_detail_question"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_question" />
 
             <TextView
@@ -83,9 +85,9 @@
                 style="@style/common_text_16_dark_gray"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="16dp"
-                android:layout_marginHorizontal="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tv_memory_detail_question"
                 app:layout_constraintStart_toStartOf="@+id/tv_memory_detail_question"
@@ -94,15 +96,14 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
         <ImageView
             android:id="@+id/iv_memory_origami_1"
             android:layout_width="120dp"
             android:layout_height="0dp"
-            app:layout_constraintDimensionRatio="1:1"
             android:src="@drawable/img_origami_1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.UserModel
@@ -30,6 +31,7 @@ class MemoryFragment() : DialogFragment() {
     private val _binding: FragmentMemoryBinding by lazy {
         FragmentMemoryBinding.inflate(layoutInflater)
     }
+    val user = LoginData.loginUser.id
 
     private val binding get() = _binding
 
@@ -81,7 +83,11 @@ class MemoryFragment() : DialogFragment() {
         memoryViewModel.setMemoryTitle(currentTitle.toString())
 
 
-        if (memoryViewModel.isMemorySaved.value == true) {
+        val isSavedSharedPreferences =
+            requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
+        val isSaved = isSavedSharedPreferences.getBoolean("isSaved", false)
+
+        if (isSaved) {
             binding.memoryTodayMemoryLayout.visibility = View.GONE
         }
 
@@ -155,6 +161,18 @@ class MemoryFragment() : DialogFragment() {
                         .remove(this@MemoryFragment).commit()
                 }
             })
+
+        binding.rvMemoryList.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    Log.i("MemoryFragment", "end scroll")
+                    memoryViewModel.loadMemoryList(currentUser)
+                }
+            }
+        })
+
     }
 
     private fun initAdapter() {
@@ -248,6 +266,7 @@ class MemoryFragment() : DialogFragment() {
     private fun showDeleteDialog(memory: Memory) {
         val deleteDialog = MemoryDeleteDialog(memory) { deletedMemory ->
             memoryViewModel.deleteMemoryList(deletedMemory)
+
             memoryViewModel.memoryListLiveData.value.let { updateList ->
                 listRecyclerViewAdapter.submitList(updateList)
             }
