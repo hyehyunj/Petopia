@@ -58,12 +58,10 @@ class HomeMemoryBridgeFragment : Fragment() {
 
 
         loadMemory()
-        Log.d("loadMemory", "memoryText: ${binding.homeMemoryBridgeTvMemoryTitle.text}")
         scheduledMemory()
 
 
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
-            Log.d("memoryText", text)
             if (memoryViewModel.isMemorySaved.value == false) {
                 binding.homeMemoryBridgeTvMemoryTitle.text = text
             }
@@ -100,7 +98,6 @@ class HomeMemoryBridgeFragment : Fragment() {
                 toastMoveUnder() else setMemoryFragment()
 
 
-            Log.d("memorybuttonclick", "메모리버튼 클릭")
 
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
 
@@ -135,7 +132,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         val initialDelay = targetDate.timeInMillis - currentDate.timeInMillis
 
 
-        Log.d("initialDelay", initialDelay.toString())
 
         val workRequest =
             PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(
@@ -164,7 +160,6 @@ class HomeMemoryBridgeFragment : Fragment() {
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
         val memoryText = sharedPreferences.getString("memoryText", null)
 
-        Log.d("loadMemory", "memoryText: $memoryText")
 
         binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
 
@@ -174,7 +169,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         }
 
 
-        Log.d("memoryText", memoryText.toString())
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수

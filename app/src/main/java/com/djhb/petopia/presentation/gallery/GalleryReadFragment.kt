@@ -59,7 +59,6 @@ class GalleryReadFragment : DialogFragment() {
                     currentPhoto
                 )
             }
-            Log.d("왜","${sharedViewModel.currentPhotoLiveData.value}")
 
 
 
@@ -73,7 +72,6 @@ class GalleryReadFragment : DialogFragment() {
 
     //읽기전용 모드 함수 : 레이아웃을 입력 불가능한 모드로 구성한다.
     private fun readOnlyMode(item: GalleryModel) {
-Log.d("왜","${item}")
         binding.apply {
 //            Glide.with(requireParentFragment())
 //                .load(item.imageUris[0].toUri())

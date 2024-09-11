@@ -101,8 +101,6 @@ class GalleryFragment : DialogFragment() {
 
         //갤러리 리스트 변화감지
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
-            Log.d("리스트", "${gallerySharedViewModel.galleryListLiveData.value}")
-            Log.d("사진", "${gallerySharedViewModel.currentPhotoLiveData.value}")
 
             galleryRecyclerViewAdapter.updateList(it)
         }
@@ -132,7 +130,6 @@ class GalleryFragment : DialogFragment() {
 
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
     private fun initAdapter() {
-        Log.d("?", "${gallerySharedViewModel.galleryListLiveData.value}")
         galleryRecyclerViewAdapter = GalleryRecyclerViewAdapter(
             gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
             //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
@@ -142,7 +139,6 @@ class GalleryFragment : DialogFragment() {
                     "COMPLETE" -> {
                         gallerySharedViewModel.changeLayoutMode("READ")
                         GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
-                        Log.d("시작","${item}")
                     }
                 }
             },
@@ -156,12 +152,6 @@ class GalleryFragment : DialogFragment() {
         binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-
-
-
-    private fun removePhoto() {
-
-    }
 
     //뒤로가기 버튼 함수 : 홈프래그먼트로 돌아간다.
 //    private fun btnBackListener() {
