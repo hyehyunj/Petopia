@@ -86,6 +86,12 @@ class HomeEarthFragment : Fragment() {
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE") StyleableToast.makeText(
+                requireActivity(),
+                "가이드 종료 후 이용 가능합니다.",
+                R.style.toast_common
+            )
+                .show() else
 
             childFragmentManager.beginTransaction()
                 .replace(
