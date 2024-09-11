@@ -17,9 +17,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.R
 import com.djhb.petopia.ReportReasonType
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentReportBinding
 import com.djhb.petopia.presentation.community.CommunityDetailViewModel
 import com.djhb.petopia.presentation.community.CommunityViewModel
+import com.djhb.petopia.presentation.register.RegisterViewModel
 import kotlinx.coroutines.launch
 
 private const val ARG_PARAM1 = "param1"
@@ -30,6 +32,7 @@ class ReportFragment : DialogFragment() {
     private val reportViewModel: ReportViewModel by activityViewModels()
     private val communityViewModel: CommunityViewModel by viewModels()
     private val communityDetailViewModel: CommunityDetailViewModel by viewModels()
+    private val registerViewModel: RegisterViewModel by activityViewModels()
 
     private val _binding: FragmentReportBinding by lazy {
         FragmentReportBinding.inflate(layoutInflater)
@@ -82,6 +85,10 @@ class ReportFragment : DialogFragment() {
                     }
                     Log.i("ReportFragment", "reportModel = ${reportViewModel.reportModelLiveData.value}")
                     reportViewModel.createReport()
+                    if (reportModel != null) {
+                        LoginData.loginUser.reportList.add(reportModel.targetUserId)
+                        registerViewModel.updateUser()
+                    }
                     dismiss()
                 }
             }

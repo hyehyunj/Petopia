@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
@@ -178,7 +179,13 @@ class CommunityDetailFragment : Fragment() {
 
         }
 
+        // mvp 이후 활성화===
+        binding.ivLike.visibility = ImageView.INVISIBLE
+        binding.tvLike.visibility = TextView.INVISIBLE
+        //=================
 
+        if(post.writer.id == LoginData.loginUser.id)
+            binding.ivReport.visibility = ImageView.INVISIBLE
 
         binding.tvDetailTitle.text = post.title
         binding.tvContent.text = post.content
@@ -255,7 +262,7 @@ class CommunityDetailFragment : Fragment() {
 
             binding.btnEdit.setOnClickListener {
                 val editFragment = CommunityEditFragment.newInstance(post)
-                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
+//                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
                 requireActivity().supportFragmentManager
                     .beginTransaction()
                     .replace(R.id.main_sub_frame, editFragment)
@@ -271,14 +278,14 @@ class CommunityDetailFragment : Fragment() {
 
     private fun initObserver() {
         detailViewModel.comments.observe(viewLifecycleOwner) {
-            Log.i("CommunityDetailFragment", "observe comments.size = ${it.size}")
+//            Log.i("CommunityDetailFragment", "observe comments.size = ${it.size}")
 //            commentAdapter.submitList(viewModel.commentsResult)
 //            commentAdapter.submitList(it.toMutableList())
             commentAdapter.submitList(it.toMutableList())
         }
 
         detailViewModel.imageUris.observe(viewLifecycleOwner) {
-            Log.i("CommunityDetailFragment", "observe imageUris.size = ${it.size}")
+//            Log.i("CommunityDetailFragment", "observe imageUris.size = ${it.size}")
             viewPagerAdapter.submitList(it.toMutableList())
             binding.indicatorDetail.createIndicators(it.size, 0)
         }

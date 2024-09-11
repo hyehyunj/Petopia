@@ -73,7 +73,7 @@ class GalleryRepositoryImpl : GalleryRepository {
 
     override suspend fun selectGalleryList(user: UserModel): MutableList<GalleryModel> {
         return suspendCancellableCoroutine { continuation ->
-            Log.i("GalleryRepositoryImpl", "start selectGalleryList")
+//            Log.i("GalleryRepositoryImpl", "start selectGalleryList")
             val galleryList = mutableListOf<GalleryModel>()
 
 // RTReference.orderByChild("writer/id").equalTo(user.id).get().addOnCompleteListener {
@@ -85,7 +85,6 @@ class GalleryRepositoryImpl : GalleryRepository {
                 .get()
                 .addOnCompleteListener {
                     val result = it.result
-                    Log.i("GalleryRepositoryImpl", "result count = ${result.documents.size}")
                     for (child in result.documents) {
                         val value = child.data as HashMap<*, *>
                         val gson = Gson()
@@ -93,7 +92,6 @@ class GalleryRepositoryImpl : GalleryRepository {
                         val fromJson = gson.fromJson(toJson, GalleryModel::class.java)
                         galleryList.add(fromJson)
                     }
-                    Log.i("GalleryRepositoryImpl", "galleryList.size = ${galleryList.size}")
                     continuation.resume(galleryList)
                     return@addOnCompleteListener
                 }.addOnFailureListener {
@@ -137,7 +135,6 @@ class GalleryRepositoryImpl : GalleryRepository {
     override suspend fun selectGalleryMainImages(galleryUid: String): StorageReference? {
 
         return withContext(Dispatchers.IO) {
-            Log.i("GalleryRepositoryImpl", "gallery key = ${galleryUid}")
             val items = storageReference
                 .child(galleryUid)
                 .listAll()
@@ -155,11 +152,11 @@ class GalleryRepositoryImpl : GalleryRepository {
     override suspend fun selectAllGalleryImages(gallery: GalleryModel): GalleryModel {
         return suspendCancellableCoroutine { continuation ->
             val key = gallery.uid
-            Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
+//            Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
             storageReference.child(key).listAll().addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val items = task.result.items
-                    Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
+//                    Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
                     for (item in items) {
 // Log.d("GalleryRepositoryImpl", "${item.name}")
                         item.downloadUrl.addOnCompleteListener { uri ->
