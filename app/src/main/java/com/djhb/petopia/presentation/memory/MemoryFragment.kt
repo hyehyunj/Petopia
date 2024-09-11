@@ -17,6 +17,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.UserModel
@@ -155,6 +156,18 @@ class MemoryFragment() : DialogFragment() {
                         .remove(this@MemoryFragment).commit()
                 }
             })
+
+        binding.rvMemoryList.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    Log.i("MemoryFragment", "end scroll")
+                    memoryViewModel.loadMemoryList(currentUser)
+                }
+            }
+        })
+
     }
 
     private fun initAdapter() {
@@ -248,6 +261,7 @@ class MemoryFragment() : DialogFragment() {
     private fun showDeleteDialog(memory: Memory) {
         val deleteDialog = MemoryDeleteDialog(memory) { deletedMemory ->
             memoryViewModel.deleteMemoryList(deletedMemory)
+
             memoryViewModel.memoryListLiveData.value.let { updateList ->
                 listRecyclerViewAdapter.submitList(updateList)
             }

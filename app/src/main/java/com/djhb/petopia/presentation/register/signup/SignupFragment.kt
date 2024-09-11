@@ -131,6 +131,14 @@ class SignupFragment : Fragment() {
 
         for ((fieldName, value) in field) {
             if (value.isEmpty()) {
+                if(fieldName == "비밀번호확인"){
+                    StyleableToast.makeText(
+                        requireActivity(),
+                        "비밀번호가 일치하지 않습니다.",
+                        R.style.toast_warning
+                    ).show()
+                    return false
+                }
                 StyleableToast.makeText(
                     requireActivity(),
                     "${fieldName}을 입력해주세요.",
@@ -138,14 +146,6 @@ class SignupFragment : Fragment() {
                 ).show()
                 return false
             }
-        }
-
-        if (userPassword.length < 8 || userPasswordCheck.length < 8) {
-            StyleableToast.makeText(
-                requireActivity(),
-                "비밀번호는 8자리 이상이어야 합니다.",
-                R.style.toast_warning
-            ).show()
         }
 
         if (userPassword != userPasswordCheck) {
@@ -156,6 +156,18 @@ class SignupFragment : Fragment() {
             ).show()
             return false
         }
+
+
+        if (userPassword.length < 8 || userPasswordCheck.length < 8) {
+            StyleableToast.makeText(
+                requireActivity(),
+                "비밀번호는 8자리 이상이어야 합니다.",
+                R.style.toast_warning
+            ).show()
+            return false
+        }
+
+
 
         if (!binding.cbCheckAgreeAll.isChecked) {
             StyleableToast.makeText(
