@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.UserModel
@@ -145,7 +147,8 @@ class CommunityCreateFragment : Fragment() {
 
     private fun initView() {
         binding.header.tvTitle.text = "글쓰기(질문 게시판)"
-        binding.header.ivSearch.isVisible = false
+//        binding.header.ivSearch.isVisible =
+        binding.header.ivSearch.visibility = ImageView.INVISIBLE
 //        val title = binding.etTitle.text.toString()
 //        val content = binding.etContent.text.toString()
         binding.recyclerViewAddImage.adapter = createImageAdapter
@@ -177,8 +180,11 @@ class CommunityCreateFragment : Fragment() {
                     viewModel.selectRankList()
                     viewModel.selectInitPostList()
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    mainActivity.showViewPager()
-                    requireActivity().supportFragmentManager.popBackStack()
+//                    mainActivity.showViewPager()
+//                    requireActivity().supportFragmentManager.popBackStack()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_sub_frame, CommunityMainFragment())
+                        .commit()
                 }
             }
         }

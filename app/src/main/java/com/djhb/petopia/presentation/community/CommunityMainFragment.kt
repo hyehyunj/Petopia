@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -137,6 +139,7 @@ class CommunityMainFragment : Fragment() {
         }
         binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
         binding.recyclerViewQuestionRank.isNestedScrollingEnabled = false
+        binding.header.ivSearch.visibility = ImageView.INVISIBLE
 
     }
 
@@ -179,7 +182,7 @@ class CommunityMainFragment : Fragment() {
 
         binding.svMain.setOnScrollChangeListener { view, scrollX, scrollY, oldScrollX, oldScrollY ->
 
-            if (!view.canScrollVertically(1) && !viewModel.isProgressing) {
+            if (!view.canScrollVertically(1) && viewModel.isProgressing.value == false) {
                 lifecycleScope.launch {
 //                    Log.i("12444", "end scroll")
                     async { viewModel.selectNextPostList()}.await()
@@ -251,6 +254,13 @@ class CommunityMainFragment : Fragment() {
 
             allPostAdapter.submitList(it.toList())
 //            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
+        }
+
+        viewModel.isProgressing.observe(viewLifecycleOwner) {
+            if(it)
+                binding.progressBarPost.visibility = ProgressBar.VISIBLE
+            else
+                binding.progressBarPost.visibility = ProgressBar.GONE
         }
 
 //        viewModel.isCompleteRankPost.observe(viewLifecycleOwner){
