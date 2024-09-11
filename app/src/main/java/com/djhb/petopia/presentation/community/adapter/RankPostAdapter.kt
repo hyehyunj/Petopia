@@ -54,7 +54,7 @@ class RankPostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapt
         holder.title.text = item.title
         holder.viewCount.text = item.viewCount.toString()
         holder.likeCount.text = item.likeCount.toString()
-        holder.userId.text = item.writer.id
+        holder.userId.text = item.writer.nickname
         holder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)
         holder.rankImage.setImageResource(rankMedalImages[position])
 

@@ -132,7 +132,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         val initialDelay = targetDate.timeInMillis - currentDate.timeInMillis
 
 
-        Log.d("initialDelay", initialDelay.toString())
 
         val workRequest =
             PeriodicWorkRequestBuilder<UpdateMemoryTextWorker>(
@@ -161,7 +160,6 @@ class HomeMemoryBridgeFragment : Fragment() {
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
         val memoryText = sharedPreferences.getString("memoryText", null)
 
-        Log.d("loadMemory", "memoryText: $memoryText")
 
         binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
 
@@ -171,7 +169,6 @@ class HomeMemoryBridgeFragment : Fragment() {
         }
 
 
-        Log.d("memoryText", memoryText.toString())
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수

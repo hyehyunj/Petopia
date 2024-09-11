@@ -12,6 +12,8 @@ import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.ReportModel
 import com.djhb.petopia.data.remote.AdminRepository
 import com.djhb.petopia.data.remote.AdminRepositoryImpl
+import com.djhb.petopia.data.remote.CommentRepository
+import com.djhb.petopia.data.remote.CommentRepositoryImpl
 import com.djhb.petopia.data.remote.GalleryRepository
 import com.djhb.petopia.data.remote.GalleryRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
@@ -53,6 +55,10 @@ class AdminViewModel :
 
     private val postRepository: PostRepository by lazy {
         PostRepositoryImpl()
+    }
+
+    private val commentRepository: CommentRepository by lazy {
+        CommentRepositoryImpl()
     }
 
 
@@ -98,6 +104,14 @@ class AdminViewModel :
                 postRepository.deletePost(post.key)
                 postRepository.deletePostImages(post.key)
             }
+
+            val comments =
+                commentRepository.selectAllCommentsFromUser(report.targetUserId)
+
+            for (comment in comments) {
+                commentRepository.deleteComment(comment.key)
+            }
+
             reportListResult.removeIf{
                 it.uid == report.uid
             }

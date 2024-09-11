@@ -27,47 +27,90 @@ class PostRepositoryImpl : PostRepository {
     private val storeReference = Firebase.firestore.collection(Table.QUESTION_POST.tableName)
     private val storageReference = Firebase.storage.getReference(Table.QUESTION_POST.tableName)
 
-    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>): PostModel {
-        return suspendCancellableCoroutine { continuation ->
+//    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>): PostModel {
+//        return suspendCancellableCoroutine { continuation ->
+//            var isFailToStore = false
+//            storeReference.document(post.key).set(post).addOnCompleteListener {
+//                Log.i("PostRepositoryImpl", "success create question post : ${it.result}")
+//            }.addOnFailureListener {
+//                isFailToStore = true
+//                Log.e("PostRepositoryImpl", "fail create question post : ${it}")
+//                continuation.resumeWithException(it)
+//                return@addOnFailureListener
+//            }
+//
+//            if (isFailToStore)
+//                continuation.resumeWithException(Exception("fail create post"))
+//
+//
+//            CoroutineScope(Dispatchers.Default).launch {
+//                createPostImages(post, imageUris)
+//            }
+//
+////            continuation.resume(post)
+//        }
+//    }
+
+    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>) {
+        withContext(Dispatchers.IO) {
             var isFailToStore = false
-            storeReference.document(post.key).set(post).addOnCompleteListener {
-                Log.i("PostRepositoryImpl", "success create question post : ${it.result}")
-            }.addOnFailureListener {
-                isFailToStore = true
-                Log.e("PostRepositoryImpl", "fail create question post : ${it}")
-                continuation.resumeWithException(it)
-                return@addOnFailureListener
-            }
+            storeReference.document(post.key).set(post).await()
 
-            if (isFailToStore)
-                continuation.resumeWithException(Exception("fail create post"))
+//            if (isFailToStore)
+//                return@withContext
+
+//                createPostImages(post, imageUris)
 
 
-            CoroutineScope(Dispatchers.Default).launch {
-                createPostImages(post, imageUris)
-            }
-
-//            continuation.resume(post)
         }
+//            continuation.resume(post)
+
     }
 
     override suspend fun createPostImages(post: PostModel, imageUris: MutableList<String>): Boolean {
-        return suspendCancellableCoroutine { continuation ->
+        return withContext(Dispatchers.IO) {
             for ((index, imageUri) in imageUris.withIndex()) {
                 val imageName =
                     DateFormatUtils.convertToImageFormat(post.createdDate) + "_0" + (index + 1) + ".png"
                 Log.i("PostRepositoryImpl", "createdDate = ${post.createdDate}")
-                Log.i("PostRepositoryImpl", "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}")
-                val imageTask = storageReference.child(post.key).child(imageName).putFile(imageUri.toUri())
-                imageTask.addOnSuccessListener {
-                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
-                }.addOnFailureListener {
-                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
-                    storeReference.document(post.key).delete()
-                }
+                Log.i(
+                    "PostRepositoryImpl",
+                    "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}"
+                )
+//                val imageTask =
+                    storageReference
+                        .child(post.key)
+                        .child(imageName)
+                        .putFile(imageUri.toUri())
+                        .await()
+//                imageTask.addOnSuccessListener {
+//                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
+//                }.addOnFailureListener {
+//                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
+//                    storeReference.document(post.key).delete()
+//                }
             }
+            true
         }
     }
+
+//    override suspend fun createPostImages(post: PostModel, imageUris: MutableList<String>): Boolean {
+//        return suspendCancellableCoroutine { continuation ->
+//            for ((index, imageUri) in imageUris.withIndex()) {
+//                val imageName =
+//                    DateFormatUtils.convertToImageFormat(post.createdDate) + "_0" + (index + 1) + ".png"
+//                Log.i("PostRepositoryImpl", "createdDate = ${post.createdDate}")
+//                Log.i("PostRepositoryImpl", "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}")
+//                val imageTask = storageReference.child(post.key).child(imageName).putFile(imageUri.toUri())
+//                imageTask.addOnSuccessListener {
+//                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
+//                }.addOnFailureListener {
+//                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
+//                    storeReference.document(post.key).delete()
+//                }
+//            }
+//        }
+//    }
 
 //    override suspend fun selectRankPosts(): MutableList<PostModel> {
 //        return suspendCancellableCoroutine { continuation ->

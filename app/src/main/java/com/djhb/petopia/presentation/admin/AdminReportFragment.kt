@@ -12,7 +12,10 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.ReportModel
+import com.djhb.petopia.data.remote.SignRepository
+import com.djhb.petopia.data.remote.SignRepositoryImpl
 import com.djhb.petopia.databinding.FragmentAdminReportBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.register.RegisterViewModel
@@ -26,6 +29,7 @@ class AdminReportFragment : DialogFragment() {
     private val binding get() = _binding
     private val adminSharedViewModel: AdminViewModel by activityViewModels()
     private val registerViewModel: RegisterViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,13 +78,11 @@ class AdminReportFragment : DialogFragment() {
                 (activity as MainActivity).exileUser()
                 val detailData = adminSharedViewModel.reportDetailLiveData.value?:ReportModel()
 //                registerViewModel.deleteUser(detailData.targetUserId)
-                adminSharedViewModel.deleteReport(detailData)
+//                adminSharedViewModel.deleteReport(detailData)
+                LoginData.loginUser.reportList.add(detailData.targetUserId)
+                registerViewModel.updateUser()
             }
-
-
         }
-
-
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
