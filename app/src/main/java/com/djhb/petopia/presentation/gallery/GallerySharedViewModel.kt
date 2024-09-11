@@ -53,10 +53,14 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
     private val _checkedPhotoLiveData = MutableLiveData<Int>()
     val checkedPhotoLiveData: LiveData<Int> = _checkedPhotoLiveData
 
+    private val _isProcessing = MutableLiveData<Boolean>()
+    val isProcessing get() = _isProcessing
+
 
     //데이터베이스에서 사용자의 갤러리를 불러오는 함수
     fun loadGalleryList() {
         viewModelScope.launch {
+            _isProcessing.value = true
             val list = async {
                 galleryRepository.selectGalleryList(user)
             }
@@ -76,6 +80,7 @@ class GallerySharedViewModel(private val galleryRepository: GalleryRepository) :
 
 // _galleryListLiveData.value = galleryRepository.selectGalleryMainImages(successList).toList()
             _galleryListLiveData.value = successList.toList()
+            _isProcessing.value = false
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.adapters.AbsListViewBindingAdapter.OnScroll
 import androidx.fragment.app.DialogFragment
@@ -64,6 +65,13 @@ class LetterFragment : DialogFragment() {
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
             letterListRecyclerViewAdapter.submitList(letterList)
+        }
+
+        letterViewModel.isProcessing.observe(viewLifecycleOwner) { isProcessing ->
+            if(isProcessing)
+                binding.pbMemory.visibility = ProgressBar.VISIBLE
+            else
+                binding.pbMemory.visibility = ProgressBar.GONE
         }
 
         val curentUser = getCurrentUser()

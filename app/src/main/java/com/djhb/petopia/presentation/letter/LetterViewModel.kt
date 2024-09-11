@@ -26,6 +26,9 @@ class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : View
     private val _selectBackgroundResId = MutableLiveData<Int?>()
     val selectBackgroundResId: MutableLiveData<Int?> = _selectBackgroundResId
 
+    private val _isProcessing = MutableLiveData<Boolean>()
+    val isProcessing get() = _isProcessing
+
 //    무한스크롤관련
 //    private lateinit var lastSnapshot: DocumentSnapshot
 
@@ -63,8 +66,10 @@ class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : View
 
     fun loadLetterList(user: UserModel) {
         viewModelScope.launch {
+            _isProcessing.value = true
             val letterList = letterRepository.selectLetterList(user)
             _letterListLiveData.value = letterList
+            _isProcessing.value = false
         }
     }
 

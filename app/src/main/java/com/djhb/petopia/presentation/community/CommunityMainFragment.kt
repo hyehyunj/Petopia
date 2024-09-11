@@ -256,8 +256,8 @@ class CommunityMainFragment : Fragment() {
 //            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
         }
 
-        viewModel.isProgressing.observe(viewLifecycleOwner) {
-            if(it)
+        viewModel.isProgressing.observe(viewLifecycleOwner) { isProcessing ->
+            if(isProcessing)
                 binding.progressBarPost.visibility = ProgressBar.VISIBLE
             else
                 binding.progressBarPost.visibility = ProgressBar.GONE

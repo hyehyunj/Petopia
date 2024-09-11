@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -65,6 +66,13 @@ class MemoryFragment() : DialogFragment() {
 
         memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
             listRecyclerViewAdapter.submitList(memoryList)
+        }
+
+        memoryViewModel.isProcessing.observe(viewLifecycleOwner) { isProcessing ->
+            if(isProcessing)
+                binding.pbMemory.visibility = ProgressBar.VISIBLE
+            else
+                binding.pbMemory.visibility = ProgressBar.GONE
         }
 
         //메모리 최초 작성시 버튼 사라지게 함
