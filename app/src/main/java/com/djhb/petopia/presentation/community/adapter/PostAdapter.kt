@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -39,7 +40,10 @@ class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<P
     override fun onBindViewHolder(holder: PostItem, position: Int) {
         val item = getItem(position)
 
-        Log.i("PostAdapter", "item = ${item}")
+//        Log.i("PostAdapter", "item = ${item}")
+
+        holder.binding.ivLike.visibility = ImageView.INVISIBLE
+        holder.binding.tvLikeCount.visibility = TextView.INVISIBLE
 
         holder.title.text = item.title
         holder.viewCount.text = item.viewCount.toString()

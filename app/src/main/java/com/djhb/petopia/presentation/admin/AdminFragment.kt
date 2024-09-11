@@ -82,7 +82,7 @@ class AdminFragment : Fragment() {
 
     //어댑터 초기화 함수 :
     private fun initAdapter() {
-        Log.i("AdminFragment", "reportListLiveData = ${adminViewModel.reportListLiveData.value}")
+//        Log.i("AdminFragment", "reportListLiveData = ${adminViewModel.reportListLiveData.value}")
 //        adminRecyclerViewAdapter = AdminRecyclerViewAdapter(
 ////            reportList = reportList,
 //            itemClickListener = { item, position ->

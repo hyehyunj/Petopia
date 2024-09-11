@@ -225,6 +225,8 @@ class CommunityDetailFragment : Fragment() {
                             comment
                         )
                     )
+                    binding.svDetail.smoothScrollTo(0, view?.bottom?:0)
+                    binding.etComment.setText("")
                 }
             }
         }
