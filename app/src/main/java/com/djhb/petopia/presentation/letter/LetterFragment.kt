@@ -63,6 +63,7 @@ class LetterFragment : DialogFragment() {
 
         //메모리 리스트가 변경될때마다 관찰하여 리사이클러뷰에 업데이트
         letterViewModel.letterListLiveData.observe(viewLifecycleOwner) { letterList ->
+            Log.d("값", "${letterList}")
             letterListRecyclerViewAdapter.submitList(letterList)
         }
 
@@ -239,6 +240,7 @@ class LetterFragment : DialogFragment() {
 
             letterViewModel.letterListLiveData.value.let { updateList ->
                 letterListRecyclerViewAdapter.submitList(updateList)
+                Log.d("삭제후","${updateList}")
             }
         }
         deleteDialog.show(childFragmentManager, "DELETE_DIALOG")

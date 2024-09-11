@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,7 @@ class LetterDetailFragment : DialogFragment() {
             letterToEdit?.let {
                 updateLetterList(it)
                 letterDetailViewModel.updateLetterList(it)
+                Log.d("삭제 후 값", "${it}")
             }
             dismiss()
         }
