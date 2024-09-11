@@ -106,7 +106,6 @@ class LetterWriteFragment(
         val title = binding.etLetterWriteTitle.text.toString()
         val content = binding.etLetterWriteContent.text.toString()
 
-        Log.d("LetterWriteFragment", "제목: $title, 내용: $content")
 
         if (title.isNotEmpty() && content.isNotEmpty()) {
             val letterModel = LetterModel(title, content, LoginData.loginUser)

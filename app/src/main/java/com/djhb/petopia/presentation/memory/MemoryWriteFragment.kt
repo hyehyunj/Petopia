@@ -111,7 +111,6 @@ class MemoryWriteFragment(
         val title = binding.tvMemoryWriteQuestion.text.toString()
         val content = binding.etMemoryWriteContent.text.toString()
 
-        Log.d("MemoryWriteFragment", "제목: $title, 내용: $content")
         // 여기서 작성한 데이터를 받아서 memoryFragment의 리사이클러뷰에 전달해야함
         if (title.isNotEmpty() && content.isNotEmpty()) {
             val memory = Memory(title, content, LoginData.loginUser)
