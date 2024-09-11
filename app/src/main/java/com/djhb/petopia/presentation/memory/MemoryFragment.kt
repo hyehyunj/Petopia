@@ -31,6 +31,7 @@ class MemoryFragment() : DialogFragment() {
     private val _binding: FragmentMemoryBinding by lazy {
         FragmentMemoryBinding.inflate(layoutInflater)
     }
+    val user = LoginData.loginUser.id
 
     private val binding get() = _binding
 
@@ -82,7 +83,11 @@ class MemoryFragment() : DialogFragment() {
         memoryViewModel.setMemoryTitle(currentTitle.toString())
 
 
-        if (memoryViewModel.isMemorySaved.value == true) {
+        val isSavedSharedPreferences =
+            requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
+        val isSaved = isSavedSharedPreferences.getBoolean("isSaved", false)
+
+        if (isSaved) {
             binding.memoryTodayMemoryLayout.visibility = View.GONE
         }
 

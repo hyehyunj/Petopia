@@ -129,9 +129,10 @@ class SignupFragment : Fragment() {
             "이메일" to userEmail
         )
 
+
         for ((fieldName, value) in field) {
             if (value.isEmpty()) {
-                if(fieldName == "비밀번호확인"){
+                if (fieldName == "비밀번호확인") {
                     StyleableToast.makeText(
                         requireActivity(),
                         "비밀번호가 일치하지 않습니다.",
@@ -146,6 +147,15 @@ class SignupFragment : Fragment() {
                 ).show()
                 return false
             }
+        }
+
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
+            StyleableToast.makeText(
+                requireActivity(),
+                "이메일 형식이 올바르지 않습니다.",
+                R.style.toast_warning
+            ).show()
+            return false
         }
 
         if (userPassword != userPasswordCheck) {

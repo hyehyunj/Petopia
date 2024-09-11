@@ -69,6 +69,7 @@ class SettingFragment : DialogFragment() {
     }
 
     private fun loguout() {
+        clearSharedPreferences()
         //다이얼로그를 닫고 이동
         dismiss()
 
@@ -76,5 +77,11 @@ class SettingFragment : DialogFragment() {
         val intent = Intent(requireContext(), RegisterActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+    }
+
+    fun clearSharedPreferences() {
+        val sharedPreferences =
+            requireContext().getSharedPreferences("MemoryisSaved", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
     }
 }

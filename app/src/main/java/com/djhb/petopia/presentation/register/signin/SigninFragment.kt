@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.register.signin
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,7 +26,8 @@ class SigninFragment : Fragment() {
     private val binding get() = _binding
 
     private val signRepository = SignRepositoryImpl()
-//    private val registerViewModel: RegisterViewModel by activityViewModels {
+
+    //    private val registerViewModel: RegisterViewModel by activityViewModels {
 //        RegisterViewModel.RegisterViewModelFactory(signRepository)
 //    }
     private val registerViewModel: RegisterViewModel by activityViewModels()
@@ -54,9 +56,11 @@ class SigninFragment : Fragment() {
                         "로그인 완료",
                         R.style.toast_common
                     ).show()
+
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
+
                 },
                 onFailure = {
                     //로그인 실패
@@ -107,4 +111,6 @@ class SigninFragment : Fragment() {
             R.style.toast_undo
         ).show()
     }
+
+
 }
