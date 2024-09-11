@@ -157,7 +157,6 @@ class LetterFragment : DialogFragment() {
 
     }
 
-
     private fun initAdapter() {
         letterListRecyclerViewAdapter = LetterListRecyclerViewAdapter(
             itemClickListener = { item ->
