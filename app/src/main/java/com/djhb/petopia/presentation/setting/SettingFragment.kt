@@ -36,7 +36,6 @@ class SettingFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initDialog()
 
         binding.apply {
             btnSettingExit.setOnClickListener {
@@ -76,5 +75,10 @@ class SettingFragment : DialogFragment() {
         val intent = Intent(requireContext(), RegisterActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initDialog()
     }
 }
