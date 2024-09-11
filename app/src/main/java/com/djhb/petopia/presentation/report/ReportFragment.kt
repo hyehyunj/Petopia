@@ -39,7 +39,7 @@ class ReportFragment : DialogFragment() {
     }
     private val binding get() = _binding
 
-    private lateinit var reason: ReportReasonType
+    private var reason = ReportReasonType.UNPLEASANT_CONTENT
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

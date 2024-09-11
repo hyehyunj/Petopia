@@ -137,6 +137,7 @@ class CommunityMainFragment : Fragment() {
         }
         binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
         binding.recyclerViewQuestionRank.isNestedScrollingEnabled = false
+
     }
 
     private fun initListener() {

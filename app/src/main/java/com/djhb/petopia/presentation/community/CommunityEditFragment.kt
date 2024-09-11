@@ -140,12 +140,7 @@ class CommunityEditFragment : Fragment() {
     private fun initListener(){
         binding.btnComplete.setOnClickListener {
 
-            if(imageUris.size > 0) {
-                lifecycleScope.launch {
-                    viewModel.deletePostImages(post.key)
-                    viewModel.createPostImages(post, imageUris)
-                }
-            }
+
 
             val title = binding.etTitle.text.toString()
             val content = binding.etContent.text.toString()
@@ -157,6 +152,20 @@ class CommunityEditFragment : Fragment() {
             } else if(content.isBlank()){
                 Toast.makeText(requireActivity(), "본문을 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else {
+
+                if(imageUris.size > 0) {
+
+                    for (imageUri in imageUris) {
+                        Log.i("CommunityEditFragment", "imageUri = ${imageUri}")
+                    }
+
+                    lifecycleScope.launch {
+                        viewModel.deletePostImages(post.key)
+                        imageUris.removeAt(0)
+                        viewModel.createPostImages(post, imageUris)
+                    }
+                }
+
                 viewModel.updatePost(post.copy(title = title, content = content))
 
                 requireActivity().supportFragmentManager.beginTransaction()
