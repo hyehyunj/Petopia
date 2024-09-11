@@ -80,7 +80,7 @@ class GalleryFragment : DialogFragment() {
             galleryIvAdd.setOnClickListener {
                 gallerySharedViewModel.changeLayoutMode("ADD")
                 GalleryEditFragment().show(childFragmentManager, "GALLERY_ADD_FRAGMENT")
-                if(gallerySharedViewModel.removeModeLiveData.value == "REMOVE") gallerySharedViewModel.changeRemoveMode()
+                if(gallerySharedViewModel.removeModeLiveData.value == "REMOVE") gallerySharedViewModel.cancelRemoveMode()
                   }
 
 
