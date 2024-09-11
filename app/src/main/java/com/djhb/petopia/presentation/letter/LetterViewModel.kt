@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.letter
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,6 +47,7 @@ class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : View
         }
     }
 
+
 //    fun loadInitLetterList(user: UserModel) {
 //        viewModelScope.launch {
 //            val documents = letterRepository.selectInitLetterList(user)
@@ -57,6 +59,7 @@ class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : View
 //            }
 //        }
 //    }
+
 
     fun loadLetterList(user: UserModel) {
         viewModelScope.launch {
