@@ -167,6 +167,7 @@
         android:layout_margin="16dp"
         android:background="@drawable/sel_btn_square_red_white"
         android:text="계정 삭제"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
