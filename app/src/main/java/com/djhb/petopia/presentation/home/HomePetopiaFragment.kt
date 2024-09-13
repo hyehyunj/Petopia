@@ -65,20 +65,20 @@ class HomePetopiaFragment : Fragment() {
     }
 //구름 애니메이션
     private fun initCloudAnimation() {
-        binding.homeImgClould.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        binding.homeImgCloud.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 // 레이아웃이 그려진 후 실행
-                binding.homeImgClould.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                binding.homeImgCloud.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                 val displayMetrics = DisplayMetrics()
                 requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
                 val screenWidth = displayMetrics.widthPixels
 
-                val cloudWidth = binding.homeImgClould.width.toFloat()
+                val cloudWidth = binding.homeImgCloud.width.toFloat()
                 val endTranslationX = -(cloudWidth + screenWidth)
 
                 // 애니메이션 설정
-                val cloudAnimator = ObjectAnimator.ofFloat(binding.homeImgClould, "translationX", 0f, endTranslationX)
+                val cloudAnimator = ObjectAnimator.ofFloat(binding.homeImgCloud, "translationX", 0f, endTranslationX)
                 cloudAnimator.duration = 150000
                 cloudAnimator.repeatCount = ObjectAnimator.INFINITE
                 cloudAnimator.repeatMode = ObjectAnimator.RESTART

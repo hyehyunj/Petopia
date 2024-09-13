@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_ivory">
+        android:background="@drawable/bg_white_30">
 
         <ImageView
             android:id="@+id/btn_letter_exit"

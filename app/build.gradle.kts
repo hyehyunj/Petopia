@@ -50,6 +50,8 @@ android {
 
 
 dependencies {
+    implementation("com.github.skydoves:elasticviews:2.1.0")
+    implementation("com.github.skydoves:submarine:1.0.7")
     implementation("com.github.bloderxd:deck:0.1")
     implementation("com.github.developer-shivam:FeaturedRecyclerView:1.0.0")
     implementation("com.github.sparrow007:carouselrecyclerview:1.2.6")

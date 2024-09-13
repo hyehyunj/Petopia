@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_ivory"
     tools:context=".presentation.register.signup.SignupFragment">
 
     <LinearLayout
@@ -15,7 +14,7 @@
 
         <TextView
             android:id="@+id/tv_signup_title"
-            style="@style/common_text_20_bold_dark_gray"
+            style="@style/common_text_24_bold_dark_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -27,10 +26,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/signup_nickname"
-            app:boxBackgroundColor="@color/translucent_white"
+            android:textColorHint="@color/dark_gray"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
             app:boxStrokeColor="@color/main_blue"
-            app:boxStrokeWidth="2dp"
-            app:hintTextColor="@color/gray">
+            app:boxStrokeErrorColor="@color/error"
+            app:boxStrokeWidth="1dp"
+            app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_signup_nickname"
@@ -46,11 +50,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:hint="@string/common_id"
-
-            app:boxBackgroundColor="@color/translucent_white"
-
+            android:textColorHint="@color/dark_gray"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
             app:boxStrokeColor="@color/main_blue"
-            app:boxStrokeWidth="2dp"
+            app:boxStrokeErrorColor="@color/error"
+            app:boxStrokeWidth="1dp"
             app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -67,10 +74,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:hint="@string/common_password"
-
-            app:boxBackgroundColor="@color/translucent_white"
+            android:textColorHint="@color/dark_gray"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
             app:boxStrokeColor="@color/main_blue"
-            app:boxStrokeWidth="2dp"
+            app:boxStrokeErrorColor="@color/error"
+            app:boxStrokeWidth="1dp"
             app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -87,10 +98,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:hint="@string/signup_password_check"
-            app:boxBackgroundColor="@color/translucent_white"
-
+            android:textColorHint="@color/dark_gray"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
             app:boxStrokeColor="@color/main_blue"
-            app:boxStrokeWidth="2dp"
+            app:boxStrokeErrorColor="@color/error"
+            app:boxStrokeWidth="1dp"
             app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -107,10 +122,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:hint="@string/signup_email"
-            app:boxBackgroundColor="@color/translucent_white"
-
+            android:textColorHint="@color/dark_gray"
+            app:boxCornerRadiusBottomEnd="10dp"
+            app:boxCornerRadiusBottomStart="10dp"
+            app:boxCornerRadiusTopEnd="10dp"
+            app:boxCornerRadiusTopStart="10dp"
             app:boxStrokeColor="@color/main_blue"
-            app:boxStrokeWidth="2dp"
+            app:boxStrokeErrorColor="@color/error"
+            app:boxStrokeWidth="1dp"
             app:hintTextColor="@color/main_blue">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -200,31 +219,34 @@
             android:id="@+id/signup_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="horizontal">
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/btn_signup_cancel"
-                style="@style/common_btn_16_bold_blue"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/sel_btn_square_white_blue"
-                android:elevation="5dp"
+                android:padding="4dp"
+                android:background="@drawable/bg_gray_white"
+                app:button_duration="100"
                 android:text="@string/common_cancel" />
 
-            <TextView
+
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/btn_signup_check"
-                style="@style/common_btn_16_bold_white"
+                style="@style/common_text_16_bold_white"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
-                android:background="@drawable/sel_btn_square_blue_white"
-                android:text="@string/common_complete" />
+                android:padding="4dp"
+                android:background="@drawable/bg_main_blue"
+                android:text="@string/common_complete"
+                app:button_duration="100" />
 
 
         </LinearLayout>

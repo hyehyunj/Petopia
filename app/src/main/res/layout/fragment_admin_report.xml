@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_ivory"
+    android:background="@drawable/bg_white_30"
     tools:context=".presentation.admin.AdminReportFragment">
 
     <ImageView
@@ -160,7 +160,7 @@
 
     <TextView
         android:id="@+id/report_tv_exile"
-        style="@style/common_btn_16_bold_white"
+        style="@style/common_text_16_bold_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="4dp"

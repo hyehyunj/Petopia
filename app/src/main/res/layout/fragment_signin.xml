@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_login_cloud"
     tools:context=".presentation.register.signin.SigninFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -49,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="16dp"
             android:paddingHorizontal="16dp"
             app:layout_constraintBottom_toTopOf="@+id/choose_login"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +57,7 @@
             <TextView
                 android:id="@+id/tv_sign_in_id_title"
                 android:includeFontPadding="false"
-                android:layout_marginTop="8dp"
+                android:layout_marginVertical="8dp"
                 style="@style/common_text_18_dark_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,10 +67,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="아이디"
-                app:boxBackgroundColor="@color/translucent_white"
+                android:hint="아이디를 입력해 주세요."
+                app:boxStrokeErrorColor="@color/error"
                 app:boxStrokeColor="@color/main_blue"
-                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="1dp"
                 app:hintTextColor="@color/main_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -80,6 +82,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
+                    style="@style/common_text_16_dark_gray"
+                    android:includeFontPadding="false"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -90,6 +94,7 @@
                 style="@style/common_text_18_dark_gray"
                 android:includeFontPadding="false"
                 android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/common_password" />
@@ -99,16 +104,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:clipToOutline="true"
-                android:hint="비밀번호"
-                app:boxBackgroundColor="@color/translucent_white"
+                app:boxStrokeErrorColor="@color/error"
+                android:hint="비밀번호를 입력해 주세요."
                 app:boxStrokeColor="@color/main_blue"
-                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="1dp"
                 app:hintTextColor="@color/main_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/common_text_16_dark_gray"
+                    android:includeFontPadding="false"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1" />
@@ -132,10 +143,10 @@
 
                 <View
                     android:id="@+id/divider1"
-                    android:layout_width="2dp"
+                    android:layout_width="1dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@color/gray"
+                    android:background="@color/light_gray"
                     app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"
                     app:layout_constraintEnd_toStartOf="@+id/btn_password_search"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -153,26 +164,27 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/btn_signin"
-                style="@style/common_btn_16_bold_white"
+                style="@style/common_text_16_bold_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/sel_btn_square_blue_white"
+                app:button_duration="100"
+                android:background="@drawable/bg_main_blue"
                 android:padding="4dp"
                 android:text="@string/common_sign_in" />
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/btn_signup"
-                style="@style/common_btn_16_bold_blue"
+                style="@style/common_text_16_bold_blue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/sel_btn_square_white_blue"
+                android:background="@drawable/bg_gray_white"
+                app:button_duration="100"
                 android:padding="4dp"
-                android:text="@string/common_sign_up"
-                app:layout_constraintEnd_toEndOf="parent" />
+                android:text="@string/common_sign_up"/>
 
 
             <View
