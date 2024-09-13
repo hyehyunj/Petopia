@@ -27,14 +27,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+
+
     <FrameLayout
         android:id="@+id/main_guide_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <FrameLayout
@@ -46,5 +48,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <com.skydoves.submarine.SubmarineView
+        android:id="@+id/submarineView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="36dp"
+        app:submarine_animation="scale"
+        app:submarine_autoDip="false"
+        app:submarine_circlePadding="2dp"
+        android:elevation="10dp"
+        app:submarine_circleAnchor="bottom"
+        app:submarine_circleDrawable="@drawable/icon_navigation"
+        app:submarine_circleSize="26dp"
+        app:submarine_color="@color/main_blue"
+        app:submarine_duration="350"
+        app:submarine_orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
