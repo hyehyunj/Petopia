@@ -143,10 +143,10 @@
 
                 <View
                     android:id="@+id/divider1"
-                    android:layout_width="2dp"
+                    android:layout_width="1dp"
                     android:layout_height="20dp"
                     android:layout_marginEnd="16dp"
-                    android:background="@color/gray"
+                    android:background="@color/light_gray"
                     app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"
                     app:layout_constraintEnd_toStartOf="@+id/btn_password_search"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -170,7 +170,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                app:button_duration="150"
+                app:button_duration="100"
                 android:background="@drawable/bg_main_blue"
                 android:padding="4dp"
                 android:text="@string/common_sign_in" />
@@ -182,7 +182,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_gray_white"
-                app:button_duration="150"
+                app:button_duration="100"
                 android:padding="4dp"
                 android:text="@string/common_sign_up"/>
 

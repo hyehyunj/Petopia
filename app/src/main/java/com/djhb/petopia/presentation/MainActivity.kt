@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity() {
         }
         initNavigation()
 
+
         //레이아웃 초기화
         initLayout()
 
@@ -113,15 +114,28 @@ class MainActivity : AppCompatActivity() {
                 iconScaleType = ImageView.ScaleType.CENTER_CROP
             }
             val item1 = SubmarineItem(
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_paw), iconForm)
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_paw), iconForm
+            )
             val item2 = SubmarineItem(
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_rainbow), iconForm)
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_rainbow), iconForm
+            )
             val item3 = SubmarineItem(
-            ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_tree), iconForm)
+                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_tree), iconForm
+            )
 
             addSubmarineItem(item1)
             addSubmarineItem(item2)
             addSubmarineItem(item3)
+
+//            setSubmarineItemClickListener { i, submarineItem ->
+//            when (i) {
+//                0 -> viewPager.setCurrentItem(0, true)
+//                1 -> viewPager.setCurrentItem(1, true)
+//                2 -> viewPager.setCurrentItem(2, true)
+//            }
+//        }
+
+
         }
     }
 
@@ -173,6 +187,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun moveToPetopia() {
+        viewPager.setCurrentItem(0, true)
         viewPager.setCurrentItem(0, true)
     }
 

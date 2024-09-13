@@ -80,9 +80,10 @@
             <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="15dp"
+                android:padding="4dp"
                 android:text="취소"
                 style="@style/common_text_16_dark_gray"
                 android:background="@drawable/bg_gray_white"
@@ -99,7 +100,8 @@
             <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/btnComplete"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
                 style="@style/common_text_16_bold_white"
                 android:layout_weight="1"
                 android:background="@drawable/bg_main_blue"
