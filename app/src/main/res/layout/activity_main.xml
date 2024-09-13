@@ -62,7 +62,7 @@
         app:submarine_circleAnchor="bottom"
         app:submarine_circleDrawable="@drawable/icon_navigation"
         app:submarine_circleSize="26dp"
-        app:submarine_color="@color/main_blue"
+        app:submarine_color="@color/translucent_black"
         app:submarine_duration="350"
         app:submarine_orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
