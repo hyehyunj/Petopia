@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.ir.backend.js.compile
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -42,9 +44,15 @@ android {
         dataBinding = true
     }
 
+
 }
 
+
+
 dependencies {
+    implementation("com.github.bloderxd:deck:0.1")
+    implementation("com.github.developer-shivam:FeaturedRecyclerView:1.0.0")
+    implementation("com.github.sparrow007:carouselrecyclerview:1.2.6")
     implementation("io.github.muddz:styleabletoast:2.4.0")
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation("androidx.fragment:fragment-ktx:1.8.1")
