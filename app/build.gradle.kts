@@ -50,6 +50,7 @@ android {
 
 
 dependencies {
+    implementation("com.wajahatkarim:easyflipviewpager:2.0.1")
     implementation("com.github.skydoves:elasticviews:2.1.0")
     implementation("com.github.skydoves:submarine:1.0.7")
     implementation("com.github.bloderxd:deck:0.1")

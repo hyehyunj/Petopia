@@ -14,6 +14,7 @@ import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.admin.AdminFragment
 import com.djhb.petopia.presentation.admin.AdminViewModel
 import com.djhb.petopia.presentation.admin.post.AdminPostLeftFragment
+import com.djhb.petopia.presentation.admin.post.AdminPostRightFragment
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.setting.SettingFragment
@@ -59,14 +60,12 @@ class HomeEarthFragment : Fragment() {
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
         binding.homeEarthIvCloudLeft.setOnClickListener {
-            AdminPostLeftFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
-            showUndoToast()
+            AdminPostLeftFragment().show(childFragmentManager, "ADMIN_POST_LEFT_FRAGMENT")
         }
 
         //우측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
         binding.homeEarthIvCloudRight.setOnClickListener {
-            showUndoToast()
-        }
+            AdminPostRightFragment().show(childFragmentManager, "ADMIN_POST_RIGHT_FRAGMENT")        }
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {

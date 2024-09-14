@@ -14,7 +14,7 @@ import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.databinding.FragmentAdminPostBinding
 
 //관리자 페이지
-class AdminPostLeftFragment : DialogFragment() {
+class AdminPostRightFragment : DialogFragment() {
     private val _binding: FragmentAdminPostBinding by lazy {
         FragmentAdminPostBinding.inflate(layoutInflater)
     }
@@ -34,8 +34,8 @@ class AdminPostLeftFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.adminPostTvTitle.text = "배웅하기"
 
-binding.adminPostTvTitle.text = "배웅하기"
         adminPostLeftDataObserver()
         adminPostLeftButtonClickListener()
 
@@ -62,7 +62,7 @@ binding.adminPostTvTitle.text = "배웅하기"
     private fun initAdapter(){
         deckPager.apply {
             offscreenPageLimit = 5
-            adapter = AdminPostAdapter(requireContext(), getAdminPostLeftItems())
+            adapter = AdminPostAdapter(requireContext(), getAdminPostRightItems())
             clipToPadding = false
             setPadding(100,0,100,0)
 pageMargin = 20

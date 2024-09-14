@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.SimpleItemAnimator
+import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentGalleryBinding
 
@@ -31,7 +32,7 @@ class GalleryFragment : DialogFragment() {
     }
     private val binding get() = _binding
 
-
+private lateinit var galleryViewPager2 : ViewPager2
 
 
     private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
@@ -98,6 +99,9 @@ class GalleryFragment : DialogFragment() {
         }
     }
 
+
+
+
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun galleryDataObserver() {
 
@@ -133,6 +137,13 @@ class GalleryFragment : DialogFragment() {
         }
 
 
+    }
+
+
+    private fun initGalleryViewPager2(){
+        galleryViewPager2 = findViewById(R.id.myViewPager2)
+        val pagerAdapter2 = MyPagerAdapter(this)
+        myViewPager2.adapter = pagerAdapter2
     }
 
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
