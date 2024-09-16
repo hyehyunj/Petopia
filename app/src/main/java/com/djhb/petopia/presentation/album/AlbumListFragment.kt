@@ -1,38 +1,28 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
-import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.ProgressBar
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.SimpleItemAnimator
-import androidx.viewpager2.widget.ViewPager2
-import com.djhb.petopia.data.LoginData
-import com.djhb.petopia.databinding.FragmentGalleryBinding
+import com.djhb.petopia.databinding.FragmentAlbumListBinding
 
 
-class GalleryFragment : DialogFragment() {
+class AlbumListFragment : Fragment() {
 
     private lateinit var galleryRecyclerViewAdapter: GalleryRecyclerViewAdapter
-    private val _binding: FragmentGalleryBinding by lazy {
-        FragmentGalleryBinding.inflate(layoutInflater)
+    private val _binding: FragmentAlbumListBinding by lazy {
+        FragmentAlbumListBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
 
-private lateinit var galleryViewPager2 : ViewPager2
+//private lateinit var galleryViewPager2 : ViewPager2
 
 
     private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
@@ -56,7 +46,6 @@ private lateinit var galleryViewPager2 : ViewPager2
         galleryDataObserver()
         gallerySharedViewModel.loadGalleryList()
 
-        initDialog()
     }
 
 
@@ -68,7 +57,6 @@ private lateinit var galleryViewPager2 : ViewPager2
         //뒤로가기버튼 클릭이벤트 : 갤러리 종료
         binding.apply {
             galleryIvBack.setOnClickListener {
-                dismiss()
             }
             //삭제버튼 클릭이벤트 : 체크박스 활성화
             galleryIvRemove.setOnClickListener {
@@ -140,11 +128,11 @@ private lateinit var galleryViewPager2 : ViewPager2
     }
 
 
-    private fun initGalleryViewPager2(){
-        galleryViewPager2 = findViewById(R.id.myViewPager2)
-        val pagerAdapter2 = MyPagerAdapter(this)
-        myViewPager2.adapter = pagerAdapter2
-    }
+//    private fun initGalleryViewPager2(){
+//        galleryViewPager2 = findViewById(R.id.myViewPager2)
+//        val pagerAdapter2 = MyPagerAdapter(this)
+//        myViewPager2.adapter = pagerAdapter2
+//    }
 
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
     private fun initAdapter() {
@@ -167,7 +155,7 @@ private lateinit var galleryViewPager2 : ViewPager2
             animator.supportsChangeAnimations = false
         }
         binding.galleryRv.adapter = galleryRecyclerViewAdapter
-        binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 1)
     }
 
 
@@ -183,22 +171,6 @@ private lateinit var galleryViewPager2 : ViewPager2
 //        })
 //    }
 
-    //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현
-    private fun initDialog() {
-        val windowManager =
-            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
 
-        val size = Point()
-        display.getSize(size)
-        size.x
-        size.y
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 1.8).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
 
 }

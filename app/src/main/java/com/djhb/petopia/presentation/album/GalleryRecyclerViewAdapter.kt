@@ -1,6 +1,5 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri

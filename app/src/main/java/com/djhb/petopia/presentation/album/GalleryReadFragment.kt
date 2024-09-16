@@ -1,34 +1,19 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentGalleryReadBinding
-import com.djhb.petopia.presentation.community.adapter.DetailImageAdapter
-import io.github.muddz.styleabletoast.StyleableToast
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.util.Locale
 
 //갤러리 읽기전용 프래그먼트 : 갤러리에서 사진 조회할 때 나타나는 프래그먼트
 class GalleryReadFragment : DialogFragment() {

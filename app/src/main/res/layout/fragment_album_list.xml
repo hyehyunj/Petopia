@@ -4,18 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_white_30"
-    tools:context=".presentation.gallery.GalleryFragment">
+    tools:context=".presentation.album.AlbumListFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/img_album_page"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
 
     <ImageView
         android:id="@+id/gallery_iv_back"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/sel_btn_left"
         app:layout_constraintBottom_toBottomOf="@id/gallery_iv_remove"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gallery_iv_remove" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/admin_tv_title"
@@ -47,16 +57,20 @@
         android:id="@+id/gallery_iv_remove"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_margin="16dp"
+        android:layout_marginEnd="48dp"
         android:src="@drawable/icon_delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/gallery_iv_back" />
+
+
+
 
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginVertical="16dp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/gallery_iv_remove"
         app:layout_constraintStart_toStartOf="@+id/gallery_iv_back"
@@ -91,7 +105,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
     <FrameLayout
         android:id="@+id/gallery_photo_container"
         android:layout_width="match_parent"

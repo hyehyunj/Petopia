@@ -30,12 +30,9 @@ import com.djhb.petopia.presentation.community.adapter.DetailImageAdapter
 import com.djhb.petopia.presentation.community.adapter.OnClickComment
 import com.djhb.petopia.presentation.community.dialogFragment.CommentEditDialogFragment
 import com.djhb.petopia.presentation.community.dialogFragment.PostDeleteDialogFragment
-import com.djhb.petopia.presentation.gallery.GalleryFragment
-import com.djhb.petopia.presentation.gallery.GallerySharedViewModel
 import com.djhb.petopia.presentation.report.ReportFragment
 import com.djhb.petopia.presentation.report.ReportViewModel
 import kotlinx.coroutines.launch
-import me.relex.circleindicator.CircleIndicator
 import me.relex.circleindicator.CircleIndicator3
 
 // TODO: Rename parameter arguments, choose names that match

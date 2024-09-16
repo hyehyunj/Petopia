@@ -1,7 +1,6 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

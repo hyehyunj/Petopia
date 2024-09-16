@@ -1,4 +1,4 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
 import android.app.DatePickerDialog
 import android.content.Context
@@ -18,7 +18,6 @@ import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentGlleryEditBinding
