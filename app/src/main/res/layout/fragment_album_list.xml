@@ -17,13 +17,13 @@
 
 
     <ImageView
-        android:id="@+id/gallery_iv_back"
+        android:id="@+id/album_iv_back"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/sel_btn_left"
-        app:layout_constraintBottom_toBottomOf="@id/gallery_iv_remove"
+        app:layout_constraintBottom_toBottomOf="@id/album_iv_remove"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,13 +33,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/common_album"
-        app:layout_constraintBottom_toBottomOf="@+id/gallery_iv_back"
+        app:layout_constraintBottom_toBottomOf="@+id/album_iv_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/gallery_iv_back" />
+        app:layout_constraintTop_toTopOf="@id/album_iv_back" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/gallery_iv_add"
+        android:id="@+id/album_iv_add"
         android:layout_width="66dp"
         android:layout_height="66dp"
         android:layout_marginBottom="26dp"
@@ -47,20 +47,20 @@
         app:backgroundTint="@color/main_blue"
         app:fabCustomSize="66dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/gallery_iv_remove"
+        app:layout_constraintEnd_toEndOf="@+id/album_iv_remove"
         app:maxImageSize="28dp"
         app:rippleColor="@color/sub_sky_blue"
         app:shapeAppearanceOverlay="@style/common_fab"
         app:tint="@color/white" />
 
     <ImageView
-        android:id="@+id/gallery_iv_remove"
+        android:id="@+id/album_iv_remove"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="48dp"
         android:src="@drawable/icon_delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gallery_iv_back" />
+        app:layout_constraintTop_toTopOf="@+id/album_iv_back" />
 
 
 
@@ -72,9 +72,9 @@
         android:layout_marginVertical="16dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/gallery_iv_remove"
-        app:layout_constraintStart_toStartOf="@+id/gallery_iv_back"
-        app:layout_constraintTop_toBottomOf="@+id/gallery_iv_remove">
+        app:layout_constraintEnd_toEndOf="@id/album_iv_remove"
+        app:layout_constraintStart_toStartOf="@+id/album_iv_back"
+        app:layout_constraintTop_toBottomOf="@+id/album_iv_remove">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gallery_rv"
+                android:id="@+id/album_rv"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/gallery_rv"
+                app:layout_constraintTop_toBottomOf="@+id/album_rv"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 />
@@ -107,7 +107,7 @@
     </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <FrameLayout
-        android:id="@+id/gallery_photo_container"
+        android:id="@+id/album_photo_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

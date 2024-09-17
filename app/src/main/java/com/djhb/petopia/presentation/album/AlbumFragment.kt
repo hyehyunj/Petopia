@@ -27,8 +27,8 @@ class AlbumFragment : DialogFragment() {
     private lateinit var albumViewPager: ViewPager2
 
 
-    private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
-        GallerySharedViewModelFactory()
+    private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
+        AlbumSharedViewModelFactory()
     }
 //    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
 

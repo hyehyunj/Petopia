@@ -14,33 +14,32 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
-import com.djhb.petopia.databinding.FragmentGlleryEditBinding
+import com.djhb.petopia.databinding.FragmentAlbumEditBinding
+import com.djhb.petopia.presentation.gallery.AlbumEditRecyclerViewAdapter
 import io.github.muddz.styleabletoast.StyleableToast
 
 //포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
-class GalleryEditFragment : DialogFragment() {
+class AlbumEditFragment : DialogFragment() {
 
-    private val _binding: FragmentGlleryEditBinding by lazy {
-        FragmentGlleryEditBinding.inflate(layoutInflater)
+    private val _binding: FragmentAlbumEditBinding by lazy {
+        FragmentAlbumEditBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-//    private lateinit var galleryEditRecyclerViewAdapter: GalleryEditRecyclerViewAdapter
-    private lateinit var gallerySharedViewModel: GallerySharedViewModel
+    private lateinit var albumEditRecyclerViewAdapter: AlbumEditRecyclerViewAdapter
+    private lateinit var gallerySharedViewModel: AlbumSharedViewModel
     private val pickMedia =
-        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(2)) { uri ->
+        registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(6)) { uri ->
             if (uri.isNotEmpty()) {
                 val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     uri.forEach{context?.contentResolver?.takePersistableUriPermission(it, flag)}
-                binding.galleryEditIvTitle.setImageURI(uri[0])
-                if(uri.size == 2)binding.galleryEditIvTitle2.setImageURI(uri[1]) else
-                    binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
-
+//                binding.galleryEditIvTitle.setImageURI(uri[0])
+//                if(uri.size == 2)binding.galleryEditIvTitle2.setImageURI(uri[1]) else
+//                    binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
                 gallerySharedViewModel.considerNewPhoto(uri)
             }
         }
@@ -49,9 +48,9 @@ class GalleryEditFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        initAdapter()
         gallerySharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(GallerySharedViewModel::class.java)
+            ViewModelProvider(requireParentFragment()).get(AlbumSharedViewModel::class.java)
+        initAdapter()
         return binding.root
     }
 
@@ -66,27 +65,32 @@ class GalleryEditFragment : DialogFragment() {
                     )
                 }
         }
-        //닫기 버튼이벤트 : 클릭시 갤러리로 이동
 
+        //사용자가 선택한 사진으로 변경
+        gallerySharedViewModel.newPhotoListLiveData.observe(viewLifecycleOwner) {
+            albumEditRecyclerViewAdapter.updateList(it)
+        }
+
+        //닫기 버튼이벤트 : 클릭시 갤러리로 이동
         binding.galleryEditTvExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
+
     }
 
 
-    //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
-//    private fun initAdapter() {
-//        galleryEditRecyclerViewAdapter = GalleryEditRecyclerViewAdapter(
-//            gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
-//            //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
-//            itemClickListener = { item, position ->
-//            },
-//            itemLongClickListener = { item, position ->  },
-//        )
-//        binding.galleryEditRv.adapter = galleryEditRecyclerViewAdapter
-//        binding.galleryEditRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//    }
+    //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수.
+    private fun initAdapter() {
+        albumEditRecyclerViewAdapter = AlbumEditRecyclerViewAdapter(
+            gallerySharedViewModel.newPhotoListLiveData.value ?: listOf(),
+            itemClickListener = { item, position ->
+            },
+            itemLongClickListener = { item, position ->  },
+        )
+        binding.galleryEditRv.adapter = albumEditRecyclerViewAdapter
+        binding.galleryEditRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+    }
 
 
 
@@ -97,27 +101,13 @@ class GalleryEditFragment : DialogFragment() {
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
             binding.apply {
-                Glide.with(requireParentFragment())
-                    .load(item.imageUris[0].toUri())
-                    .centerCrop()
-                    .into(galleryEditIvTitle)
-                galleryEditEtTitle.setText(item.titleText)
-                if(item.imageUris.size>1) {
-                Glide.with(requireParentFragment())
-                    .load(item.imageUris[1].toUri())
-                    .centerCrop()
-                    .into(galleryEditIvTitle2) } else {
-                   binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
-
-                    }
+                gallerySharedViewModel.preparePhotoList()
                 galleryEditTvCalendarInput.text = item.photoDate
-
-
             }
         }
         binding.apply {
             //사진 클릭이벤트 : 사용자의 갤러리에서 선택한 사진으로 사진을 업로드
-            galleryEditTvAdd.setOnClickListener {
+            galleryEditIvTitleBackground.setOnClickListener {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             }
 
@@ -140,7 +130,7 @@ class GalleryEditFragment : DialogFragment() {
             galleryEditTvComplete.apply {
                 setOnClickListener {
                     gallerySharedViewModel.considerNewPhotoTitle(binding.galleryEditEtTitle.text.toString())
-                    if (gallerySharedViewModel.prepared()) {
+                    if (gallerySharedViewModel.checkPrepared()) {
                         gallerySharedViewModel.updateNewGallery(
                             item.index
                         )

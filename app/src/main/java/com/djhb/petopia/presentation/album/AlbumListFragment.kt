@@ -16,70 +16,62 @@ import com.djhb.petopia.databinding.FragmentAlbumListBinding
 
 class AlbumListFragment : Fragment() {
 
-    private lateinit var galleryRecyclerViewAdapter: GalleryRecyclerViewAdapter
+    private lateinit var albumListRecyclerViewAdapter: AlbumListRecyclerViewAdapter
     private val _binding: FragmentAlbumListBinding by lazy {
         FragmentAlbumListBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
 
-//private lateinit var galleryViewPager2 : ViewPager2
-
-
-    private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
-        GallerySharedViewModelFactory()
+    private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
+        AlbumSharedViewModelFactory()
     }
-//    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initAdapter()
+        initAlbumListRecyclerViewAdapter()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //버튼 클릭이벤트
-        galleryButtonClickListener()
+        albumButtonClickListener()
         //데이터 변화감지
-        galleryDataObserver()
-        gallerySharedViewModel.loadGalleryList()
+        albumDataObserver()
+        albumSharedViewModel.loadGalleryList()
 
     }
 
 
-
-
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
-    private fun galleryButtonClickListener() {
-
-        //뒤로가기버튼 클릭이벤트 : 갤러리 종료
+    private fun albumButtonClickListener() {
+        //뒤로가기버튼 클릭이벤트 : 앨범 종료
         binding.apply {
-            galleryIvBack.setOnClickListener {
+            albumIvBack.setOnClickListener {
             }
+
             //삭제버튼 클릭이벤트 : 체크박스 활성화
-            galleryIvRemove.setOnClickListener {
-                gallerySharedViewModel.changeRemoveMode()
-//                when(gallerySharedViewModel.removeModeLiveData.value) {
-//                    "REMOVE" -> galleryRecyclerViewAdapter.updateRemoveMode("REMOVE")
-//                    "COMPLETE" -> galleryRecyclerViewAdapter.updateRemoveMode("COMPLETE")
-//                }
+            albumIvRemove.setOnClickListener {
+                albumSharedViewModel.changeRemoveMode()
             }
-            //
+
             //추가버튼 클릭이벤트 : 상세페이지로 이동하여 사진 추가
-            galleryIvAdd.setOnClickListener {
-                gallerySharedViewModel.changeLayoutMode("ADD")
-                GalleryEditFragment().show(childFragmentManager, "GALLERY_ADD_FRAGMENT")
-                if(gallerySharedViewModel.removeModeLiveData.value == "REMOVE") gallerySharedViewModel.cancelRemoveMode()
-                  }
+            albumIvAdd.setOnClickListener {
+                albumSharedViewModel.changeLayoutMode("ADD")
+                albumSharedViewModel.preparePhotoList()
+                AlbumEditFragment().show(childFragmentManager, "ALBUM_EDIT_FRAGMENT")
+                if (albumSharedViewModel.removeModeLiveData.value == "REMOVE") albumSharedViewModel.cancelRemoveMode()
+            }
 
 
-            galleryRv.addOnScrollListener(object: OnScrollListener(){
+            albumRv.addOnScrollListener(object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    if(!recyclerView.canScrollVertically(1)) {
-//                        gallerySharedViewModel.loadGalleryList()
+                    if (!recyclerView.canScrollVertically(1)) {
+//                        album
+                        //                       SharedViewModel.loadGalleryList()
                     }
                 }
             })
@@ -88,74 +80,59 @@ class AlbumListFragment : Fragment() {
     }
 
 
-
-
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
-    private fun galleryDataObserver() {
+    private fun albumDataObserver() {
 
-        //갤러리 리스트 변화감지
-        gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
-
-            galleryRecyclerViewAdapter.updateList(it)
+        //앨범 리스트 변화감지
+        albumSharedViewModel.albumListLiveData.observe(viewLifecycleOwner) {
+            albumListRecyclerViewAdapter.updateList(it)
         }
-//
-//        gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
-//            when(it) {
-//                "ADD","EDIT" -> GalleryEditFragment().show(childFragmentManager, "GALLERY_EDIT_FRAGMENT")
-//                "READ" -> GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
-//            }
-//        }
 
         //삭제모드 변화감지
-        gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
-            galleryRecyclerViewAdapter.updateRemoveMode(it)
-            gallerySharedViewModel.updateRemoveGalleryList(it)
+        albumSharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
+            albumListRecyclerViewAdapter.updateRemoveMode(it)
+            albumSharedViewModel.updateRemoveGalleryList(it)
         }
 
         //삭제할 사진 클릭 감지
-        gallerySharedViewModel.checkedPhotoLiveData.observe(viewLifecycleOwner) {
-            galleryRecyclerViewAdapter.updateCheckedList(gallerySharedViewModel.removePhotoList.toList(), it)
+        albumSharedViewModel.checkedPhotoLiveData.observe(viewLifecycleOwner) {
+            albumListRecyclerViewAdapter.updateCheckedList(
+                albumSharedViewModel.removePhotoList.toList(),
+                it
+            )
         }
 
-        gallerySharedViewModel.isProcessing.observe(viewLifecycleOwner) { isProcessing ->
-            if(isProcessing)
+        albumSharedViewModel.isProcessing.observe(viewLifecycleOwner) { isProcessing ->
+            if (isProcessing)
                 binding.pbGallery.visibility = ProgressBar.VISIBLE
             else
                 binding.pbGallery.visibility = ProgressBar.GONE
         }
-
-
     }
 
 
-//    private fun initGalleryViewPager2(){
-//        galleryViewPager2 = findViewById(R.id.myViewPager2)
-//        val pagerAdapter2 = MyPagerAdapter(this)
-//        myViewPager2.adapter = pagerAdapter2
-//    }
-
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수. 사진 클릭시 상세페이지로 이동.
-    private fun initAdapter() {
-        galleryRecyclerViewAdapter = GalleryRecyclerViewAdapter(
-            gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
-            //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
+    private fun initAlbumListRecyclerViewAdapter() {
+        albumListRecyclerViewAdapter = AlbumListRecyclerViewAdapter(
+            albumSharedViewModel.albumListLiveData.value ?: listOf(),
+            //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집, 삭제모드인 경우 삭제할 항목에 추가
             itemClickListener = { item, position ->
-                gallerySharedViewModel.updateGalleryList(item, position)
-                when(gallerySharedViewModel.removeModeLiveData.value) {
+                albumSharedViewModel.updateGalleryList(item, position)
+                when (albumSharedViewModel.removeModeLiveData.value) {
                     "COMPLETE" -> {
-                        gallerySharedViewModel.changeLayoutMode("READ")
-                        GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
+                        albumSharedViewModel.changeLayoutMode("READ")
+                        AlbumReadFragment().show(childFragmentManager, "ALBUM_READ_FRAGMENT")
                     }
                 }
             },
             itemLongClickListener = { item, position -> },
         )
-        val animator = binding.galleryRv.itemAnimator
-        if(animator is SimpleItemAnimator){
+        val animator = binding.albumRv.itemAnimator
+        if (animator is SimpleItemAnimator) {
             animator.supportsChangeAnimations = false
         }
-        binding.galleryRv.adapter = galleryRecyclerViewAdapter
-        binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 1)
+        binding.albumRv.adapter = albumListRecyclerViewAdapter
+        binding.albumRv.layoutManager = GridLayoutManager(requireContext(), 1)
     }
 
 
@@ -170,7 +147,6 @@ class AlbumListFragment : Fragment() {
 //            }
 //        })
 //    }
-
 
 
 }

@@ -7,11 +7,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_white_30"
     android:gravity="center"
-    tools:context=".presentation.album.GalleryReadFragment">
+    tools:context=".presentation.album.AlbumReadFragment">
 
 
     <ImageView
-        android:id="@+id/gallery_read_tv_exit"
+        android:id="@+id/album_read_tv_exit"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="16dp"
@@ -21,28 +21,28 @@
 
 
     <ImageView
-        android:id="@+id/gallery_read_iv_action"
+        android:id="@+id/album_read_iv_action"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/icon_write"
-        app:layout_constraintBottom_toBottomOf="@+id/gallery_read_tv_exit"
+        app:layout_constraintBottom_toBottomOf="@+id/album_read_tv_exit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/gallery_read_tv_exit" />
+        app:layout_constraintTop_toTopOf="@+id/album_read_tv_exit" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/gallery_read_layout_inside"
+        android:id="@+id/album_read_layout_inside"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/img_gallery_frame"
+        android:background="@drawable/img_photo_frame"
         app:layout_constraintDimensionRatio="1:1.5"
-        app:layout_constraintEnd_toEndOf="@+id/gallery_read_iv_action"
-        app:layout_constraintStart_toStartOf="@+id/gallery_read_tv_exit"
-        app:layout_constraintTop_toBottomOf="@+id/gallery_read_tv_exit">
+        app:layout_constraintEnd_toEndOf="@+id/album_read_iv_action"
+        app:layout_constraintStart_toStartOf="@+id/album_read_tv_exit"
+        app:layout_constraintTop_toBottomOf="@+id/album_read_tv_exit">
 
 <!--        <ImageView-->
-<!--            android:id="@+id/gallery_read_iv_title"-->
+<!--            android:id="@+id/album_read_iv_title"-->
 <!--            android:layout_width="match_parent"-->
 <!--            android:layout_height="0dp"-->
 <!--            android:layout_margin="26dp"-->
@@ -57,7 +57,7 @@
 <!--            app:layout_constraintTop_toTopOf="parent" />-->
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/gallery_read_iv_title"
+            android:id="@+id/album_read_iv_title"
             android:layout_width="match_parent"
             android:layout_margin="26dp"
             android:layout_height="0dp"
@@ -69,7 +69,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <me.relex.circleindicator.CircleIndicator3
-            android:id="@+id/gallery_read_indicator"
+            android:id="@+id/album_read_indicator"
             android:layout_width="50dp"
             android:layout_height="30dp"
             app:ci_drawable="@drawable/bg_round_main_blue"
@@ -78,7 +78,7 @@
             app:ci_width="7dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/gallery_read_iv_title"
+            app:layout_constraintTop_toBottomOf="@+id/album_read_iv_title"
             tools:ignore="MissingClass" />
 
 
@@ -86,28 +86,28 @@
 
 
         <TextView
-            android:id="@+id/gallery_read_tv_title"
+            android:id="@+id/album_read_tv_title"
             style="@style/point_text_40_dark_gray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLines="1"
             android:text=""
-            app:layout_constraintBottom_toTopOf="@+id/gallery_read_tv_calendar"
-            app:layout_constraintEnd_toEndOf="@+id/gallery_read_iv_title"
-            app:layout_constraintStart_toStartOf="@+id/gallery_read_iv_title"
-            app:layout_constraintTop_toBottomOf="@+id/gallery_read_iv_title" />
+            app:layout_constraintBottom_toTopOf="@+id/album_read_tv_calendar"
+            app:layout_constraintEnd_toEndOf="@+id/album_read_iv_title"
+            app:layout_constraintStart_toStartOf="@+id/album_read_iv_title"
+            app:layout_constraintTop_toBottomOf="@+id/album_read_iv_title" />
 
 
 
 
         <TextView
-            android:id="@+id/gallery_read_tv_calendar"
+            android:id="@+id/album_read_tv_calendar"
             style="@style/point_text_24_dark_gray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="30dp"
-            app:layout_constraintEnd_toEndOf="@+id/gallery_read_iv_title"
+            app:layout_constraintEnd_toEndOf="@+id/album_read_iv_title"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 

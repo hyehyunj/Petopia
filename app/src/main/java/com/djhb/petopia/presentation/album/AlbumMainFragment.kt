@@ -18,8 +18,8 @@ class AlbumMainFragment : Fragment() {
     private val binding get() = _binding
 
 
-    private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
-        GallerySharedViewModelFactory()
+    private val gallerySharedViewModel by viewModels<AlbumSharedViewModel> {
+        AlbumSharedViewModelFactory()
     }
 //    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
 
@@ -33,21 +33,21 @@ class AlbumMainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //버튼 클릭이벤트
-        galleryButtonClickListener()
+        albumMainButtonClickListener()
         //데이터 변화감지
-        galleryDataObserver()
+        albumMainDataObserver()
     }
 
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
-    private fun galleryButtonClickListener() {
+    private fun albumMainButtonClickListener() {
 
 
     }
 
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
-    private fun galleryDataObserver() {
+    private fun albumMainDataObserver() {
 
 
     }

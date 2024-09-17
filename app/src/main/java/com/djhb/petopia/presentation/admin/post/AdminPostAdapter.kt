@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import com.djhb.petopia.R
+import com.djhb.petopia.data.AdminPostModel
 
 class AdminPostAdapter(private val context: Context, private val items: List<AdminPostModel>) : PagerAdapter() {
 
