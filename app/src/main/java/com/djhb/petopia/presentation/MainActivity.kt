@@ -19,10 +19,12 @@ import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
+import com.skydoves.submarine.SubmarineCircleClickListener
 import com.skydoves.submarine.SubmarineItem
+import com.skydoves.submarine.SubmarineItemClickListener
 import com.skydoves.submarine.iconForm
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
 
     lateinit var binding: ActivityMainBinding
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
@@ -30,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         MainHomeGuideSharedViewModelFactory()
     }
     private lateinit var viewPager: ViewPager2
-
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             Log.i("MainActivity", "press backButton")
@@ -92,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         viewPager.orientation = ViewPager2.ORIENTATION_VERTICAL
     }
 
+    //가이드 취소 다이얼로그를 띄워주는 함수
     fun cancelGuide() {
         GuideCancelDialogFragment().show(supportFragmentManager, "GUIDE_CANCEL_DIALOG_FRAGMENT")
     }
@@ -100,8 +102,16 @@ class MainActivity : AppCompatActivity() {
         AdminExileDialogFragment().show(supportFragmentManager, "ADMIN_EXILE_DIALOG_FRAGMENT")
     }
 
+    //네비게이션을 구성해주는 함수
     private fun initNavigation() {
         binding.submarineView.apply {
+            setSubmarineItemClickListener { i, submarineItem ->
+                when (i) {
+                    0 -> viewPager.setCurrentItem(0, true)
+                    1 -> viewPager.setCurrentItem(1, true)
+                    2 -> viewPager.setCurrentItem(2, true)
+                }
+            }
             floats()
             setOnClickListener {
                 with(binding) {
@@ -127,13 +137,10 @@ class MainActivity : AppCompatActivity() {
             addSubmarineItem(item2)
             addSubmarineItem(item3)
 
-//            setSubmarineItemClickListener { i, submarineItem ->
-//            when (i) {
-//                0 -> viewPager.setCurrentItem(0, true)
-//                1 -> viewPager.setCurrentItem(1, true)
-//                2 -> viewPager.setCurrentItem(2, true)
-//            }
-//        }
+
+
+
+
 
 
         }
@@ -201,6 +208,7 @@ class MainActivity : AppCompatActivity() {
         mainSubFrame.isVisible = false
         viewPager.isVisible = true
     }
+
 
 
 }

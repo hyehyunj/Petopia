@@ -31,7 +31,7 @@
         android:layout_marginHorizontal="10dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/bg_gray_white"
+        android:background="@color/white"
         android:clipToOutline="true"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="@+id/album_holder_iv_frame"

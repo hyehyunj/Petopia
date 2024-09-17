@@ -42,7 +42,6 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     val newPhotoListLiveData: LiveData<List<Uri>> = _newPhotoListLiveData
     private lateinit var newPhotoList: GalleryModel
 
-
     //삭제모드 : "REMOVE" 삭제, "COMPLETE" 완료(기본값)
     private val _removeModeLiveData = MutableLiveData("COMPLETE")
     val removeModeLiveData: LiveData<String> = _removeModeLiveData
@@ -101,7 +100,6 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
         _albumListLiveData.value = sortedAlbumList!!
     }
 
-
     //진입경로에 따라 레이아웃 모드를 변경해주는 함수
     fun changeLayoutMode(layoutMode: String) {
         _layoutModeLiveData.value = layoutMode
@@ -117,7 +115,6 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
                 "", writer = user
             )
         }
-
     }
 
     //선택된 사진을 상세페이지로 보여주기 위해 담거나, 삭제모드일 경우 임시 저장 변수에 담아주는 함수
@@ -132,10 +129,8 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
                     _checkedPhotoLiveData.value = position
                 }
             }
-
             "COMPLETE" -> _currentPhotoListLiveData.value = photoList.copy(index = position)
         }
-
     }
 
     //사진 리스트를 편집 또는 추가하기 위해 준비해주는 함수
