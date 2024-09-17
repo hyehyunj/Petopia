@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,10 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
+import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentAlbumReadBinding
+import com.wenchao.cardstack.CardStack
 
 //읽기전용 프래그먼트 : 사진 조회할 때 나타나는 프래그먼트
 class AlbumReadFragment : DialogFragment() {
@@ -25,6 +28,7 @@ class AlbumReadFragment : DialogFragment() {
     private lateinit var albumSharedViewModel: AlbumSharedViewModel
     private lateinit var albumReadViewPagerAdapter: AlbumReadViewPagerAdapter
     private lateinit var albumReadViewPager: ViewPager2
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,6 +40,7 @@ class AlbumReadFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
@@ -60,14 +65,14 @@ class AlbumReadFragment : DialogFragment() {
 //                .centerCrop()
 //                .into(albumReadIvTitle)
 //            albumReadIvTitle.setImageURI(item.imageUris[0].toUri())
-
-            albumReadViewPagerAdapter = AlbumReadViewPagerAdapter()
-            albumReadViewPager = binding.albumReadIvTitle
-            albumReadViewPager.adapter = albumReadViewPagerAdapter
-            albumReadViewPagerAdapter.submitList(item.imageUris)
-            albumReadIndicator.setViewPager(albumReadViewPager)
-            albumReadIndicator.createIndicators(item.imageUris.size, 0)
-
+//
+//            albumReadViewPagerAdapter = AlbumReadViewPagerAdapter()
+//            albumReadViewPager = binding.albumReadIvTitle
+//            albumReadViewPager.adapter = albumReadViewPagerAdapter
+//            albumReadViewPagerAdapter.submitList(item.imageUris)
+//            albumReadIndicator.setViewPager(albumReadViewPager)
+//            albumReadIndicator.createIndicators(item.imageUris.size, 0)
+            initAdapter(item)
 
             albumReadTvTitle.text = item.titleText
 
@@ -84,6 +89,17 @@ class AlbumReadFragment : DialogFragment() {
 
             }
         }
+    }
+
+    private fun initAdapter(item: GalleryModel) {
+        val cardStack: CardStack = binding.albumReadLayoutInside
+
+        cardStack.setContentResource(R.layout.layout_album_read)
+        cardStack.setStackMargin(40)
+        val readAdapter = AlbumReadAdapter(requireContext(),item.imageUris)
+
+// 어댑터를 CardStack에 설정
+        cardStack.setAdapter(readAdapter)
     }
 
     private fun initDialog() {

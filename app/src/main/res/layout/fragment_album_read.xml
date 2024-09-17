@@ -54,8 +54,6 @@
     app:card_enable_loop="true"
     app:card_enable_rotation="true"
     app:card_gravity="top"
-    app:card_margin="10dp"
-    app:card_stack_size="6"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/album_read_tv_title"
