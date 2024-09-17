@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
 import com.djhb.petopia.databinding.FragmentAlbumMainBinding
 
 
@@ -18,7 +20,7 @@ class AlbumMainFragment : Fragment() {
     private val binding get() = _binding
 
 
-    private val gallerySharedViewModel by viewModels<AlbumSharedViewModel> {
+    private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
         AlbumSharedViewModelFactory()
     }
 //    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
@@ -36,6 +38,7 @@ class AlbumMainFragment : Fragment() {
         albumMainButtonClickListener()
         //데이터 변화감지
         albumMainDataObserver()
+
     }
 
 

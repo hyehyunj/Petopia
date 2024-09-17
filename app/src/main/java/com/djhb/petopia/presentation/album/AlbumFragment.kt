@@ -25,12 +25,9 @@ class AlbumFragment : DialogFragment() {
     private val binding get() = _binding
 
     private lateinit var albumViewPager: ViewPager2
-
-
     private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
         AlbumSharedViewModelFactory()
     }
-//    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +44,7 @@ class AlbumFragment : DialogFragment() {
         galleryDataObserver()
         initDialog()
         initAlbumViewPager()
+
     }
 
 

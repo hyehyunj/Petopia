@@ -54,6 +54,7 @@ class AlbumListRecyclerViewAdapter(
                     .centerCrop()
                     .into(albumHolderIvTitle) }
                 albumHolderTvTitle.text = item.titleText
+                albumHolderTvDate.text = item.photoDate
 //                binding.albumHolderIvChecked.isVisible = false
                 when (removeMode) {
                     "REMOVE" -> binding.albumHolderIvUnchecked.isVisible = true

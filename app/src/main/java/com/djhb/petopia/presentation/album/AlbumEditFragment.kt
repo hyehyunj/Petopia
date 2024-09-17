@@ -102,7 +102,8 @@ class AlbumEditFragment : DialogFragment() {
         if (layoutMode == "EDIT") {
             binding.apply {
                 gallerySharedViewModel.preparePhotoList()
-                galleryEditTvCalendarInput.text = item.photoDate
+                galleryEditEtTitle.setText(item.titleText)
+                galleryEditTvCalendarInput.text = if(item.photoDate == "")getString(R.string.album_select_date) else item.photoDate
             }
         }
         binding.apply {

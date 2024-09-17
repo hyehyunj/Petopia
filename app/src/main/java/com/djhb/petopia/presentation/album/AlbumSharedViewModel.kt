@@ -15,6 +15,8 @@ import com.djhb.petopia.data.remote.GalleryRepositoryImpl
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 //갤러리와 포토의 공유 뷰모델
 class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
@@ -79,6 +81,7 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
 
 // _albumListLiveData.value = albumRepository.selectGalleryMainImages(successList).toList()
             _albumListLiveData.value = successList.toList()
+            sortAlbumList()
             _isProcessing.value = false
         }
     }
@@ -88,6 +91,14 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
         viewModelScope.launch {
             _currentPhotoListLiveData.value?.let { albumRepository.createGallery(it) }
         }
+    }
+
+    //날짜 내림차순으로 정렬해주는 함수
+    private fun sortAlbumList() {
+        val formatter = DateTimeFormatter.ofPattern("yyyy.M.d")
+        val sortedAlbumList = _albumListLiveData.value
+            ?.sortedByDescending { album -> LocalDate.parse(album.photoDate, formatter) }
+        _albumListLiveData.value = sortedAlbumList!!
     }
 
 
@@ -130,10 +141,11 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     //사진 리스트를 편집 또는 추가하기 위해 준비해주는 함수
     fun preparePhotoList() {
         val stringToUri = mutableListOf<Uri>()
-        if(_layoutModeLiveData.value == "EDIT") {
+        if (_layoutModeLiveData.value == "EDIT") {
             _currentPhotoListLiveData.value?.imageUris?.forEach {
                 stringToUri.add(it.toUri())
-        } }
+            }
+        }
         _newPhotoListLiveData.value = stringToUri
     }
 
@@ -180,10 +192,10 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
             "EDIT" -> {
                 _currentPhotoListLiveData.value = newPhotoList
                 albumList[index] = _currentPhotoListLiveData.value!!
+                saveGalleryList()
             }
         }
         _albumListLiveData.value = albumList
-
     }
 
     //삭제 모드를 변경해주는 함수
