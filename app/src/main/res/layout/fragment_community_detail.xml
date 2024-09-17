@@ -169,7 +169,7 @@
                 android:layout_height="20dp"
                 android:layout_marginVertical="10dp"
                 android:layout_marginStart="16dp"
-                android:background="@drawable/icon_heart"
+                android:background="@drawable/icon_empty_heart"
                 app:layout_constraintEnd_toStartOf="@+id/tvLike"
                 app:layout_constraintStart_toEndOf="@+id/tvCommentTitle"
                 app:layout_constraintBottom_toBottomOf="@+id/tvCommentTitle"

@@ -4,8 +4,12 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.djhb.petopia.data.LikeModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
+import com.djhb.petopia.data.remote.LikeRepository
+import com.djhb.petopia.data.remote.LikeRepositoryImpl
+import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.StorageReference
@@ -43,7 +47,13 @@ class CommunityViewModel : ViewModel() {
     private var addedSearchResult = Collections.synchronizedList(mutableListOf<PostModel>())
 
 
-    private val postRepository = PostRepositoryImpl()
+    private val postRepository: PostRepository by lazy {
+        PostRepositoryImpl()
+    }
+
+    private val likeRepository: LikeRepository by lazy {
+        LikeRepositoryImpl()
+    }
 
     private lateinit var lastSnapshot: DocumentSnapshot
 
@@ -86,6 +96,10 @@ class CommunityViewModel : ViewModel() {
 
             rankPostResult.removeIf{
                 LoginData.loginUser.reportList.contains(it.writer.id)
+            }
+
+            for (postModel in rankPostResult) {
+                postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
             }
 
             val imageUris = mutableListOf<StorageReference?>()
@@ -161,6 +175,10 @@ class CommunityViewModel : ViewModel() {
                             LoginData.loginUser.reportList.contains(it.writer.id)
                         }
                     }
+                }
+
+                for (postModel in addedSearchResult) {
+                    postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
                 }
 
 
