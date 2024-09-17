@@ -57,8 +57,9 @@ class CommunityMainFragment : Fragment() {
         RankPostAdapter { post ->
 //            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
 
-            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
-            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
+//            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
+//            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
+            val detailFragment = CommunityDetailFragment.newInstance(post.key)
 
             requireActivity().supportFragmentManager
                 .beginTransaction()
@@ -68,7 +69,7 @@ class CommunityMainFragment : Fragment() {
 
             lifecycleScope.launch {
 //                viewModel.updatePost(postAddedViewCount)
-                viewModel.addPostViewCount(postAddedViewCount.key)
+                viewModel.addPostViewCount(post.key)
             }
 
             mainActivity.hideViewPager()
@@ -80,9 +81,10 @@ class CommunityMainFragment : Fragment() {
         PostAdapter { post ->
 //            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
 //            Log.i("CommunityMainFramgment", "before copy imageUris.size = ${post.imageUris.size}")
-            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
+//            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
 //            Log.i("CommunityMainFramgment", "after copy imageUris.size = ${postAddedViewCount.imageUris.size}")
-            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
+//            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
+            val detailFragment = CommunityDetailFragment.newInstance(post.key)
             requireActivity().supportFragmentManager
                 .beginTransaction()
                 .replace(R.id.main_sub_frame, detailFragment)
@@ -91,7 +93,8 @@ class CommunityMainFragment : Fragment() {
 
             lifecycleScope.launch {
 //                viewModel.updatePost(postAddedViewCount)
-                viewModel.addPostViewCount(postAddedViewCount.key)
+//                viewModel.addPostViewCount(postAddedViewCount.key)
+                viewModel.addPostViewCount(post.key)
             }
 
             mainActivity.hideViewPager()

@@ -42,12 +42,11 @@ class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<P
 
 //        Log.i("PostAdapter", "item = ${item}")
 
-        holder.binding.ivLike.visibility = ImageView.INVISIBLE
-        holder.binding.tvLikeCount.visibility = TextView.INVISIBLE
 
         holder.title.text = item.title
         holder.viewCount.text = item.viewCount.toString()
-        holder.likeCount.text = item.likeCount.toString()
+//        holder.likeCount.text = item.likeCount.toString()
+        holder.likeCount.text = item.likes.size.toString()
         holder.userId.text = item.writer.nickname
         holder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)
         holder.binding.root.setOnClickListener {

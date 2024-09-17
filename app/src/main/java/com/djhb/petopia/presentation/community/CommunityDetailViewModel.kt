@@ -5,14 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.CommentModel
+import com.djhb.petopia.data.LikeModel
 import com.djhb.petopia.data.LoginData
+import com.djhb.petopia.data.PostModel
+import com.djhb.petopia.data.remote.CommentRepository
 import com.djhb.petopia.data.remote.CommentRepositoryImpl
+import com.djhb.petopia.data.remote.LikeRepository
+import com.djhb.petopia.data.remote.LikeRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CommunityDetailViewModel: ViewModel() {
+
+    private val _currentPost = MutableLiveData<PostModel>()
+    val currentPost get() = _currentPost
 
     private val _imageUris = MutableLiveData<List<String>>()
     val imageUris get() = _imageUris
@@ -24,8 +32,32 @@ class CommunityDetailViewModel: ViewModel() {
 
     var commentsResult = mutableListOf<CommentModel>()
 
-    private val postRepository = PostRepositoryImpl()
-    private val commentRepository = CommentRepositoryImpl()
+    var currentUserLike = LikeModel()
+
+    private val _likes = MutableLiveData<MutableList<LikeModel>>()
+    val likes get()= _likes
+
+    private var likesResult = mutableListOf<LikeModel>()
+
+    private val postRepository: PostRepository by lazy {
+        PostRepositoryImpl()
+    }
+
+    private val commentRepository: CommentRepository by lazy {
+        CommentRepositoryImpl()
+    }
+
+    private val likeRepository: LikeRepository by lazy {
+        LikeRepositoryImpl()
+    }
+
+    fun selectPostFromKey(postKey: String) {
+
+        viewModelScope.launch {
+            currentPost.value = postRepository.selectPostFromKey(postKey)
+        }
+
+    }
 
     suspend fun selectDetailImageUris(key: String) {
         viewModelScope.launch {
@@ -82,6 +114,45 @@ class CommunityDetailViewModel: ViewModel() {
         _comments.value = commentsResult
     }
 
+    fun createLike(like: LikeModel) {
+        viewModelScope.launch {
+            likeRepository.createLike(like)
+            likesResult.add(like)
+            likes.value = likesResult
+        }
+    }
 
+    fun deleteLike(likeKey: String) {
+
+        viewModelScope.launch {
+
+            async { likeRepository.deleteLike(likeKey)}.await()
+
+            likesResult.removeIf {
+                it.key == likeKey
+            }
+
+            _likes.value = likesResult
+
+//            _likes.value?.removeIf{
+//                it.key == likeKey
+//            }
+
+        }
+
+    }
+
+    suspend fun selectLikeFromUser(postKey: String, userId: String){
+        viewModelScope.launch {
+            currentUserLike = async {likeRepository.selectLikeFromUser(postKey, userId)}.await()
+        }
+    }
+
+    suspend fun selectAllLikeFromPost(postKey: String) {
+        viewModelScope.launch {
+            likesResult = likeRepository.selectLikeList(postKey)
+            _likes.value = likesResult
+        }
+    }
 
 }

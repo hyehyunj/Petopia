@@ -270,6 +270,24 @@ class PostRepositoryImpl : PostRepository {
         }
     }
 
+    override suspend fun selectPostFromKey(postKey: String): PostModel {
+        return withContext(Dispatchers.IO) {
+            val snapshot = storeReference
+                .whereEqualTo("key", postKey)
+                .get()
+                .await()
+            var postModel = PostModel()
+            if(snapshot.documents.size == 1) {
+                val hashMap = snapshot.documents[0].data as HashMap<*, *>
+                val gson = Gson()
+                val toJson = gson.toJson(hashMap)
+               postModel = gson.fromJson(toJson, PostModel::class.java)
+            } else {
+                Log.w("PostRepositoryImpl", "result is not a post")
+            }
+            postModel
+        }
+    }
     //    override suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel> {
 //        return suspendCancellableCoroutine { continuation ->
 //            for (post in posts) {
@@ -541,9 +559,9 @@ class PostRepositoryImpl : PostRepository {
 
     override suspend fun addPostViewCount(postKey: String) {
         storeReference.document(postKey).update("viewCount", FieldValue.increment(1)).addOnCompleteListener {
-            Log.i("PostRepositoryImpl", "success deletePostImage = ${it}")
+            Log.i("PostRepositoryImpl", "success addPostViewCount = ${it}")
         }.addOnFailureListener {
-            Log.d("PostRepositoryImpl", "fail deletePostImage = ${it}")
+            Log.d("PostRepositoryImpl", "fail addPostViewCount = ${it}")
         }
     }
 

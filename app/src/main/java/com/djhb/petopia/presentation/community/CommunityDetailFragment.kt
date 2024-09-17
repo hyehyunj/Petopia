@@ -19,6 +19,7 @@ import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.R
 import com.djhb.petopia.ReportContentType
 import com.djhb.petopia.data.CommentModel
+import com.djhb.petopia.data.LikeModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.ReportModel
@@ -49,7 +50,8 @@ private const val ARG_PARAM2 = "param2"
  */
 class CommunityDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private lateinit var post: PostModel
+    private var post = PostModel()
+    private lateinit var postKey: String
 
     private val binding: FragmentCommunityDetailBinding by lazy {
         FragmentCommunityDetailBinding.inflate(layoutInflater)
@@ -112,16 +114,25 @@ class CommunityDetailFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPagerAdapter: DetailImageAdapter
-    private lateinit var indicator: CircleIndicator3
-    private lateinit var key: String
+    private var initLikeState: Boolean = false
+    private var currentLikeState: Boolean = false
+    private val loginUserLike: LikeModel by lazy {
+        detailViewModel.currentUserLike
+    }
 
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        arguments?.let {
+//            post = it.getParcelable(ARG_PARAM1, PostModel::class.java) ?: PostModel()
+//        }
+
+
         arguments?.let {
-            post = it.getParcelable(ARG_PARAM1, PostModel::class.java) ?: PostModel()
+            postKey = it.getString(ARG_PARAM1)?:"empty key"
         }
+
     }
 
     override fun onCreateView(
@@ -136,12 +147,20 @@ class CommunityDetailFragment : Fragment() {
 //            key = it?.getString(ARG_PARAM1)?:"no key"
 //        }
 
+        initObserver()
+        detailViewModel.selectPostFromKey(postKey)
+
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initObserver()
+
+//        Log.i("CommunityDetailFragment", "likes = ${post.likes}")
+
+
+//        initObserver()
         initListener()
         initView()
 
@@ -161,7 +180,7 @@ class CommunityDetailFragment : Fragment() {
 //            Log.i("CommunityDetailFragment", "imageUriResults = ${viewModel.imageUriResults}")
 //            viewPagerAdapter.submitList(viewModel.imageUriResults)
 //            viewPagerAdapter.submitList(imageUris)
-            detailViewModel.selectDetailImageUris(post.key)
+            detailViewModel.selectDetailImageUris(postKey)
             viewPager.adapter = viewPagerAdapter
 
             binding.rvComment.adapter = commentAdapter
@@ -170,7 +189,8 @@ class CommunityDetailFragment : Fragment() {
 //            Log.i("CommunityDetailFragment", "imageUris.value.size = ${detailViewModel.imageUris.value?.size}")
             indicatorDetail.createIndicators(detailViewModel.imageUris.value?.size ?: 0, 0)
 
-            detailViewModel.selectAllCommentFromPost(post.key)
+            detailViewModel.selectAllCommentFromPost(postKey)
+            detailViewModel.selectAllLikeFromPost(postKey)
 
             requireActivity().onBackPressedDispatcher.addCallback(
                 requireActivity(),
@@ -179,19 +199,13 @@ class CommunityDetailFragment : Fragment() {
 
         }
 
-        // mvp 이후 활성화===
-        binding.ivLike.visibility = ImageView.INVISIBLE
-        binding.tvLike.visibility = TextView.INVISIBLE
-        binding.header.ivSearch.visibility = ImageView.INVISIBLE
-        //=================
 
-        if(post.writer.id == LoginData.loginUser.id)
-            binding.ivReport.visibility = ImageView.INVISIBLE
 
         binding.tvDetailTitle.text = post.title
         binding.tvContent.text = post.content
         binding.tvViewCount.text = post.viewCount.toString()
-        binding.tvLike.text = post.likeCount.toString()
+//        binding.tvLike.text = post.likeCount.toString()
+        binding.tvLike.text = post.likes.size.toString()
         binding.tvWriter.text = post.writer.nickname
         binding.tvCreatedDate.text = DateFormatUtils.convertToPostFormat(post.createdDate)
 
@@ -206,7 +220,8 @@ class CommunityDetailFragment : Fragment() {
                     reporterId = LoginData.loginUser.id,
                     targetUserId = post.writer.id,
                     contentType = ReportContentType.QUESTION_POST,
-                    contentUid = post.key
+//                    contentUid = post.key
+                    contentUid = postKey
                 )
             )
             ReportFragment().show(childFragmentManager, "REPORT_FRAGMENT")
@@ -221,7 +236,8 @@ class CommunityDetailFragment : Fragment() {
                 lifecycleScope.launch {
                     detailViewModel.createComment(
                         CommentModel(
-                            post.key,
+//                            post.key,
+                            postKey,
                             LoginData.loginUser,
                             comment
                         )
@@ -254,7 +270,8 @@ class CommunityDetailFragment : Fragment() {
 
 
             binding.btnDelete.setOnClickListener {
-                val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
+//                val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
+                val deleteDialogFragment = PostDeleteDialogFragment(postKey) { key ->
                     lifecycleScope.launch {
                         communityViewModel.deletePost(key)
                         communityViewModel.deletePostImages(key)
@@ -264,6 +281,12 @@ class CommunityDetailFragment : Fragment() {
             }
 
             binding.btnEdit.setOnClickListener {
+
+                if(post.title == "") {
+                    Toast.makeText(requireActivity(), "잠시만 기다려주세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
                 val editFragment = CommunityEditFragment.newInstance(post)
 //                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
                 requireActivity().supportFragmentManager
@@ -277,6 +300,32 @@ class CommunityDetailFragment : Fragment() {
             binding.btnDelete.visibility = ImageView.GONE
             binding.btnEdit.visibility = ImageView.GONE
         }
+
+        binding.ivLike.setOnClickListener {
+            currentLikeState = !currentLikeState
+            Log.i("CommunityDetailFragment", "click like postKey = ${postKey}")
+            if(currentLikeState) {
+                Log.i("CommunityDetailFragment", "click like is true")
+                binding.ivLike.setImageResource(R.drawable.icon_heart)
+                lifecycleScope.launch {
+                    detailViewModel.createLike(loginUserLike
+                        .copy(
+//                            postKey = post.key,
+                            postKey = postKey,
+                            userId = LoginData.loginUser.id
+                        )
+                    )
+                }
+            }
+            else {
+                Log.i("CommunityDetailFragment", "click like is false")
+                binding.ivLike.setImageResource(R.drawable.icon_empty_heart)
+                lifecycleScope.launch {
+                    detailViewModel.deleteLike(loginUserLike.key)
+//                    detailViewModel.deleteLike(postKey)
+                }
+            }
+        }
     }
 
     private fun initObserver() {
@@ -288,9 +337,45 @@ class CommunityDetailFragment : Fragment() {
         }
 
         detailViewModel.imageUris.observe(viewLifecycleOwner) {
-//            Log.i("CommunityDetailFragment", "observe imageUris.size = ${it.size}")
+            Log.i("CommunityDetailFragment", "observe imageUris.size = ${it.size}")
             viewPagerAdapter.submitList(it.toMutableList())
             binding.indicatorDetail.createIndicators(it.size, 0)
+        }
+
+        detailViewModel.currentPost.observe(viewLifecycleOwner) { post ->
+            Log.i("CommunityDetailFragment", "post = ${post}")
+
+            // mvp 이후 활성화===
+            binding.header.ivSearch.visibility = ImageView.INVISIBLE
+            //=================
+
+            if(post.writer.id == LoginData.loginUser.id)
+                binding.ivReport.visibility = ImageView.INVISIBLE
+
+
+
+//            post = it
+            binding.tvDetailTitle.text = post.title
+            binding.tvContent.text = post.content
+            binding.tvViewCount.text = post.viewCount.toString()
+//        binding.tvLike.text = post.likeCount.toString()
+            binding.tvLike.text = post.likes.size.toString()
+            binding.tvWriter.text = post.writer.nickname
+        }
+
+        detailViewModel.likes.observe(viewLifecycleOwner) { likes ->
+            Log.i("CommunityDetailFragment", "observe likes = ${likes.size}")
+            binding.tvLike.text = likes.size.toString()
+            for (like in likes) {
+                if(like.userId == LoginData.loginUser.id) {
+                    binding.ivLike.setImageResource(R.drawable.icon_heart)
+                    detailViewModel.currentUserLike = like
+//                loginUserLike = like
+                    initLikeState = true
+                    currentLikeState = true
+                    break
+                }
+            }
         }
     }
 
@@ -330,4 +415,50 @@ class CommunityDetailFragment : Fragment() {
                 }
             }
     }
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("CommunityDetailFragment", "onStop()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.i("CommunityDetailFragment", "onPause()")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.i("CommunityDetailFragment", "onDetach()")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("CommunityDetailFragment", "onDestroy()")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.i("CommunityDetailFragment", "onDestroyView()")
+
+        // create or delete likeCount
+
+        if(initLikeState != currentLikeState) {
+//            lifecycleScope.launch {
+//                if(currentLikeState) {
+//                    detailViewModel.createLike(loginUserLike
+//                        .copy(
+//                            postKey = post.key,
+//                            userId = LoginData.loginUser.id
+//                        )
+//                    )
+//                } else {
+//                    detailViewModel.deleteLike(loginUserLike.key)
+//                }
+//            }
+        }
+
+
+    }
+
+
 }
