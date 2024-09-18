@@ -21,7 +21,7 @@ class AdminPostRightFragment : DialogFragment() {
     private val binding get() = _binding
 
     private val adminViewModel:AdminPostViewModel by activityViewModels()
-//    private val deckPager by lazy { binding.adminPostDeck }
+    private val deckPager by lazy { binding.adminPostDeck }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,15 +58,15 @@ class AdminPostRightFragment : DialogFragment() {
     }
 
 
-//    private fun initAdapter(){
-//        deckPager.apply {
-//            offscreenPageLimit = 5
-//            adapter = AdminPostAdapter(requireContext(), getAdminPostRightItems())
-//            clipToPadding = false
-//            setPadding(100,0,100,0)
-//pageMargin = 20
-//        }
-//    }
+    private fun initAdapter(){
+        deckPager.apply {
+            offscreenPageLimit = 5
+            adapter = AdminPostAdapter(requireContext(), getAdminPostRightItems())
+            clipToPadding = false
+            setPadding(100,0,100,0)
+pageMargin = 20
+        }
+    }
 
     private fun initDialog() {
         val windowManager =

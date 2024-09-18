@@ -12,6 +12,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.databinding.FragmentAdminPostBinding
+import shivam.developer.featuredrecyclerview.FeatureLinearLayoutManager
 
 //관리자 게시글
 class AdminPostLeftFragment : DialogFragment() {
@@ -65,22 +66,16 @@ adminPostViewModel.adminPostLeftListLiveData.observe(viewLifecycleOwner) { post 
 
 //게시글 구성하는 함수
     private fun initFoldingCells() {
-        val firstFc = binding.adminPostFc1
-        firstFc.setOnClickListener {
-            firstFc.toggle(false)
-        }
 
-        val secondFc = binding.adminPostFc2
-        secondFc.setOnClickListener {
-            secondFc.toggle(false)
-        }
+    val featuredRecyclerView = binding.adminPostRv
+    val layoutManager = FeatureLinearLayoutManager(requireContext())
+    featuredRecyclerView.layoutManager = layoutManager
+    val adapter = AdminPostFeatureRecyclerViewAdapter()
+    val list = listOf("1","2","3","4","5","6","7","8")
+    adapter.swapData(list)
+    featuredRecyclerView.adapter = adapter
 
-        val thirdFc = binding.adminPostFc3
-        thirdFc.setOnClickListener {
-            thirdFc.toggle(false)
-        }
-
-    }
+}
 
     private fun initDialog() {
         val windowManager =
