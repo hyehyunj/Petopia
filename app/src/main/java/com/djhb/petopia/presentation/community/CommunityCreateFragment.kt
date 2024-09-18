@@ -10,24 +10,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.djhb.petopia.data.CommentModel
+import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.UserModel
-import com.djhb.petopia.data.remote.PostRepository
-import com.djhb.petopia.data.remote.PostRepositoryImpl
 import com.djhb.petopia.databinding.FragmentCommunityCreateBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
 import com.djhb.petopia.presentation.community.adapter.OnclickImage
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -90,7 +88,7 @@ class CommunityCreateFragment : Fragment() {
                     imageUris.removeIf {
                         it == uri
                     }
-                    viewModel.postImageUris.value = imageUris
+                    viewModel.postAddImageUris.value = imageUris
                 }
             })
     }
@@ -112,12 +110,12 @@ class CommunityCreateFragment : Fragment() {
                         imageUris.add(clipData.getItemAt(itemIndex).uri.toString())
                     }
                 }
-                viewModel.postImageUris.value = imageUris
+                viewModel.postAddImageUris.value = imageUris
             }
         }
 
-    private val loginUser =
-        UserModel("testId", "testPassword", "name1", "nickname1", "email@gmail.com")
+//    private val loginUser =
+//        UserModel("testId", "testPassword", "name1", "nickname1", "email@gmail.com")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -144,36 +142,19 @@ class CommunityCreateFragment : Fragment() {
 
         val imageFormat = SimpleDateFormat("yyyyMMdd", Locale.KOREA)
         Log.i("CommunityCreateFragment", "currentDate = ${imageFormat.format(System.currentTimeMillis())}")
-//        val user = UserModel("devTest", "11qqaa..")
-//
-//        val comment1 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", LoginData.loginUser, "content1")
-//        val comment2 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", user, "content2")
-//        val comment3 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", LoginData.loginUser, "content3")
-//        val comment4 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", user, "content4")
-//        val comment5 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", user, "content5")
-//        val comment6 = CommentModel("254d2520-dd53-45f9-9753-55c28e9b2414", LoginData.loginUser, "content6")
-//
-//        lifecycleScope.launch {
-//            detailViewModel.createComment(comment1)
-//            detailViewModel.createComment(comment2)
-//            detailViewModel.createComment(comment3)
-//            detailViewModel.createComment(comment4)
-//            detailViewModel.createComment(comment5)
-//            detailViewModel.createComment(comment6)
-//        }
-
 
     }
 
     private fun initView() {
         binding.header.tvTitle.text = "글쓰기(질문 게시판)"
-        binding.header.ivSearch.isVisible = false
+//        binding.header.ivSearch.isVisible =
+        binding.header.ivSearch.visibility = ImageView.INVISIBLE
 //        val title = binding.etTitle.text.toString()
 //        val content = binding.etContent.text.toString()
         binding.recyclerViewAddImage.adapter = createImageAdapter
 //        binding.recyclerViewAddImage.layoutManager = LinearLayoutManager(requireActivity())
-        Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
-        viewModel.postImageUris.value = imageUris
+//        Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
+        viewModel.postAddImageUris.value = imageUris
 
 //        createImageAdapter.submitList(imageUris)
 
@@ -186,9 +167,6 @@ class CommunityCreateFragment : Fragment() {
         binding.btnComplete.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val content = binding.etContent.text.toString()
-//            Log.i("CommunityCreateFragment", "click complete")
-//            Log.i("CommunityCreateFragment", "title = ${title}")
-//            Log.i("CommunityCreateFragment", "content = ${content}")
             if (title.isBlank() && content.isBlank())
                 Toast.makeText(requireActivity(), "제목, 내용을 확인해주세요.", Toast.LENGTH_SHORT).show()
             else if (title.isBlank())
@@ -198,12 +176,15 @@ class CommunityCreateFragment : Fragment() {
             else {
                 lifecycleScope.launch {
                     imageUris.removeAt(0)
-                    Log.i("CommunityCreateFragment", "imageUris.size = ${imageUris.size}")
-//                    postRepository.createPost(PostModel(title, content, loginUser), imageUris)
-                    viewModel.createPost(PostModel(title, content, loginUser), imageUris)
+                    async { viewModel.createPost(PostModel(title, content, LoginData.loginUser), imageUris)}.await()
+                    viewModel.selectRankList()
+                    viewModel.selectInitPostList()
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                    mainActivity.showViewPager()
-                    requireActivity().supportFragmentManager.popBackStack()
+//                    mainActivity.showViewPager()
+//                    requireActivity().supportFragmentManager.popBackStack()
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .replace(R.id.main_sub_frame, CommunityMainFragment())
+                        .commit()
                 }
             }
         }
@@ -213,64 +194,15 @@ class CommunityCreateFragment : Fragment() {
             mainActivity.showViewPager()
             requireActivity().supportFragmentManager.popBackStack()
         }
-
-
-//        binding.ivAddImage.setOnClickListener {
-//
-//            if (ContextCompat.checkSelfPermission(
-//                    requireActivity(),
-//                    android.Manifest.permission.READ_EXTERNAL_STORAGE
-//                )
-//                == PackageManager.PERMISSION_DENIED
-//            ) {
-//                requireActivity().requestPermissions(
-//                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
-//                    1
-//                )
-//            }
-//
-//            val intent = Intent(Intent.ACTION_PICK)
-//            intent.setDataAndType(
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*"
-//            )
-//            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-//            imageLauncher.launch(intent)
-//        }
-
-//        binding.btnOk.setOnClickListener {
-//
-//
-//            val uploadTask = reference.child("1").child("test2.png")
-//                .putFile(imageUri ?: throw Exception("image Uri is null"))
-//
-//            uploadTask.addOnSuccessListener {
-//                Toast.makeText(requireActivity(), "upload success", Toast.LENGTH_SHORT).show()
-//            }.addOnFailureListener {
-//                Toast.makeText(requireActivity(), "upload fail", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//
-//        binding.btnDownload.setOnClickListener {
-//            val downloadTask = reference.child("1").child("test2.png").downloadUrl
-//            downloadTask.addOnSuccessListener { uri ->
-//                Glide.with(requireActivity())
-//                    .load(uri)
-//                    .centerCrop()
-//                    .into(binding.ivDownload)
-//            }.addOnFailureListener {
-//                Log.e("FirebaseTest", "Download fail : ${it.message}")
-//            }
-//        }
     }
 
     private fun initObserveModel(){
-        viewModel.postImageUris.observe(viewLifecycleOwner) {
+        viewModel.postAddImageUris.observe(viewLifecycleOwner) {
             Log.i("CommunityCreateFragment", "observe postImageUris")
-            Log.i("CommunityCreateFragment", "postImageUris.size = ${viewModel.postImageUris.value?.size}")
-            for (imageUris1 in viewModel.postImageUris.value?: mutableListOf()) {
+            Log.i("CommunityCreateFragment", "postImageUris.size = ${viewModel.postAddImageUris.value?.size}")
+            for (imageUris1 in viewModel.postAddImageUris.value?: mutableListOf()) {
                 Log.i("CommunityCreateFragment", "uri = ${imageUris1}")
             }
-//            createImageAdapter.submitList(viewModel.postImageUris.value?.toMutableList())
             createImageAdapter.submitList(it.toMutableList())
         }
     }

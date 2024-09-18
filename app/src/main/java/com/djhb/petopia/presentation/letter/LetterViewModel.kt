@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.letter
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,9 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.LetterModel
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.LetterRepository
+import com.djhb.petopia.data.remote.LetterRepositoryImpl
+import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.launch
 
-class LetterViewModel(private val letterRepository: LetterRepository) : ViewModel() {
+class LetterViewModel(private val letterRepository: LetterRepositoryImpl) : ViewModel() {
     private val _letterListLiveData = MutableLiveData<List<LetterModel>>()
     val letterListLiveData: LiveData<List<LetterModel>> = _letterListLiveData
 
@@ -22,6 +25,15 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
 
     private val _selectBackgroundResId = MutableLiveData<Int?>()
     val selectBackgroundResId: MutableLiveData<Int?> = _selectBackgroundResId
+
+    private val _isProcessing = MutableLiveData<Boolean>()
+    val isProcessing get() = _isProcessing
+
+//    무한스크롤관련
+//    private lateinit var lastSnapshot: DocumentSnapshot
+
+    //무한스크롤 관련
+//    private var letterListResult = mutableListOf<LetterModel>()
 
     fun selectBackground(resId: Int) {
         _selectBackgroundResId.value = resId
@@ -38,12 +50,29 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
         }
     }
 
+
+//    fun loadInitLetterList(user: UserModel) {
+//        viewModelScope.launch {
+//            val documents = letterRepository.selectInitLetterList(user)
+//            if (documents.size > 0) {
+//                lastSnapshot = documents[documents.size - 1]
+////            val memoryList = letterRepository.convertToLetterModel(documents)
+//                letterListResult = letterRepository.convertToLetterModel(documents)
+//                _letterListLiveData.value = letterListResult
+//            }
+//        }
+//    }
+
+
     fun loadLetterList(user: UserModel) {
         viewModelScope.launch {
-            val memoryList = letterRepository.selectLetterList(user)
-            _letterListLiveData.value = memoryList
+            _isProcessing.value = true
+            val letterList = letterRepository.selectLetterList(user)
+            _letterListLiveData.value = letterList
+            _isProcessing.value = false
         }
     }
+
 
     fun setLetterSaved(isSaved: Boolean) {
         _isLetterSaved.value = isSaved
@@ -69,7 +98,7 @@ class LetterViewModel(private val letterRepository: LetterRepository) : ViewMode
         }
     }
 
-    class LetterViewModelFactory(private val letterRepository: LetterRepository) :
+    class LetterViewModelFactory(private val letterRepository: LetterRepositoryImpl) :
         ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(LetterViewModel::class.java)) {

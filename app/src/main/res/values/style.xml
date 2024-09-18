@@ -109,6 +109,12 @@
         <item name="android:textColor">@color/dark_gray</item>
     </style>
 
+    <style name="common_text_32_bold_dark_gray">
+        <item name="android:textSize">32sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/dark_gray</item>
+    </style>
+
     <!-- Text(Point) -->
 
     <style name="point_text_16_dark_gray">
@@ -163,32 +169,14 @@
 
     <!-- EditText -->
     <style name="edit_text_login" parent="Widget.Design.TextInputLayout">
-        <item name="colorControlNormal">@color/gray</item>
+        <item name="boxBackgroundColor">@color/translucent_white</item>
         <item name="boxStrokeColor">@color/main_blue</item>
-        <item name="android:textCursorDrawable">@color/main_blue</item>
-        <item name="android:textColorHint">@color/main_blue</item>
+        <item name="boxCornerRadiusTopEnd">10dp</item>
+        <item name="boxCornerRadiusBottomEnd">10dp</item>
+        <item name="boxCornerRadiusBottomStart">10dp</item>
+        <item name="boxCornerRadiusTopStart">10dp</item>
+        <item name="boxStrokeWidth">2dp</item>
         <item name="hintTextColor">@color/main_blue</item>
-    </style>
-
-    <!-- Button -->
-    <style name="common_btn_16_bold_white">
-        <item name="android:textSize">16sp</item>
-        <item name="fontFamily">@font/notosans_bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/sel_text_white_blue</item>
-    </style>
-
-    <style name="common_btn_16_bold_blue">
-        <item name="android:textSize">16sp</item>
-        <item name="fontFamily">@font/notosans_bold</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/sel_text_blue_white</item>
-    </style>
-
-    <style name="common_btn_14">
-        <item name="android:textSize">14sp</item>
-        <item name="fontFamily">@font/notosans_medium</item>
-        <item name="android:textColor">@drawable/sel_text_white_blue</item>
     </style>
 
     <!-- Fab -->
@@ -241,11 +229,11 @@
 
     <style name="toast_warning">
         <item name="stTextBold">true</item>
-        <item name="stTextColor">#F3D25B</item>
+        <item name="stTextColor">@color/warning</item>
         <item name="stTextSize">14sp</item>
         <item name="stColorBackground">@color/white</item>
         <item name="stStrokeWidth">3dp</item>
-        <item name="stStrokeColor">#F3D25B</item>
+        <item name="stStrokeColor">@color/warning</item>
         <item name="stLength">SHORT</item>
         LONG or SHORT
         <item name="stGravity">center</item>
@@ -256,11 +244,25 @@
 
     <style name="toast_error">
         <item name="stTextBold">true</item>
-        <item name="stTextColor">#F84661</item>
+        <item name="stTextColor">@color/error</item>
         <item name="stTextSize">14sp</item>
         <item name="stColorBackground">@color/white</item>
         <item name="stStrokeWidth">3dp</item>
-        <item name="stStrokeColor">#F4363C</item>
+        <item name="stStrokeColor">@color/error</item>
+        <item name="stLength">SHORT</item>
+        LONG or SHORT
+        <item name="stGravity">center</item>
+        top or center
+        <item name="stRadius">20dp</item>
+    </style>
+
+    <style name="toast_undo">
+        <item name="stTextBold">true</item>
+        <item name="stTextColor">@color/undo</item>
+        <item name="stTextSize">14sp</item>
+        <item name="stColorBackground">@color/white</item>
+        <item name="stStrokeWidth">3dp</item>
+        <item name="stStrokeColor">@color/undo</item>
         <item name="stLength">SHORT</item>
         LONG or SHORT
         <item name="stGravity">center</item>

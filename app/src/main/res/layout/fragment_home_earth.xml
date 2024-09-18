@@ -7,7 +7,16 @@
     android:background="@drawable/earth_background"
     tools:context=".presentation.home.HomeEarthFragment">
 
-
+    <ImageView
+        android:id="@+id/home_img_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_translucent_background_down"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        />
 
     <ImageView
         android:id="@+id/home_earth_fab_top"

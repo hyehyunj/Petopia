@@ -1,8 +1,10 @@
 package com.djhb.petopia.presentation.community.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -15,15 +17,22 @@ import com.djhb.petopia.databinding.PostHolderBinding
 
 class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel, PostAdapter.PostItem>(object: DiffUtil.ItemCallback<PostModel>(){
     override fun areItemsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
-        return oldItem.key == newItem.key
+//        Log.i("PostAdapter", "areItemsTheSame = ${oldItem.key == newItem.key}")
+//        Log.i("PostAdapter", "oldItem.imageUris = ${oldItem.imageUris}")
+//        Log.i("PostAdapter", "areItemsTheSame = ${oldItem.key == newItem.key}")
+
+        return oldItem.key == newItem.key && oldItem.imageUris.hashCode() == newItem.imageUris.hashCode()
     }
 
     override fun areContentsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
+//        Log.i("PostAdapter", "areContentTheSame = ${oldItem == newItem}")
+//        Log.i("PostAdapter", "----------------------")
         return oldItem == newItem
     }
 }) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostItem {
+//        Log.i("PostAdapter", "itemCount = ${itemCount}")
         val binding = PostHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostItem(binding)
     }
@@ -31,14 +40,20 @@ class PostAdapter(private val onClick: (post: PostModel) -> Unit): ListAdapter<P
     override fun onBindViewHolder(holder: PostItem, position: Int) {
         val item = getItem(position)
 
+//        Log.i("PostAdapter", "item = ${item}")
+
+
         holder.title.text = item.title
         holder.viewCount.text = item.viewCount.toString()
-        holder.likeCount.text = item.likeCount.toString()
-        holder.userId.text = item.writer.id
+//        holder.likeCount.text = item.likeCount.toString()
+        holder.likeCount.text = item.likes.size.toString()
+        holder.userId.text = item.writer.nickname
         holder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)
         holder.binding.root.setOnClickListener {
             onClick(item)
         }
+
+//        Log.i("PostAdapter", "uri = ${item.imageUris}")
 
         if(item.imageUris.size == 0)
             holder.mainImage.visibility = ImageView.INVISIBLE

@@ -12,11 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.Memory
 import com.djhb.petopia.data.UserModel
@@ -26,10 +28,13 @@ import com.djhb.petopia.databinding.FragmentMemoryBinding
 
 class MemoryFragment() : DialogFragment() {
 
-    private var _binding: FragmentMemoryBinding? = null
-    private val binding get() = _binding!!
-
     private lateinit var listRecyclerViewAdapter: ListRecyclerViewAdapter
+    private val _binding: FragmentMemoryBinding by lazy {
+        FragmentMemoryBinding.inflate(layoutInflater)
+    }
+    val user = LoginData.loginUser.id
+
+    private val binding get() = _binding
 
     //private lateinit var homeSharedViewModel: HomeSharedViewModel
 
@@ -39,13 +44,13 @@ class MemoryFragment() : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMemoryBinding.inflate(inflater, container, false)
+        initAdapter()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initAdapter()
+
         initDialog()
 //        homeSharedViewModel =
 //            ViewModelProvider(requireParentFragment()).get(HomeSharedViewModel::class.java)
@@ -61,6 +66,13 @@ class MemoryFragment() : DialogFragment() {
 
         memoryViewModel.memoryListLiveData.observe(viewLifecycleOwner) { memoryList ->
             listRecyclerViewAdapter.submitList(memoryList)
+        }
+
+        memoryViewModel.isProcessing.observe(viewLifecycleOwner) { isProcessing ->
+            if(isProcessing)
+                binding.pbMemory.visibility = ProgressBar.VISIBLE
+            else
+                binding.pbMemory.visibility = ProgressBar.GONE
         }
 
         //메모리 최초 작성시 버튼 사라지게 함
@@ -79,7 +91,11 @@ class MemoryFragment() : DialogFragment() {
         memoryViewModel.setMemoryTitle(currentTitle.toString())
 
 
-        if (memoryViewModel.isMemorySaved.value == true) {
+        val isSavedSharedPreferences =
+            requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
+        val isSaved = isSavedSharedPreferences.getBoolean("isSaved", false)
+
+        if (isSaved) {
             binding.memoryTodayMemoryLayout.visibility = View.GONE
         }
 
@@ -119,7 +135,6 @@ class MemoryFragment() : DialogFragment() {
                 binding.btnImageDeleteCancel.visibility = View.GONE
                 binding.btnMemoryDelete.visibility = View.VISIBLE
                 binding.btnMemoryDelete2.visibility = View.GONE
-
                 listRecyclerViewAdapter.clearSelections()
             }
             memoryViewModel.memoryListLiveData.value.let { updateList ->
@@ -154,6 +169,18 @@ class MemoryFragment() : DialogFragment() {
                         .remove(this@MemoryFragment).commit()
                 }
             })
+
+        binding.rvMemoryList.addOnScrollListener(object : OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (!recyclerView.canScrollVertically(1)) {
+                    Log.i("MemoryFragment", "end scroll")
+                    memoryViewModel.loadMemoryList(currentUser)
+                }
+            }
+        })
+
     }
 
     private fun initAdapter() {
@@ -161,9 +188,7 @@ class MemoryFragment() : DialogFragment() {
             itemClickListener = { item ->
                 memoryViewModel.setSelectedMemory(item)
                 showDetailFragment()
-                Log.d("데이터", item.key)
             }, itemLongClickListener = { item ->
-                Log.d("MemoryFragment", "롱클릭")
                 showDeleteDialog(item)
 
                 //(activity as MainActivity).showDialog() // 롱클릭시 삭제 다이얼로그 띄우기(삭제기능은 아직 구현X)
@@ -215,11 +240,6 @@ class MemoryFragment() : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     // 메모리 작성 프래그먼트 이동함수
     private fun setMemoryWriteFragment() {
         MemoryWriteFragment().show(childFragmentManager, "MEMORY_WRITE_FRAGMENT")
@@ -227,7 +247,6 @@ class MemoryFragment() : DialogFragment() {
 
     // 메모리작성프래그먼트에서 작성한 내용을 메모리리스트에 저장 함수
     fun onMemorySaved(memory: Memory) {
-        Log.d("MemoryFragment", "메모리 저장: $memory")
         memoryViewModel.addMemoryList(memory)
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->
@@ -255,6 +274,7 @@ class MemoryFragment() : DialogFragment() {
     private fun showDeleteDialog(memory: Memory) {
         val deleteDialog = MemoryDeleteDialog(memory) { deletedMemory ->
             memoryViewModel.deleteMemoryList(deletedMemory)
+
             memoryViewModel.memoryListLiveData.value.let { updateList ->
                 listRecyclerViewAdapter.submitList(updateList)
             }
@@ -262,7 +282,7 @@ class MemoryFragment() : DialogFragment() {
         deleteDialog.show(childFragmentManager, "DELETE_DIALOG")
 
         memoryViewModel.memoryListLiveData.value.let { updateList ->
-            listRecyclerViewAdapter.submitList(updateList) // 넘버링 실시간 반영
+            listRecyclerViewAdapter.submitList(updateList)
         }
 
     }

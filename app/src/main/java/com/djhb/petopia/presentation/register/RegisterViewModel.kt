@@ -8,9 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.SignRepository
+import com.djhb.petopia.data.remote.SignRepositoryImpl
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(private val signRepository: SignRepository) : ViewModel() {
+class RegisterViewModel : ViewModel() {
+
 
     private val _userNickName = MutableLiveData<String>()
     val userNickName: LiveData<String> = _userNickName
@@ -32,6 +34,10 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
 
     private val _loginUser = MutableLiveData<UserModel?>()
     val loginUser: LiveData<UserModel?> = _loginUser
+
+    private val signRepository: SignRepository by lazy {
+        SignRepositoryImpl()
+    }
 
     fun setUserData(
         userNickname: String,
@@ -64,21 +70,45 @@ class RegisterViewModel(private val signRepository: SignRepository) : ViewModel(
         }
     }
 
+    fun isIdExist(
+        id: String, onResult: (Boolean) -> Unit
+    ) {
+        viewModelScope.launch {
+            val user = signRepository.selectUser(id)
+            onResult(user != null)
+        }
+    }
+
     fun createUser(user: UserModel) {
         viewModelScope.launch {
             signRepository.createUser(user)
         }
     }
 
-    class RegisterViewModelFactory(
-        private val signRepository: SignRepository
-    ) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return RegisterViewModel(signRepository) as T
-            }
-            throw IllegalArgumentException("Unknown ViewModel class")
+    fun deleteUser(
+        id: String,
+    ) {
+        viewModelScope.launch {
+            signRepository.deleteUser(id)
         }
     }
+
+    fun updateUser() {
+        viewModelScope.launch {
+            signRepository.updateUser(LoginData.loginUser)
+        }
+    }
+
+
+//    class RegisterViewModelFactory(
+//        private val signRepository: SignRepository
+//    ) : ViewModelProvider.Factory {
+//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//            if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
+//                @Suppress("UNCHECKED_CAST")
+//                return RegisterViewModel(signRepository) as T
+//            }
+//            throw IllegalArgumentException("Unknown ViewModel class")
+//        }
+//    }
 }

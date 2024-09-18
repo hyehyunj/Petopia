@@ -4,16 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.admin.AdminFragment
+import com.djhb.petopia.presentation.admin.AdminViewModel
+import com.djhb.petopia.presentation.admin.post.AdminPostLeftFragment
+import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
-import com.djhb.petopia.presentation.guide.GuideFragment
+import com.djhb.petopia.presentation.setting.SettingFragment
+import io.github.muddz.styleabletoast.StyleableToast
 
 class HomeEarthFragment : Fragment() {
     private val _binding: FragmentHomeEarthBinding by lazy {
@@ -21,6 +25,7 @@ class HomeEarthFragment : Fragment() {
     }
     private val binding get() = _binding
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
+    private val adminViewModel: AdminViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,20 +50,32 @@ class HomeEarthFragment : Fragment() {
         //설정버튼 클릭이벤트 : 클릭시 설정 이동
         binding.homeEarthIvMy.setOnClickListener {
 
+            if (LoginData.loginUser.authority == Authority.ADMIN) {
+                AdminFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
+            } else {
+                SettingFragment().show(childFragmentManager, "SETTING_FRAGMENT")
+            }
         }
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
         binding.homeEarthIvCloudLeft.setOnClickListener {
-
+            AdminPostLeftFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
+            showUndoToast()
         }
 
         //우측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
         binding.homeEarthIvCloudRight.setOnClickListener {
-
+            showUndoToast()
         }
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE") StyleableToast.makeText(
+                requireActivity(),
+                "가이드 종료 후 이용 가능합니다.",
+                R.style.toast_common
+            )
+                .show() else
 
             childFragmentManager.beginTransaction()
                 .replace(
@@ -85,7 +102,13 @@ class HomeEarthFragment : Fragment() {
 
     }
 
-
-
-
+    fun showUndoToast() {
+        StyleableToast.makeText(
+            requireActivity(),
+            getString(R.string.messege_undo),
+            R.style.toast_undo
+        ).show()
     }
+
+
+}

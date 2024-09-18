@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="반려동물의 이름을 입력해주세요."
+            android:text="@string/guide_select_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +40,7 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/shape_post_create_form"
-            android:hint="20글자 이내"
+            android:hint="@string/guide_text_limit_20"
             android:inputType="text"
             android:maxLength="20"
             android:maxLines="1"
@@ -62,7 +62,7 @@
 
         <TextView
             android:id="@+id/dialog_name_tv_complete"
-            style="@style/common_btn_16_bold_white"
+            style="@style/common_text_16_bold_white"
             android:layout_width="120dp"
             android:layout_height="66dp"
             android:layout_margin="16dp"

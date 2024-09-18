@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ivory"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".presentation.community.CommunityMainFragment">
 
     <include
@@ -14,18 +14,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/svMain"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginVertical="50dp"
         app:layout_constraintVertical_bias="0.1"
-        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -59,9 +60,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvBorderLine" />
+            <ProgressBar
+                android:id="@+id/progressBarPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewQuestionMain"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -79,8 +88,6 @@
         app:rippleColor="@color/sub_sky_blue"
         app:shapeAppearanceOverlay="@style/common_fab"
         app:tint="@color/white" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

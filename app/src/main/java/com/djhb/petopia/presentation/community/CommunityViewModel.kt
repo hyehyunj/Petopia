@@ -4,10 +4,20 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.djhb.petopia.data.LikeModel
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
+import com.djhb.petopia.data.remote.LikeRepository
+import com.djhb.petopia.data.remote.LikeRepositoryImpl
+import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.StorageReference
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.Collections
 
 class CommunityViewModel : ViewModel() {
 
@@ -19,36 +29,78 @@ class CommunityViewModel : ViewModel() {
 
     private val _searchPosts = MutableLiveData<MutableList<PostModel>>()
     val searchPost get() = _searchPosts
-    var searchPostResult = mutableListOf<PostModel>()
+
+    var searchPostResult = Collections.synchronizedList(mutableListOf<PostModel>())
+
+    private val _searchPostWithImages = MutableLiveData<MutableList<PostModel>>()
+    val searchPostWithImages get() = _searchPostWithImages
 
     private val _postImageUris = MutableLiveData<MutableList<String>>()
     val postImageUris get() = _postImageUris
 
-    private val postRepository = PostRepositoryImpl()
+    private val _postAddImageUris = MutableLiveData<MutableList<String>>()
+    val postAddImageUris get() = _postAddImageUris
 
-    fun createPost(post: PostModel, imageUris: MutableList<String>){
+    private val _addedSearchPost = MutableLiveData<MutableList<PostModel>>()
+    val addedSearchPost get() = _addedSearchPost
+
+    private var addedSearchResult = Collections.synchronizedList(mutableListOf<PostModel>())
+
+
+    private val postRepository: PostRepository by lazy {
+        PostRepositoryImpl()
+    }
+
+    private val likeRepository: LikeRepository by lazy {
+        LikeRepositoryImpl()
+    }
+
+    private lateinit var lastSnapshot: DocumentSnapshot
+
+//    var isProgressing = false
+    private val _isProgressing = MutableLiveData<Boolean>()
+    val isProgressing get() = _isProgressing
+
+    suspend fun createPost(post: PostModel, imageUris: MutableList<String>){
 
         viewModelScope.launch {
-            postRepository.createPost(post, imageUris)
-            selectRankList()
-            selectAllList()
+
+//            Log.i("CommunityViewModel", "start createPost")
+            async { postRepository.createPost(post, imageUris)}.await()
+            postRepository.createPostImages(post, imageUris)
+//            Log.i("CommunityViewModel", "before add create post = ${searchPostResult.size}")
+//            searchPostResult.add(0, post)
+//            Log.i("CommunityViewModel", "after add create post = ${searchPostResult.size}")
+//            _searchPosts.value = searchPostResult
+//            selectRankList()
+//            selectAllList()
         }
 
     }
 
     fun createPostImages(post: PostModel, imageUris: MutableList<String>) {
         viewModelScope.launch {
-            postRepository.createPostImages(post, imageUris)
+            async { postRepository.createPostImages(post, imageUris)}.await()
         }
     }
 
 
-    fun selectRankList() {
+    suspend fun selectRankList() {
 
+//        Log.i("CommunityViewModel", "start1 selectRankList()")
         viewModelScope.launch {
+//            Log.i("CommunityViewModel", "123. start selectRankList()")
             rankPostResult.clear()
             rankPostResult = postRepository.selectRankPosts()
 //            _rankPosts.value = rankPostResult
+
+            rankPostResult.removeIf{
+                LoginData.loginUser.reportList.contains(it.writer.id)
+            }
+
+            for (postModel in rankPostResult) {
+                postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
+            }
 
             val imageUris = mutableListOf<StorageReference?>()
 
@@ -58,7 +110,7 @@ class CommunityViewModel : ViewModel() {
             }
 
             for ((uriIndex, uri) in imageUris.withIndex()) {
-                Log.i("CommunityViewModel", "rank uri = ${uri}")
+//                Log.i("CommunityViewModel", "rank uri = ${uri}")
                 if(uri != null) {
                     rankPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
                 }
@@ -67,6 +119,7 @@ class CommunityViewModel : ViewModel() {
 //            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
 //            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
             _rankPosts.value = rankPostResult
+//            Log.i("CommunityViewModel", "123. end selectRankList()")
 
 //            val selectRankPosts = async { postRepository.selectRankPosts() }
 //            val result = selectRankPosts.await()
@@ -87,25 +140,63 @@ class CommunityViewModel : ViewModel() {
 //        }
     }
 
-    fun selectAllList(){
+    suspend fun selectInitPostList(){
+//        Log.i("CommunityViewModel", "start1 selectAllList()")
         viewModelScope.launch {
+//            Log.i("CommunityViewModel", "123. start selectInitAllList()")
             searchPostResult.clear()
+            addedSearchResult.clear()
 //            val allPosts = postRepository.selectPosts()
-            searchPostResult = postRepository.selectPosts()
+//            searchPostResult = postRepository.selectPosts()
+            _isProgressing.value = true
+            var documents = postRepository.selectInitPosts()
+            if (documents.size > 0) {
+                lastSnapshot = documents[documents.size - 1]
 
-            val imageUris = mutableListOf<StorageReference?>()
+//            searchPostResult = postRepository.convertToPostModel(documents)
 
-            for (post in searchPostResult) {
-                post.imageUris.clear()
-                imageUris.add(postRepository.selectPostMainImage(post))
-            }
 
-            for ((uriIndex, uri) in imageUris.withIndex()) {
-                Log.i("CommunityViewModel", "rank uri = ${uri}")
-                if(uri != null) {
-                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+                addedSearchResult.addAll(postRepository.convertToPostModel(documents))
+
+                addedSearchResult.removeIf {
+                    LoginData.loginUser.reportList.contains(it.writer.id)
                 }
-            }
+
+                while (addedSearchResult.size < 8 && documents.size > 0){
+                    documents = postRepository.selectNextPosts(lastSnapshot)
+//                    Log.i("CommunityViewModel", "need more post documents.size = ${documents.size}")
+                    if (documents.size > 0) {
+                        lastSnapshot = documents[documents.size - 1]
+
+//            searchPostResult = postRepository.convertToPostModel(documents)
+                        addedSearchResult.addAll(postRepository.convertToPostModel(documents))
+//                        Log.i("CommunityViewModel", "more addedSearchResult.size = ${addedSearchResult.size}")
+                        addedSearchResult.removeIf {
+                            LoginData.loginUser.reportList.contains(it.writer.id)
+                        }
+                    }
+                }
+
+                for (postModel in addedSearchResult) {
+                    postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
+                }
+
+
+//                Log.i("CommunityViewModel", "addedSearchResult = ${addedSearchResult.size}")
+
+//            val imageUris = mutableListOf<StorageReference?>()
+//
+//            for (post in searchPostResult) {
+//                post.imageUris.clear()
+//                imageUris.add(postRepository.selectPostMainImage(post))
+//            }
+//
+//            for ((uriIndex, uri) in imageUris.withIndex()) {
+//                Log.i("CommunityViewModel", "rank uri = ${uri}")
+//                if(uri != null) {
+//                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+//                }
+//            }
 //            Log.i("CommunityViewModel", "createRankList 2")
 //            Log.i("CommunityViewModel", "selectRankPosts.size = ${allPosts.size}")
 //            for (post in allPosts) {
@@ -114,8 +205,190 @@ class CommunityViewModel : ViewModel() {
 
 //            val includedImages = postRepository.selectPostMainImage(selectRankPosts)
 //            Log.i("CommunityViewModel", "createRankList 3 : ${includedImages}")
-            _searchPosts.value = searchPostResult
+//            _searchPosts.value = searchPostResult
+
+//                searchPostResult.addAll(addedSearchResult)
+
+//            _searchPosts.value = addedSearchResult
+
+                _addedSearchPost.value = addedSearchResult
+
+
+
+//            selectAllImageList()
+
+//                val references = mutableListOf<StorageReference?>()
+//
+////            for (post in searchPostResult) {
+////                post.imageUris.clear()
+////                references.add(postRepository.selectPostMainImage(post))
+////            }
+//
+////            for(searchIndex in 0..searchPostResult.size-1) {
+////                val post = searchPostResult[searchIndex]
+////                post.imageUris.clear()
+////                references.add(postRepository.selectPostMainImage(post))
+////            }
+//
+//                for (searchIndex in 0..addedSearchResult.size - 1) {
+//                    val post = addedSearchResult[searchIndex]
+//                    Log.i("CommunityViewModel", "index =${searchIndex}, addSearchResult = ${post}")
+//                    post.imageUris.clear()
+//                    val imageReference = postRepository.selectPostMainImage(post)
+//                    Log.i("CommunityViewModel", "reference = ${imageReference}")
+//                    references.add(imageReference)
+//                }
+//
+//                val imageUris = mutableListOf<String>()
+//
+//                for ((uriIndex, uri) in references.withIndex()) {
+////                Log.i("CommunityViewModel", "rank uri = ${uri}")
+//                    if (uri != null) {
+////                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+//                        imageUris.add(postRepository.selectDownloadUri(uri))
+//                    } else
+//                        imageUris.add("")
+//                }
+//
+//
+//                _postImageUris.value = imageUris.toMutableList()
+//
+//            Log.i("CommunityViewModel", "123. end selectInitAllList()")
+            } else
+                isProgressing.value = false
         }
+    }
+
+    suspend fun selectNextPostList() {
+//        Log.i("CommunityViewModel", "start1 selectNextPostList()")
+        viewModelScope.launch {
+            addedSearchResult.clear()
+//            Log.i("CommunityViewModel", "123. start selectNextPostList()")
+//            searchPostResult.clear()
+//            val allPosts = postRepository.selectPosts()
+//            searchPostResult = postRepository.selectPosts()
+            _isProgressing.value = true
+            var documents = postRepository.selectNextPosts(lastSnapshot)
+            if(documents.size > 0) {
+                lastSnapshot = documents[documents.size - 1]
+//                searchPostResult.addAll(postRepository.convertToPostModel(documents))
+                addedSearchResult = postRepository.convertToPostModel(documents)
+//                selectAllImageList()
+
+                addedSearchResult.removeIf {
+                    LoginData.loginUser.reportList.contains(it.writer.id)
+                }
+
+                while (addedSearchResult.size < 8 && documents.size > 0){
+                    documents = postRepository.selectNextPosts(lastSnapshot)
+//                    Log.i("CommunityViewModel", "need more post documents.size = ${documents.size}")
+                    if (documents.size > 0) {
+                        lastSnapshot = documents[documents.size - 1]
+
+//            searchPostResult = postRepository.convertToPostModel(documents)
+                        addedSearchResult.addAll(postRepository.convertToPostModel(documents))
+//                        Log.i("CommunityViewModel", "more addedSearchResult.size = ${addedSearchResult.size}")
+                        addedSearchResult.removeIf {
+                            LoginData.loginUser.reportList.contains(it.writer.id)
+                        }
+                    }
+                }
+
+                _addedSearchPost.value = addedSearchResult
+
+//                val references = mutableListOf<StorageReference?>()
+//
+////            for (post in searchPostResult) {
+////                post.imageUris.clear()
+////                references.add(postRepository.selectPostMainImage(post))
+////            }
+//
+////            for(searchIndex in 0..searchPostResult.size-1) {
+////                val post = searchPostResult[searchIndex]
+////                post.imageUris.clear()
+////                references.add(postRepository.selectPostMainImage(post))
+////            }
+//
+//                for(searchIndex in 0..addedSearchResult.size-1) {
+//                    val post = addedSearchResult[searchIndex]
+//                    post.imageUris.clear()
+//                    references.add(postRepository.selectPostMainImage(post))
+//                }
+//
+//                val imageUris = mutableListOf<String>()
+//
+//                for ((uriIndex, uri) in references.withIndex()) {
+////                    Log.i("CommunityViewModel", "rank uri = ${uri}")
+//                    if(uri != null) {
+////                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+//                        imageUris.add(async { postRepository.selectDownloadUri(uri)}.await())
+//                    } else
+//                        imageUris.add("")
+//                }
+//
+//                Log.i("CommunityViewModel", "123. nestPostList addedResult.size = ${addedSearchResult.size}")
+//
+//                _postImageUris.value = imageUris
+//                _searchPosts.value = searchPostResult
+            } else
+                isProgressing.value = false
+        }
+    }
+
+    suspend fun selectAllImageList(){
+        viewModelScope.launch {
+//            Log.i("CommunityViewModel", "123. start selectAllImageList()")
+            val references = mutableListOf<StorageReference?>()
+
+//            for (post in searchPostResult) {
+//                post.imageUris.clear()
+//                references.add(postRepository.selectPostMainImage(post))
+//            }
+
+//            for(searchIndex in 0..searchPostResult.size-1) {
+//                val post = searchPostResult[searchIndex]
+//                post.imageUris.clear()
+//                references.add(postRepository.selectPostMainImage(post))
+//            }
+
+            for(searchIndex in 0..addedSearchResult.size-1) {
+                val post = addedSearchResult[searchIndex]
+                post.imageUris.clear()
+                references.add(postRepository.selectPostMainImage(post))
+            }
+
+            val imageUris = mutableListOf<String>()
+
+            for ((uriIndex, uri) in references.withIndex()) {
+//                Log.i("CommunityViewModel", "rank uri = ${uri}")
+                if(uri != null) {
+//                    searchPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+                    imageUris.add(postRepository.selectDownloadUri(uri))
+                } else
+                    imageUris.add("")
+            }
+            _postImageUris.value = imageUris
+//            Log.i("CommunityViewModel", "123. end selectAllImageList()")
+//            _searchPosts.value = searchPostResult
+        }
+    }
+
+    fun combinePostToImages(imageUris: MutableList<String>){
+//        Log.i("CommunityViewModel", "123. start combinePostToImages()")
+//        Log.i("CommunityViewModel", "123. uri.size = ${imageUris.size}")
+//        Log.i("CommunityViewModel", "123. addedSearchResult.size = ${addedSearchResult.size}")
+
+        for ((uriIndex, imageUri) in imageUris.withIndex()) {
+//            Log.i("CommunityViewModel", "before add imageUri = ${searchPostResult[uriIndex].imageUris}")
+            if(imageUri != "")
+                addedSearchResult[uriIndex].imageUris.add(imageUri)
+//            Log.i("CommunityViewModel", "after add imageUri = ${searchPostResult[uriIndex].imageUris}")
+        }
+//        _searchPosts.value = searchPostResult
+        searchPostResult.addAll(addedSearchResult)
+        _searchPostWithImages.value = searchPostResult
+        isProgressing.value = false
+//        Log.i("CommunityViewModel", "123. end combinePostToImages()")
     }
 
     fun listRankPost(){
@@ -153,13 +426,13 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
-    fun addPostViewCount(postKey: String) {
+    suspend fun addPostViewCount(postKey: String) {
         viewModelScope.launch {
             postRepository.addPostViewCount(postKey)
         }
     }
 
-    fun deletePost(postKey: String) {
+    suspend fun deletePost(postKey: String) {
         viewModelScope.launch {
             postRepository.deletePost(postKey)
 
@@ -176,10 +449,17 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
-    fun deletePostImages(postKey: String){
+    suspend fun deletePostImages(postKey: String){
         viewModelScope.launch {
             postRepository.deletePostImages(postKey)
         }
+    }
+
+    suspend fun selectPostFromUser(userId: String): MutableList<PostModel> {
+        return withContext(Dispatchers.IO) {
+            async { postRepository.selectPostFromUser(userId)}.await()
+        }
+
     }
 
 

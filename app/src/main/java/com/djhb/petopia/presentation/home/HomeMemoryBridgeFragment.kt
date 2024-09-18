@@ -65,6 +65,7 @@ class HomeMemoryBridgeFragment : Fragment() {
         loadMemory()
         scheduledMemory()
 
+
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
             Log.d("memoryText", text)
             binding.homeMemoryBridgeTvMemoryTitle.text = text

@@ -2,6 +2,7 @@ package com.djhb.petopia.presentation.community.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,12 +10,15 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LoginData
-import com.djhb.petopia.databinding.PostCommnetHolderBinding
+import com.djhb.petopia.data.ReportModel
+import com.djhb.petopia.databinding.PostCommentHolderBinding
+import com.djhb.petopia.presentation.report.ReportFragment
 
 
 interface OnClickComment{
     fun onClickEdit(comment: CommentModel)
     fun onClickDelete(key: String)
+    fun onClickReport(key: String, targetUserId: String)
 }
 
 class DetailCommentAdapter(private val onClickComment: OnClickComment)
@@ -29,7 +33,7 @@ class DetailCommentAdapter(private val onClickComment: OnClickComment)
 }) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentHolder {
-        val binding = PostCommnetHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = PostCommentHolderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CommentHolder(binding)
     }
 
@@ -52,19 +56,24 @@ class DetailCommentAdapter(private val onClickComment: OnClickComment)
             holder.deleteButton.setOnClickListener {
                 onClickComment.onClickDelete(item.key)
             }
+            holder.reportButton.visibility = ImageView.GONE
 
         } else{
             holder.editButton.visibility = TextView.GONE
             holder.deleteButton.visibility = TextView.GONE
+            holder.reportButton.setOnClickListener {
+                onClickComment.onClickReport(item.key, item.writer.id)
+            }
         }
 
     }
 
-    class CommentHolder(val binding: PostCommnetHolderBinding): ViewHolder(binding.root){
+    class CommentHolder(val binding: PostCommentHolderBinding): ViewHolder(binding.root){
         val content = binding.tvContent
         val writer = binding.tvWriter
         val createdDate = binding.tvCreatedDate
         val editButton = binding.tvEditComment
         val deleteButton = binding.tvDeleteComment
+        val reportButton = binding.ivReport
     }
 }

@@ -11,23 +11,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.ProgressBar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentGalleryBinding
 
 
 class GalleryFragment : DialogFragment() {
 
-    companion object {
-        private const val TAG = "GalleryFragment"
-    }
     private lateinit var galleryRecyclerViewAdapter: GalleryRecyclerViewAdapter
     private val _binding: FragmentGalleryBinding by lazy {
         FragmentGalleryBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
+
+
+
+
     private val gallerySharedViewModel by viewModels<GallerySharedViewModel> {
         GallerySharedViewModelFactory()
     }
@@ -43,12 +49,11 @@ class GalleryFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         //버튼 클릭이벤트
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-//        gallerySharedViewModel.loadGalleryList()
+        gallerySharedViewModel.loadGalleryList()
 
         initDialog()
     }
@@ -66,7 +71,6 @@ class GalleryFragment : DialogFragment() {
             }
             //삭제버튼 클릭이벤트 : 체크박스 활성화
             galleryIvRemove.setOnClickListener {
-                Log.d(TAG, "")
                 gallerySharedViewModel.changeRemoveMode()
 //                when(gallerySharedViewModel.removeModeLiveData.value) {
 //                    "REMOVE" -> galleryRecyclerViewAdapter.updateRemoveMode("REMOVE")
@@ -77,7 +81,20 @@ class GalleryFragment : DialogFragment() {
             //추가버튼 클릭이벤트 : 상세페이지로 이동하여 사진 추가
             galleryIvAdd.setOnClickListener {
                 gallerySharedViewModel.changeLayoutMode("ADD")
-                GalleryEditFragment().show(childFragmentManager, "GALLERY_ADD_FRAGMENT")            }
+                GalleryEditFragment().show(childFragmentManager, "GALLERY_ADD_FRAGMENT")
+                if(gallerySharedViewModel.removeModeLiveData.value == "REMOVE") gallerySharedViewModel.cancelRemoveMode()
+                  }
+
+
+            galleryRv.addOnScrollListener(object: OnScrollListener(){
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if(!recyclerView.canScrollVertically(1)) {
+//                        gallerySharedViewModel.loadGalleryList()
+                    }
+                }
+            })
+
         }
     }
 
@@ -86,15 +103,16 @@ class GalleryFragment : DialogFragment() {
 
         //갤러리 리스트 변화감지
         gallerySharedViewModel.galleryListLiveData.observe(viewLifecycleOwner) {
+
             galleryRecyclerViewAdapter.updateList(it)
         }
-
-        gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
-            when(it) {
-                "ADD","EDIT" -> GalleryEditFragment().show(childFragmentManager, "GALLERY_EDIT_FRAGMENT")
-                "READ" -> GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
-            }
-        }
+//
+//        gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
+//            when(it) {
+//                "ADD","EDIT" -> GalleryEditFragment().show(childFragmentManager, "GALLERY_EDIT_FRAGMENT")
+//                "READ" -> GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
+//            }
+//        }
 
         //삭제모드 변화감지
         gallerySharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
@@ -107,7 +125,12 @@ class GalleryFragment : DialogFragment() {
             galleryRecyclerViewAdapter.updateCheckedList(gallerySharedViewModel.removePhotoList.toList(), it)
         }
 
-
+        gallerySharedViewModel.isProcessing.observe(viewLifecycleOwner) { isProcessing ->
+            if(isProcessing)
+                binding.pbGallery.visibility = ProgressBar.VISIBLE
+            else
+                binding.pbGallery.visibility = ProgressBar.GONE
+        }
 
 
     }
@@ -118,15 +141,13 @@ class GalleryFragment : DialogFragment() {
             gallerySharedViewModel.galleryListLiveData.value ?: listOf(),
             //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집,삭제모드인 경우 삭제할 항목에 추가
             itemClickListener = { item, position ->
+                gallerySharedViewModel.updateGalleryList(item, position)
                 when(gallerySharedViewModel.removeModeLiveData.value) {
                     "COMPLETE" -> {
-                        gallerySharedViewModel.changeLayoutMode("Read")
+                        gallerySharedViewModel.changeLayoutMode("READ")
                         GalleryReadFragment().show(childFragmentManager, "GALLERY_READ_FRAGMENT")
-
                     }
                 }
-                gallerySharedViewModel.updateGalleryList(item, position)
-
             },
             itemLongClickListener = { item, position -> },
         )
@@ -138,12 +159,6 @@ class GalleryFragment : DialogFragment() {
         binding.galleryRv.layoutManager = GridLayoutManager(requireContext(), 2)
     }
 
-
-
-
-    private fun removePhoto() {
-
-    }
 
     //뒤로가기 버튼 함수 : 홈프래그먼트로 돌아간다.
 //    private fun btnBackListener() {

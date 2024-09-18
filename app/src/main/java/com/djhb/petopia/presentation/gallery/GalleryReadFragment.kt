@@ -19,13 +19,18 @@ import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentGalleryReadBinding
+import com.djhb.petopia.presentation.community.adapter.DetailImageAdapter
 import io.github.muddz.styleabletoast.StyleableToast
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
+import java.util.Locale
 
-//포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
+//갤러리 읽기전용 프래그먼트 : 갤러리에서 사진 조회할 때 나타나는 프래그먼트
 class GalleryReadFragment : DialogFragment() {
 
     private val _binding: FragmentGalleryReadBinding by lazy {
@@ -33,7 +38,8 @@ class GalleryReadFragment : DialogFragment() {
     }
     private val binding get() = _binding
     private lateinit var sharedViewModel: GallerySharedViewModel
-
+    private lateinit var viewPagerAdapter: GalleryEditViewPagerAdapter
+    private lateinit var viewPager: ViewPager2
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,11 +54,12 @@ class GalleryReadFragment : DialogFragment() {
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-         sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
-                    readOnlyMode(
-                        currentPhoto
-                    )
-                }
+            sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+                readOnlyMode(
+                    currentPhoto
+                )
+            }
+
 
 
         }
@@ -65,21 +72,37 @@ class GalleryReadFragment : DialogFragment() {
 
     //읽기전용 모드 함수 : 레이아웃을 입력 불가능한 모드로 구성한다.
     private fun readOnlyMode(item: GalleryModel) {
-
         binding.apply {
-            galleryReadIvTitle.setImageURI(item.imageUris[0].toUri())
+//            Glide.with(requireParentFragment())
+//                .load(item.imageUris[0].toUri())
+//                .centerCrop()
+//                .into(galleryReadIvTitle)
+//            galleryReadIvTitle.setImageURI(item.imageUris[0].toUri())
+
+            viewPagerAdapter = GalleryEditViewPagerAdapter()
+            viewPager = binding.galleryReadIvTitle
+            viewPager.adapter = viewPagerAdapter
+            viewPagerAdapter.submitList(item.imageUris)
+            galleryReadIndicator.setViewPager(viewPager)
+            galleryReadIndicator.createIndicators(item.imageUris.size, 0)
+
+
             galleryReadTvTitle.text = item.titleText
+
+//            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
+//            val date = dateFormat.format(item.updatedDate)
             galleryReadTvCalendar.text = item.photoDate
+
 
             //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
             galleryReadIvAction.setOnClickListener {
-                    sharedViewModel.changeLayoutMode("EDIT")
+                sharedViewModel.changeLayoutMode("EDIT")
                 dismiss()
                 GalleryEditFragment().show(parentFragmentManager, "")
 
-                }
             }
         }
+    }
 
     private fun initDialog() {
         val windowManager =

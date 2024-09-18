@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_ivory"
+    android:background="@drawable/bg_white_30"
     tools:context=".presentation.gallery.GalleryFragment">
 
     <ImageView
@@ -18,11 +18,11 @@
         app:layout_constraintTop_toTopOf="@+id/gallery_iv_remove" />
 
     <TextView
-        android:id="@+id/gallery_tv_title"
+        android:id="@+id/admin_tv_title"
         style="@style/common_text_20_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="앨범"
+        android:text="@string/common_album"
         app:layout_constraintBottom_toBottomOf="@+id/gallery_iv_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -77,8 +77,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ProgressBar
+                android:id="@+id/pbGallery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/gallery_rv"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
 
     <FrameLayout

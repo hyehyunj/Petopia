@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.ir.backend.js.compile
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -14,8 +16,8 @@ android {
         applicationId = "com.djhb.petopia"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -42,9 +44,17 @@ android {
         dataBinding = true
     }
 
+
 }
 
+
+
 dependencies {
+    implementation("com.github.skydoves:elasticviews:2.1.0")
+    implementation("com.github.skydoves:submarine:1.0.7")
+    implementation("com.github.bloderxd:deck:0.1")
+    implementation("com.github.developer-shivam:FeaturedRecyclerView:1.0.0")
+    implementation("com.github.sparrow007:carouselrecyclerview:1.2.6")
     implementation("io.github.muddz:styleabletoast:2.4.0")
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation("androidx.fragment:fragment-ktx:1.8.1")
@@ -81,6 +91,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-storage-ktx")
+    implementation("com.google.firebase:firebase-appcheck-safetynet:16.0.0")
 
     //to splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")

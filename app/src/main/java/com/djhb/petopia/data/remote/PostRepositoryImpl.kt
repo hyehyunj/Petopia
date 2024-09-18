@@ -6,6 +6,7 @@ import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.Table
 import com.djhb.petopia.data.PostModel
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -26,46 +27,91 @@ class PostRepositoryImpl : PostRepository {
     private val storeReference = Firebase.firestore.collection(Table.QUESTION_POST.tableName)
     private val storageReference = Firebase.storage.getReference(Table.QUESTION_POST.tableName)
 
-    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>): Boolean {
-        return suspendCancellableCoroutine { continuation ->
+//    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>): PostModel {
+//        return suspendCancellableCoroutine { continuation ->
+//            var isFailToStore = false
+//            storeReference.document(post.key).set(post).addOnCompleteListener {
+//                Log.i("PostRepositoryImpl", "success create question post : ${it.result}")
+//            }.addOnFailureListener {
+//                isFailToStore = true
+//                Log.e("PostRepositoryImpl", "fail create question post : ${it}")
+//                continuation.resumeWithException(it)
+//                return@addOnFailureListener
+//            }
+//
+//            if (isFailToStore)
+//                continuation.resumeWithException(Exception("fail create post"))
+//
+//
+//            CoroutineScope(Dispatchers.Default).launch {
+//                createPostImages(post, imageUris)
+//            }
+//
+////            continuation.resume(post)
+//        }
+//    }
+
+    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>) {
+        withContext(Dispatchers.IO) {
             var isFailToStore = false
-            storeReference.document(post.key).set(post).addOnCompleteListener {
-                Log.i("PostRepositoryImpl", "success create question post : ${it}")
-            }.addOnFailureListener {
-                isFailToStore = true
-                Log.e("PostRepositoryImpl", "fail create question post : ${it}")
-            }
+            storeReference.document(post.key).set(post).await()
 
-            if (isFailToStore) {
-                continuation.resume(false)
-                return@suspendCancellableCoroutine
-            }
+//            if (isFailToStore)
+//                return@withContext
 
-            CoroutineScope(Dispatchers.Default).launch {
-                createPostImages(post, imageUris)
-            }
+//                createPostImages(post, imageUris)
 
-            continuation.resume(true)
+
         }
+//            continuation.resume(post)
+
     }
 
     override suspend fun createPostImages(post: PostModel, imageUris: MutableList<String>): Boolean {
-        return suspendCancellableCoroutine { continuation ->
+        return withContext(Dispatchers.IO) {
             for ((index, imageUri) in imageUris.withIndex()) {
                 val imageName =
                     DateFormatUtils.convertToImageFormat(post.createdDate) + "_0" + (index + 1) + ".png"
                 Log.i("PostRepositoryImpl", "createdDate = ${post.createdDate}")
-                Log.i("PostRepositoryImpl", "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}")
-                val imageTask = storageReference.child(post.key).child(imageName).putFile(imageUri.toUri())
-                imageTask.addOnSuccessListener {
-                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
-                }.addOnFailureListener {
-                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
-                    storeReference.document(post.key).delete()
-                }
+                Log.i("PostRepositoryImpl", "uri = ${imageUri}")
+                Log.i(
+                    "PostRepositoryImpl",
+                    "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}"
+                )
+//                val imageTask =
+                    storageReference
+                        .child(post.key)
+                        .child(imageName)
+                        .putFile(imageUri.toUri())
+                        .await()
+//                imageTask.addOnSuccessListener {
+//                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
+//                }.addOnFailureListener {
+//                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
+//                    storeReference.document(post.key).delete()
+//                }
             }
+            true
         }
     }
+
+//    override suspend fun createPostImages(post: PostModel, imageUris: MutableList<String>): Boolean {
+//        return suspendCancellableCoroutine { continuation ->
+//            for ((index, imageUri) in imageUris.withIndex()) {
+//                val imageName =
+//                    DateFormatUtils.convertToImageFormat(post.createdDate) + "_0" + (index + 1) + ".png"
+//                Log.i("PostRepositoryImpl", "createdDate = ${post.createdDate}")
+//                Log.i("PostRepositoryImpl", "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}")
+//                val imageTask = storageReference.child(post.key).child(imageName).putFile(imageUri.toUri())
+//                imageTask.addOnSuccessListener {
+//                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
+//                }.addOnFailureListener {
+//                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
+//                    storeReference.document(post.key).delete()
+//                }
+//            }
+//        }
+//    }
 
 //    override suspend fun selectRankPosts(): MutableList<PostModel> {
 //        return suspendCancellableCoroutine { continuation ->
@@ -166,29 +212,83 @@ class PostRepositoryImpl : PostRepository {
 //        }
 //    }
 
-    override suspend fun selectPosts(): MutableList<PostModel> {
-        return withContext(Dispatchers.IO) {
-
+    //    override suspend fun selectPosts(): MutableList<PostModel> {
+//        return withContext(Dispatchers.IO) {
+//
+//            val snapshot = storeReference
+//                .orderBy("createdDate", Query.Direction.DESCENDING)
+//                .get()
+//                .await()
+//
+//            val allPosts = mutableListOf<PostModel>()
+//            for (document in snapshot.documents) {
+//                val hashMap = document.data as HashMap<*, *>
+//                val gson = Gson()
+//                val toJson = gson.toJson(hashMap)
+//                val fromJson = gson.fromJson(toJson, PostModel::class.java)
+//                allPosts.add(fromJson)
+//            }
+//
+//            Log.i("PostRepositoryImpl", "rankPosts = ${allPosts}")
+//            allPosts
+//        }
+//    }
+    override suspend fun selectInitPosts(): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO){
             val snapshot = storeReference
                 .orderBy("createdDate", Query.Direction.DESCENDING)
+                .limit(10)
                 .get()
                 .await()
 
-            val allPosts = mutableListOf<PostModel>()
-            for (document in snapshot.documents) {
-                val hashMap = document.data as HashMap<*, *>
-                val gson = Gson()
-                val toJson = gson.toJson(hashMap)
-                val fromJson = gson.fromJson(toJson, PostModel::class.java)
-                allPosts.add(fromJson)
-            }
-
-            Log.i("PostRepositoryImpl", "rankPosts = ${allPosts}")
-            allPosts
+            snapshot.documents
         }
     }
 
-//    override suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel> {
+    override suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO){
+            val snapshot = storeReference
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .startAfter(lastSnapshot)
+                .limit(10)
+                .get()
+                .await()
+
+            snapshot.documents
+        }
+    }
+
+    override suspend fun selectPostFromUser(userId: String): MutableList<PostModel> {
+        return withContext(Dispatchers.IO) {
+            val snapshot = storeReference
+                .whereEqualTo("writer.id", userId)
+                .orderBy("writer.id")
+                .get()
+                .await()
+
+            convertToPostModel(snapshot.documents)
+        }
+    }
+
+    override suspend fun selectPostFromKey(postKey: String): PostModel {
+        return withContext(Dispatchers.IO) {
+            val snapshot = storeReference
+                .whereEqualTo("key", postKey)
+                .get()
+                .await()
+            var postModel = PostModel()
+            if(snapshot.documents.size == 1) {
+                val hashMap = snapshot.documents[0].data as HashMap<*, *>
+                val gson = Gson()
+                val toJson = gson.toJson(hashMap)
+               postModel = gson.fromJson(toJson, PostModel::class.java)
+            } else {
+                Log.w("PostRepositoryImpl", "result is not a post")
+            }
+            postModel
+        }
+    }
+    //    override suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel> {
 //        return suspendCancellableCoroutine { continuation ->
 //            for (post in posts) {
 //                storageReference.child(post.key).listAll().addOnCompleteListener { task ->
@@ -459,9 +559,21 @@ class PostRepositoryImpl : PostRepository {
 
     override suspend fun addPostViewCount(postKey: String) {
         storeReference.document(postKey).update("viewCount", FieldValue.increment(1)).addOnCompleteListener {
-            Log.i("PostRepositoryImpl", "success deletePostImage = ${it}")
+            Log.i("PostRepositoryImpl", "success addPostViewCount = ${it}")
         }.addOnFailureListener {
-            Log.d("PostRepositoryImpl", "fail deletePostImage = ${it}")
+            Log.d("PostRepositoryImpl", "fail addPostViewCount = ${it}")
         }
+    }
+
+    override fun convertToPostModel(documents: List<DocumentSnapshot>): MutableList<PostModel> {
+            val allPosts = mutableListOf<PostModel>()
+            for (document in documents) {
+                val hashMap = document.data as HashMap<*, *>
+                val gson = Gson()
+                val toJson = gson.toJson(hashMap)
+                val fromJson = gson.fromJson(toJson, PostModel::class.java)
+                allPosts.add(fromJson)
+            }
+        return allPosts
     }
 }

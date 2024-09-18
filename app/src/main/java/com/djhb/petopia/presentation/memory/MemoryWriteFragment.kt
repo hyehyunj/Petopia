@@ -26,8 +26,11 @@ class MemoryWriteFragment(
     private val onMemorySaved: ((Memory) -> Unit)? = null
 ) : DialogFragment() {
 
-    private var _binding: FragmentMemoryWriteBinding? = null
-    private val binding get() = _binding!!
+
+    private val _binding: FragmentMemoryWriteBinding by lazy {
+        FragmentMemoryWriteBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     private lateinit var memoryViewModel: MemoryViewModel
     private var memoryToEdit: Memory? = null
@@ -37,7 +40,6 @@ class MemoryWriteFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMemoryWriteBinding.inflate(inflater, container, false)
 
         memoryViewModel = ViewModelProvider(requireActivity()).get(MemoryViewModel::class.java)
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { title ->
@@ -88,11 +90,6 @@ class MemoryWriteFragment(
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun initDialog() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -114,7 +111,6 @@ class MemoryWriteFragment(
         val title = binding.tvMemoryWriteQuestion.text.toString()
         val content = binding.etMemoryWriteContent.text.toString()
 
-        Log.d("MemoryWriteFragment", "제목: $title, 내용: $content")
         // 여기서 작성한 데이터를 받아서 memoryFragment의 리사이클러뷰에 전달해야함
         if (title.isNotEmpty() && content.isNotEmpty()) {
             val memory = Memory(title, content, LoginData.loginUser)

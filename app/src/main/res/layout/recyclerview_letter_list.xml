@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/tv_letter_list_number"
-        style="@style/common_btn_16_bold_blue"
+        style="@style/common_text_16_bold_blue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -21,14 +21,14 @@
 
     <TextView
         android:id="@+id/tv_letter_list_title"
+        style="@style/point_text_24_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:ellipsize="end"
+        android:gravity="start"
         android:maxLines="1"
         android:text="제목"
-        android:gravity="start"
-       style="@style/point_text_24_dark_gray"
         app:layout_constraintBottom_toBottomOf="@id/tv_letter_list_number"
         app:layout_constraintEnd_toStartOf="@+id/tv_letter_list_date"
         app:layout_constraintHorizontal_bias="0.5"
@@ -48,15 +48,26 @@
         app:layout_constraintStart_toEndOf="@+id/tv_letter_list_title"
         app:layout_constraintTop_toTopOf="@id/tv_letter_list_number" />
 
+    <ImageView
+        android:id="@+id/iv_letter_delete_check"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/sel_btn_check"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@id/tv_letter_list_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_letter_list_date" />
+
 
     <TextView
         android:id="@+id/tv_letter_list_content"
+        style="@style/common_text_14_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="start"
         android:maxLines="2"
         android:text="asdfkajsdlfkajsdlkfjasldasldkfjasldfk"
-        style="@style/common_text_14_gray"
-        android:gravity="start"
         app:layout_constraintEnd_toEndOf="@+id/tv_letter_list_date"
         app:layout_constraintStart_toStartOf="@id/tv_letter_list_number"
         app:layout_constraintTop_toBottomOf="@id/tv_letter_list_date" />

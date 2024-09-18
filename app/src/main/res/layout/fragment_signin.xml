@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img_login_cloud"
     tools:context=".presentation.register.signin.SigninFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,33 +13,68 @@
 
         <ImageView
             android:id="@+id/iv_main_logo"
-            android:layout_width="260dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="16dp"
             android:src="@drawable/logo2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+<!--        <View-->
+<!--            android:id="@+id/divide_line_top"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:background="@color/light_gray"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/iv_main_logo"/>-->
+<!--        -->
+
+        <TextView
+            android:id="@+id/tv_sign_in_title"
+            style="@style/common_text_24_bold_dark_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/common_sign_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_main_logo" />
+
         <LinearLayout
             android:id="@+id/signin_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="180dp"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
             app:layout_constraintBottom_toTopOf="@+id/choose_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_main_logo">
+            app:layout_constraintTop_toBottomOf="@id/tv_sign_in_title">
+
+            <TextView
+                android:id="@+id/tv_sign_in_id_title"
+                android:includeFontPadding="false"
+                android:layout_marginVertical="8dp"
+                style="@style/common_text_18_dark_gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/common_id" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="아이디"
-                app:boxBackgroundColor="@color/translucent_white"
+                android:hint="아이디를 입력해 주세요."
+                app:boxStrokeErrorColor="@color/error"
                 app:boxStrokeColor="@color/main_blue"
-                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="1dp"
                 app:hintTextColor="@color/main_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -48,25 +82,44 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
+                    style="@style/common_text_16_dark_gray"
+                    android:includeFontPadding="false"
                     android:inputType="text"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
+
+
+            <TextView
+                android:id="@+id/tv_sign_in_pw_title"
+                style="@style/common_text_18_dark_gray"
+                android:includeFontPadding="false"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/common_password" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:clipToOutline="true"
-                android:hint="비밀번호"
-                app:boxBackgroundColor="@color/translucent_white"
+                app:boxStrokeErrorColor="@color/error"
+                android:hint="비밀번호를 입력해 주세요."
                 app:boxStrokeColor="@color/main_blue"
-                app:boxStrokeWidth="2dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:boxStrokeWidth="1dp"
                 app:hintTextColor="@color/main_blue">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_signin_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    style="@style/common_text_16_dark_gray"
+                    android:includeFontPadding="false"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword"
                     android:maxLines="1" />
@@ -75,82 +128,72 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/signin_search_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/btn_id_search"
-                    style="@style/common_text_16_gray"
+                    style="@style/common_text_14_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
                     android:text="@string/signin_id_search"
-
                     app:layout_constraintEnd_toStartOf="@+id/divider1"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
                     android:id="@+id/divider1"
-                    android:layout_width="2dp"
+                    android:layout_width="1dp"
                     android:layout_height="20dp"
-                    android:background="@color/gray"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/light_gray"
                     app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"
                     app:layout_constraintEnd_toStartOf="@+id/btn_password_search"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/btn_id_search"
                     app:layout_constraintTop_toTopOf="@id/btn_id_search" />
 
                 <TextView
                     android:id="@+id/btn_password_search"
-                    style="@style/common_text_16_gray"
+                    style="@style/common_text_14_gray"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/signin_password_search"
-                    app:layout_constraintEnd_toStartOf="@+id/divider2"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/divider1"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="2dp"
-                    android:layout_height="20dp"
-                    android:background="@color/gray"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_id_search"
-                    app:layout_constraintEnd_toStartOf="@+id/btn_signup"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/btn_password_search"
-                    app:layout_constraintTop_toTopOf="@id/btn_id_search" />
-
-                <TextView
-                    android:id="@+id/btn_signup"
-                    style="@style/common_btn_16_bold_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/signup"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/divider2"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/btn_signin"
-                style="@style/common_btn_16_bold_white"
+                style="@style/common_text_16_bold_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/sel_btn_square_blue_white"
+                app:button_duration="100"
+                android:background="@drawable/bg_main_blue"
                 android:padding="4dp"
                 android:text="@string/common_sign_in" />
+
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/btn_signup"
+                style="@style/common_text_16_bold_blue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_gray_white"
+                app:button_duration="100"
+                android:padding="4dp"
+                android:text="@string/common_sign_up"/>
+
 
             <View
                 android:id="@+id/divide_line"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/gray" />
+                android:background="@color/gray"
+                android:visibility="invisible" />
 
 
         </LinearLayout>
@@ -163,6 +206,7 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:text="@string/signin_autologin_guide"
+            android:visibility="invisible"
             app:layout_constraintBottom_toTopOf="@+id/btn_google_signin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -177,6 +221,7 @@
             android:elevation="5dp"
             android:padding="16dp"
             android:src="@drawable/icon_google"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btn_naver_signin"
@@ -192,6 +237,7 @@
             android:elevation="5dp"
             android:padding="20dp"
             android:src="@drawable/icon_naver"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btn_kakao_signin"
@@ -204,10 +250,11 @@
             android:layout_width="66dp"
             android:layout_height="66dp"
             android:background="@drawable/bg_round_yellow"
-            android:elevation="5dp"
             android:clipToOutline="true"
+            android:elevation="5dp"
             android:padding="6dp"
             android:src="@drawable/img_kakao"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"

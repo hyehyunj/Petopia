@@ -15,7 +15,6 @@ import com.djhb.petopia.data.remote.PetRepositoryImpl
 import com.djhb.petopia.data.remote.SignRepository
 import com.djhb.petopia.data.remote.SignRepositoryImpl
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 
 //펫토피아 뷰모델
@@ -33,7 +32,7 @@ class MainHomeGuideSharedViewModel(
     //ESSENTIAL_DONE 필수 가이드 완료
     //OPTIONAL 선택 가이드 진행중
     //DONE 모두 완료
-    private val _guideStateLiveData = MutableLiveData("DONE")
+    private val _guideStateLiveData = MutableLiveData("NONE")
     val guideStateLiveData: LiveData<String> = _guideStateLiveData
 
     //가이드 기능설명 :
@@ -65,9 +64,6 @@ class MainHomeGuideSharedViewModel(
 
     //유저 정보를 불러오는 함수
     fun getUser(): Boolean {
-        Log.d("유저정보", "${user.loginUser.completedGuide}")
-        Log.d("유저정보", "${user.loginUser.id}")
-        Log.d("유저정보", "${user.loginUser.pet}")
         var skipGuide: Boolean
         if (user.loginUser.completedGuide) {
             getPetData()
@@ -102,7 +98,7 @@ class MainHomeGuideSharedViewModel(
 
     //유저 이름을 불러오는 함수
     fun getUserName(): String {
-        return user.loginUser.name
+        return user.loginUser.nickname
     }
 
 

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ivory"
+    tools:context=".presentation.admin.AdminFragment">
+
+
+
+    <ImageView
+        android:id="@+id/admin_iv_back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/sel_btn_left"
+        app:layout_constraintBottom_toBottomOf="@id/gallery_iv_remove"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gallery_iv_remove" />
+
+    <TextView
+        android:id="@+id/admin_tv_title"
+        style="@style/common_text_20_bold_dark_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="관리자"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_iv_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/admin_iv_back" />
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/gallery_iv_add"-->
+<!--        android:layout_width="66dp"-->
+<!--        android:layout_height="66dp"-->
+<!--        android:layout_marginBottom="26dp"-->
+<!--        android:src="@drawable/icon_album"-->
+<!--        app:backgroundTint="@color/main_blue"-->
+<!--        app:fabCustomSize="66dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/gallery_iv_remove"-->
+<!--        app:maxImageSize="28dp"-->
+<!--        app:rippleColor="@color/sub_sky_blue"-->
+<!--        app:shapeAppearanceOverlay="@style/common_fab"-->
+<!--        app:tint="@color/white" />-->
+
+    <ImageView
+        android:id="@+id/gallery_iv_remove"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:visibility="invisible"
+        android:src="@drawable/icon_delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/gallery_iv_remove"
+        app:layout_constraintStart_toStartOf="@+id/admin_iv_back"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_iv_remove">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/gallery_rv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/gallery_photo_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

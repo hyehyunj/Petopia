@@ -8,9 +8,9 @@ import kotlinx.parcelize.Parcelize
 data class UserModel(
     val id: String = "",
     var password: String = "",
-    var name: String = "",
     var nickname: String = "",
     var email: String = "",
+    var reportList : MutableList<String> = mutableListOf(),
     var pet: PetModel? = null,
     var completedGuide: Boolean = false,
     val createdDate: Long = System.currentTimeMillis(),

@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,8 +18,11 @@ import com.djhb.petopia.databinding.FragmentLetterDetailBinding
 
 
 class LetterDetailFragment : DialogFragment() {
-    private var _binding: FragmentLetterDetailBinding? = null
-    private val binding get() = _binding!!
+
+    private val _binding: FragmentLetterDetailBinding by lazy {
+        FragmentLetterDetailBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     private lateinit var letterDetailViewModel: LetterViewModel
     private var letterToEdit: LetterModel? = null
@@ -28,7 +32,6 @@ class LetterDetailFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLetterDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -60,12 +63,6 @@ class LetterDetailFragment : DialogFragment() {
             }
             dismiss()
         }
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
 
     }
 

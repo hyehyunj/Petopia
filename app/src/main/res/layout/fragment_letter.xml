@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_ivory">
+        android:background="@drawable/bg_white_30">
 
         <ImageView
             android:id="@+id/btn_letter_exit"
@@ -36,6 +36,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ImageView
+            android:id="@+id/btn_image_delete_cancel"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            android:src="@drawable/icon_reset"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/btn_letter_delete2"
+            app:layout_constraintEnd_toStartOf="@id/btn_letter_delete2"
+            app:layout_constraintTop_toTopOf="@id/btn_letter_delete2" />
+
+        <ImageView
+            android:id="@+id/btn_letter_delete"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/icon_delete"
+            app:layout_constraintBottom_toBottomOf="@id/tv_letter_list_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_letter_list_title" />
+
+        <ImageView
+            android:id="@+id/btn_letter_delete2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/icon_check"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/tv_letter_list_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_letter_list_title" />
 
         <ScrollView
             android:id="@+id/sv_letter_list"
@@ -61,6 +92,13 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     tools:listitem="@layout/recyclerview_letter_list" />
+
+                <ProgressBar
+                    android:id="@+id/pbMemory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center" />
 
 
             </LinearLayout>

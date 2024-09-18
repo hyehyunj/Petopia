@@ -11,12 +11,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.djhb.petopia.R
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.FragmentCommunityEditBinding
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
@@ -41,7 +43,7 @@ class CommunityEditFragment : Fragment() {
         FragmentCommunityEditBinding.inflate(layoutInflater)
     }
 
-    private val imageUris = mutableListOf<String>()
+    private val imageUris = mutableListOf("")
 
     private val imageLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -95,7 +97,9 @@ class CommunityEditFragment : Fragment() {
         })
     }
 
-    private val viewModel: CommunityViewModel by activityViewModels()
+    private val viewModel: CommunityViewModel by lazy {
+        CommunityViewModel()
+    }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -126,26 +130,26 @@ class CommunityEditFragment : Fragment() {
     private fun initView(){
         binding.etTitle.setText(post.title)
         binding.etContent.setText(post.content)
-        Log.i("CommunityEditFragment", "post.key = ${post.key}")
-        Log.i("CommunityEditFragment", "post.imageUris.size = ${post.imageUris.size}")
-        Log.i("CommunityEditFragment", "post.imageUris = ${post.imageUris}")
+//        Log.i("CommunityEditFragment", "post.key = ${post.key}")
+//        Log.i("CommunityEditFragment", "post.imageUris.size = ${post.imageUris.size}")
+//        Log.i("CommunityEditFragment", "post.imageUris = ${post.imageUris}")
+
+        if(post.imageUris.size == 0)
+            post.imageUris.add("")
+
         viewModel.postImageUris.value = post.imageUris
+
+        binding.header.ivSearch.visibility = ImageView.INVISIBLE
     }
 
     private fun initAdapter(){
         binding.recyclerViewAddImage.adapter = createImageAdapter
+//        createImageAdapter.submitList(imageUris)
+//        viewModel.postImageUris.value = imageUris
     }
 
     private fun initListener(){
         binding.btnComplete.setOnClickListener {
-
-            if(imageUris.size > 0) {
-                lifecycleScope.launch {
-                    viewModel.deletePostImages(post.key)
-                    viewModel.createPostImages(post, imageUris)
-                }
-            }
-
             val title = binding.etTitle.text.toString()
             val content = binding.etContent.text.toString()
 
@@ -156,22 +160,44 @@ class CommunityEditFragment : Fragment() {
             } else if(content.isBlank()){
                 Toast.makeText(requireActivity(), "본문을 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else {
+
+                if(imageUris.size > 1) {
+//                    for (imageUri in imageUris) {
+//                        Log.i("CommunityEditFragment", "imageUri = ${imageUri}")
+//                    }
+                    lifecycleScope.launch {
+                        viewModel.deletePostImages(post.key)
+                        imageUris.removeAt(0)
+                        viewModel.createPostImages(post, imageUris)
+                    }
+                }
+
                 viewModel.updatePost(post.copy(title = title, content = content))
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.main_sub_frame, CommunityMainFragment())
+                    .commit()
             }
         }
 
         binding.btnCancel.setOnClickListener {
-
+            requireActivity().supportFragmentManager.popBackStack()
         }
+
+        binding.header.ivBack.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
+
+
     }
 
     private fun initObserveModel(){
         viewModel.postImageUris.observe(viewLifecycleOwner) {
             Log.i("CommunityCreateFragment", "observe postImageUris")
-            Log.i("CommunityCreateFragment", "postImageUris.size = ${viewModel.postImageUris.value?.size}")
-            for (imageUris1 in viewModel.postImageUris.value?: mutableListOf()) {
-                Log.i("CommunityCreateFragment", "uri = ${imageUris1}")
-            }
+//            Log.i("CommunityCreateFragment", "postImageUris.size = ${viewModel.postImageUris.value?.size}")
+//            for (imageUris1 in viewModel.postImageUris.value?: mutableListOf()) {
+//                Log.i("CommunityCreateFragment", "uri = ${imageUris1}")
+//            }
 //            createImageAdapter.submitList(viewModel.postImageUris.value?.toMutableList())
             createImageAdapter.submitList(it.toMutableList())
         }

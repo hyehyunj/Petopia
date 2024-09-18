@@ -23,8 +23,11 @@ class LetterWriteFragment(
     private val isEditMode: Boolean = false,
     private val onLetterSaved: ((LetterModel) -> Unit)? = null
 ) : DialogFragment() {
-    private var _binding: FragmentLetterWriteBinding? = null
-    private val binding get() = _binding!!
+
+    private val _binding: FragmentLetterWriteBinding by lazy {
+        FragmentLetterWriteBinding.inflate(layoutInflater)
+    }
+    private val binding get() = _binding
 
     private lateinit var letterViewModel: LetterViewModel
     private var letterToEdit: LetterModel? = null
@@ -34,7 +37,6 @@ class LetterWriteFragment(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentLetterWriteBinding.inflate(inflater, container, false)
 
         val letterRepository = LetterRepositoryImpl()
         val factory = LetterViewModel.LetterViewModelFactory(letterRepository)
@@ -83,12 +85,6 @@ class LetterWriteFragment(
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
     private fun initDialog() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -110,7 +106,6 @@ class LetterWriteFragment(
         val title = binding.etLetterWriteTitle.text.toString()
         val content = binding.etLetterWriteContent.text.toString()
 
-        Log.d("LetterWriteFragment", "제목: $title, 내용: $content")
 
         if (title.isNotEmpty() && content.isNotEmpty()) {
             val letterModel = LetterModel(title, content, LoginData.loginUser)
