@@ -4,9 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:id="@+id/admin_post_bg_weather"
+    android:background="@color/gray"
     tools:context=".presentation.admin.post.AdminPostLeftFragment">
 
+    <com.github.matteobattilana.weather.WeatherView
+        android:id="@+id/admin_post_wv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/admin_post_iv_back"
@@ -42,7 +51,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom= "32dp"
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -57,15 +67,57 @@
             <com.example.lib.Deck
                 android:id="@+id/admin_post_deck"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="1:0.8"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
+            <TextView
+                android:id="@+id/admin_post_tv_non_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="center"
+                android:text="구름을 클릭하면 본문을 보실 수 있습니다."
+                style="@style/common_text_16_dark_gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/admin_post_deck"/>
+
+            <TextView
+                android:id="@+id/admin_post_tv_post"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:padding="20dp"
+                android:text=""
+                android:gravity="center"
+                android:visibility="invisible"
+                android:background="@color/translucent_white"
+                style="@style/common_text_16_dark_gray"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/admin_post_deck"/>
+
+
+
+
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+<ImageView
+    android:id="@+id/admin_post_iv_grass"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:src="@drawable/img_grass"
+    android:layout_marginBottom="-70dp"
+    android:visibility="invisible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

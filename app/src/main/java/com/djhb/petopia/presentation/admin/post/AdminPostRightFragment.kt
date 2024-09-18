@@ -9,9 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.djhb.petopia.data.getAdminPostLeftItems
+import com.djhb.petopia.data.getAdminPostRightItems
 import com.djhb.petopia.databinding.FragmentAdminPostBinding
+import com.github.matteobattilana.weather.PrecipType
+import com.github.matteobattilana.weather.WeatherView
 
 //관리자 페이지
 class AdminPostRightFragment : DialogFragment() {
@@ -33,11 +38,11 @@ class AdminPostRightFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.adminPostTvTitle.text = "배웅하기"
-
+        binding.adminPostTvTitle.text = "잘지내기"
+        initAdapter()
         adminPostLeftDataObserver()
         adminPostLeftButtonClickListener()
-
+        weatherChange("SNOW")
     }
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
@@ -58,13 +63,43 @@ class AdminPostRightFragment : DialogFragment() {
     }
 
 
-    private fun initAdapter(){
+    private fun weatherChange(weather: String) {
+        val weatherView: WeatherView = binding.adminPostWv
+
+        when (weather) {
+            "CLEAR" -> {
+                weatherView.setWeatherData(PrecipType.CLEAR)
+                binding.adminPostBgWeather.setBackgroundColor(Color.WHITE)
+            }
+
+            "SNOW" -> {
+                weatherView.setWeatherData(PrecipType.SNOW)
+            }
+        }
+
+    }
+
+
+    private fun initAdapter() {
         deckPager.apply {
             offscreenPageLimit = 5
-            adapter = AdminPostAdapter(requireContext(), getAdminPostRightItems())
+            adapter = AdminPostAdapter(requireContext(), getAdminPostRightItems(),
+                itemClickListener = { item, position ->
+                    binding.adminPostTvPost.apply {
+                        isVisible = true
+                        text = item.post
+                    }
+                    binding.adminPostIvGrass.isVisible = true
+                    binding.adminPostTvNonPost.isVisible = false
+                    weatherChange("CLEAR")
+
+                }
+            )
             clipToPadding = false
-            setPadding(100,0,100,0)
-pageMargin = 20
+            setPadding(180, 0, 180, 0)
+            pageMargin = 30
+
+
         }
     }
 
