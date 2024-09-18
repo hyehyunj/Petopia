@@ -59,7 +59,7 @@ class HomePetopiaFragment : Fragment() {
         initCloudAnimation()
 //꽃 애니메이션
         initFlowerAnimation()
-//반딧불 애니메이션ㅁ
+//반딧불 애니메이션
         initFireflyAnimation()
 
 

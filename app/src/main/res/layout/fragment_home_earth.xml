@@ -7,11 +7,32 @@
     android:background="@drawable/earth_background"
     tools:context=".presentation.home.HomeEarthFragment">
 
+    <!--저녁 8시 이후 요소-->
+    <ImageView
+        android:id="@+id/earth_night_sky"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/earth_night_sky"
+        />
     <ImageView
         android:id="@+id/home_img_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/bg_translucent_background_down"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/home_img_night_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:alpha="0.4"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,8 +99,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/earth_petals1"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:src="@drawable/fallen_leaves1"
+        android:translationY="-510dp"
+        />
 
 
+
+    <ImageView
+        android:id="@+id/earth_petals2"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:src="@drawable/fallen_leaves2"
+        android:translationY="-510dp"
+       />
+
+    <ImageView
+        android:id="@+id/earth_petals3"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:src="@drawable/fallen_leaves1"
+        android:translationY="-510dp"
+        />
+
+    <ImageView
+        android:id="@+id/earth_petals4"
+        android:layout_width="300dp"
+        android:layout_height="400dp"
+        android:src="@drawable/fallen_leaves2"
+        android:translationY="-510dp"
+        />
 
     <FrameLayout
         android:id="@+id/home_earth_container"

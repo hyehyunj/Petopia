@@ -326,7 +326,7 @@ class HomeMemoryBridgeFragment : Fragment() {
     private fun isAfterEightPM(): Boolean {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        return hour >= 16
+        return hour >= 20
     }
 
     // 현재 시간이 8시 이전인지 확인
