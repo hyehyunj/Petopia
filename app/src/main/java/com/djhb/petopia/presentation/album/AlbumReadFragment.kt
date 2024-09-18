@@ -1,70 +1,57 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
-import androidx.activity.result.PickVisualMediaRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.net.toUri
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
 import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
-import com.djhb.petopia.databinding.FragmentGalleryReadBinding
-import com.djhb.petopia.presentation.community.adapter.DetailImageAdapter
-import io.github.muddz.styleabletoast.StyleableToast
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.util.Locale
+import com.djhb.petopia.databinding.FragmentAlbumReadBinding
+import com.wenchao.cardstack.CardStack
 
-//갤러리 읽기전용 프래그먼트 : 갤러리에서 사진 조회할 때 나타나는 프래그먼트
-class GalleryReadFragment : DialogFragment() {
+//읽기전용 프래그먼트 : 사진 조회할 때 나타나는 프래그먼트
+class AlbumReadFragment : DialogFragment() {
 
-    private val _binding: FragmentGalleryReadBinding by lazy {
-        FragmentGalleryReadBinding.inflate(layoutInflater)
+    private val _binding: FragmentAlbumReadBinding by lazy {
+        FragmentAlbumReadBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var sharedViewModel: GallerySharedViewModel
-    private lateinit var viewPagerAdapter: GalleryEditViewPagerAdapter
-    private lateinit var viewPager: ViewPager2
+    private lateinit var albumSharedViewModel: AlbumSharedViewModel
+    private lateinit var albumReadViewPagerAdapter: AlbumReadViewPagerAdapter
+    private lateinit var albumReadViewPager: ViewPager2
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        sharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(GallerySharedViewModel::class.java)
+        albumSharedViewModel =
+            ViewModelProvider(requireParentFragment()).get(AlbumSharedViewModel::class.java)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
-        sharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-            sharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+        albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
+            albumSharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
                 readOnlyMode(
                     currentPhoto
                 )
             }
-
-
-
         }
         //닫기 버튼이벤트 : 클릭시 갤러리로 이동
-        binding.galleryReadTvExit.setOnClickListener {
+        binding.albumReadTvExit.setOnClickListener {
             parentFragmentManager.beginTransaction()
                 .remove(this).commit()
         }
@@ -76,32 +63,43 @@ class GalleryReadFragment : DialogFragment() {
 //            Glide.with(requireParentFragment())
 //                .load(item.imageUris[0].toUri())
 //                .centerCrop()
-//                .into(galleryReadIvTitle)
-//            galleryReadIvTitle.setImageURI(item.imageUris[0].toUri())
+//                .into(albumReadIvTitle)
+//            albumReadIvTitle.setImageURI(item.imageUris[0].toUri())
+//
+//            albumReadViewPagerAdapter = AlbumReadViewPagerAdapter()
+//            albumReadViewPager = binding.albumReadIvTitle
+//            albumReadViewPager.adapter = albumReadViewPagerAdapter
+//            albumReadViewPagerAdapter.submitList(item.imageUris)
+//            albumReadIndicator.setViewPager(albumReadViewPager)
+//            albumReadIndicator.createIndicators(item.imageUris.size, 0)
+            initAdapter(item)
 
-            viewPagerAdapter = GalleryEditViewPagerAdapter()
-            viewPager = binding.galleryReadIvTitle
-            viewPager.adapter = viewPagerAdapter
-            viewPagerAdapter.submitList(item.imageUris)
-            galleryReadIndicator.setViewPager(viewPager)
-            galleryReadIndicator.createIndicators(item.imageUris.size, 0)
-
-
-            galleryReadTvTitle.text = item.titleText
+            albumReadTvTitle.text = item.titleText
 
 //            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
 //            val date = dateFormat.format(item.updatedDate)
-            galleryReadTvCalendar.text = item.photoDate
+            albumReadTvCalendar.text = item.photoDate
 
 
             //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
-            galleryReadIvAction.setOnClickListener {
-                sharedViewModel.changeLayoutMode("EDIT")
+            albumReadIvAction.setOnClickListener {
+                albumSharedViewModel.changeLayoutMode("EDIT")
                 dismiss()
-                GalleryEditFragment().show(parentFragmentManager, "")
+                AlbumEditFragment().show(parentFragmentManager, "")
 
             }
         }
+    }
+
+    private fun initAdapter(item: GalleryModel) {
+        val cardStack: CardStack = binding.albumReadLayoutInside
+
+        cardStack.setContentResource(R.layout.layout_album_read)
+        cardStack.setStackMargin(40)
+        val readAdapter = AlbumReadAdapter(requireContext(),item.imageUris)
+
+// 어댑터를 CardStack에 설정
+        cardStack.setAdapter(readAdapter)
     }
 
     private fun initDialog() {

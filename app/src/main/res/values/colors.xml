@@ -17,8 +17,14 @@
     <color name="error">#B63127</color>
     <color name="undo">#4B9F4F</color>
 
-    <!--  Gallery : 갤러리에서 사용되는 Color   -->
-    <color name="baby_blue">#EDF3FF</color>
+    <!--  AdminPost : 관리자게시글에서 사용되는 Color   -->
+    <color name="cloud_blue">#AABBCD</color>
+    <color name="cloud_lemon">#ECE2B1</color>
+    <color name="cloud_purple">#D7B6DC</color>
+    <color name="cloud_red">#E6BEBE</color>
+    <color name="cloud_orange">#F1D5B4</color>
+
+
 
     <!-- memory_sample 색상-->
     <color name="skyblue">#65C7FB</color>

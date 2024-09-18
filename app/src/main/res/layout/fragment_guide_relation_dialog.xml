@@ -37,9 +37,9 @@
             android:id="@+id/guide_relation_dialog_rg"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:orientation="horizontal"
             android:layout_marginTop="16dp"
             android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guide_relation_dialog_tv_title">
@@ -49,12 +49,12 @@
                 style="@style/guide_text_dialog"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
+                android:layout_margin="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/sel_btn_guide_appearance"
                 android:button="@android:color/transparent"
                 android:gravity="center"
-                android:layout_margin="16dp"
-                android:text="@string/guide_relation_child"/>
+                android:text="@string/guide_relation_child" />
 
             <RadioButton
                 android:id="@+id/guide_relation_dialog_rb_younger"
@@ -76,11 +76,11 @@
                 style="@style/guide_text_dialog"
                 android:layout_width="0dp"
                 android:layout_height="120dp"
+                android:layout_margin="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/sel_btn_guide_appearance"
                 android:button="@android:color/transparent"
                 android:padding="24dp"
-                android:layout_margin="16dp"
                 android:text="@string/guide_relation_friend"
                 app:layout_constraintBottom_toBottomOf="@+id/guide_relation_dialog_rb_child"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -89,28 +89,39 @@
 
         </RadioGroup>
 
-        <ImageView
+        <com.skydoves.elasticviews.ElasticButton
             android:id="@+id/guide_relation_dialog_tv_back"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:background="@drawable/sel_btn_left"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guide_relation_dialog_rg" />
-
-        <TextView
-            android:id="@+id/guide_relation_dialog_tv_complete"
-            android:layout_width="120dp"
-            android:layout_height="66dp"
-            android:text="@string/common_complete"
-            android:layout_margin="16dp"
-            android:background="@drawable/sel_btn_round_square_blue_white"
-            style="@style/common_text_16_bold_white"
+            style="@style/common_text_16_dark_gray"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_gray_white"
+            android:padding="4dp"
+            android:text="@string/common_cancel"
+            app:button_duration="100"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guide_relation_dialog_tv_complete"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guide_relation_dialog_rg" />
+
+
+        <com.skydoves.elasticviews.ElasticButton
+            android:id="@+id/guide_relation_dialog_tv_complete"
+            style="@style/common_text_16_bold_white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_main_blue"
+            android:padding="4dp"
+            android:text="@string/common_complete"
+            app:button_duration="100"
+            app:layout_constraintBottom_toBottomOf="@+id/guide_relation_dialog_tv_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guide_relation_dialog_tv_back"
+            app:layout_constraintTop_toTopOf="@+id/guide_relation_dialog_tv_back" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

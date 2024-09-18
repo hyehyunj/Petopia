@@ -1,6 +1,5 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.net.toUri
@@ -8,23 +7,19 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.djhb.petopia.data.GalleryModel
-import com.djhb.petopia.databinding.RecyclerviewGalleryHolderBinding
+import com.djhb.petopia.databinding.RecyclerviewAlbumHolderBinding
 
-class GalleryRecyclerViewAdapter(
+class AlbumListRecyclerViewAdapter(
     private var item: List<GalleryModel>,
     private val itemClickListener: (item: GalleryModel, position: Int) -> Unit,
     private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit,
-) : RecyclerView.Adapter<GalleryRecyclerViewAdapter.Holder>() {
-
-    companion object {
-        private const val TAG = "GalleryFragment"
-    }
+) : RecyclerView.Adapter<AlbumListRecyclerViewAdapter.Holder>() {
 
     private var removeMode = "COMPLETE"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding =
-            RecyclerviewGalleryHolderBinding.inflate(
+            RecyclerviewAlbumHolderBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -41,7 +36,7 @@ class GalleryRecyclerViewAdapter(
     }
 
     class Holder(
-        private val binding: RecyclerviewGalleryHolderBinding,
+        private val binding: RecyclerviewAlbumHolderBinding,
         private val itemClickListener: (item: GalleryModel, position: Int) -> Unit,
         private val itemLongClickListener: (item: GalleryModel, position: Int) -> Unit
     ) :
@@ -54,25 +49,26 @@ class GalleryRecyclerViewAdapter(
 //                galleryHolderIvTitle.setImageURI(item.imageUris[0].toUri())
 
                 if(item.imageUris.size > 0) {
-                Glide.with(galleryHolderTvTitle.context)
+                Glide.with(albumHolderTvTitle.context)
                     .load(item.imageUris[0].toUri())
                     .centerCrop()
-                    .into(galleryHolderIvTitle) }
-                galleryHolderTvTitle.text = item.titleText
-//                binding.galleryHolderIvChecked.isVisible = false
+                    .into(albumHolderIvTitle) }
+                albumHolderTvTitle.text = item.titleText
+                albumHolderTvDate.text = item.photoDate
+//                binding.albumHolderIvChecked.isVisible = false
                 when (removeMode) {
-                    "REMOVE" -> binding.galleryHolderIvUnchecked.isVisible = true
-                    "COMPLETE" -> { binding.galleryHolderIvUnchecked.isVisible = false
-                        binding.galleryHolderIvChecked.isVisible = false }
+                    "REMOVE" -> binding.albumHolderIvUnchecked.isVisible = true
+                    "COMPLETE" -> { binding.albumHolderIvUnchecked.isVisible = false
+                        binding.albumHolderIvChecked.isVisible = false }
                 }
-                galleryHolder.setOnClickListener {
+                albumHolder.setOnClickListener {
                     when (removeMode) {
-                        "REMOVE" -> binding.galleryHolderIvChecked.isVisible = !item.checked
-                        "COMPLETE" -> binding.galleryHolderIvChecked.isVisible = false
+                        "REMOVE" -> binding.albumHolderIvChecked.isVisible = !item.checked
+                        "COMPLETE" -> binding.albumHolderIvChecked.isVisible = false
                     }
                     itemClickListener(item, position)
                 }
-                galleryHolder.setOnLongClickListener {
+                albumHolder.setOnLongClickListener {
                     itemLongClickListener(item, position)
                     true
                 }
@@ -80,13 +76,15 @@ class GalleryRecyclerViewAdapter(
         }
     }
 
-    fun updateList(galleryList: List<GalleryModel>) {
-        item = galleryList
+    //앨범 리스트를 갱신해주는 함수
+    fun updateList(albumList: List<GalleryModel>) {
+        item = albumList
         notifyDataSetChanged()
     }
 
-    fun updateCheckedList(galleryList: List<GalleryModel>, position: Int) {
-        item = galleryList
+    //선택여부를 확인해 반영해주는 함수
+    fun updateCheckedList(albumList: List<GalleryModel>, position: Int) {
+        item = albumList
         notifyItemChanged(position)
     }
 
@@ -140,7 +138,7 @@ class GalleryRecyclerViewAdapter(
 //
 //        fun bind(item: GalleryModel) {
 //            binding.apply {
-//                galleryHolderIvTitle.setImageURI(item.titleImage.toUri())
+//                albumHolderIvTitle.setImageURI(item.titleImage.toUri())
 //                galleryHolderTvTitle.text = item.titleText
 //                galleryHolder.setOnClickListener {
 //                    itemClickListener(item)

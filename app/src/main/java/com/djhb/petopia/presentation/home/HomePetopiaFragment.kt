@@ -3,7 +3,6 @@ package com.djhb.petopia.presentation.home
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
-import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PetAppearance
 import com.djhb.petopia.databinding.FragmentHomePetopiaBinding
 import com.djhb.petopia.presentation.MainActivity
-import com.djhb.petopia.presentation.gallery.GalleryFragment
+import com.djhb.petopia.presentation.album.AlbumFragment
 import com.djhb.petopia.presentation.letter.LetterFragment
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -271,7 +269,7 @@ class HomePetopiaFragment : Fragment() {
     }
 
     private fun showGalleryFragment() {
-        GalleryFragment().show(childFragmentManager, "GALLERY_FRAGMENT")
+        AlbumFragment().show(childFragmentManager, "GALLERY_FRAGMENT")
 
 
 //        childFragmentManager.beginTransaction()

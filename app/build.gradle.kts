@@ -50,6 +50,9 @@ android {
 
 
 dependencies {
+    implementation("com.github.wenchaojiang:AndroidSwipeableCardStack:0.1.6")
+    implementation("com.ramotion.foldingcell:folding-cell:1.2.3")
+    implementation("com.wajahatkarim:easyflipviewpager:2.0.1")
     implementation("com.github.skydoves:elasticviews:2.1.0")
     implementation("com.github.skydoves:submarine:1.0.7")
     implementation("com.github.bloderxd:deck:0.1")

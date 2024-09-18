@@ -5,22 +5,14 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.djhb.petopia.databinding.FragmentAdminBinding
-import com.djhb.petopia.presentation.gallery.GalleryReadFragment
-import com.djhb.petopia.presentation.gallery.GallerySharedViewModel
-import com.djhb.petopia.presentation.gallery.GallerySharedViewModelFactory
-import kotlinx.coroutines.launch
 
 //관리자 페이지
 class AdminFragment : DialogFragment() {

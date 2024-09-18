@@ -1,4 +1,4 @@
-package com.djhb.petopia.presentation.gallery
+package com.djhb.petopia.presentation.album
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.djhb.petopia.databinding.PagerPostDetailImageBinding
 
-class GalleryEditViewPagerAdapter: ListAdapter<String, GalleryEditViewPagerAdapter.DetailImageHolder>(object : DiffUtil.ItemCallback<String>(){
+class AlbumReadViewPagerAdapter: ListAdapter<String, AlbumReadViewPagerAdapter.DetailImageHolder>(object : DiffUtil.ItemCallback<String>(){
     override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
         return oldItem == newItem
     }

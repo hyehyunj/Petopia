@@ -85,6 +85,12 @@
         <item name="android:textColor">@color/dark_gray</item>
     </style>
 
+    <style name="common_text_20_bold_blue">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/notosans_bold</item>
+        <item name="android:textColor">@color/main_blue</item>
+    </style>
+
     <style name="common_text_20_bold_white">
         <item name="android:textSize">20sp</item>
         <item name="fontFamily">@font/notosans_bold</item>

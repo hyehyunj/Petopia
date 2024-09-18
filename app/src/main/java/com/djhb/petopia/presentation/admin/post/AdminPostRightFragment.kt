@@ -13,14 +13,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.databinding.FragmentAdminPostBinding
 
-//관리자 게시글
-class AdminPostLeftFragment : DialogFragment() {
+//관리자 페이지
+class AdminPostRightFragment : DialogFragment() {
     private val _binding: FragmentAdminPostBinding by lazy {
         FragmentAdminPostBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private val adminPostViewModel: AdminPostViewModel by activityViewModels()
 
+    private val adminViewModel:AdminPostViewModel by activityViewModels()
+//    private val deckPager by lazy { binding.adminPostDeck }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,18 +33,18 @@ class AdminPostLeftFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.adminPostTvTitle.text = "배웅하기"
+
         adminPostLeftDataObserver()
         adminPostLeftButtonClickListener()
-        initFoldingCells()
+
     }
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun adminPostLeftButtonClickListener() {
         //뒤로가기버튼 클릭이벤트 :
         binding.adminPostIvBack.setOnClickListener {
-            dismiss()
+      dismiss()
         }
 
     }
@@ -51,36 +52,21 @@ class AdminPostLeftFragment : DialogFragment() {
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun adminPostLeftDataObserver() {
-adminPostViewModel.adminPostLeftListLiveData.observe(viewLifecycleOwner) { post ->
-//    val fcTitleList = listOf(binding.adminPostFc1Title)
-//    val fcSubTitleList = listOf()
-//        val fcPostList = listOf()
-//  for(i in post) {
-//  fcPostList[i] = i.title
-//
-//
-//}
-}
-    }
 
-//게시글 구성하는 함수
-    private fun initFoldingCells() {
-        val firstFc = binding.adminPostFc1
-        firstFc.setOnClickListener {
-            firstFc.toggle(false)
-        }
 
-        val secondFc = binding.adminPostFc2
-        secondFc.setOnClickListener {
-            secondFc.toggle(false)
-        }
-
-        val thirdFc = binding.adminPostFc3
-        thirdFc.setOnClickListener {
-            thirdFc.toggle(false)
-        }
 
     }
+
+
+//    private fun initAdapter(){
+//        deckPager.apply {
+//            offscreenPageLimit = 5
+//            adapter = AdminPostAdapter(requireContext(), getAdminPostRightItems())
+//            clipToPadding = false
+//            setPadding(100,0,100,0)
+//pageMargin = 20
+//        }
+//    }
 
     private fun initDialog() {
         val windowManager =
