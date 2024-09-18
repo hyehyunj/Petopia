@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -40,6 +41,8 @@ class HomeMemoryBridgeFragment : Fragment() {
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
     private lateinit var memoryViewModel: MemoryViewModel
 
+
+    private lateinit var emojiViews: List<ImageView>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -85,21 +88,11 @@ class HomeMemoryBridgeFragment : Fragment() {
             resetEmojiState() // 클릭 시 이모지를 초기화
             binding.homeMemoryBridgeFeelingsContainer.visibility = View.VISIBLE
             binding.feelingsText.visibility = View.VISIBLE
-            binding.emjSmile.visibility = View.VISIBLE
-            binding.emjWhirl.visibility = View.VISIBLE
-            binding.emjGloomy.visibility = View.VISIBLE
-            binding.emjSoso.visibility = View.VISIBLE
-            binding.emjHappy.visibility = View.VISIBLE
-            binding.emjBad.visibility = View.VISIBLE
-            binding.emjSick.visibility = View.VISIBLE
-            binding.emjSad.visibility = View.VISIBLE
+            emojiViews.forEach { it.visibility = View.VISIBLE } // emojiViews 사용
         }
 
-        setupEmojiClickListeners()
-    }
-
-    private fun setupEmojiClickListeners() {
-        val emojiViews = listOf(
+        // emojiViews 초기화
+        emojiViews = listOf(
             binding.emjSmile,
             binding.emjWhirl,
             binding.emjGloomy,
@@ -110,21 +103,77 @@ class HomeMemoryBridgeFragment : Fragment() {
             binding.emjSad
         )
 
+        setupEmojiClickListeners()
+        updateUIBasedOnTime()
+    }
 
+
+
+    private fun setupEmojiClickListeners() {
         emojiViews.forEach { emoji ->
             emoji.setOnClickListener {
                 // 선택된 이모지를 확대, 다른 이모지는 GONE
                 animateSelectedEmoji(emoji)
 
-                binding.homeMemoryBridgeFeelingsContainer.visibility = View.GONE
-                // 나머지 이모지 및 텍스트 숨기기
-                emojiViews.filter { it != emoji }.forEach { otherEmoji ->
-                    otherEmoji.visibility = View.GONE
-                }
-                binding.feelingsText.visibility = View.GONE
+                // 풍선 배경 변경
+                changeBalloonBackground(emoji)
+
+
             }
         }
     }
+
+    private fun changeBalloonBackground(selectedEmoji: ImageView) {
+        val balloon1 = binding.homeMemoryBridgeIvEmotion2
+        val balloon2 = binding.homeMemoryBridgeIvEmotion3
+        val balloon3 = binding.homeMemoryBridgeIvEmotion
+
+        when (selectedEmoji) {
+            binding.emjSmile -> {
+                balloon1.setImageResource(R.drawable.img_yello__balloon)
+                balloon2.setImageResource(R.drawable.img_yello__balloon)
+                balloon3.setImageResource(R.drawable.img_yello__balloon)
+            }
+            binding.emjSad -> {
+                balloon1.setImageResource(R.drawable.img_blue__balloon)
+                balloon2.setImageResource(R.drawable.img_blue__balloon)
+                balloon3.setImageResource(R.drawable.img_blue__balloon)
+            }
+            binding.emjBad -> {
+                balloon1.setImageResource(R.drawable.img_red_balloon)
+                balloon2.setImageResource(R.drawable.img_red_balloon)
+                balloon3.setImageResource(R.drawable.img_red_balloon)
+            }
+            binding.emjSoso -> {
+                balloon1.setImageResource(R.drawable.img_green__balloon)
+                balloon2.setImageResource(R.drawable.img_green__balloon)
+                balloon3.setImageResource(R.drawable.img_green__balloon)
+            }
+            binding.emjWhirl -> {
+                balloon1.setImageResource(R.drawable.img_purple__balloon)
+                balloon2.setImageResource(R.drawable.img_purple__balloon)
+                balloon3.setImageResource(R.drawable.img_purple__balloon)
+            }
+            binding.emjGloomy -> {
+                balloon1.setImageResource(R.drawable.img_sodomy__balloon)
+                balloon2.setImageResource(R.drawable.img_sodomy__balloon)
+                balloon3.setImageResource(R.drawable.img_sodomy__balloon)
+            }
+            binding.emjSick -> {
+                balloon1.setImageResource(R.drawable.img_orange_balloon)
+                balloon2.setImageResource(R.drawable.img_orange_balloon)
+                balloon3.setImageResource(R.drawable.img_orange_balloon)
+            }
+        }
+
+        binding.homeMemoryBridgeFeelingsContainer.visibility = View.GONE
+        emojiViews.filter { it != selectedEmoji }.forEach { otherEmoji ->
+            otherEmoji.visibility = View.GONE
+        }
+        binding.feelingsText.visibility = View.GONE
+    }
+
+
 
     // 선택된 이모지를 중앙에 배치하고 확대
     private fun animateSelectedEmoji(selectedEmoji: ImageView) {
@@ -273,6 +322,37 @@ class HomeMemoryBridgeFragment : Fragment() {
         WorkManager.getInstance(requireContext()).enqueue(workRequest)
     }
 
+    // 현재 시간이 20시 이후인지 확인
+    private fun isAfterEightPM(): Boolean {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        return hour >= 16
+    }
+
+    // 현재 시간이 8시 이전인지 확인
+    private fun isBeforeEightAM(): Boolean {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        return hour < 8
+    }
+
+    // 시간에 따라 UI 업데이트
+    private fun updateUIBasedOnTime() {
+        if (isAfterEightPM() || isBeforeEightAM()) {
+            binding.skyBackground.visibility = View.VISIBLE
+            binding.homeImgNightBackground.visibility = View.VISIBLE
+
+
+        } else {
+            binding.skyBackground.visibility = View.GONE
+            binding.homeImgNightBackground.visibility = View.GONE
+
+        }
+
+
+    }
+
+
     private fun loadMemory() {
         val sharedPreferences =
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
@@ -361,8 +441,35 @@ class HomeMemoryBridgeFragment : Fragment() {
         floatAnimatorX.repeatCount = ValueAnimator.INFINITE
         floatAnimatorX.interpolator = LinearInterpolator()
 
+
+        //imator3 애니메이션
+        val floatAnimatorY3 =
+            ObjectAnimator.ofFloat(binding.homeMemoryBridgeIvEmotion3, "translationY", 0f, -30f, 0f)
+        floatAnimatorY3.duration = 2000
+        floatAnimatorY3.repeatMode = ValueAnimator.REVERSE
+        floatAnimatorY3.repeatCount = ValueAnimator.INFINITE
+        floatAnimatorY3.interpolator = LinearInterpolator()
+        floatAnimatorY3.startDelay = 500 // 0.5초 늦게 시작
+
+        val floatAnimatorX3 = ObjectAnimator.ofFloat(
+            binding.homeMemoryBridgeIvEmotion3,
+            "translationX",
+            0f,
+            -10f,
+            10f,
+            0f
+        )
+        floatAnimatorX3.duration = 3000
+        floatAnimatorX3.repeatMode = ValueAnimator.REVERSE
+        floatAnimatorX3.repeatCount = ValueAnimator.INFINITE
+        floatAnimatorX3.interpolator = LinearInterpolator()
+        floatAnimatorX3.startDelay = 1000
+
         floatAnimatorY.start()
         floatAnimatorX.start()
+
+        floatAnimatorY3.start()
+        floatAnimatorX3.start()
 
         // 메모리 컨테이너 애니메이션 (주석 처리됨)
 //        binding.homeMemoryBridgeMemoryContainer.startAnimation(

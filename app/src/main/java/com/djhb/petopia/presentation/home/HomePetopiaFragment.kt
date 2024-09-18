@@ -44,6 +44,8 @@ class HomePetopiaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
+
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
