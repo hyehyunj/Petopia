@@ -145,13 +145,20 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     }
 
     //등록 또는 변경될 가능성이 있는 새로운 사진을 담는 함수
-    fun considerNewPhoto(uriList: List<Uri>) {
+    fun considerNewPhotoUri(uriList: List<Uri>) {
         //편집화면에 보여주기 위해 담는 리스트
         _newPhotoListLiveData.value = uriList
         val photoList = mutableListOf<String>()
         uriList.forEach { photoList.add(it.toString()) }
         newPhotoList = newPhotoList.copy(imageUris = photoList)
     }
+
+    fun removeNewPhotoUri(position: Int) {
+        val list = _newPhotoListLiveData.value?.toMutableList()
+        list?.removeAt(position)
+        list?.let { considerNewPhotoUri(it.toList()) }
+    }
+
 
     //등록 또는 변경될 가능성이 있는 새로운 사진의 날짜를 담는 함수
     fun considerNewPhotoDate(dateTime: String) {
@@ -169,7 +176,7 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
 
     //사진을 추가하거나 편집하기 위한 준비를 마쳤는지 확인하는 함수
     fun checkPrepared(): Boolean {
-        return newPhotoList.imageUris.isNotEmpty() && newPhotoList.titleText.isNotEmpty()
+        return newPhotoList.imageUris.isNotEmpty() && newPhotoList.titleText.isNotEmpty() && newPhotoList.photoDate.isNotEmpty()
     }
 
     //현재 사진을 새 사진으로 교체하는 함수

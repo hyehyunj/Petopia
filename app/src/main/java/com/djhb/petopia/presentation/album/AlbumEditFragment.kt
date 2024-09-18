@@ -31,7 +31,7 @@ class AlbumEditFragment : DialogFragment() {
     }
     private val binding get() = _binding
     private lateinit var albumEditRecyclerViewAdapter: AlbumEditRecyclerViewAdapter
-    private lateinit var gallerySharedViewModel: AlbumSharedViewModel
+    private lateinit var albumSharedViewModel: AlbumSharedViewModel
     private val pickMedia =
         registerForActivityResult(ActivityResultContracts.PickMultipleVisualMedia(6)) { uri ->
             if (uri.isNotEmpty()) {
@@ -40,7 +40,7 @@ class AlbumEditFragment : DialogFragment() {
 //                binding.galleryEditIvTitle.setImageURI(uri[0])
 //                if(uri.size == 2)binding.galleryEditIvTitle2.setImageURI(uri[1]) else
 //                    binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
-                gallerySharedViewModel.considerNewPhoto(uri)
+                albumSharedViewModel.considerNewPhotoUri(uri)
             }
         }
 
@@ -48,7 +48,7 @@ class AlbumEditFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        gallerySharedViewModel =
+        albumSharedViewModel =
             ViewModelProvider(requireParentFragment()).get(AlbumSharedViewModel::class.java)
         initAdapter()
         return binding.root
@@ -58,8 +58,8 @@ class AlbumEditFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
-        gallerySharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-           gallerySharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+        albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
+           albumSharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
                     addOrEditMode(
                         it, currentPhoto
                     )
@@ -67,7 +67,7 @@ class AlbumEditFragment : DialogFragment() {
         }
 
         //사용자가 선택한 사진으로 변경
-        gallerySharedViewModel.newPhotoListLiveData.observe(viewLifecycleOwner) {
+        albumSharedViewModel.newPhotoListLiveData.observe(viewLifecycleOwner) {
             albumEditRecyclerViewAdapter.updateList(it)
         }
 
@@ -83,8 +83,9 @@ class AlbumEditFragment : DialogFragment() {
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수.
     private fun initAdapter() {
         albumEditRecyclerViewAdapter = AlbumEditRecyclerViewAdapter(
-            gallerySharedViewModel.newPhotoListLiveData.value ?: listOf(),
+            albumSharedViewModel.newPhotoListLiveData.value ?: listOf(),
             itemClickListener = { item, position ->
+                albumSharedViewModel.removeNewPhotoUri(position)
             },
             itemLongClickListener = { item, position ->  },
         )
@@ -101,7 +102,7 @@ class AlbumEditFragment : DialogFragment() {
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
             binding.apply {
-                gallerySharedViewModel.preparePhotoList()
+                albumSharedViewModel.preparePhotoList()
                 galleryEditEtTitle.setText(item.titleText)
                 galleryEditTvCalendarInput.text = if(item.photoDate == "")getString(R.string.album_select_date) else item.photoDate
             }
@@ -121,7 +122,7 @@ class AlbumEditFragment : DialogFragment() {
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
                     binding.galleryEditTvCalendarInput.text = "${yy}. ${mm + 1}. ${dd}"
-                    gallerySharedViewModel.considerNewPhotoDate("${yy}.${mm + 1}.${dd}")
+                    albumSharedViewModel.considerNewPhotoDate("${yy}.${mm + 1}.${dd}")
                 }
                 val picker = DatePickerDialog(requireContext(), listener, year, month, day)
                 picker.show()
@@ -130,13 +131,13 @@ class AlbumEditFragment : DialogFragment() {
             //완료버튼 : 새로운 사진으로 등록 또는 변경 후 읽기전용모드로 전환한다.
             galleryEditTvComplete.apply {
                 setOnClickListener {
-                    gallerySharedViewModel.considerNewPhotoTitle(binding.galleryEditEtTitle.text.toString())
-                    if (gallerySharedViewModel.checkPrepared()) {
-                        gallerySharedViewModel.updateNewGallery(
+                    albumSharedViewModel.considerNewPhotoTitle(binding.galleryEditEtTitle.text.toString())
+                    if (albumSharedViewModel.checkPrepared()) {
+                        albumSharedViewModel.updateNewGallery(
                             item.index
                         )
                         setBackgroundResource(R.drawable.icon_write)
-                        gallerySharedViewModel.changeLayoutMode("READ")
+                        albumSharedViewModel.changeLayoutMode("READ")
                         dismiss()
                     } else StyleableToast.makeText(
                         requireActivity(),
