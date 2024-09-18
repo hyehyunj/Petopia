@@ -1,11 +1,14 @@
 package com.djhb.petopia.data
 
+import java.util.UUID
+
 data class AdminPostModel(
     val category: String,
-    val page: String,
+    val page: Int,
     val title: String,
     val subTitle: String,
-    val post: String
+    val post: String,
+    val uid: String = UUID.randomUUID().toString()
 )
 
 fun getAdminPostLeftItems(): List<AdminPostModel> = listOf(
