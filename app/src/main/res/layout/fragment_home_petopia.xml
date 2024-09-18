@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/petopia_sky"
     tools:context=".presentation.home.HomePetopiaFragment">
+<!--저녁 8시 이후 요소-->
+<ImageView
+    android:id="@+id/sky_background"
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    />
 
 
     <ImageView
@@ -16,7 +24,6 @@
         android:src="@drawable/pettopia_clould"
         android:scaleType="centerInside"
         app:layout_constraintTop_toTopOf="@id/home_img_tree1"
-
         android:translationX="-40dp"
         />
 
@@ -55,7 +62,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/petopia_flower_left1"
         app:layout_constraintTop_toBottomOf="@id/home_img_tree1"
-
         />
 
     <ImageView
@@ -147,17 +153,29 @@
         android:layout_marginEnd="50dp"
 
         />
-
+<!--저녁 8시 이후 요소-->
     <ImageView
-        android:id="@+id/home_img_background"
+        android:id="@+id/home_img_night_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/bg_translucent_background_down"
+        android:background="@color/black"
+        android:alpha="0.4"
+        android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBaseline_toBottomOf="parent"
         />
+
+    <ImageView
+        android:id="@+id/petopia_moon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/petopia_moon"
+        android:translationY="-50dp"
+        android:visibility="gone"
+        />
+
 
     <TextView
         android:id="@+id/home_tv_name_pet"
@@ -201,6 +219,70 @@
         app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
 
 
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/firefly"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    >
+
+    <ImageView
+        android:id="@+id/firefly1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/firefly1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        />
+
+    <ImageView
+        android:id="@+id/firefly2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/firefly2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="150dp"
+        />
+
+    <ImageView
+        android:id="@+id/firefly3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/firefly3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="150dp"
+        />
+
+    <ImageView
+        android:id="@+id/firefly4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/firefly4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="150dp"
+        />
+
+    <ImageView
+        android:id="@+id/firefly5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/firefly5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="300dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <TextView
         android:id="@+id/home_tv_guide"
         style="@style/common_text_16_bold_white"
@@ -209,6 +291,7 @@
         android:layout_margin="16dp"
         android:background="@drawable/bg_round_translucent_black"
         android:text="@string/guide_start"
+        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@id/home_iv_pet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
