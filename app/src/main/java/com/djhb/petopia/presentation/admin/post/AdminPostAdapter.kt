@@ -14,7 +14,7 @@ class AdminPostAdapter(private val context: Context, private val items: List<Adm
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(context).inflate(R.layout.pager_admin_post_item, container, false)
         container?.addView(view, 0)
-        view.findViewById<TextView>(R.id.admin_post_item_tv_page).text = items[position].page
+//        view.findViewById<TextView>(R.id.admin_post_item_tv_page).text = items[position].page
         view.findViewById<TextView>(R.id.admin_post_item_tv_title).text = items[position].title
         view.findViewById<TextView>(R.id.admin_post_item_tv_sub_title).text = items[position].subTitle
 
