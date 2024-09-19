@@ -73,10 +73,23 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/guide_appearance_dialog_tv_back"
+            app:layout_constraintBottom_toTopOf="@+id/guide_appearance_dialog_iv_pet"
             app:layout_constraintEnd_toEndOf="@+id/guide_appearance_dialog_rg"
             app:layout_constraintStart_toStartOf="@+id/guide_appearance_dialog_rg"
             app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rg" />
+
+        <ImageView
+            android:id="@+id/guide_appearance_dialog_iv_pet"
+            android:layout_width="100dp"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/img_americanshoerthair"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rv"
+            app:layout_constraintBottom_toTopOf="@+id/guide_appearance_dialog_tv_back"/>
+
 
         <com.skydoves.elasticviews.ElasticButton
             android:id="@+id/guide_appearance_dialog_tv_back"
@@ -93,7 +106,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guide_appearance_dialog_tv_complete"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rv" />
+            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_iv_pet" />
 
 
         <com.skydoves.elasticviews.ElasticButton

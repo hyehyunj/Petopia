@@ -15,6 +15,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.djhb.petopia.R
+import com.djhb.petopia.data.PetAppearance
+import com.djhb.petopia.data.PetAppearanceModel
 import com.djhb.petopia.databinding.FragmentGuideAppearanceDialogBinding
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -53,7 +55,30 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             guideSharedViewModel.changeAppearance()
         }
 
+        guideSharedViewModel.appearanceLiveData.observe(viewLifecycleOwner) {
+        when (it) {
+            "아비시니안" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_abyssinian)
+            "아메리칸숏헤어" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_americanshoerthair)
+            "비숑" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_bichon)
+            "치와와" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_chihuahua)
+            "코리안숏헤어" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_koreanshorthair)
+            "말티즈" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_maltese)
+            "노르웨이숲" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_norwegianforest)
+            "페르시안" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_persian)
+            "포메라니안" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_pomeranian)
+            "푸들" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_poodle)
+            "리트리버" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_retriever)
+            "러시안블루" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_russianblue)
+            "스코티쉬폴드" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_scottishfold)
+            "시바" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_shiba)
+            "시츄" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_shihtzu)
+            "샴" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_siamese)
+            "터키쉬앙고라" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_turkishangora)
+            "웰시코기" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_welshcorgi)
+            null -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_shihtzu)
+        }
 
+        }
 
         guideSharedViewModel.appearanceListLiveData.observe(viewLifecycleOwner) {
 //            guideAppearanceDialogRecyclerViewAdapter.notifyDataSetChanged(guideSharedViewModel.appearanceMutableListLiveData.toList())
@@ -109,7 +134,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         val deviceWidth = size.x
         val deviceHeight = size.y
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceHeight * 0.7).toInt()
+        params?.height = (deviceHeight * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 //        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
