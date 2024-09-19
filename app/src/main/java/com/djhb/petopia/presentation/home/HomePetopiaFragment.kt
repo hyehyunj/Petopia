@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
@@ -40,7 +41,7 @@ class HomePetopiaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initGuideAnimation()
 
 
 
@@ -256,7 +257,12 @@ class HomePetopiaFragment : Fragment() {
         }
         //가이드 버튼 클릭이벤트 : 클릭시 가이드 시작
         binding.homeTvGuide.setOnClickListener {
+            binding.homeTvGuide.clearAnimation() // 애니메이션 중지
             (activity as MainActivity).showGuideFragment()
+        }
+
+        binding.homeIvDate.setOnClickListener {
+            LetterFragment().show(childFragmentManager, "LETTER_FRAGMENT")
         }
     }
 
@@ -275,13 +281,14 @@ class HomePetopiaFragment : Fragment() {
                         homeIvGallery.isVisible = false
                         homeIvLetter.isVisible = false
                         homeTvGuide.isVisible = true
-                        homeIvCall.isVisible = true
+//                        homeIvCall.isVisible = true
                     }
                 }
 
                 "ESSENTIAL" ->
                 {binding.homeTvGuide.isVisible = false
-                    binding.homeIvCall.isVisible = false}
+//                    binding.homeIvCall.isVisible = false
+                }
 
                 "ESSENTIAL_DONE" -> {
                     mainHomeGuideViewModel.setPetData()
@@ -301,7 +308,7 @@ class HomePetopiaFragment : Fragment() {
                         homeIvGallery.isVisible = true
                         homeIvLetter.isVisible = true
                         homeTvGuide.isVisible = false
-                        homeIvCall.isVisible = false
+//                        homeIvCall.isVisible = false
                     }
                 }
             }
@@ -394,6 +401,13 @@ class HomePetopiaFragment : Fragment() {
 //            .addToBackStack("BACK_PETOPIA")
 //            .commitAllowingStateLoss()
 
+    }
+
+
+    private fun initGuideAnimation() {
+        binding.homeTvGuide.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
+        )
     }
 
     private fun initAnimation() {

@@ -57,7 +57,7 @@ class GuideFragment : Fragment() {
         //뒤로가기 버튼 클릭이벤트
         binding.guideIvBack.setOnClickListener {
             when (guideViewModel.guidePageNumberLiveData.value) {
-                0, 7, 8, 14, 18 -> StyleableToast.makeText(
+                0, 7, 8, 14, 19 -> StyleableToast.makeText(
                     requireActivity(),
                     "더 이상 뒤로가실 수 없습니다.",
                     R.style.toast_common
@@ -109,7 +109,7 @@ class GuideFragment : Fragment() {
                 13, 17 ->
                     binding.guideStoryLayout.isVisible = false
 
-                14, 18 ->
+                14, 19 ->
                     binding.guideStoryLayout.isVisible = true
             }
         }

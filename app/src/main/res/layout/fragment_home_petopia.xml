@@ -288,8 +288,13 @@
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
+<ImageView
+    android:id="@+id/home_iv_date"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:src="@drawable/icon_community_date"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/home_iv_pet"
@@ -315,41 +320,41 @@
 
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/home_iv_call"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/img_petopia_call"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:id="@+id/home_iv_call"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@drawable/img_petopia_call"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent">-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="펫토피아 입국사무소"
-            android:gravity="center"
-            app:layout_constraintVertical_bias="0.2"
-            style="@style/common_text_24_bold_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="펫토피아 입국사무소"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintVertical_bias="0.2"-->
+<!--            style="@style/common_text_24_bold_white"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="버튼을 클릭해 화면 연결하기"
-            android:gravity="center"
-            app:layout_constraintVertical_bias="0.9"
-            app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/common_text_16_white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="버튼을 클릭해 화면 연결하기"-->
+<!--            android:gravity="center"-->
+<!--            app:layout_constraintVertical_bias="0.9"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            style="@style/common_text_16_white"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 
