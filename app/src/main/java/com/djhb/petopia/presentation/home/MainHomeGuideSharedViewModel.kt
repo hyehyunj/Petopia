@@ -67,7 +67,7 @@ class MainHomeGuideSharedViewModel(
         var skipGuide: Boolean
         if (user.loginUser.completedGuide) {
             getPetData()
-            _guideStateLiveData.value = "DONE"
+            _guideStateLiveData.value = "NONE"
             skipGuide = true
         } else {
             _guideStateLiveData.value = "NONE"

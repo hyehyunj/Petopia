@@ -275,11 +275,13 @@ class HomePetopiaFragment : Fragment() {
                         homeIvGallery.isVisible = false
                         homeIvLetter.isVisible = false
                         homeTvGuide.isVisible = true
+                        homeIvCall.isVisible = true
                     }
                 }
 
                 "ESSENTIAL" ->
-                    binding.homeTvGuide.isVisible = false
+                {binding.homeTvGuide.isVisible = false
+                    binding.homeIvCall.isVisible = false}
 
                 "ESSENTIAL_DONE" -> {
                     mainHomeGuideViewModel.setPetData()
@@ -299,6 +301,7 @@ class HomePetopiaFragment : Fragment() {
                         homeIvGallery.isVisible = true
                         homeIvLetter.isVisible = true
                         homeTvGuide.isVisible = false
+                        homeIvCall.isVisible = false
                     }
                 }
             }
