@@ -105,6 +105,10 @@
     <string name="community_detail_comment_edit">댓글 수정</string>
     <string name="community_detail_delete"><u>삭제</u></string>
     <string name="community_detail_hint_comment">댓글을 입력하세요</string>
+    <string name="community_create_filtering_dog">강아지</string>
+    <string name="community_create_filtering_cat">고양이</string>
+
+
 
 
     <!--  Setting : 설정에서 사용되는 String  -->

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.djhb.petopia.FilteringType
 import com.djhb.petopia.data.LikeModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
@@ -12,6 +13,7 @@ import com.djhb.petopia.data.remote.LikeRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.Filter
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -45,6 +47,11 @@ class CommunityViewModel : ViewModel() {
     val addedSearchPost get() = _addedSearchPost
 
     private var addedSearchResult = Collections.synchronizedList(mutableListOf<PostModel>())
+
+    private val _filteringCategories = MutableLiveData<MutableList<FilteringType>>()
+    val filteringCategories get() = _filteringCategories
+
+    val filteringResult = mutableListOf<FilteringType>()
 
 
     private val postRepository: PostRepository by lazy {
@@ -85,13 +92,16 @@ class CommunityViewModel : ViewModel() {
     }
 
 
-    suspend fun selectRankList() {
+    suspend fun selectRankList(categories: List<FilteringType>) {
 
 //        Log.i("CommunityViewModel", "start1 selectRankList()")
         viewModelScope.launch {
 //            Log.i("CommunityViewModel", "123. start selectRankList()")
             rankPostResult.clear()
-            rankPostResult = postRepository.selectRankPosts()
+            if(categories.size > 0)
+                rankPostResult = postRepository.selectRankPostsWhereFiltering(categories)
+            else
+                rankPostResult = postRepository.selectRankPosts()
 //            _rankPosts.value = rankPostResult
 
             rankPostResult.removeIf{
@@ -140,7 +150,7 @@ class CommunityViewModel : ViewModel() {
 //        }
     }
 
-    suspend fun selectInitPostList(){
+    suspend fun selectInitPostList(categories: List<FilteringType>){
 //        Log.i("CommunityViewModel", "start1 selectAllList()")
         viewModelScope.launch {
 //            Log.i("CommunityViewModel", "123. start selectInitAllList()")
@@ -149,7 +159,12 @@ class CommunityViewModel : ViewModel() {
 //            val allPosts = postRepository.selectPosts()
 //            searchPostResult = postRepository.selectPosts()
             _isProgressing.value = true
-            var documents = postRepository.selectInitPosts()
+
+            var documents = when {
+                categories.size > 0 -> postRepository.selectInitPostsWhereFiltering(categories)
+                else -> postRepository.selectInitPosts()
+            }
+
             if (documents.size > 0) {
                 lastSnapshot = documents[documents.size - 1]
 
@@ -163,7 +178,14 @@ class CommunityViewModel : ViewModel() {
                 }
 
                 while (addedSearchResult.size < 8 && documents.size > 0){
-                    documents = postRepository.selectNextPosts(lastSnapshot)
+
+//                    documents = postRepository.selectNextPosts(lastSnapshot)
+                    documents = when {
+                        categories.size > 0 ->
+                            postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
+                        else ->
+                            postRepository.selectNextPosts(lastSnapshot)
+                    }
 //                    Log.i("CommunityViewModel", "need more post documents.size = ${documents.size}")
                     if (documents.size > 0) {
                         lastSnapshot = documents[documents.size - 1]
@@ -259,7 +281,7 @@ class CommunityViewModel : ViewModel() {
         }
     }
 
-    suspend fun selectNextPostList() {
+    suspend fun selectNextPostList(categories: List<FilteringType>) {
 //        Log.i("CommunityViewModel", "start1 selectNextPostList()")
         viewModelScope.launch {
             addedSearchResult.clear()
@@ -268,7 +290,13 @@ class CommunityViewModel : ViewModel() {
 //            val allPosts = postRepository.selectPosts()
 //            searchPostResult = postRepository.selectPosts()
             _isProgressing.value = true
-            var documents = postRepository.selectNextPosts(lastSnapshot)
+            var documents = when {
+                categories.size > 0 ->
+                    postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
+                else ->
+                    postRepository.selectNextPosts(lastSnapshot)
+            }
+
             if(documents.size > 0) {
                 lastSnapshot = documents[documents.size - 1]
 //                searchPostResult.addAll(postRepository.convertToPostModel(documents))
@@ -280,7 +308,12 @@ class CommunityViewModel : ViewModel() {
                 }
 
                 while (addedSearchResult.size < 8 && documents.size > 0){
-                    documents = postRepository.selectNextPosts(lastSnapshot)
+                    documents = when {
+                        categories.size > 0 ->
+                            postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
+                        else ->
+                            postRepository.selectNextPosts(lastSnapshot)
+                    }
 //                    Log.i("CommunityViewModel", "need more post documents.size = ${documents.size}")
                     if (documents.size > 0) {
                         lastSnapshot = documents[documents.size - 1]
@@ -462,5 +495,16 @@ class CommunityViewModel : ViewModel() {
 
     }
 
+    fun addCategories(category: FilteringType){
+        filteringResult.add(category)
+        _filteringCategories.value = filteringResult
+    }
+
+    fun deleteCategories(category: FilteringType) {
+        filteringResult.removeIf {
+            it == category
+        }
+        _filteringCategories.value = filteringResult
+    }
 
 }

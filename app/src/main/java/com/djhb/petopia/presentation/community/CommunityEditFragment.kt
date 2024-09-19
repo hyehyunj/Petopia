@@ -11,13 +11,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.FragmentCommunityEditBinding
@@ -42,6 +43,8 @@ class CommunityEditFragment : Fragment() {
     private val binding: FragmentCommunityEditBinding by lazy {
         FragmentCommunityEditBinding.inflate(layoutInflater)
     }
+
+    private lateinit var checkboxToFiltering: MutableMap<CheckBox, FilteringType>
 
     private val imageUris = mutableListOf("")
 
@@ -128,6 +131,17 @@ class CommunityEditFragment : Fragment() {
     }
 
     private fun initView(){
+
+        checkboxToFiltering = mutableMapOf(
+            binding.cbDog to FilteringType.DOG
+            ,binding.cbCat to FilteringType.CAT
+        )
+
+        for (filteringType in post.filteringTypes) {
+            val checkbox = getCheckboxByFiltering(filteringType)
+            checkbox.isChecked = true
+        }
+
         binding.etTitle.setText(post.title)
         binding.etContent.setText(post.content)
 //        Log.i("CommunityEditFragment", "post.key = ${post.key}")
@@ -140,6 +154,10 @@ class CommunityEditFragment : Fragment() {
         viewModel.postImageUris.value = post.imageUris
 
         binding.header.ivSearch.visibility = ImageView.INVISIBLE
+
+
+
+
     }
 
     private fun initAdapter(){
@@ -172,7 +190,14 @@ class CommunityEditFragment : Fragment() {
                     }
                 }
 
-                viewModel.updatePost(post.copy(title = title, content = content))
+                val filteringCategories = addFilteringCategories()
+
+                viewModel.updatePost(post.copy(
+                    title = title,
+                    content = content,
+                    filteringTypes = filteringCategories
+                    )
+                )
 
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.main_sub_frame, CommunityMainFragment())
@@ -201,6 +226,28 @@ class CommunityEditFragment : Fragment() {
 //            createImageAdapter.submitList(viewModel.postImageUris.value?.toMutableList())
             createImageAdapter.submitList(it.toMutableList())
         }
+    }
+
+    private fun addFilteringCategories(): MutableList<FilteringType> {
+        val selectedCategories = mutableListOf<FilteringType>()
+
+        for (entry in checkboxToFiltering) {
+            val checkbox = entry.key
+            val category = entry.value
+            if(checkbox.isChecked)
+                selectedCategories.add(category)
+        }
+
+        return selectedCategories
+    }
+
+    private fun getCheckboxByFiltering(filtering: FilteringType): CheckBox {
+        for (entry in checkboxToFiltering) {
+            val currentFiltering = entry.value
+            if(currentFiltering == filtering)
+                return entry.key
+        }
+        return binding.cbDog
     }
 
     companion object {

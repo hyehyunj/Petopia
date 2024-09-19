@@ -3,6 +3,7 @@ package com.djhb.petopia.data.remote
 import android.util.Log
 import androidx.core.net.toUri
 import com.djhb.petopia.DateFormatUtils
+import com.djhb.petopia.FilteringType
 import com.djhb.petopia.Table
 import com.djhb.petopia.data.PostModel
 import com.google.firebase.Firebase
@@ -142,10 +143,54 @@ class PostRepositoryImpl : PostRepository {
 //        }
 //    }
 
+//    override suspend fun selectRankPosts(): MutableList<PostModel> {
     override suspend fun selectRankPosts(): MutableList<PostModel> {
         return withContext(Dispatchers.IO) {
 
             val snapshot = storeReference
+                .orderBy("viewCount", Query.Direction.DESCENDING)
+                .limit(3)
+                .get()
+                .await()
+
+            val rankPosts = mutableListOf<PostModel>()
+            for (document in snapshot.documents) {
+                val hashMap = document.data as HashMap<*, *>
+                val gson = Gson()
+                val toJson = gson.toJson(hashMap)
+                val fromJson = gson.fromJson(toJson, PostModel::class.java)
+                rankPosts.add(fromJson)
+            }
+
+            Log.i("PostRepositoryImpl", "rankPosts = ${rankPosts}")
+
+            rankPosts
+
+//                { task ->
+//                    if (task.isSuccessful) {
+//                        Log.i("PostRepositoryImpl", "success select rank question post : ${task}")
+//                        val rankPosts = mutableListOf<PostModel>()
+//                        for (document in task.result.documents) {
+//                            val hashMap = document.data as HashMap<*, *>
+//                            val gson = Gson()
+//                            val toJson = gson.toJson(hashMap)
+//                            val fromJson = gson.fromJson(toJson, PostModel::class.java)
+//                            rankPosts.add(fromJson)
+//                        }
+//                        continuation.resume(rankPosts)
+//                        return@addOnCompleteListener
+//                    } else {
+//                        continuation.resumeWithException(Exception("unknown error"))
+//                    }
+
+        }
+    }
+
+    override suspend fun selectRankPostsWhereFiltering(categories: List<FilteringType>): MutableList<PostModel> {
+        return withContext(Dispatchers.IO) {
+
+            val snapshot = storeReference
+                .whereArrayContainsAny("filteringType", categories)
                 .orderBy("viewCount", Query.Direction.DESCENDING)
                 .limit(3)
                 .get()
@@ -245,9 +290,39 @@ class PostRepositoryImpl : PostRepository {
         }
     }
 
+    override suspend fun selectInitPostsWhereFiltering(categories: List<FilteringType>): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO){
+            val snapshot = storeReference
+                .whereArrayContainsAny("filteringType", categories)
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .limit(10)
+                .get()
+                .await()
+
+            snapshot.documents
+        }
+    }
+
     override suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot): List<DocumentSnapshot> {
         return withContext(Dispatchers.IO){
             val snapshot = storeReference
+                .orderBy("createdDate", Query.Direction.DESCENDING)
+                .startAfter(lastSnapshot)
+                .limit(10)
+                .get()
+                .await()
+
+            snapshot.documents
+        }
+    }
+
+    override suspend fun selectNextPostsWhereFiltering(
+        lastSnapshot: DocumentSnapshot,
+        categories: List<FilteringType>
+    ): List<DocumentSnapshot> {
+        return withContext(Dispatchers.IO){
+            val snapshot = storeReference
+                .whereArrayContainsAny("filteringType", categories)
                 .orderBy("createdDate", Query.Direction.DESCENDING)
                 .startAfter(lastSnapshot)
                 .limit(10)
@@ -505,6 +580,7 @@ class PostRepositoryImpl : PostRepository {
                 mapOf(
                     "title" to post.title,
                     "content" to post.content,
+                    "filteringTypes" to post.filteringTypes,
                     "updatedDate" to System.currentTimeMillis()
                 )
             ).addOnCompleteListener { task ->
