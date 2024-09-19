@@ -110,7 +110,9 @@ class CommunityDetailFragment : Fragment() {
     private val reportViewModel: ReportViewModel by activityViewModels()
 
     private lateinit var viewPager: ViewPager2
-    private lateinit var viewPagerAdapter: DetailImageAdapter
+    private val viewPagerAdapter: DetailImageAdapter by lazy {
+        DetailImageAdapter()
+    }
     private var initLikeState: Boolean = false
     private var currentLikeState: Boolean = false
     private val loginUserLike: LikeModel by lazy {
@@ -173,7 +175,7 @@ class CommunityDetailFragment : Fragment() {
 //            viewModel.selectDetailImageUris(key)
             viewPager = binding.vpImage
 //            viewPagerAdapter = DetailImagePagerAdapter(requireActivity(), viewModel.imageUriResults)
-            viewPagerAdapter = DetailImageAdapter()
+//            viewPagerAdapter = DetailImageAdapter()
 //            Log.i("CommunityDetailFragment", "imageUriResults = ${viewModel.imageUriResults}")
 //            viewPagerAdapter.submitList(viewModel.imageUriResults)
 //            viewPagerAdapter.submitList(imageUris)
@@ -248,55 +250,57 @@ class CommunityDetailFragment : Fragment() {
         binding.header.ivBack.setOnClickListener {
             mainActivity.showViewPager()
         }
+        Log.i("CommunityDetailFragment", "post.writer.id = ${post.writer.id}")
+        Log.i("CommunityDetailFragment", "LoginData.loginUser.id = ${LoginData.loginUser.id}")
 
-
-        if (post.writer.id == LoginData.loginUser.id) {
-            binding.btnDelete.visibility = ImageView.VISIBLE
-            binding.btnEdit.visibility = ImageView.VISIBLE
-
+//        if (post.writer.id == LoginData.loginUser.id) {
+//
+//            binding.btnDelete.visibility = ImageView.VISIBLE
+//            binding.btnEdit.visibility = ImageView.VISIBLE
+//
+////            binding.btnDelete.setOnClickListener {
+////                lifecycleScope.launch {
+////                    communityViewModel.deletePost(post.key)
+////                }
+////
+////
+////                requireActivity().supportFragmentManager.beginTransaction()
+////                    .replace(R.id.main_sub_frame,CommunityMainFragment())
+////                    .commit()
+////            }
+//
+//
 //            binding.btnDelete.setOnClickListener {
-//                lifecycleScope.launch {
-//                    communityViewModel.deletePost(post.key)
+////                val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
+//                val deleteDialogFragment = PostDeleteDialogFragment(postKey) { key ->
+//                    lifecycleScope.launch {
+//                        communityViewModel.deletePost(key)
+//                        communityViewModel.deletePostImages(key)
+//                    }
+//                }
+//                deleteDialogFragment.show(childFragmentManager, "DELETE POST")
+//            }
+//
+//            binding.btnEdit.setOnClickListener {
+//
+//                if(post.title == "") {
+//                    Toast.makeText(requireActivity(), "잠시만 기다려주세요.", Toast.LENGTH_SHORT).show()
+//                    return@setOnClickListener
 //                }
 //
-//
-//                requireActivity().supportFragmentManager.beginTransaction()
-//                    .replace(R.id.main_sub_frame,CommunityMainFragment())
+//                val editFragment = CommunityEditFragment.newInstance(post)
+////                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
+//                requireActivity().supportFragmentManager
+//                    .beginTransaction()
+//                    .replace(R.id.main_sub_frame, editFragment)
+//                    .addToBackStack(null)
 //                    .commit()
 //            }
-
-
-            binding.btnDelete.setOnClickListener {
-//                val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
-                val deleteDialogFragment = PostDeleteDialogFragment(postKey) { key ->
-                    lifecycleScope.launch {
-                        communityViewModel.deletePost(key)
-                        communityViewModel.deletePostImages(key)
-                    }
-                }
-                deleteDialogFragment.show(childFragmentManager, "DELETE POST")
-            }
-
-            binding.btnEdit.setOnClickListener {
-
-                if(post.title == "") {
-                    Toast.makeText(requireActivity(), "잠시만 기다려주세요.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                val editFragment = CommunityEditFragment.newInstance(post)
-//                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
-                requireActivity().supportFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.main_sub_frame, editFragment)
-                    .addToBackStack(null)
-                    .commit()
-            }
-
-        } else {
-            binding.btnDelete.visibility = ImageView.GONE
-            binding.btnEdit.visibility = ImageView.GONE
-        }
+//
+//        } else {
+//            binding.btnDelete.visibility = ImageView.GONE
+//            binding.btnEdit.visibility = ImageView.GONE
+//        }
 
         binding.ivLike.setOnClickListener {
             currentLikeState = !currentLikeState
@@ -342,12 +346,66 @@ class CommunityDetailFragment : Fragment() {
         detailViewModel.currentPost.observe(viewLifecycleOwner) { post ->
             Log.i("CommunityDetailFragment", "post = ${post}")
 
+//            initView()
+//            initListener()
+
             // mvp 이후 활성화===
             binding.header.ivSearch.visibility = ImageView.INVISIBLE
             //=================
 
-            if(post.writer.id == LoginData.loginUser.id)
+//            if(post.writer.id == LoginData.loginUser.id)
+//                binding.ivReport.visibility = ImageView.INVISIBLE
+
+            if (post.writer.id == LoginData.loginUser.id) {
+
                 binding.ivReport.visibility = ImageView.INVISIBLE
+
+                binding.btnDelete.visibility = ImageView.VISIBLE
+                binding.btnEdit.visibility = ImageView.VISIBLE
+
+//            binding.btnDelete.setOnClickListener {
+//                lifecycleScope.launch {
+//                    communityViewModel.deletePost(post.key)
+//                }
+//
+//
+//                requireActivity().supportFragmentManager.beginTransaction()
+//                    .replace(R.id.main_sub_frame,CommunityMainFragment())
+//                    .commit()
+//            }
+
+
+                binding.btnDelete.setOnClickListener {
+//                val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
+                    val deleteDialogFragment = PostDeleteDialogFragment(postKey) { key ->
+                        lifecycleScope.launch {
+                            communityViewModel.deletePost(key)
+                            communityViewModel.deletePostImages(key)
+                        }
+                    }
+                    deleteDialogFragment.show(childFragmentManager, "DELETE POST")
+                }
+
+                binding.btnEdit.setOnClickListener {
+
+                    if(post.title == "") {
+                        Toast.makeText(requireActivity(), "잠시만 기다려주세요.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+                    val editFragment = CommunityEditFragment.newInstance(post)
+//                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
+                    requireActivity().supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.main_sub_frame, editFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+
+            } else {
+                binding.btnDelete.visibility = ImageView.GONE
+                binding.btnEdit.visibility = ImageView.GONE
+            }
 
 
 

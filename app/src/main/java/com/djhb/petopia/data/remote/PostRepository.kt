@@ -1,5 +1,6 @@
 package com.djhb.petopia.data.remote
 
+import com.djhb.petopia.FilteringType
 import com.djhb.petopia.data.PostModel
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.StorageReference
@@ -10,9 +11,13 @@ interface PostRepository {
     suspend fun createPost(post: PostModel, imageUris: MutableList<String>)
     suspend fun createPostImages(post: PostModel, imageUris: MutableList<String>): Boolean
     suspend fun selectRankPosts(): MutableList<PostModel>
+    suspend fun selectRankPostsWhereFiltering(categories: List<FilteringType>): MutableList<PostModel>
 //    suspend fun selectPosts(): MutableList<PostModel>
     suspend fun selectInitPosts(): List<DocumentSnapshot>
+    suspend fun selectInitPostsWhereFiltering(categories: List<FilteringType>): List<DocumentSnapshot>
+
     suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot): List<DocumentSnapshot>
+    suspend fun selectNextPostsWhereFiltering(lastSnapshot: DocumentSnapshot, categories: List<FilteringType>): List<DocumentSnapshot>
     suspend fun selectPostFromUser(userId: String): MutableList<PostModel>
     suspend fun selectPostFromKey(postKey: String): PostModel
 //    suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel>
