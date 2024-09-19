@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.DateFormatUtils
+import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
 import com.djhb.petopia.ReportContentType
 import com.djhb.petopia.data.CommentModel
@@ -57,6 +58,8 @@ class CommunityDetailFragment : Fragment() {
     private val mainActivity: MainActivity by lazy {
         requireActivity() as MainActivity
     }
+
+    private lateinit var filteringTypeToTextView: MutableMap<FilteringType, TextView>
 
     private val backPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
@@ -171,6 +174,11 @@ class CommunityDetailFragment : Fragment() {
 
 //            val imageUris = mutableListOf("https://firebasestorage.googleapis.com/v0/b/petopia-92b56.appspot.com/o/questionPost%2F88f60ac7-ca6f-4474-a65f-409dd6ed9edb%2F20240904_01.png?alt=media&token=d0ded94c-6ddc-453e-b52c-d94329148fd3",
 //                "https://firebasestorage.googleapis.com/v0/b/petopia-92b56.appspot.com/o/questionPost%2F7c27e5cb-0d35-4343-b4ce-ce403c1485c0%2F20240905_01.png?alt=media&token=42bc100a-2b0b-4eed-8c6f-61d48de1b743")
+
+            filteringTypeToTextView = mutableMapOf(
+                FilteringType.DOG to binding.tvFilteringDog,
+                FilteringType.CAT to binding.tvFilteringCat
+            )
 
 //            viewModel.selectDetailImageUris(key)
             viewPager = binding.vpImage
@@ -405,6 +413,10 @@ class CommunityDetailFragment : Fragment() {
             } else {
                 binding.btnDelete.visibility = ImageView.GONE
                 binding.btnEdit.visibility = ImageView.GONE
+            }
+
+            for (filteringType in post.filteringTypes) {
+                filteringTypeToTextView[filteringType]?.visibility = TextView.VISIBLE
             }
 
 
