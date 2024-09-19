@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".presentation.my.MyFragment">
 
     <ScrollView
@@ -18,6 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/my_iv_back"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/sel_btn_left"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/my_iv_guardian"
@@ -45,266 +54,250 @@
 
             <ImageView
                 android:id="@+id/my_iv_setting"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="50dp"
-                android:src="@color/black"
+                android:src="@drawable/icon_setting_blue"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_name" />
 
             <TextView
                 android:id="@+id/my_tv_setting"
+                style="@style/common_text_16_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="환경설정"
-                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/my_iv_setting"
                 app:layout_constraintStart_toEndOf="@+id/my_iv_setting"
                 app:layout_constraintTop_toTopOf="@+id/my_iv_setting" />
 
             <TextView
                 android:id="@+id/my_tv_alert"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="알림설정"
-                android:textSize="20dp"
+                android:text="디데이 알림"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_setting"
                 app:layout_constraintTop_toBottomOf="@id/my_iv_setting" />
 
-            <RadioGroup
+
+            <com.rm.rmswitch.RMSwitch
                 android:id="@+id/my_rg_alert"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/img_my_rg_alert_bg"
-                android:orientation="horizontal"
+                app:enabled="true"
+                app:forceAspectRatio="false"
                 app:layout_constraintBottom_toBottomOf="@+id/my_tv_alert"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/my_tv_alert">
-
-                <RadioButton
-                    android:id="@+id/my_rb_alert_on"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sel_my_rb_alert_bg"
-                    android:button="@android:color/transparent"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="on"
-                    android:textColor="@color/white" />
-
-                <RadioButton
-                    android:id="@+id/my_rb_alert_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sel_my_rb_alert_bg"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="off"
-                    android:textColor="@color/white" />
-            </RadioGroup>
+                app:layout_constraintTop_toTopOf="@+id/my_tv_alert"
+                app:switchBkgCheckedColor="@color/baby_blue"
+                app:switchBkgNotCheckedColor="@color/light_gray"
+                app:switchDesign="android"
+                app:switchToggleCheckedColor="@color/main_blue"
+                app:switchToggleNotCheckedColor="@color/gray" />
 
             <TextView
                 android:id="@+id/my_tv_music"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="음악설정"
-                android:textSize="20dp"
+                android:text="메모리 알림"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_alert"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_alert" />
 
-            <RadioGroup
+            <com.rm.rmswitch.RMSwitch
                 android:id="@+id/my_rg_music"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@drawable/img_my_rg_alert_bg"
-                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                app:enabled="true"
+                app:forceAspectRatio="false"
                 app:layout_constraintBottom_toBottomOf="@+id/my_tv_music"
                 app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"
-                app:layout_constraintTop_toTopOf="@+id/my_tv_music">
+                app:layout_constraintTop_toTopOf="@+id/my_tv_music"
+                app:switchBkgCheckedColor="@color/baby_blue"
+                app:switchBkgNotCheckedColor="@color/light_gray"
+                app:switchDesign="android"
+                app:switchToggleCheckedColor="@color/main_blue"
+                app:switchToggleNotCheckedColor="@color/gray" />
 
-                <RadioButton
-                    android:id="@+id/my_rb_music_on"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sel_my_rb_alert_bg"
-                    android:button="@android:color/transparent"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="on"
-                    android:textColor="@color/white" />
-
-                <RadioButton
-                    android:id="@+id/my_rb_music_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sel_my_rb_alert_bg"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="off"
-                    android:textColor="@color/white" />
-            </RadioGroup>
 
             <TextView
                 android:id="@+id/my_tv_theme"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="테마설정"
-                android:textSize="20dp"
+                android:text="환경"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_setting"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_music" />
 
-            <RadioGroup
+
+            <com.rm.rmswitch.RMSwitch
                 android:id="@+id/my_rg_theme"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:background="@drawable/img_my_rg_alert_bg"
-                android:orientation="horizontal"
+                android:layout_height="wrap_content"
+                app:enabled="true"
+                app:forceAspectRatio="false"
                 app:layout_constraintBottom_toBottomOf="@+id/my_tv_theme"
                 app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"
-                app:layout_constraintTop_toTopOf="@+id/my_tv_theme">
-
-                <RadioButton
-                    android:id="@+id/my_rb_theme_on"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sel_my_rb_alert_bg"
-                    android:button="@android:color/transparent"
-                    android:checked="true"
-                    android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="on"
-                    android:textColor="@color/white" />
-
-                <RadioButton
-                    android:id="@+id/my_rb_theme_off"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/sel_my_rb_alert_bg"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:text="off"
-                    android:textColor="@color/white" />
-            </RadioGroup>
-
+                app:layout_constraintTop_toTopOf="@+id/my_tv_theme"
+                app:switchBkgCheckedColor="@color/baby_blue"
+                app:switchBkgNotCheckedColor="@color/light_gray"
+                app:switchDesign="android"
+                app:switchToggleCheckedColor="@color/main_blue"
+                app:switchToggleNotCheckedColor="@color/gray" />
 
 
             <ImageView
                 android:id="@+id/my_iv_account"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginTop="50dp"
-                android:src="@color/black"
+                android:src="@drawable/icon_user"
                 app:layout_constraintStart_toStartOf="@+id/my_iv_setting"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_theme" />
 
             <TextView
                 android:id="@+id/my_tv_account"
+                style="@style/common_text_16_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="계정관리"
-                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/my_iv_account"
                 app:layout_constraintStart_toEndOf="@+id/my_iv_account"
                 app:layout_constraintTop_toTopOf="@+id/my_iv_account" />
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_edit"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:gravity="start"
                 android:text="내 정보 수정"
-                android:textSize="20dp"
+                app:button_duration="100"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_account"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_account" />
 
-            <TextView
-                android:id="@+id/my_tv_withdraw"
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/my_tv_pet_edit"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="계정 삭제"
-                android:textSize="20dp"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_edit"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+
+                android:text="반려동물 정보 수정"
+                app:button_duration="100"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_account"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_edit" />
+
+
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/my_tv_withdraw"
+                style="@style/common_text_16_dark_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+
+                android:text="계정 삭제"
+                app:button_duration="100"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_edit"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_pet_edit" />
 
 
             <ImageView
                 android:id="@+id/my_iv_information"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginTop="50dp"
-                android:src="@color/black"
+                android:src="@drawable/icon_information"
                 app:layout_constraintStart_toStartOf="@+id/my_iv_account"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_withdraw" />
 
             <TextView
                 android:id="@+id/my_tv_information"
+                style="@style/common_text_16_bold_blue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="이용문의"
-                android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/my_iv_information"
                 app:layout_constraintStart_toEndOf="@+id/my_iv_information"
                 app:layout_constraintTop_toTopOf="@+id/my_iv_information" />
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_guide"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+
                 android:text="가이드 보기"
-                android:textSize="20dp"
+                app:button_duration="100"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_information"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_information" />
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_question_frequency"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+
                 android:text="자주묻는 질문"
-                android:textSize="20dp"
+                app:button_duration="100"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_guide"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_guide" />
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_question_direct"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+
                 android:text="1:1 문의"
-                android:textSize="20dp"
+                app:button_duration="100"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_question_frequency"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_question_frequency" />
 
-            <TextView
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_terms"
+                style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+
                 android:text="이용약관"
-                android:textSize="20dp"
+                app:button_duration="100"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_question_direct"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_question_direct" />
+
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/my_btn_logout"
+                style="@style/common_text_16_bold_blue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_gray_white"
+                app:button_duration="100"
+                android:padding="4dp"
+                android:text="로그아웃"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_tv_terms"/>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
