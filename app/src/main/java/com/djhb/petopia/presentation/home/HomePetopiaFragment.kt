@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -19,6 +20,7 @@ import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.album.AlbumFragment
 import com.djhb.petopia.presentation.letter.LetterFragment
 import io.github.muddz.styleabletoast.StyleableToast
+import java.util.Calendar
 
 
 class HomePetopiaFragment : Fragment() {
@@ -40,6 +42,8 @@ class HomePetopiaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
+
+
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
@@ -53,17 +57,69 @@ class HomePetopiaFragment : Fragment() {
         initCloudAnimation()
 //꽃 애니메이션
         initFlowerAnimation()
+//반딧불 애니메이션
+        initFireflyAnimation()
 
 
         mainHomeGuideViewModel.userPetLiveData.observe(viewLifecycleOwner) {
             getUserAndPet()
         }
 
+        // UI를 시간에 따라 업데이트
+        updateUIBasedOnTime()
+
+        // 주기적으로 UI를 업데이트하여 시간에 따른 변경을 반영
+        val handler = android.os.Handler()
+        val updateRunnable = object : Runnable {
+            override fun run() {
+                updateUIBasedOnTime()
+                handler.postDelayed(this, 60000) // 매분마다 업데이트
+            }
+        }
+        handler.post(updateRunnable)
+    }
+
+    // 현재 시간이 20시 이후인지 확인
+    private fun isAfterEightPM(): Boolean {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        return hour >= 20
+    }
+
+    // 현재 시간이 8시 이전인지 확인
+    private fun isBeforeEightAM(): Boolean {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        return hour < 8
+    }
+
+    // 시간에 따라 UI 업데이트
+    private fun updateUIBasedOnTime() {
+        if (isAfterEightPM() || isBeforeEightAM()) {
+            binding.skyBackground.visibility = View.VISIBLE
+            binding.homeImgNightBackground.visibility = View.VISIBLE
+            binding.petopiaMoon.visibility = View.VISIBLE
+            binding.firefly.visibility = View.VISIBLE
+            //글자색 흰색으로
+            binding.homeTvNameUser.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.homeTvNamePet.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        } else {
+            binding.skyBackground.visibility = View.GONE
+            binding.homeImgNightBackground.visibility = View.GONE
+            binding.petopiaMoon.visibility = View.GONE
+            binding.firefly.visibility = View.GONE
+
+            binding.homeTvNameUser.setTextAppearance(R.style.common_text_16_dark_gray)
+            binding.homeTvNamePet.setTextAppearance(R.style.common_text_16_dark_gray)
+        }
+
 
     }
-//구름 애니메이션
+
+    //구름 애니메이션
     private fun initCloudAnimation() {
-        binding.homeImgCloud.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+        binding.homeImgCloud.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
                 // 레이아웃이 그려진 후 실행
                 binding.homeImgCloud.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -76,7 +132,12 @@ class HomePetopiaFragment : Fragment() {
                 val endTranslationX = -(cloudWidth + screenWidth)
 
                 // 애니메이션 설정
-                val cloudAnimator = ObjectAnimator.ofFloat(binding.homeImgCloud, "translationX", 0f, endTranslationX)
+                val cloudAnimator = ObjectAnimator.ofFloat(
+                    binding.homeImgCloud,
+                    "translationX",
+                    0f,
+                    endTranslationX
+                )
                 cloudAnimator.duration = 150000
                 cloudAnimator.repeatCount = ObjectAnimator.INFINITE
                 cloudAnimator.repeatMode = ObjectAnimator.RESTART
@@ -85,6 +146,40 @@ class HomePetopiaFragment : Fragment() {
             }
         })
     }
+
+    private fun initFireflyAnimation() {
+        //  반딧불에 애니메이션
+        val fireflyImages = listOf(
+            binding.firefly1,
+            binding.firefly2,
+            binding.firefly3,
+            binding.firefly4,
+            binding.firefly5
+        )
+
+        fireflyImages.forEach { firefly ->
+            // 반딧불 이동범위를 설정
+            val endX = (-500..800).random().toFloat()
+            val endY = (-100..800).random().toFloat()
+
+            // X축 애니메이션
+            val xAnimator = ObjectAnimator.ofFloat(firefly, "translationX", 0f, endX)
+            xAnimator.duration = (5000..10000).random().toLong() // 랜덤한 지속시간
+            xAnimator.repeatCount = ObjectAnimator.INFINITE
+            xAnimator.repeatMode = ObjectAnimator.REVERSE
+
+            // Y축 애니메이션
+            val yAnimator = ObjectAnimator.ofFloat(firefly, "translationY", 0f, endY)
+            yAnimator.duration = (5000..10000).random().toLong() // 랜덤한 지속시간
+            yAnimator.repeatCount = ObjectAnimator.INFINITE
+            yAnimator.repeatMode = ObjectAnimator.REVERSE
+
+            // 애니메이션 시작
+            xAnimator.start()
+            yAnimator.start()
+        }
+    }
+
     //꽃 애니메이션
     private fun initFlowerAnimation() {
 
@@ -111,36 +206,40 @@ class HomePetopiaFragment : Fragment() {
         flower4Animator.start()
 
 
-
         // flower2 애니메이션 (right)
-        val rightFlower2Animator = ObjectAnimator.ofFloat(binding.homeRightFlower2, "rotation", -5f, 5f)
+        val rightFlower2Animator =
+            ObjectAnimator.ofFloat(binding.homeRightFlower2, "rotation", -5f, 5f)
         rightFlower2Animator.duration = 2300
         rightFlower2Animator.repeatCount = ObjectAnimator.INFINITE
         rightFlower2Animator.repeatMode = ObjectAnimator.REVERSE
         rightFlower2Animator.start()
 
         // flower3 애니메이션 (right)
-        val rightFlower3Animator = ObjectAnimator.ofFloat(binding.homeRightFlower3, "rotation", -5f, 5f)
+        val rightFlower3Animator =
+            ObjectAnimator.ofFloat(binding.homeRightFlower3, "rotation", -5f, 5f)
         rightFlower3Animator.duration = 2500
         rightFlower3Animator.repeatCount = ObjectAnimator.INFINITE
         rightFlower3Animator.repeatMode = ObjectAnimator.REVERSE
         rightFlower3Animator.start()
 
         // flower4 애니메이션 (right)
-        val rightFlower4Animator = ObjectAnimator.ofFloat(binding.homeRightFlower4, "rotation", -5f, 5f)
+        val rightFlower4Animator =
+            ObjectAnimator.ofFloat(binding.homeRightFlower4, "rotation", -5f, 5f)
         rightFlower4Animator.duration = 2700
         rightFlower4Animator.repeatCount = ObjectAnimator.INFINITE
         rightFlower4Animator.repeatMode = ObjectAnimator.REVERSE
         rightFlower4Animator.start()
 
         // flower5 애니메이션 (right)
-        val rightFlower5Animator = ObjectAnimator.ofFloat(binding.homeRightFlower5, "rotation", -5f, 5f)
+        val rightFlower5Animator =
+            ObjectAnimator.ofFloat(binding.homeRightFlower5, "rotation", -5f, 5f)
         rightFlower5Animator.duration = 2900
         rightFlower5Animator.repeatCount = ObjectAnimator.INFINITE
         rightFlower5Animator.repeatMode = ObjectAnimator.REVERSE
         rightFlower5Animator.start()
 
     }
+
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun homePetopiaButtonClickListener() {
         //갤러리버튼 클릭이벤트 : 클릭시 갤러리 이동
