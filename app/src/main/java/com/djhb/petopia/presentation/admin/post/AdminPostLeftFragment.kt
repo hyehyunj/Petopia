@@ -9,9 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.djhb.petopia.data.getAdminPostLeftItems
 import com.djhb.petopia.databinding.FragmentAdminPostBinding
+import com.github.matteobattilana.weather.PrecipType
+import com.github.matteobattilana.weather.WeatherView
+
 
 //관리자 게시글
 class AdminPostLeftFragment : DialogFragment() {
@@ -20,6 +25,7 @@ class AdminPostLeftFragment : DialogFragment() {
     }
     private val binding get() = _binding
     private val adminPostViewModel: AdminPostViewModel by activityViewModels()
+    private val deckPager by lazy { binding.adminPostDeck }
 
 
     override fun onCreateView(
@@ -36,7 +42,9 @@ class AdminPostLeftFragment : DialogFragment() {
         binding.adminPostTvTitle.text = "배웅하기"
         adminPostLeftDataObserver()
         adminPostLeftButtonClickListener()
-        initFoldingCells()
+        initAdapter()
+        weatherChange("RAIN")
+
     }
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
@@ -48,10 +56,49 @@ class AdminPostLeftFragment : DialogFragment() {
 
     }
 
+    private fun weatherChange(weather: String) {
+        val weatherView: WeatherView = binding.adminPostWv
+
+        when (weather) {
+            "CLEAR" -> {
+                weatherView.setWeatherData(PrecipType.CLEAR)
+                binding.adminPostBgWeather.setBackgroundColor(Color.WHITE)
+            }
+
+            "RAIN" -> {
+                weatherView.setWeatherData(PrecipType.RAIN)
+            }
+        }
+
+    }
+
+
+    private fun initAdapter() {
+        deckPager.apply {
+            offscreenPageLimit = 5
+            adapter = AdminPostAdapter(requireContext(), getAdminPostLeftItems(),
+                itemClickListener = { item, position ->
+                    binding.adminPostTvPost.apply {
+                        isVisible = true
+                        text = item.post
+                    }
+                    binding.adminPostIvGrass.isVisible = true
+                    binding.adminPostTvNonPost.isVisible = false
+                    weatherChange("CLEAR")
+
+                }
+            )
+            clipToPadding = false
+            setPadding(180, 0, 180, 0)
+            pageMargin = 30
+
+
+        }
+    }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun adminPostLeftDataObserver() {
-adminPostViewModel.adminPostLeftListLiveData.observe(viewLifecycleOwner) { post ->
+        adminPostViewModel.adminPostLeftListLiveData.observe(viewLifecycleOwner) { post ->
 //    val fcTitleList = listOf(binding.adminPostFc1Title)
 //    val fcSubTitleList = listOf()
 //        val fcPostList = listOf()
@@ -60,27 +107,9 @@ adminPostViewModel.adminPostLeftListLiveData.observe(viewLifecycleOwner) { post 
 //
 //
 //}
-}
+        }
     }
 
-//게시글 구성하는 함수
-    private fun initFoldingCells() {
-        val firstFc = binding.adminPostFc1
-        firstFc.setOnClickListener {
-            firstFc.toggle(false)
-        }
-
-        val secondFc = binding.adminPostFc2
-        secondFc.setOnClickListener {
-            secondFc.toggle(false)
-        }
-
-        val thirdFc = binding.adminPostFc3
-        thirdFc.setOnClickListener {
-            thirdFc.toggle(false)
-        }
-
-    }
 
     private fun initDialog() {
         val windowManager =
