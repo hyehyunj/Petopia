@@ -17,6 +17,7 @@ import com.djhb.petopia.presentation.admin.post.AdminPostLeftFragment
 import com.djhb.petopia.presentation.admin.post.AdminPostRightFragment
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
+import com.djhb.petopia.presentation.my.MyFragment
 import com.djhb.petopia.presentation.setting.SettingFragment
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -54,7 +55,7 @@ class HomeEarthFragment : Fragment() {
             if (LoginData.loginUser.authority == Authority.ADMIN) {
                 AdminFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
             } else {
-                SettingFragment().show(childFragmentManager, "SETTING_FRAGMENT")
+                MyFragment().show(childFragmentManager, "MY_FRAGMENT")
             }
         }
 
@@ -85,12 +86,6 @@ class HomeEarthFragment : Fragment() {
                 .commit()
 
         }
-
-        //최상단 이동버튼 클릭이벤트 :
-        binding.homeEarthFabTop.setOnClickListener {
-            (activity as MainActivity).moveToPetopia()
-        }
-
 
     }
 

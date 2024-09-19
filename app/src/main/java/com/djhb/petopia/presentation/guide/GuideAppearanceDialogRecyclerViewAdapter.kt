@@ -16,8 +16,6 @@ class GuideAppearanceDialogRecyclerViewAdapter(
     private val itemClickListener: (item: PetAppearanceModel, position: Int) -> Unit,
 ) : RecyclerView.Adapter<GuideAppearanceDialogRecyclerViewAdapter.Holder>() {
 
-    private var lastSelectedIndex = 0
-    private var currentSelectedIndex = 0
 
 
 
@@ -29,12 +27,11 @@ class GuideAppearanceDialogRecyclerViewAdapter(
                 false
             )
 
-        return Holder(binding, itemClickListener, lastSelectedIndex, currentSelectedIndex)
+        return Holder(binding, itemClickListener)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        if(position == currentSelectedIndex)  holder.bind(appearanceList[currentSelectedIndex], position)
-        else holder.bind(appearanceList[position], position)
+        holder.bind(appearanceList[position], position)
     }
 
     override fun getItemCount(): Int {
@@ -43,9 +40,7 @@ class GuideAppearanceDialogRecyclerViewAdapter(
 
     class Holder(
         private val binding: RecyclerviewGuideAppearanceDialogHolderBinding,
-        private val itemClickListener: (item: PetAppearanceModel, position: Int) -> Unit,
-        private val lastSelectedIndex: Int,
-        private val currentSelectedIndex: Int
+        private val itemClickListener: (item: PetAppearanceModel, position: Int) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PetAppearanceModel, position: Int) {

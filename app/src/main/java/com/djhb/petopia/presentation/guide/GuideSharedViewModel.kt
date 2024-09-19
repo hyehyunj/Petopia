@@ -44,6 +44,9 @@ class GuideSharedViewModel(
     private val _appearanceListLiveData = MutableLiveData(guideRepository.getPetListData("DOG"))
     val appearanceListLiveData: LiveData<List<PetAppearanceModel>> = _appearanceListLiveData
 
+    private val _appearanceLiveData = MutableLiveData("")
+    val appearanceLiveData: LiveData<String> = _appearanceLiveData
+
     var appearanceMutableListLiveData = _appearanceListLiveData.value?.toMutableList()
 
 
@@ -111,6 +114,7 @@ class GuideSharedViewModel(
     //반려동물 외모를 입력받는 함수
     fun setPetAppearance(petAppearance: String) {
         petRepository.setPetAppearanceData(petAppearance)[1]
+        _appearanceLiveData.value = petAppearance
     }
 
     //반려동물 이미지를 입력받는 함수
