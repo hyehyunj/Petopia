@@ -2,11 +2,9 @@ package com.djhb.petopia.presentation
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.ImageView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -19,10 +17,6 @@ import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
-import com.skydoves.submarine.SubmarineCircleClickListener
-import com.skydoves.submarine.SubmarineItem
-import com.skydoves.submarine.SubmarineItemClickListener
-import com.skydoves.submarine.iconForm
 
 class MainActivity : AppCompatActivity(){
 
@@ -76,7 +70,7 @@ class MainActivity : AppCompatActivity(){
             }
 
         }
-        initNavigation()
+
 
 
         //레이아웃 초기화
@@ -102,49 +96,7 @@ class MainActivity : AppCompatActivity(){
         AdminExileDialogFragment().show(supportFragmentManager, "ADMIN_EXILE_DIALOG_FRAGMENT")
     }
 
-    //네비게이션을 구성해주는 함수
-    private fun initNavigation() {
-        binding.submarineView.apply {
-            setSubmarineItemClickListener { i, submarineItem ->
-                when (i) {
-                    0 -> viewPager.setCurrentItem(0, true)
-                    1 -> viewPager.setCurrentItem(1, true)
-                    2 -> viewPager.setCurrentItem(2, true)
-                }
-            }
-            floats()
-            setOnClickListener {
-                with(binding) {
-                    if (submarineView.isNavigating) submarineView.retreats() else
-                        submarineView.navigates()
-                }
-            }
-            val iconForm = iconForm {
-                iconSize = 50
-                iconScaleType = ImageView.ScaleType.CENTER_CROP
-            }
-            val item1 = SubmarineItem(
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_paw), iconForm
-            )
-            val item2 = SubmarineItem(
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_rainbow), iconForm
-            )
-            val item3 = SubmarineItem(
-                ContextCompat.getDrawable(this@MainActivity, R.drawable.icon_tree), iconForm
-            )
 
-            addSubmarineItem(item1)
-            addSubmarineItem(item2)
-            addSubmarineItem(item3)
-
-
-
-
-
-
-
-        }
-    }
 
 
     //    fun clearGuide() {

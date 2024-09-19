@@ -159,6 +159,7 @@
         app:layout_constraintBaseline_toBottomOf="parent"
         />
 
+
     <TextView
         android:id="@+id/home_tv_name_pet"
         style="@style/point_text_50_dark_gray"
@@ -201,19 +202,18 @@
         app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
 
 
-    <TextView
+
+
+    <com.skydoves.elasticviews.ElasticButton
         android:id="@+id/home_tv_guide"
-        style="@style/common_text_16_bold_white"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:gravity="center"
-        android:background="@drawable/bg_round_translucent_black"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_gravity="center"
+        style="@style/point_text_40_dark_gray"
+        android:background="@drawable/img_garland"
         android:text="@string/guide_start"
-        app:layout_constraintBottom_toTopOf="@id/home_iv_pet"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/home_iv_pet"
