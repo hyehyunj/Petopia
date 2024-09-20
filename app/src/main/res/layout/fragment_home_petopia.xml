@@ -178,50 +178,6 @@
         />
 
 
-    <TextView
-        android:id="@+id/home_tv_name_pet"
-        style="@style/point_text_50_dark_gray"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/home_tv_name_user"
-        style="@style/common_text_16_dark_gray"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_tv_name_pet" />
-
-    <ImageView
-        android:id="@+id/home_iv_gallery"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginEnd="4dp"
-        android:background="@drawable/btn_gallery"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_tv_name_user" />
-
-    <ImageView
-        android:id="@+id/home_iv_letter"
-        android:layout_width="66dp"
-        android:layout_height="66dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/btn_letter"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
-
-
-
-
 
 
 
@@ -289,17 +245,71 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <com.skydoves.elasticviews.ElasticButton
-        android:id="@+id/home_tv_guide"
+    <ImageView
+        android:id="@+id/home_img_background"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="center"
-        style="@style/point_text_40_dark_gray"
-        android:background="@drawable/img_garland"
-        android:text="@string/guide_start"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_translucent_background_down"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
+        />
 
+    <TextView
+        android:id="@+id/home_tv_name_pet"
+        style="@style/point_text_50_dark_gray"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/home_tv_name_user"
+        style="@style/common_text_16_dark_gray"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_tv_name_pet" />
+
+    <ImageView
+        android:id="@+id/home_iv_gallery"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/btn_gallery"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_tv_name_user" />
+
+    <ImageView
+        android:id="@+id/home_iv_letter"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/btn_letter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
+
+
+
+
+
+    <com.skydoves.elasticviews.ElasticButton
+    android:id="@+id/home_iv_date"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+android:background="@android:color/transparent"
+    style="@style/common_text_32_bold_dark_gray"
+        android:textColor="@color/white"
+    android:text="333"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="@id/home_iv_gallery"/>
 
     <ImageView
         android:id="@+id/home_iv_pet"
@@ -323,6 +333,56 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+
+    <ImageView
+        android:id="@+id/home_iv_call"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/img_petopia_call"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/home_tv_call_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="펫토피아 입국사무소"
+            android:gravity="center"
+            app:layout_constraintVertical_bias="0.2"
+            style="@style/common_text_24_bold_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/home_tv_call_sub_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="버튼을 클릭해 화면 연결하기"
+            android:gravity="center"
+            app:layout_constraintVertical_bias="0.9"
+            app:layout_constraintBottom_toBottomOf="parent"
+            style="@style/common_text_16_white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/home_tv_guide"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        app:layout_constraintVertical_bias="0.8"
+        app:layout_constraintDimensionRatio="1:0.7"
+        android:background="@drawable/icon_petopia_call"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <FrameLayout
         android:id="@+id/home_petopia_container"
         android:layout_width="match_parent"
@@ -333,5 +393,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -12,6 +12,7 @@ data class UserModel(
     var email: String = "",
     var reportList : MutableList<String> = mutableListOf(),
     var pet: PetModel? = null,
+    var dday: DDayModel? = null,
     var completedGuide: Boolean = false,
     val createdDate: Long = System.currentTimeMillis(),
     var updatedDate: Long? = null,

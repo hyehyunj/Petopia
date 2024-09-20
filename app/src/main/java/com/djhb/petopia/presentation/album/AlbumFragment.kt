@@ -44,7 +44,7 @@ class AlbumFragment : DialogFragment() {
         galleryDataObserver()
         initDialog()
         initAlbumViewPager()
-
+        albumSharedViewModel.loadAlbumList()
     }
 
 

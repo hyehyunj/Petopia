@@ -58,7 +58,7 @@ dependencies {
     implementation("com.github.skydoves:elasticviews:2.1.0")
     implementation("com.github.bloderxd:deck:0.1")
     implementation("com.github.developer-shivam:FeaturedRecyclerView:1.0.0")
-    implementation("com.github.sparrow007:carouselrecyclerview:1.2.6")
+    implementation("com.github.iamporus:TypedTextView:1.1.2")
     implementation("io.github.muddz:styleabletoast:2.4.0")
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
     implementation("androidx.fragment:fragment-ktx:1.8.1")

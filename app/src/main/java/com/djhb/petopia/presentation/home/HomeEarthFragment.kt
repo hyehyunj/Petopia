@@ -42,7 +42,6 @@ class HomeEarthFragment : Fragment() {
     }
 
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -88,12 +87,18 @@ class HomeEarthFragment : Fragment() {
 
 
     }
+
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun homeEarthButtonClickListener() {
         //설정버튼 클릭이벤트 : 클릭시 설정 이동
         binding.homeEarthIvMy.setOnClickListener {
-
-            if (LoginData.loginUser.authority == Authority.ADMIN) {
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "가이드 종료 후 이용 가능합니다.",
+                    R.style.toast_common
+                )
+                    .show() else if (LoginData.loginUser.authority == Authority.ADMIN) {
                 AdminFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
             } else {
                 MyFragment().show(childFragmentManager, "MY_FRAGMENT")
@@ -102,29 +107,45 @@ class HomeEarthFragment : Fragment() {
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
         binding.homeEarthIvCloudLeft.setOnClickListener {
-            AdminPostLeftFragment().show(childFragmentManager, "ADMIN_POST_LEFT_FRAGMENT")
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "가이드 종료 후 이용 가능합니다.",
+                    R.style.toast_common
+                )
+                    .show() else
+                AdminPostLeftFragment().show(childFragmentManager, "ADMIN_POST_LEFT_FRAGMENT")
         }
 
         //우측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
         binding.homeEarthIvCloudRight.setOnClickListener {
-            AdminPostRightFragment().show(childFragmentManager, "ADMIN_POST_RIGHT_FRAGMENT")        }
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "가이드 종료 후 이용 가능합니다.",
+                    R.style.toast_common
+                )
+                    .show() else
+            AdminPostRightFragment().show(childFragmentManager, "ADMIN_POST_RIGHT_FRAGMENT")
+        }
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE") StyleableToast.makeText(
-                requireActivity(),
-                "가이드 종료 후 이용 가능합니다.",
-                R.style.toast_common
-            )
-                .show() else
-
-            childFragmentManager.beginTransaction()
-                .replace(
-                    R.id.home_earth_container, CommunityMainFragment()
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "가이드 종료 후 이용 가능합니다.",
+                    R.style.toast_common
                 )
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .commit()
+                    .show() else
+
+                childFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.home_earth_container, CommunityMainFragment()
+                    )
+                    .setReorderingAllowed(true)
+                    .addToBackStack(null)
+                    .commit()
 
         }
 
@@ -143,7 +164,7 @@ class HomeEarthFragment : Fragment() {
             binding.earthPetals1,
             "translationX",
             0f, 100f, 200f, 150f, 300f, 400f, 800f
-        ).apply{
+        ).apply {
             repeatCount = ValueAnimator.INFINITE  // 무한 반복
             repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
         }
@@ -151,7 +172,7 @@ class HomeEarthFragment : Fragment() {
             binding.earthPetals1,
             "translationY",
             -1000f, 0f, 600f, 900f, 1200f, 2400f
-        ).apply{
+        ).apply {
             repeatCount = ValueAnimator.INFINITE  // 무한 반복
             repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
         }
@@ -168,7 +189,7 @@ class HomeEarthFragment : Fragment() {
             binding.earthPetals2,
             "translationX",
             0f, 120f, 250f, 450f, 650f, 600f
-        ).apply{
+        ).apply {
             repeatCount = ValueAnimator.INFINITE  // 무한 반복
             repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
         }
@@ -176,7 +197,7 @@ class HomeEarthFragment : Fragment() {
             binding.earthPetals2,
             "translationY",
             -1000f, 0f, 350f, 700f, 1050f, 1400f, 2400f
-        ).apply{
+        ).apply {
             repeatCount = ValueAnimator.INFINITE  // 무한 반복
             repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
         }
@@ -194,7 +215,7 @@ class HomeEarthFragment : Fragment() {
                 binding.earthPetals3,
                 "translationX",
                 -100f, 0f, 150f, 300f, 500f, 700f, 900f
-            ).apply{
+            ).apply {
                 repeatCount = ValueAnimator.INFINITE  // 무한 반복
                 repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
             }
@@ -202,7 +223,7 @@ class HomeEarthFragment : Fragment() {
                 binding.earthPetals3,
                 "translationY",
                 -1000f, 0f, 400f, 800f, 1200f, 2400f
-            ).apply{
+            ).apply {
                 repeatCount = ValueAnimator.INFINITE  // 무한 반복
                 repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
             }
@@ -221,7 +242,7 @@ class HomeEarthFragment : Fragment() {
                 binding.earthPetals4,
                 "translationX",
                 0f, 170f, 100f, 340f, 520f, 480f, 200f, 300f
-            ).apply{
+            ).apply {
                 repeatCount = ValueAnimator.INFINITE  // 무한 반복
                 repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
             }
@@ -229,7 +250,7 @@ class HomeEarthFragment : Fragment() {
                 binding.earthPetals4,
                 "translationY",
                 -1000f, 0f, 500f, 900f, 1300f, 2400f
-            ).apply{
+            ).apply {
                 repeatCount = ValueAnimator.INFINITE  // 무한 반복
                 repeatMode = ValueAnimator.RESTART  // 끝나면 처음부터 다시 시작
             }

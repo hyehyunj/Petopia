@@ -24,7 +24,7 @@ class MainHomeGuideSharedViewModel(
 ) :
     ViewModel() {
 
-    private val user = LoginData
+    private val user = LoginData.loginUser
 
     //가이드 상태 :
     //NONE 가이드 미진행
@@ -65,7 +65,7 @@ class MainHomeGuideSharedViewModel(
     //유저 정보를 불러오는 함수
     fun getUser(): Boolean {
         var skipGuide: Boolean
-        if (user.loginUser.completedGuide) {
+        if (user.completedGuide) {
             getPetData()
             _guideStateLiveData.value = "DONE"
             skipGuide = true
@@ -73,32 +73,30 @@ class MainHomeGuideSharedViewModel(
             _guideStateLiveData.value = "NONE"
             skipGuide = false
         }
-        _userPetLiveData.value = user.loginUser.pet
+        _userPetLiveData.value = user.pet
         return skipGuide
     }
 
     //유저 정보를 입력하는 함수
     fun setPetData() {
-        _userPetLiveData.value = petRepository.getPetData().copy(id = user.loginUser.id)
-        user.loginUser.pet = _userPetLiveData.value
-        user.loginUser.completedGuide = true
-        Log.d("유저입력됨?", "${user.loginUser.completedGuide}")
+        _userPetLiveData.value = petRepository.getPetData().copy(id = user.id)
+        user.pet = _userPetLiveData.value
+        user.completedGuide = true
         viewModelScope.launch {
-            signRepository.updateUser(user.loginUser)
+            signRepository.updateUser(user)
         }
-        Log.d("반려동물", "${_userPetLiveData.value}")
     }
 
     //유저 정보를 불러오는 함수
     private fun getPetData() {
-        _userPetLiveData.value = user.loginUser.pet
+        _userPetLiveData.value = user.pet
     }
 
 
 
     //유저 이름을 불러오는 함수
     fun getUserName(): String {
-        return user.loginUser.nickname
+        return user.nickname
     }
 
 

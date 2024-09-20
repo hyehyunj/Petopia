@@ -85,10 +85,15 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         // `homeMemoryBridgeIvEmotion` 클릭 시 이모지를 다시 보이도록 설정
         binding.homeMemoryBridgeIvEmotion.setOnClickListener {
-            resetEmojiState() // 클릭 시 이모지를 초기화
-            binding.homeMemoryBridgeFeelingsContainer.visibility = View.VISIBLE
-            binding.feelingsText.visibility = View.VISIBLE
-            emojiViews.forEach { it.visibility = View.VISIBLE } // emojiViews 사용
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
+                toastMoveUnder()
+            else {
+
+                resetEmojiState() // 클릭 시 이모지를 초기화
+                binding.homeMemoryBridgeFeelingsContainer.visibility = View.VISIBLE
+                binding.feelingsText.visibility = View.VISIBLE
+                emojiViews.forEach { it.visibility = View.VISIBLE } // emojiViews 사용
+            }
         }
 
         // emojiViews 초기화

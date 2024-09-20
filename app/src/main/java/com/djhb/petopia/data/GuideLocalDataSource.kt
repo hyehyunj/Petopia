@@ -18,8 +18,8 @@ object GuideLocalDataSource {
             0 to "누구를 찾아오셨나요?",
             2 to "이름만 불러서는 안되겠어요.\n" +
                     "어떤 외모인지 알려주시겠어요?",
-            4 to "보호자님처럼 불러볼게요.\n" +
-                    "둘은 어떤 사이였나요?",
+            4 to "님처럼 다가가볼게요.\n" +
+                    "어떻게 가까운 사이였나요?",
             6 to "도와주신 덕분에 금방 찾았네요!\n" +
                     "카메라 조정 좀 하겠습니다.",
             8 to "가장 예쁘고 건강했던 상태로\n" +
@@ -38,15 +38,15 @@ object GuideLocalDataSource {
                     "알아차리고 나를 이해해보세요.",
             16 to "화면을 아래로 내려서\n" +
                     "지구로 이동해볼까요?",
-            18 to "구름을 클릭해 도움이 될만한\n" +
+            19 to "구름을 클릭해 도움이 될만한\n" +
                     "이야기도 만나보고,",
-            19 to "나무를 클릭해 여러사람들과\n" +
+            20 to "나무를 클릭해 여러사람들과\n" +
                     "마음을 나눠보세요.",
-            20 to "화살표를 누르면 펫토피아로\n" +
+            21 to "화살표를 누르면 펫토피아로\n" +
                     "바로 이동하실 수 있답니다.",
-            21 to "마이페이지에서는 편의를 제공할\n" +
+            22 to "마이페이지에서는 편의를 제공할\n" +
                     "여러 설정이 가능합니다.",
-            22 to "그럼, 치유가 가득\n" +
+            23 to "그럼, 치유가 가득\n" +
                     "피어나시기를 바랍니다."
         )
 
@@ -62,11 +62,11 @@ object GuideLocalDataSource {
         14 to "MEMORY_BRIDGE",
         15 to "EMOTION",
         17 to "MOVE_EARTH",
-        18 to "CLOUD",
-        19 to "COMMUNITY",
-        20 to "MOVE_UPPER",
-        21 to "MY",
-        22 to "END")
+        19 to "CLOUD",
+        20 to "COMMUNITY",
+        21 to "MOVE_UPPER",
+        22 to "MY",
+        23 to "END")
 
         var progressBar = ""
         var progressText = ""
@@ -85,17 +85,17 @@ object GuideLocalDataSource {
         when (pageNumber) {
             in 0..1 -> progressText = progressTextLocalData[0]
             in 2..3 -> {
-                progressBar = progressBarLocalData[0]
+                progressBar = progressBarLocalData[1]
                 progressText = progressTextLocalData[1]
             }
 
             in 4..5 -> {
-                progressBar = progressBarLocalData[1]
+                progressBar = progressBarLocalData[2]
                 progressText = progressTextLocalData[2]
             }
 
             in 6..7 -> {
-                progressBar = progressBarLocalData[2]
+                progressBar = progressBarLocalData[3]
                 progressText = progressTextLocalData[3]
             }
         }
@@ -116,7 +116,7 @@ object GuideLocalDataSource {
         if (pageNumber == 9) {
             guideModel = guideModel.copy(status = "OPTIONAL")
         }
-        if (pageNumber == 23) {
+        if (pageNumber == 24) {
             guideModel = guideModel.copy(status = "DONE")
         }
 

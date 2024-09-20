@@ -12,12 +12,16 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
 import com.djhb.petopia.data.PetAppearance
 import com.djhb.petopia.databinding.FragmentHomePetopiaBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.album.AlbumFragment
+import com.djhb.petopia.presentation.d_day.DDayFragment
+import com.djhb.petopia.presentation.d_day.DDayViewModel
+import com.djhb.petopia.presentation.d_day.DDayViewModelFactory
 import com.djhb.petopia.presentation.letter.LetterFragment
 import io.github.muddz.styleabletoast.StyleableToast
 import java.util.Calendar
@@ -29,7 +33,9 @@ class HomePetopiaFragment : Fragment() {
     }
     private val binding get() = _binding
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
-
+    private val dDayViewModel by viewModels<DDayViewModel> {
+        DDayViewModelFactory()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,8 +53,10 @@ class HomePetopiaFragment : Fragment() {
         mainHomeGuideViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
 
+
         homePetopiaButtonClickListener()
         guideDataObserver()
+        loadDDayData()
 
         mainHomeGuideViewModel.getUser()
 //        if () getUserAndPet()
@@ -101,8 +109,18 @@ class HomePetopiaFragment : Fragment() {
             binding.petopiaMoon.visibility = View.VISIBLE
             binding.firefly.visibility = View.VISIBLE
             //글자색 흰색으로
-            binding.homeTvNameUser.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            binding.homeTvNamePet.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.homeTvNameUser.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+            binding.homeTvNamePet.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
         } else {
             binding.skyBackground.visibility = View.GONE
             binding.homeImgNightBackground.visibility = View.GONE
@@ -256,7 +274,15 @@ class HomePetopiaFragment : Fragment() {
         }
         //가이드 버튼 클릭이벤트 : 클릭시 가이드 시작
         binding.homeTvGuide.setOnClickListener {
+            binding.homeTvGuide.clearAnimation() // 애니메이션 중지
             (activity as MainActivity).showGuideFragment()
+        }
+
+        //디데이 버튼 클릭이벤트 : 클릭시 디데이 설정 이동
+        binding.homeIvDate.setOnClickListener {
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
+                toastMoveUnder()
+            else DDayFragment().show(childFragmentManager, "ALARM_FRAGMENT")
         }
     }
 
@@ -267,19 +293,30 @@ class HomePetopiaFragment : Fragment() {
         mainHomeGuideViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "NONE" -> {
+                    initGuideAnimation()
                     binding.apply {
                         homeTvNameUser.isVisible = false
                         homeTvNamePet.isVisible = false
                         homeIvPet.isVisible = false
                         homeIvArrowUnder.isVisible = false
                         homeIvGallery.isVisible = false
+                        homeIvDate.isVisible = false
                         homeIvLetter.isVisible = false
                         homeTvGuide.isVisible = true
+                        homeIvCall.isVisible = true
+                        homeTvCallTitle.isVisible = true
+                        homeTvCallSubTitle.isVisible = true
                     }
                 }
 
-                "ESSENTIAL" ->
-                    binding.homeTvGuide.isVisible = false
+                "ESSENTIAL" -> {
+                    binding.apply {
+                        homeTvGuide.isVisible = false
+                        homeIvCall.isVisible = false
+                        homeTvCallTitle.isVisible = false
+                        homeTvCallSubTitle.isVisible = false
+                    }
+                }
 
                 "ESSENTIAL_DONE" -> {
                     mainHomeGuideViewModel.setPetData()
@@ -295,10 +332,14 @@ class HomePetopiaFragment : Fragment() {
                         homeTvNameUser.isVisible = true
                         homeTvNamePet.isVisible = true
                         homeIvPet.isVisible = true
+                        homeIvDate.isVisible = true
                         homeIvArrowUnder.isVisible = true
                         homeIvGallery.isVisible = true
                         homeIvLetter.isVisible = true
                         homeTvGuide.isVisible = false
+                        homeIvCall.isVisible = false
+                        homeTvCallTitle.isVisible = false
+                        homeTvCallSubTitle.isVisible = false
                     }
                 }
             }
@@ -314,6 +355,11 @@ class HomePetopiaFragment : Fragment() {
                 "GALLERY_LETTER" -> binding.apply {
                     homeIvGallery.isVisible = true
                     homeIvLetter.isVisible = true
+                    homeIvDate.isVisible = false
+                }
+
+                "D_DAY" -> binding.apply {
+                    homeIvDate.isVisible = true
                 }
 
                 "MOVE_MEMORY_BRIDGE" -> {
@@ -322,6 +368,25 @@ class HomePetopiaFragment : Fragment() {
 
             }
         }
+
+        dDayViewModel.dDayLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                "" -> binding.homeIvDate.text = "미설정"
+                "-0" -> binding.homeIvDate.text = "D-Day"
+                else -> binding.homeIvDate.text = "D${it}"
+            }
+        }
+
+
+    }
+
+
+    private fun loadDDayData() {
+
+        dDayViewModel.loadUserDate()
+        dDayViewModel.calculateDate()
+        dDayViewModel.loadAlarm(requireActivity())
+        binding.homeIvDate.text = dDayViewModel.dDayLiveData.value
     }
 
     private fun toastMoveUnder() {
@@ -391,6 +456,13 @@ class HomePetopiaFragment : Fragment() {
 //            .addToBackStack("BACK_PETOPIA")
 //            .commitAllowingStateLoss()
 
+    }
+
+
+    private fun initGuideAnimation() {
+        binding.homeTvGuide.startAnimation(
+            AnimationUtils.loadAnimation(requireContext(), R.anim.concentrate_button)
+        )
     }
 
     private fun initAnimation() {

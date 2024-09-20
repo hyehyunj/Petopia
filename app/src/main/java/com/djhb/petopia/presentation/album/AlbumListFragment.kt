@@ -40,8 +40,7 @@ class AlbumListFragment : Fragment() {
         albumButtonClickListener()
         //데이터 변화감지
         albumDataObserver()
-        albumSharedViewModel.loadGalleryList()
-
+        albumSharedViewModel.loadAlbumList()
     }
 
 
@@ -117,7 +116,7 @@ class AlbumListFragment : Fragment() {
             albumSharedViewModel.albumListLiveData.value ?: listOf(),
             //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집, 삭제모드인 경우 삭제할 항목에 추가
             itemClickListener = { item, position ->
-                albumSharedViewModel.updateGalleryList(item, position)
+                albumSharedViewModel.loadUriList(item)
                 when (albumSharedViewModel.removeModeLiveData.value) {
                     "COMPLETE" -> {
                         albumSharedViewModel.changeLayoutMode("READ")

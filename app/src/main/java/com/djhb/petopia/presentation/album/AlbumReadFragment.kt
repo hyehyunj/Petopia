@@ -43,13 +43,20 @@ class AlbumReadFragment : DialogFragment() {
 
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
-        albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-            albumSharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
-                readOnlyMode(
-                    currentPhoto
-                )
-            }
+//        albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
+//            albumSharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+//                readOnlyMode(
+//                    currentPhoto
+//                )
+//            }
+//        }
+        albumSharedViewModel.currentPhotoLiveData.observe(viewLifecycleOwner) {
+            readOnlyMode(
+                it
+            )
         }
+
+
         //닫기 버튼이벤트 : 클릭시 갤러리로 이동
         binding.albumReadTvExit.setOnClickListener {
             parentFragmentManager.beginTransaction()

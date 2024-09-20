@@ -66,7 +66,7 @@
     <string name="guide_relation_child">사랑스러운\n아이</string>
     <string name="guide_relation_younger">귀여운\n동생</string>
     <string name="guide_relation_friend">친한\n친구</string>
-    <string name="guide_start">연결하기</string>
+    <string name="guide_start">펫토피아 화면연결</string>
 
 
     <!--  Memory : 메모리에서 사용되는 String  -->
@@ -91,10 +91,12 @@
     <string name="letter_pad_title">편지지 선택</string>
 
     <!--  Gallery : 갤러리에서 사용되는 String  -->
-    <string name="gallery_please_enter_title">사진의 제목을 입력해주세요.</string>
+    <string name="gallery_please_enter_title">사진의 제목을 입력해주세요.(16자 이내)</string>
     <string name="common_album">앨범</string>
     <string name="album_select_date">날짜를 선택해주세요.</string>
 
+    <!--  D-Day : 디데이에서 사용되는 String  -->
+    <string name="d_day_please_enter_title">디데이의 이름을 입력해주세요.(16자 이내)</string>
 
     <!-- Community : 게시판에서 사용되는 String-->
     <string name="community_question_name">글쓰기(질문 게시판)</string>
