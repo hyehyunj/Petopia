@@ -42,6 +42,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176593614331:android:ff07c3282d17acb9a5475e",
+        "android_client_info": {
+          "package_name": "com.djhb.petopia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzbNTdSZLvPYJbelyGydcxpl81vm3hxB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

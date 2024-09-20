@@ -63,7 +63,7 @@ class SigninFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
 
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken("176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com")
             .requestEmail()
             .build()
 

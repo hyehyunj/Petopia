@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentMyBinding
 import com.djhb.petopia.presentation.register.RegisterActivity
 import com.djhb.petopia.presentation.register.RegisterViewModel
@@ -34,6 +35,9 @@ class MyFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMyBinding.inflate(inflater, container, false)
+
+        binding.myTvName.text = LoginData.loginUser.nickname
+
         return binding.root
     }
 
@@ -43,11 +47,11 @@ class MyFragment : DialogFragment() {
         modifyButtonClickListener()
         modifyPasswordButtonClickListener()
 
-        registerViewModel.userLiveData.observe(viewLifecycleOwner) {
-            binding.myTvName.text = it?.nickname
+        registerViewModel.userNickName.observe(viewLifecycleOwner) { user ->
+            binding.myTvName.text = user
         }
 
-
+        backButtonClickListener()
     }
 
 
@@ -66,6 +70,12 @@ class MyFragment : DialogFragment() {
     private fun modifyPasswordButtonClickListener() {
         binding.myTvPasswordEdit.setOnClickListener {
             modifyPassword()
+        }
+    }
+
+    private fun backButtonClickListener() {
+        binding.myIvBack.setOnClickListener {
+            dismiss()
         }
     }
 
