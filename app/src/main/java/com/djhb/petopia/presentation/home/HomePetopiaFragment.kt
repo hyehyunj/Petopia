@@ -12,6 +12,7 @@ import android.view.animation.LinearInterpolator
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
 import com.djhb.petopia.data.PetAppearance
@@ -19,6 +20,7 @@ import com.djhb.petopia.databinding.FragmentHomePetopiaBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.album.AlbumFragment
 import com.djhb.petopia.presentation.letter.LetterFragment
+import com.djhb.petopia.presentation.register.RegisterViewModel
 import io.github.muddz.styleabletoast.StyleableToast
 import java.util.Calendar
 
@@ -29,6 +31,7 @@ class HomePetopiaFragment : Fragment() {
     }
     private val binding get() = _binding
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
+    private val registerViewModel: RegisterViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -101,8 +104,18 @@ class HomePetopiaFragment : Fragment() {
             binding.petopiaMoon.visibility = View.VISIBLE
             binding.firefly.visibility = View.VISIBLE
             //글자색 흰색으로
-            binding.homeTvNameUser.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-            binding.homeTvNamePet.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+            binding.homeTvNameUser.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
+            binding.homeTvNamePet.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.white
+                )
+            )
         } else {
             binding.skyBackground.visibility = View.GONE
             binding.homeImgNightBackground.visibility = View.GONE

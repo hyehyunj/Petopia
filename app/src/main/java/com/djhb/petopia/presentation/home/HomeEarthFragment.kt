@@ -22,7 +22,6 @@ import com.djhb.petopia.presentation.admin.post.AdminPostRightFragment
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.my.MyFragment
-import com.djhb.petopia.presentation.setting.SettingFragment
 import io.github.muddz.styleabletoast.StyleableToast
 import java.util.Calendar
 
