@@ -14,6 +14,7 @@ import com.djhb.petopia.data.remote.PetRepository
 import com.djhb.petopia.data.remote.PetRepositoryImpl
 import com.djhb.petopia.data.remote.SignRepository
 import com.djhb.petopia.data.remote.SignRepositoryImpl
+import com.djhb.petopia.presentation.register.RegisterViewModel
 import kotlinx.coroutines.launch
 
 
@@ -93,7 +94,6 @@ class MainHomeGuideSharedViewModel(
     }
 
 
-
     //유저 이름을 불러오는 함수
     fun getUserName(): String {
         return user.nickname
@@ -103,6 +103,7 @@ class MainHomeGuideSharedViewModel(
     fun updateCurrentHome(fragmentPosition: Int) {
         _currentHomeLiveData.value = fragmentPosition
     }
+
 
 
     //가이드에서 설명하는 기능을 업데이트 해주는 함수

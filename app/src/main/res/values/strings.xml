@@ -34,7 +34,7 @@
 
 
     <!--  SignUp : 회원가입에서 사용되는 String -->
-    <string name="signup_nickname">닉네임</string>
+    <string name="signup_nickname">보호자 닉네임</string>
     <string name="signup_password_check">비밀번호 확인</string>
     <string name="signup_email">이메일</string>
     <string name="signup_agree_all">[필수] 만 14세 이상이며 모두 동의 합니다.</string>
@@ -111,12 +111,18 @@
     <string name="community_create_filtering_cat">고양이</string>
 
 
-
-
     <!--  Setting : 설정에서 사용되는 String  -->
     <string name="setting_list_title">설정</string>
     <string name="setting_logout">로그아웃</string>
     <string name="setting_delete_account">회원탈퇴</string>
+
+    <!--  My : 마이페이지에서 사용되는 String  -->
+    <string name="modify_nickname">보호자 닉네임</string>
+    <string name="modify_email">이메일</string>
+
+    <string name="modify_passoword">비밀번호</string>
+    <string name="modify_password_check">비밀번호 확인</string>
+
 
     <!--  Setting : 설정에서 사용되는 String  -->
 </resources>

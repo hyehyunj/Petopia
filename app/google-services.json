@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "176593614331",
+    "firebase_url": "https://petopia-92b56-default-rtdb.asia-southeast1.firebasedatabase.app",
     "project_id": "petopia-92b56",
     "storage_bucket": "petopia-92b56.appspot.com"
   },
@@ -12,7 +13,20 @@
           "package_name": "com.djhb.petopia"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "176593614331-24g5ml6nkgppj3t1e3l5dadhlunfqc8n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djhb.petopia",
+            "certificate_hash": "90e2e4f72de95ca2ef873f82510f371760986db3"
+          }
+        },
+        {
+          "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDzbNTdSZLvPYJbelyGydcxpl81vm3hxB8"
@@ -20,7 +34,41 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176593614331:android:ff07c3282d17acb9a5475e",
+        "android_client_info": {
+          "package_name": "com.djhb.petopia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzbNTdSZLvPYJbelyGydcxpl81vm3hxB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

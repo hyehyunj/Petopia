@@ -32,16 +32,6 @@
 <!--            app:layout_constraintTop_toBottomOf="@+id/iv_main_logo"/>-->
 <!--        -->
 
-        <TextView
-            android:id="@+id/tv_sign_in_title"
-            style="@style/common_text_24_bold_dark_gray"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/common_sign_in"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_main_logo" />
 
         <LinearLayout
             android:id="@+id/signin_layout"
@@ -52,7 +42,7 @@
             app:layout_constraintBottom_toTopOf="@+id/choose_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_sign_in_title">
+            app:layout_constraintTop_toBottomOf="@id/iv_main_logo">
 
             <TextView
                 android:id="@+id/tv_sign_in_id_title"
@@ -67,7 +57,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="아이디를 입력해 주세요."
+                android:hint="아이디"
                 app:boxStrokeErrorColor="@color/error"
                 app:boxStrokeColor="@color/main_blue"
                 app:boxCornerRadiusTopEnd="10dp"
@@ -105,7 +95,7 @@
                 android:layout_marginTop="4dp"
                 android:clipToOutline="true"
                 app:boxStrokeErrorColor="@color/error"
-                android:hint="비밀번호를 입력해 주세요."
+                android:hint="비밀번호"
                 app:boxStrokeColor="@color/main_blue"
                 app:boxCornerRadiusTopEnd="10dp"
                 app:boxCornerRadiusBottomEnd="10dp"
@@ -206,7 +196,7 @@
             android:layout_gravity="center"
             android:layout_margin="16dp"
             android:text="@string/signin_autologin_guide"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/btn_google_signin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -221,7 +211,7 @@
             android:elevation="5dp"
             android:padding="16dp"
             android:src="@drawable/icon_google"
-            android:visibility="invisible"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/btn_naver_signin"

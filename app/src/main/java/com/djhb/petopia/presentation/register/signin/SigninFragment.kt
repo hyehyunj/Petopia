@@ -1,21 +1,37 @@
 package com.djhb.petopia.presentation.register.signin
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.R
+import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.SignRepositoryImpl
 import com.djhb.petopia.databinding.FragmentSigninBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signup.SignupFragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import io.github.muddz.styleabletoast.StyleableToast
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.FormBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONObject
+import java.io.IOException
 
 
 class SigninFragment : Fragment() {
@@ -26,6 +42,8 @@ class SigninFragment : Fragment() {
     private val binding get() = _binding
 
     private val signRepository = SignRepositoryImpl()
+    private lateinit var auth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
 
     //    private val registerViewModel: RegisterViewModel by activityViewModels {
 //        RegisterViewModel.RegisterViewModelFactory(signRepository)
@@ -41,6 +59,16 @@ class SigninFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = FirebaseAuth.getInstance()
+
+        val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
+
 
 
         binding.btnSignin.setOnClickListener {
@@ -96,13 +124,78 @@ class SigninFragment : Fragment() {
         }
 
         binding.btnGoogleSignin.setOnClickListener {
-            showUndoToast()
+            signInWithGoogle()
         }
 
         binding.btnNaverSignin.setOnClickListener {
             showUndoToast()
         }
     }
+
+    private val googleSignInLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        try {
+            val account = task.getResult(ApiException::class.java)
+            account?.let {
+                firebaseAuthWithGoogle(it.idToken!!)
+            }
+        } catch (e: ApiException) {
+            Log.e("SigninFragment", "Google 로그인 실패", e)
+            StyleableToast.makeText(
+                requireActivity(),
+                "Google 로그인 실패: ${e.localizedMessage}",
+                R.style.toast_warning
+            ).show()
+        }
+    }
+
+    private fun signInWithGoogle() {
+        val signInIntent = googleSignInClient.signInIntent
+        googleSignInLauncher.launch(signInIntent)
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    val firebaseUser = auth.currentUser
+                    firebaseUser?.let {
+                        Log.d("SigninFragment", "Firebase Auth 성공: ${it.uid}")
+
+                        val userModel = UserModel(
+                            id = it.uid,
+                            email = it.email ?: "",
+                            nickname = it.displayName ?: "사용자",  // 닉네임이 없는 경우 기본값
+                            authority = Authority.CLIENT  // 기본 권한 설정
+                        )
+
+                        // ViewModel 또는 로컬/원격 저장소에 UserModel 저장
+                        registerViewModel.saveUser(userModel)
+
+                        StyleableToast.makeText(
+                            requireActivity(),
+                            "Google 로그인 성공",
+                            R.style.toast_common
+                        ).show()
+
+                        val intent = Intent(requireContext(), MainActivity::class.java)
+                        startActivity(intent)
+                        requireActivity().finish()
+                    }
+                } else {
+                    Log.e("SigninFragment", "Firebase Auth 실패", task.exception)
+                    StyleableToast.makeText(
+                        requireActivity(),
+                        "Google 로그인 실패",
+                        R.style.toast_warning
+                    ).show()
+                }
+            }
+    }
+
 
     fun showUndoToast() {
         StyleableToast.makeText(

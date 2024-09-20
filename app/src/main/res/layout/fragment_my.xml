@@ -177,10 +177,22 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="start"
-                android:text="내 정보 수정"
+                android:text="보호자 닉네임 수정"
                 app:button_duration="100"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_account"
                 app:layout_constraintTop_toBottomOf="@id/my_tv_account" />
+
+            <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/my_tv_password_edit"
+                style="@style/common_text_16_dark_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+                android:text="비밀번호 수정"
+                app:button_duration="100"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_account"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_edit" />
 
             <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_pet_edit"
@@ -189,11 +201,10 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="start"
-
                 android:text="반려동물 정보 수정"
                 app:button_duration="100"
                 app:layout_constraintStart_toStartOf="@+id/my_tv_account"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_edit" />
+                app:layout_constraintTop_toBottomOf="@id/my_tv_password_edit" />
 
 
             <com.skydoves.elasticviews.ElasticButton
@@ -289,14 +300,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/bg_gray_white"
-                app:button_duration="100"
                 android:padding="4dp"
                 android:text="로그아웃"
+                app:button_duration="100"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/my_tv_terms"/>
-
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/my_tv_terms" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
