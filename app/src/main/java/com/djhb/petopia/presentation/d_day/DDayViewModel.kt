@@ -89,9 +89,13 @@ class DDayViewModel(private val dDayRepository: DDayRepository) :
     //디데이 알림 설정해주는 함수
     fun updateAlarm(context: Context) {
         _alarmLiveData.value = dDayRepository.updateAlarm(context, alarmSwitch)
+        Log.d("알람","${_alarmLiveData.value}")
     }
 
-
+    fun loadAlarm(context: Context) {
+        _alarmLiveData.value = dDayRepository.loadAlarm(context)
+        Log.d("불러오셈","${_alarmLiveData.value}")
+    }
 
 }
 

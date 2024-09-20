@@ -16,9 +16,12 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentDDayBinding
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.rm.rmswitch.RMSwitch
+import io.github.muddz.styleabletoast.StyleableToast
 
 
 class DDayFragment : DialogFragment() {
@@ -47,7 +50,7 @@ class DDayFragment : DialogFragment() {
         //데이터 변화감지
         dDayDataObserver()
         initDialog()
-        dDayViewModel.loadUserDate()
+        loadDDayData()
 //        setAlarm()
 
 
@@ -75,15 +78,14 @@ class DDayFragment : DialogFragment() {
         binding.dDayBtnAlarm.addSwitchObserver(object : RMSwitch.RMSwitchObserver {
             override fun onCheckStateChange(switchView: RMSwitch, isChecked: Boolean) {
                 dDayViewModel.updateAlarmSwitch(isChecked)
-
-                Toast.makeText(
+                StyleableToast.makeText(
                     requireContext(),
-                    "Switch state: ${if (isChecked) "checked" else "not checked"}",
-                    Toast.LENGTH_LONG
-                ).show()
+                    "${if (isChecked) "디데이 알림이 설정되었습니다." else "디데이 알림이 해제되었습니다."}",
+                    R.style.toast_common
+                )
+                    .show()
             }
         })
-
 
         //완료버튼 클릭 이벤트
         binding.dDayBtnComplete.setOnClickListener {
@@ -93,8 +95,21 @@ class DDayFragment : DialogFragment() {
             dismiss()
         }
 
+        //
+        binding.dDayBtnBack.setOnClickListener {
+            dismiss()
+        }
+
     }
 
+    private fun loadDDayData(){
+        dDayViewModel.loadUserDate()
+        dDayViewModel.loadAlarm(requireActivity())
+        val dDayModel = dDayViewModel.dDayModelLiveData.value
+        if(dDayModel?.date != "") binding.dDayTvSelectedDate.text = dDayModel?.date
+        if(dDayModel?.name != "") binding.dDayEtSelectedName.setText(dDayModel?.name)
+        if(dDayViewModel.alarmLiveData.value == true) binding.dDayBtnAlarm.isChecked = true
+    }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun dDayDataObserver() {

@@ -10,4 +10,8 @@ DDayRepository {
         return alarmLocalDataSource.updateAlarmData(context, alarmSwitch)
     }
 
+    override fun loadAlarm(context: Context): Boolean {
+        return alarmLocalDataSource.loadAlarmData(context)
+    }
+
 }
