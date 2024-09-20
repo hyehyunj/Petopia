@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.album
 
 import android.net.Uri
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -62,7 +63,7 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
 
 
     //데이터베이스에서 사용자의 앨범 리스트를 불러오는 함수
-    fun loadGalleryList() {
+    fun loadAlbumList() {
         viewModelScope.launch {
             _isProcessing.value = true
             val list = async {
@@ -88,6 +89,17 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
             _isProcessing.value = false
         }
     }
+
+    //데이터베이스에서 사용자의 Uri 리스트를 불러오는 함수
+    fun loadUriList(galleryModel:GalleryModel) {
+
+        viewModelScope.launch {
+        _currentPhotoListLiveData.value = albumRepository.selectAllGalleryImages(galleryModel)
+            }
+Log.d("리스트","${_currentPhotoListLiveData.value}")
+    }
+
+
 
     //추가 또는 편집한 사진을 데이터베이스에 저장하는 함수
     private fun saveGalleryList() {
