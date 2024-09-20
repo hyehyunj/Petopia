@@ -7,19 +7,14 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
-import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentDDayBinding
-import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.rm.rmswitch.RMSwitch
 import io.github.muddz.styleabletoast.StyleableToast
 
@@ -68,8 +63,7 @@ class DDayFragment : DialogFragment() {
             val day = calendar.get(Calendar.DAY_OF_MONTH)
             val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
                 binding.dDayTvSelectedDate.text = "${yy}. ${mm + 1}. ${dd}"
-                dDayViewModel.saveSelectedDate("${yy}${mm + 1}${dd}")
-                dDayViewModel.prepareDDay(yy, mm + 1, dd)
+                dDayViewModel.selectedDate(yy, mm + 1, dd)
             }
             val picker = DatePickerDialog(requireContext(), listener, year, month, day)
             picker.show()
@@ -103,8 +97,6 @@ class DDayFragment : DialogFragment() {
     }
 
     private fun loadDDayData(){
-        dDayViewModel.loadUserDate()
-        dDayViewModel.loadAlarm(requireActivity())
         val dDayModel = dDayViewModel.dDayModelLiveData.value
         if(dDayModel?.date != "") binding.dDayTvSelectedDate.text = dDayModel?.date
         if(dDayModel?.name != "") binding.dDayEtSelectedName.setText(dDayModel?.name)

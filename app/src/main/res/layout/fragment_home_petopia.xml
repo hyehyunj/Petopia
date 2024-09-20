@@ -306,6 +306,7 @@
     android:layout_height="wrap_content"
 android:background="@android:color/transparent"
     style="@style/common_text_32_bold_dark_gray"
+        android:textColor="@color/white"
     android:text="333"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="@id/home_iv_gallery"/>

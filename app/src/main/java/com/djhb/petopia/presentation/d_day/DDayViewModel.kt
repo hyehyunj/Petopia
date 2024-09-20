@@ -1,37 +1,41 @@
 package com.djhb.petopia.presentation.d_day
 
 import android.content.Context
-import android.icu.text.SimpleDateFormat
-import android.icu.util.Calendar
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.djhb.petopia.data.AlarmLocalDataSource
 import com.djhb.petopia.data.DDayModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.remote.DDayRepository
 import com.djhb.petopia.data.remote.DDayRepositoryImpl
-import com.djhb.petopia.data.remote.GalleryRepositoryImpl
+import com.djhb.petopia.data.remote.SignRepository
+import com.djhb.petopia.data.remote.SignRepositoryImpl
+import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
+
 //알람 뷰모델
-class DDayViewModel(private val dDayRepository: DDayRepository) :
+class DDayViewModel(private val dDayRepository: DDayRepository,
+    private val signRepository: SignRepository) :
     ViewModel() {
 
     private val user = LoginData.loginUser
 
     //사용자 지정 날짜
-    private val _userDateLiveData = MutableLiveData("")
-    val userDateLiveData: LiveData<String> = _userDateLiveData
+    private val _userDateLiveData = MutableLiveData<LocalDate>()
+    val userDateLiveData: LiveData<LocalDate> = _userDateLiveData
 
     //디데이
     private val _dDayLiveData = MutableLiveData("")
     val dDayLiveData: LiveData<String> = _dDayLiveData
-    private var dDayList = mutableListOf<Int>()
+    private lateinit var dDayList : LocalDate
 
     //알림
     private val _alarmLiveData = MutableLiveData(false)
@@ -39,25 +43,22 @@ class DDayViewModel(private val dDayRepository: DDayRepository) :
         private var alarmSwitch = false
 
     //디데이모델
-    private val _dDayModelLiveData = MutableLiveData<DDayModel>()
+    private val _dDayModelLiveData = MutableLiveData<DDayModel>(DDayModel())
     val dDayModelLiveData: LiveData<DDayModel> = _dDayModelLiveData
 
-    //사용자 디데이를 불러오는 함수
+    //사용자 날짜를 불러오는 함수
     fun loadUserDate() {
-        _dDayModelLiveData.value = user.dDay ?: DDayModel()
+        _dDayModelLiveData.value = user.dday ?: DDayModel()
     }
 
     //선택된 날짜 담는 함수
-    fun saveSelectedDate(selectedDate: String) {
-        _dDayModelLiveData.value = _dDayModelLiveData.value?.copy(date = selectedDate)
-        Log.d("뷰모델", "${_dDayModelLiveData.value}")
-    }
-
-    fun prepareDDay(y:Int, m:Int, d:Int) {
-        dDayList = mutableListOf()
-        dDayList.add(y)
-        dDayList.add(m)
-        dDayList.add(d)
+    fun selectedDate(y:Int, m:Int, d:Int) {
+        dDayList = LocalDate.of(y, m, d)
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val dateString = dDayList.format(formatter)
+        Log.d("왜","${dateString}")
+        _dDayModelLiveData.value = _dDayModelLiveData.value?.copy(date = dateString)
+        Log.d("안바뀜?","${_dDayModelLiveData.value}")
     }
 
     //이름을 담는 함수
@@ -68,18 +69,24 @@ class DDayViewModel(private val dDayRepository: DDayRepository) :
 
     //디데이 계산해주는 함수
     fun calculateDate() {
-        _userDateLiveData.value = _dDayModelLiveData.value?.date
-        val date = LocalDate.of(dDayList[0], dDayList[1], dDayList[2])
+        Log.d("디데이모델날짜","${_dDayModelLiveData.value?.date}")
+        Log.d("날짜","${_userDateLiveData.value}")
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        _userDateLiveData.value = LocalDate.parse(_dDayModelLiveData.value?.date, formatter)
+        val date = _userDateLiveData.value
         val today = LocalDate.now()
-        val calculator = ChronoUnit.DAYS.between(today, date)
-
-        _dDayLiveData.value = calculator.toString()
+        val calculateResult = ChronoUnit.DAYS.between(today, date)
+        _dDayLiveData.value = if (calculateResult >= 0) "-${calculateResult}" else "+${-calculateResult}"
         updateDDayModel()
     }
 
+
     //디데이 설정 저장하는 함수
     private fun updateDDayModel() {
-        user.dDay = _dDayModelLiveData.value
+        user.dday = _dDayModelLiveData.value
+        viewModelScope.launch {
+            signRepository.updateUser(user)
+        }
     }
 
     fun updateAlarmSwitch(isChecked: Boolean) {
@@ -102,13 +109,14 @@ class DDayViewModel(private val dDayRepository: DDayRepository) :
 
 class DDayViewModelFactory : ViewModelProvider.Factory {
     private val dDayRepository = DDayRepositoryImpl(AlarmLocalDataSource)
+    private val signRepository = SignRepositoryImpl()
 
     override fun <T : ViewModel> create(
         modelClass: Class<T>,
         extras: CreationExtras
     ): T {
         return DDayViewModel(
-            dDayRepository
+            dDayRepository,signRepository
         ) as T
     }
 }

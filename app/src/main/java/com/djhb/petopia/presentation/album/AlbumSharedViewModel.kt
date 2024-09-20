@@ -18,6 +18,10 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+
+//한장만 가져옴 -> 다시부르기
+
+
 //갤러리와 포토의 공유 뷰모델
 class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     ViewModel() {

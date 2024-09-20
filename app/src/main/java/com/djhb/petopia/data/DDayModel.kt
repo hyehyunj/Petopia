@@ -2,6 +2,7 @@ package com.djhb.petopia.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
 import java.util.UUID
 @Parcelize
 data class DDayModel(

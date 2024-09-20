@@ -56,6 +56,7 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
+        loadDDayData()
 
         mainHomeGuideViewModel.getUser()
 //        if () getUserAndPet()
@@ -279,7 +280,9 @@ class HomePetopiaFragment : Fragment() {
 
         //디데이 버튼 클릭이벤트 : 클릭시 디데이 설정 이동
         binding.homeIvDate.setOnClickListener {
-            DDayFragment().show(childFragmentManager, "ALARM_FRAGMENT")
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
+                toastMoveUnder()
+            else DDayFragment().show(childFragmentManager, "ALARM_FRAGMENT")
         }
     }
 
@@ -369,12 +372,21 @@ class HomePetopiaFragment : Fragment() {
         dDayViewModel.dDayLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "" -> binding.homeIvDate.text = "미설정"
-                "0" -> binding.homeIvDate.text = "D-Day"
-                else -> binding.homeIvDate.text = "D-${it}"
+                "-0" -> binding.homeIvDate.text = "D-Day"
+                else -> binding.homeIvDate.text = "D${it}"
             }
         }
 
 
+    }
+
+
+    private fun loadDDayData() {
+
+        dDayViewModel.loadUserDate()
+        dDayViewModel.calculateDate()
+        dDayViewModel.loadAlarm(requireActivity())
+        binding.homeIvDate.text = dDayViewModel.dDayLiveData.value
     }
 
     private fun toastMoveUnder() {
