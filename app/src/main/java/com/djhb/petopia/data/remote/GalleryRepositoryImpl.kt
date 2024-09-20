@@ -149,31 +149,13 @@ class GalleryRepositoryImpl : GalleryRepository {
     }
 
 
-    override suspend fun selectAllGalleryImages(gallery: GalleryModel): GalleryModel {
-        return suspendCancellableCoroutine { continuation ->
+    override suspend fun selectAllGalleryImages(gallery: GalleryModel): List<StorageReference> {
+        return withContext(Dispatchers.IO) {
             val key = gallery.uid
-//            Log.i("GalleryRepositoryImpl", "gallery key = ${key}")
-            storageReference.child(key).listAll().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val items = task.result.items
-//                    Log.i("GalleryRepositoryImpl", "item size = ${items.size}")
-                    for (item in items) {
-// Log.d("GalleryRepositoryImpl", "${item.name}")
-                        item.downloadUrl.addOnCompleteListener { uri ->
-                            gallery.imageUris.add(uri.result.toString())
-                        }
-                    }
-                } else {
-                    continuation.resumeWithException(
-                        task.exception ?: Exception("Unknown error occurred")
-                    )
-                }
-                continuation.resume(gallery)
-                return@addOnCompleteListener
-            }.addOnFailureListener {
-                continuation.resumeWithException(it)
-            }
+            val result = storageReference.child(key).listAll().await()
+            result.items
         }
+
     }
 
     override suspend fun selectDownloadUri(item: StorageReference): String {
