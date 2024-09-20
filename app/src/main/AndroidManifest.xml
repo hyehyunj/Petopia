@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission
         android:name="com.google.android.gms.permission.AD_ID"
         tools:node="remove" />
@@ -37,7 +39,7 @@
         </activity>
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".presentation.d_day.DDayAlarmReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PETOPIA" />
