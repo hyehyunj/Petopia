@@ -10,17 +10,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
-import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.databinding.FragmentCommunityCreateBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
@@ -56,6 +56,13 @@ class CommunityCreateFragment : Fragment() {
     private val mainActivity: MainActivity by lazy {
         requireActivity() as MainActivity
     }
+
+//    private val checkboxToFiltering = mutableMapOf(
+//        binding.cbDog to FilteringType.DOG
+//        ,binding.cbCat to FilteringType.CAT
+//    )
+
+    private lateinit var checkboxToFiltering: MutableMap<CheckBox, FilteringType>
 
     private val viewModel: CommunityViewModel by activityViewModels()
     private val detailViewModel: CommunityDetailViewModel by activityViewModels()
@@ -140,12 +147,20 @@ class CommunityCreateFragment : Fragment() {
         initListener()
         initObserveModel()
 
+
+
         val imageFormat = SimpleDateFormat("yyyyMMdd", Locale.KOREA)
         Log.i("CommunityCreateFragment", "currentDate = ${imageFormat.format(System.currentTimeMillis())}")
 
     }
 
     private fun initView() {
+
+        checkboxToFiltering = mutableMapOf(
+            binding.cbDog to FilteringType.DOG
+            ,binding.cbCat to FilteringType.CAT
+        )
+
         binding.header.tvTitle.text = "글쓰기(질문 게시판)"
 //        binding.header.ivSearch.isVisible =
         binding.header.ivSearch.visibility = ImageView.INVISIBLE
@@ -175,10 +190,11 @@ class CommunityCreateFragment : Fragment() {
                 Toast.makeText(requireActivity(), "내용을 확인 해주세요.", Toast.LENGTH_SHORT).show()
             else {
                 lifecycleScope.launch {
+                    val selectedCategories = addFilteringCategories()
                     imageUris.removeAt(0)
-                    async { viewModel.createPost(PostModel(title, content, LoginData.loginUser), imageUris)}.await()
-                    viewModel.selectRankList()
-                    viewModel.selectInitPostList()
+                    async { viewModel.createPost(PostModel(title, content, LoginData.loginUser, selectedCategories), imageUris)}.await()
+                    viewModel.selectRankList(mutableListOf())
+                    viewModel.selectInitPostList(mutableListOf())
                     Toast.makeText(requireActivity(), "게시물 작성이 완료되었습니다.", Toast.LENGTH_SHORT).show()
 //                    mainActivity.showViewPager()
 //                    requireActivity().supportFragmentManager.popBackStack()
@@ -205,6 +221,19 @@ class CommunityCreateFragment : Fragment() {
             }
             createImageAdapter.submitList(it.toMutableList())
         }
+    }
+
+    private fun addFilteringCategories(): MutableList<FilteringType> {
+        val selectedCategories = mutableListOf<FilteringType>()
+
+        for (entry in checkboxToFiltering) {
+            val checkbox = entry.key
+            val category = entry.value
+            if(checkbox.isChecked)
+                selectedCategories.add(category)
+        }
+
+        return selectedCategories
     }
 
 

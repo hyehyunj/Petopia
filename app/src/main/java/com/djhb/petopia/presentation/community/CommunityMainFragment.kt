@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.databinding.FragmentCommunityMainBinding
@@ -52,6 +53,8 @@ class CommunityMainFragment : Fragment() {
     private val mainActivity: MainActivity by lazy {
         requireActivity() as MainActivity
     }
+
+    private val selectedCategories = mutableListOf<FilteringType>()
 
     private val rankPostAdapter by lazy {
         RankPostAdapter { post ->
@@ -136,8 +139,8 @@ class CommunityMainFragment : Fragment() {
 
     private fun initView() {
         lifecycleScope.launch {
-            async { viewModel.selectRankList()}.await()
-            async { viewModel.selectInitPostList()}.await()
+            async { viewModel.selectRankList(mutableListOf())}.await()
+            async { viewModel.selectInitPostList(mutableListOf())}.await()
 //            async { viewModel.selectAllImageList()}.await()
         }
         binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
@@ -188,10 +191,38 @@ class CommunityMainFragment : Fragment() {
             if (!view.canScrollVertically(1) && viewModel.isProgressing.value == false) {
                 lifecycleScope.launch {
 //                    Log.i("12444", "end scroll")
-                    async { viewModel.selectNextPostList()}.await()
+                    async { viewModel.selectNextPostList(viewModel.filteringResult)}.await()
                 }
             }
 
+        }
+
+        binding.cbMainDog.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (viewModel.isProgressing.value == true) {
+                Toast.makeText(requireActivity(), "조회가 완료된 이후에 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnCheckedChangeListener
+            }
+
+            if(isChecked) {
+                viewModel.addCategories(FilteringType.DOG)
+            } else {
+                viewModel.deleteCategories(FilteringType.DOG)
+            }
+        }
+
+        binding.cbMainCat.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (viewModel.isProgressing.value == true) {
+                Toast.makeText(requireActivity(), "조회가 완료된 이후에 선택해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnCheckedChangeListener
+            }
+
+            if(isChecked) {
+                viewModel.addCategories(FilteringType.CAT)
+            } else {
+                viewModel.deleteCategories(FilteringType.CAT)
+            }
         }
 
     }
@@ -264,6 +295,16 @@ class CommunityMainFragment : Fragment() {
                 binding.progressBarPost.visibility = ProgressBar.VISIBLE
             else
                 binding.progressBarPost.visibility = ProgressBar.GONE
+        }
+
+        viewModel.filteringCategories.observe(viewLifecycleOwner) {
+            Log.i("CommunityManinFragment", "filteringCategories = ${it}")
+
+            lifecycleScope.launch {
+                viewModel.selectRankList(it)
+                viewModel.selectInitPostList(it)
+            }
+
         }
 
 //        viewModel.isCompleteRankPost.observe(viewLifecycleOwner){

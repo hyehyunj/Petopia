@@ -1,6 +1,7 @@
 package com.djhb.petopia.data
 
 import android.os.Parcelable
+import com.djhb.petopia.FilteringType
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
@@ -9,6 +10,7 @@ data class PostModel(
     val title: String = "",
     val content: String = "",
     val writer: UserModel = UserModel(),
+    val filteringTypes: MutableList<FilteringType> = mutableListOf(),
     val imageUris: MutableList<String> = mutableListOf(),
     val likes: MutableList<LikeModel> = mutableListOf(),
     val key: String = UUID.randomUUID().toString(),
