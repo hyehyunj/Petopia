@@ -11,7 +11,7 @@ interface GalleryRepository {
     suspend fun selectGalleryList(user: UserModel): MutableList<GalleryModel>
     // suspend fun selectGalleryMainImages(galleryList: MutableList<GalleryModel>) : MutableList<GalleryModel>
     suspend fun selectGalleryMainImages(galleryUid : String) : StorageReference?
-    suspend fun selectAllGalleryImages(gallery: GalleryModel) : GalleryModel
+    suspend fun selectAllGalleryImages(gallery: GalleryModel) : List<StorageReference>
     suspend fun selectDownloadUri(item: StorageReference): String
     suspend fun updateGallery(gallery: GalleryModel, imageUri: Uri)
     suspend fun deleteGallery(galleryKey: String): Boolean

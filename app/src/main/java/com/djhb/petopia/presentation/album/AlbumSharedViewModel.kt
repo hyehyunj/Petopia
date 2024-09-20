@@ -94,9 +94,18 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     fun loadUriList(galleryModel:GalleryModel) {
 
         viewModelScope.launch {
-        _currentPhotoListLiveData.value = albumRepository.selectAllGalleryImages(galleryModel)
+//        _currentPhotoListLiveData.value = albumRepository.selectAllGalleryImages(galleryModel)
+            val snapshots = albumRepository.selectAllGalleryImages(galleryModel)
+            galleryModel.imageUris.clear()
+
+            for (snapshot in snapshots) {
+                galleryModel.imageUris.add(albumRepository.selectDownloadUri(snapshot))
             }
-Log.d("리스트","${_currentPhotoListLiveData.value}")
+
+            _currentPhotoListLiveData.value = galleryModel
+
+        }
+        Log.d("리스트","${_currentPhotoListLiveData.value}")
     }
 
 
