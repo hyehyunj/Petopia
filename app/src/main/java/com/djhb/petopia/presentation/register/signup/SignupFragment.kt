@@ -177,8 +177,6 @@ class SignupFragment : Fragment() {
             return false
         }
 
-
-
         if (!binding.cbCheckAgreeAll.isChecked) {
             StyleableToast.makeText(
                 requireActivity(),

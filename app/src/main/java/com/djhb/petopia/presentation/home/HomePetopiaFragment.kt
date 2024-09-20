@@ -37,6 +37,7 @@ class HomePetopiaFragment : Fragment() {
         DDayViewModelFactory()
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

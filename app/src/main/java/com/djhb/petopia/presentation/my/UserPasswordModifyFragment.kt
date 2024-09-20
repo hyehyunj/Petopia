@@ -1,7 +1,6 @@
-package com.djhb.petopia.presentation.setting
+package com.djhb.petopia.presentation.my
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -12,20 +11,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.R
-import com.djhb.petopia.databinding.FragmentSettingBinding
-import com.djhb.petopia.presentation.register.RegisterActivity
-import com.djhb.petopia.presentation.register.signin.SigninFragment
-import com.djhb.petopia.presentation.register.signup.SignupFragment
+import com.djhb.petopia.databinding.FragmentUserPasswordModifyBinding
+import com.djhb.petopia.presentation.register.RegisterViewModel
 
 
-class SettingFragment : DialogFragment() {
+class UserPasswordModifyFragment : DialogFragment() {
 
-    private val _binding: FragmentSettingBinding by lazy {
-        FragmentSettingBinding.inflate(layoutInflater)
+    private val _binding: FragmentUserPasswordModifyBinding by lazy {
+        FragmentUserPasswordModifyBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
 
+    private val registerViewModel: RegisterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,18 +35,7 @@ class SettingFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.apply {
-            btnSettingExit.setOnClickListener {
-                dismiss()
-            }
-            btnSettingLogout.setOnClickListener {
-                loguout()
-            }
-            btnSettingDeleteAccount.setOnClickListener {
-                dismiss()
-            }
-        }
+        initDialog()
     }
 
     private fun initDialog() {
@@ -65,22 +53,5 @@ class SettingFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    private fun loguout() {
-        
-        //다이얼로그를 닫고 이동
-        dismiss()
-
-        //RegisterActivity 재실행
-        val intent = Intent(requireContext(), RegisterActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initDialog()
-
     }
 }

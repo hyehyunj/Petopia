@@ -56,9 +56,7 @@ class DDayViewModel(private val dDayRepository: DDayRepository,
         dDayList = LocalDate.of(y, m, d)
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val dateString = dDayList.format(formatter)
-        Log.d("왜","${dateString}")
         _dDayModelLiveData.value = _dDayModelLiveData.value?.copy(date = dateString)
-        Log.d("안바뀜?","${_dDayModelLiveData.value}")
     }
 
     //이름을 담는 함수

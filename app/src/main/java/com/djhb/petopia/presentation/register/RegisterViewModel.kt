@@ -9,9 +9,11 @@ import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.SignRepository
 import com.djhb.petopia.data.remote.SignRepositoryImpl
+import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import kotlinx.coroutines.launch
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel :
+    ViewModel() {
 
 
     private val _userNickName = MutableLiveData<String>()
@@ -35,8 +37,20 @@ class RegisterViewModel : ViewModel() {
     private val _loginUser = MutableLiveData<UserModel?>()
     val loginUser: LiveData<UserModel?> = _loginUser
 
+    private val _userLiveData = MutableLiveData<UserModel?>()
+    val userLiveData: LiveData<UserModel?> = _userLiveData
+
     private val signRepository: SignRepository by lazy {
         SignRepositoryImpl()
+    }
+
+    fun modifyNickname(nickname: String) {
+        _userNickName.value = nickname
+
+        LoginData.loginUser?.let { user ->
+            user.nickname = nickname
+            updateUser()
+        }
     }
 
     fun setUserData(
@@ -99,14 +113,18 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
+    fun saveUser(user: UserModel) {
+        _userLiveData.value = user
+    }
+
 
 //    class RegisterViewModelFactory(
-//        private val signRepository: SignRepository
+//        private val mainHomeGuideSharedViewModel: MainHomeGuideSharedViewModel
 //    ) : ViewModelProvider.Factory {
 //        override fun <T : ViewModel> create(modelClass: Class<T>): T {
 //            if (modelClass.isAssignableFrom(RegisterViewModel::class.java)) {
 //                @Suppress("UNCHECKED_CAST")
-//                return RegisterViewModel(signRepository) as T
+//                return RegisterViewModel(mainHomeGuideSharedViewModel) as T
 //            }
 //            throw IllegalArgumentException("Unknown ViewModel class")
 //        }

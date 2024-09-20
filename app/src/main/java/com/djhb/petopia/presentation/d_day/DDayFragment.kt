@@ -1,7 +1,12 @@
 package com.djhb.petopia.presentation.d_day
 
+import android.annotation.SuppressLint
+import android.app.AlarmManager
 import android.app.DatePickerDialog
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
@@ -17,6 +22,8 @@ import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentDDayBinding
 import com.rm.rmswitch.RMSwitch
 import io.github.muddz.styleabletoast.StyleableToast
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class DDayFragment : DialogFragment() {
@@ -46,7 +53,6 @@ class DDayFragment : DialogFragment() {
         dDayDataObserver()
         initDialog()
         loadDDayData()
-//        setAlarm()
 
 
     }
@@ -86,6 +92,9 @@ class DDayFragment : DialogFragment() {
             dDayViewModel.saveDateName(binding.dDayEtSelectedName.text.toString())
             dDayViewModel.updateAlarm(requireActivity())
             dDayViewModel.calculateDate()
+
+
+
             dismiss()
         }
 
@@ -105,53 +114,44 @@ class DDayFragment : DialogFragment() {
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun dDayDataObserver() {
-        dDayViewModel.alarmLiveData.observe(viewLifecycleOwner) {
 
+
+        dDayViewModel.alarmLiveData.observe(viewLifecycleOwner) {
+            if(it) dDayViewModel.dDayModelLiveData.value?.let { it1 -> setAlarm(it1.date) }
         }
 
     }
 
 
-//    //사용자가 선택한 항목대로 알릴 시간을 설정하는 함수
-//    private fun setAlarm() {
-//
-//                Toast.makeText(
-//                    requireContext(),
-//                    getString(R.string.alarm_today) + getString(R.string.alarm_selected),
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                calendar.apply {
-//                    timeInMillis = System.currentTimeMillis()
-//                    set(Calendar.YEAR, eventDayYear ?: 0)
-//                    set(Calendar.MONTH, (eventDayMonth ?: 0) -1) //0부터 시작한다
-//                    set(Calendar.DAY_OF_MONTH, eventDayDay ?: 0)
-//                    set(Calendar.HOUR_OF_DAY, 0) //24시간으로 지정한다
-//                    set(Calendar.MINUTE, 0)
-//                    set(Calendar.SECOND, 0)
-//                }
-//                reserveAlarm()
-//                selectedAlarm = 4
-//            }
-//
-//
-//
-//
-//    //알람리시버에 알림을 예약하는 함수
-//    @SuppressLint("ScheduleExactAlarm")
-//    private fun reserveAlarm() {
-//        val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
-//        val intent = Intent(requireContext(), AlarmReceiver::class.java)
-//        val pendingIntent = PendingIntent.getBroadcast(
-//            requireContext(),
-//            0,
-//            intent,
-//            PendingIntent.FLAG_MUTABLE
-//        )
-//        alarmManager.setExactAndAllowWhileIdle(
-//            AlarmManager.RTC_WAKEUP,
-//            calendar.timeInMillis, pendingIntent
-//        )
-//    }
+    //사용자가 선택한 항목대로 알릴 시간을 설정하는 함수
+    private fun setAlarm(selectedDate: String) {
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val date = format.parse(selectedDate)
+        val calendar = Calendar.getInstance().apply {
+            time = date
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+                reserveAlarm(calendar)
+            }
+    //알람리시버에 알림을 예약하는 함수
+    @SuppressLint("ScheduleExactAlarm")
+    private fun reserveAlarm(calendar:Calendar) {
+        val alarmManager = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(requireContext(), DDayAlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(
+            requireContext(),
+            0,
+            intent,
+            PendingIntent.FLAG_MUTABLE
+        )
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis, pendingIntent
+        )
+    }
 
 
     //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현

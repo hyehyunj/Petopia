@@ -77,6 +77,7 @@ dependencies {
     implementation(libs.firebase.dataconnect)
     implementation(libs.firebase.firestore)
     implementation(libs.androidx.lifecycle.viewmodel.android)
+    implementation(libs.firebase.auth)
 
     val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
@@ -101,6 +102,11 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     //to workmanager
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
+    implementation("com.google.firebase:firebase-auth:22.0.0")
+    implementation("com.google.firebase:firebase-auth-ktx:22.0.0")
+    implementation("com.google.gms:google-services:4.3.15")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
