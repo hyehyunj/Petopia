@@ -138,6 +138,7 @@ class MainActivity : AppCompatActivity(){
 
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {
+        moveToPetopia()
         binding.mainViewPager.isUserInputEnabled = true
         supportFragmentManager.beginTransaction()
             .remove(GuideFragment())
@@ -146,7 +147,6 @@ class MainActivity : AppCompatActivity(){
     }
 
     fun moveToPetopia() {
-        viewPager.setCurrentItem(0, true)
         viewPager.setCurrentItem(0, true)
     }
 

@@ -10,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentGuideBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
+import com.skydoves.elasticviews.elasticAnimation
 import io.github.muddz.styleabletoast.StyleableToast
 
 //가이드 프래그먼트 : 앱 사용방법과 특징을 안내하는 튜토리얼
@@ -44,11 +46,6 @@ class GuideFragment : Fragment() {
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun guideButtonClickListener() {
-        //다음으로버튼 클릭이벤트
-        binding.guideIvNext.setOnClickListener {
-            if (guideViewModel.guidePageNumberLiveData.value == 13)
-                guideViewModel.guideButtonClickListener("NEXT")
-        }
         //가이드스토리 클릭이벤트
         binding.guideStoryLayout.setOnClickListener {
             if (guideViewModel.guidePageNumberLiveData.value != 13)
@@ -134,7 +131,16 @@ class GuideFragment : Fragment() {
                 it.progressText
 
             //하단스토리
-            binding.guideTvStory.text = it.guideStory
+            if(it.guideStory != "") when(guideViewModel.guidePageNumberLiveData.value){
+                0 -> binding.guideTvStory.setTypedText("${LoginData.loginUser.nickname}님 안녕하세요.\n" + it.guideStory)
+                4 -> binding.guideTvStory.setTypedText("${LoginData.loginUser.nickname}" + it.guideStory)
+                8 -> binding.guideTvStory.setTypedText("${LoginData.loginUser.pet?.petName}은/는\n" + it.guideStory)
+                else -> binding.guideTvStory.setTypedText(it.guideStory)
+            }
+
+
+
+
             //다이얼로그
             when (guideViewModel.guideModelLiveData.value?.dialog) {
                 "NAME" -> GuideNameDialogFragment().apply {

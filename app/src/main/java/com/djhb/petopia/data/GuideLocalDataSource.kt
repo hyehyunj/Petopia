@@ -15,14 +15,14 @@ object GuideLocalDataSource {
         val progressTextLocalData = listOf("보호자님 맞이하는 중...", "이름 불러보는 중...", "비슷한 꼬리 쫓아가는 중...", "화면 앞으로 데려오는 중...")
 
         val guideStoryLocalData = mapOf(
-            0 to "안녕하세요. 누가 보고싶으세요?",
+            0 to "누구를 찾아오셨나요?",
             2 to "이름만 불러서는 안되겠어요.\n" +
                     "어떤 외모인지 알려주시겠어요?",
-            4 to "보호자님처럼 불러볼게요.\n" +
-                    "둘은 어떤 사이였나요?",
+            4 to "님처럼 다가가볼게요.\n" +
+                    "어떻게 가까운 사이였나요?",
             6 to "도와주신 덕분에 금방 찾았네요!\n" +
                     "카메라 조정 좀 하겠습니다.",
-            8 to "이렇게 가장 예쁘고 건강했던 상태로\n" +
+            8 to "가장 예쁘고 건강했던 상태로\n" +
                     "펫토피아에 무사히 입국했답니다.",
             9 to "적응하는데 방해가 될 수 있어\n" +
                     "직접 소통하는 건 불가능하지만,",
@@ -85,17 +85,17 @@ object GuideLocalDataSource {
         when (pageNumber) {
             in 0..1 -> progressText = progressTextLocalData[0]
             in 2..3 -> {
-                progressBar = progressBarLocalData[0]
+                progressBar = progressBarLocalData[1]
                 progressText = progressTextLocalData[1]
             }
 
             in 4..5 -> {
-                progressBar = progressBarLocalData[1]
+                progressBar = progressBarLocalData[2]
                 progressText = progressTextLocalData[2]
             }
 
             in 6..7 -> {
-                progressBar = progressBarLocalData[2]
+                progressBar = progressBarLocalData[3]
                 progressText = progressTextLocalData[3]
             }
         }

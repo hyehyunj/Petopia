@@ -49,6 +49,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guide_iv_back" />
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/guide_story_layout"
         android:layout_width="match_parent"
@@ -58,30 +60,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
+        <ImageView
+            android:id="@+id/guide_iv_next"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:src="@drawable/icon_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.prush.typedtextview.TypedTextView
             android:id="@+id/guide_tv_story"
             style="@style/common_text_18_white"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="16dp"
             android:gravity="center"
-            android:maxLines="2"
+            android:maxLines="3"
             android:text=""
+            app:randomize_typing_speed="true"
+            app:randomize_type_seed="40"
+            app:show_cursor="true"
+            app:typing_speed="100"
+            app:cursor_blink_speed="530"
+            app:sentence_pause="300"
+            app:split_sentences="true"
+            app:play_keystrokes_audio="false"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/guide_iv_next"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:src="@drawable/icon_right"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

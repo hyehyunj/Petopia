@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white_30"
+    tools:context=".presentation.d_day.DDayFragment">
+
+
+    <TextView
+        android:id="@+id/d_day_tv_title"
+        style="@style/common_text_20_bold_dark_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:layout_marginTop="16dp"
+        android:text="디데이 설정"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+<!--    <TextView-->
+<!--        android:id="@+id/d_day_tv_d_day_title"-->
+<!--        style="@style/point_text_24_dark_gray"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:text="D-Day"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/d_day_tv_d_day_date"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/d_day_iv_back" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/d_day_tv_d_day_date"-->
+<!--        style="@style/common_text_40_bold_blue"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:includeFontPadding="false"-->
+<!--        android:text="1"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/d_day_tv_d_day_title" />-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/d_day_tv_d_day_end"-->
+<!--        style="@style/point_text_24_dark_gray"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="일"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/d_day_tv_d_day_date"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/d_day_tv_d_day_date" />-->
+    <TextView
+        android:id="@+id/d_day_tv_selected_name_title"
+        style="@style/common_text_16_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="이름"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/d_day_tv_title" />
+
+    <EditText
+        android:id="@+id/d_day_et_selected_name"
+        style="@style/common_text_16_bold_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:paddingHorizontal="16dp"
+        android:background="@drawable/bg_gray_white"
+        android:ems="16"
+        android:hint="@string/d_day_please_enter_title"
+        android:inputType="text"
+        android:maxLength="16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/d_day_tv_selected_name_title"
+        app:layout_constraintTop_toBottomOf="@+id/d_day_tv_selected_name_title" />
+
+
+    <TextView
+        android:id="@+id/d_day_tv_selected_date_title"
+        style="@style/common_text_16_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="날짜"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/d_day_et_selected_name" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/d_day_layout_selected_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_gray_white"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/d_day_tv_selected_date_title"
+        app:layout_constraintStart_toStartOf="@+id/d_day_tv_selected_date_title"
+        app:layout_constraintTop_toBottomOf="@+id/d_day_tv_selected_date_title">
+
+        <TextView
+            android:id="@+id/d_day_tv_selected_date"
+            style="@style/common_text_16_bold_dark_gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/album_select_date"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/d_day_iv_calendar"
+            style="@style/common_text_14_white"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:background="@drawable/icon_community_date"
+            android:text="@string/common_input"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/d_day_tv_alarm"
+        style="@style/common_text_16_dark_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="알림"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/d_day_btn_alarm"
+        app:layout_constraintTop_toBottomOf="@id/d_day_layout_selected_date" />
+
+
+    <com.rm.rmswitch.RMSwitch
+        android:id="@+id/d_day_btn_alarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:enabled="true"
+        app:forceAspectRatio="false"
+        app:layout_constraintBottom_toBottomOf="@+id/d_day_tv_alarm"
+        app:layout_constraintEnd_toEndOf="@+id/d_day_layout_selected_date"
+        app:layout_constraintTop_toTopOf="@+id/d_day_tv_alarm"
+        app:switchBkgCheckedColor="@color/baby_blue"
+        app:switchBkgNotCheckedColor="@color/light_gray"
+        app:switchDesign="android"
+        app:switchToggleCheckedColor="@color/main_blue"
+        app:switchToggleNotCheckedColor="@color/gray" />
+
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/d_day_btn_back"
+        style="@style/common_text_16_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginVertical="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_gray_white"
+        android:padding="4dp"
+        android:text="@string/common_cancel"
+        app:button_duration="100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/d_day_btn_complete"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/d_day_btn_complete"
+        style="@style/common_text_16_bold_white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_main_blue"
+        android:padding="4dp"
+        android:text="@string/common_complete"
+        app:button_duration="100"
+        app:layout_constraintBottom_toBottomOf="@+id/d_day_btn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/d_day_btn_back"
+        app:layout_constraintTop_toTopOf="@+id/d_day_btn_back" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
