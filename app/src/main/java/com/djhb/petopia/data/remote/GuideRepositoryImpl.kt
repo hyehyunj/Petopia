@@ -17,6 +17,15 @@ class GuideRepositoryImpl(private val guideLocalDataSource: GuideLocalDataSource
         return guideLocalDataSource.getPetListData(breed)
     }
 
+    override fun getRelationListData(guideOrMy:String): List<String> {
+        return guideLocalDataSource.getRelationListData(guideOrMy)
+    }
+
+    override fun getAppearanceListData(): List<String> {
+        return guideLocalDataSource.getAppearanceListData()
+    }
+
+
     override fun updateStatusData(pageNumber: Int, status: String): GuideModel {
         return guideLocalDataSource.updateStatusData(pageNumber,status)
     }

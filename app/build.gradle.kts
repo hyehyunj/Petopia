@@ -50,6 +50,7 @@ android {
 
 
 dependencies {
+    implementation("com.github.siralam:DropDownView:b664b916de")
     implementation("com.github.RiccardoMoro:RMSwitch:v1.2.2")
     implementation("com.github.MatteoBattilana:WeatherView:3.0.0")
     implementation("com.github.wenchaojiang:AndroidSwipeableCardStack:0.1.6")

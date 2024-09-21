@@ -50,8 +50,9 @@ class HomeEarthFragment : Fragment() {
         homeEarthButtonClickListener()
         homeEarthDataObserver()
         // 꽃잎 애니메이션 시작
-        startPetalsAnimation()
-        updateUIBasedOnTime()//시간 체크
+//        startPetalsAnimation()
+//        updateUIBasedOnTime()
+    //시간 체크
     }
 
 
@@ -83,8 +84,6 @@ class HomeEarthFragment : Fragment() {
             binding.homeImgBackground.visibility = View.VISIBLE
 
         }
-
-
     }
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수

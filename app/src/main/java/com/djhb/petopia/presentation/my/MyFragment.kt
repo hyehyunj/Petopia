@@ -59,6 +59,14 @@ class MyFragment : DialogFragment() {
         binding.myBtnLogout.setOnClickListener {
             logout()
         }
+
+        binding.myTvPetEdit.setOnClickListener {
+            MyPetEditFragment().show(childFragmentManager, "MY_PET_EDIT_FRAGMENT")
+
+
+        }
+
+
     }
 
     private fun modifyButtonClickListener() {
@@ -73,11 +81,14 @@ class MyFragment : DialogFragment() {
         }
     }
 
+
+
     private fun backButtonClickListener() {
         binding.myIvBack.setOnClickListener {
             dismiss()
         }
     }
+
 
 
     private fun logout() {

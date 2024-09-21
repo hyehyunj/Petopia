@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_white_30"
+    tools:context=".presentation.my.MyPetEditFragment">
+
+
+    <TextView
+        android:id="@+id/my_pet_edit_tv_title"
+        style="@style/common_text_20_bold_dark_gray"
+        android:layout_width="0dp"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:text="반려동물 정보 수정"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_title"
+        app:layout_constraintBottom_toTopOf="@+id/my_pet_edit_btn_back">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+    <TextView
+        android:id="@+id/my_pet_edit_tv_appearance_title"
+        style="@style/common_text_18_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginHorizontal="16dp"
+        android:text="캐릭터"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/my_pet_edit_iv_appearance"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:clipToOutline="true"
+        android:scaleType="fitCenter"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="@+id/my_pet_edit_tv_appearance_title"
+        app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_appearance_title" />
+
+
+
+
+    <TextView
+        android:id="@+id/my_pet_edit_tv_name_title"
+        style="@style/common_text_18_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="이름"
+        app:layout_constraintEnd_toEndOf="@+id/my_pet_edit_tv_appearance_title"
+        app:layout_constraintStart_toStartOf="@+id/my_pet_edit_iv_appearance"
+        app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_iv_appearance" />
+
+
+    <EditText
+        android:id="@+id/my_pet_edit_et_name"
+        style="@style/common_text_16_bold_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:paddingHorizontal="16dp"
+        android:background="@drawable/bg_gray_white"
+        android:ems="16"
+        android:hint="@string/guide_text_limit_20"
+        android:inputType="text"
+        android:maxLength="16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/my_pet_edit_tv_name_title"
+        app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_name_title" />
+
+
+
+    <TextView
+        android:id="@+id/my_pet_edit_tv_relation_title"
+        style="@style/common_text_18_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="이미지"
+        app:layout_constraintStart_toStartOf="@+id/my_pet_edit_et_name"
+        app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_et_name"
+        app:layout_constraintEnd_toEndOf="@+id/my_pet_edit_et_name"/>
+
+            <com.asksira.dropdownview.DropDownView
+                android:id="@+id/my_pet_edit_ddv_relation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:arrow_align_end="false"
+                app:arrow_end_margin="16dp"
+                app:arrow_start_margin="8dp"
+                app:arrow_width="24dp"
+                app:deselectable="false"
+                app:divider_color="@color/light_gray"
+                app:dropDownItem_text_color_selected="@color/main_blue"
+                app:dropDownItem_text_size_selected="16sp"
+                app:dropdownItem_text_gravity="start"
+                app:expansion_style="drawer"
+                app:filter_bar_background_color="@color/white"
+                app:filter_text_color="@color/main_blue"
+                app:last_item_has_divider="false"
+                app:layout_constraintEnd_toEndOf="@+id/my_pet_edit_tv_relation_title"
+                app:layout_constraintStart_toStartOf="@+id/my_pet_edit_tv_relation_title"
+                app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_relation_title"
+                app:placeholder_text="이미지 변경" />
+
+            <com.asksira.dropdownview.DropDownView
+                android:id="@+id/my_pet_edit_ddv_appearance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                app:placeholder_text="캐릭터 변경"
+                app:dropdownItem_text_gravity="start"
+                app:filter_bar_background_color="@color/white"
+                app:filter_text_color="@color/main_blue"
+                app:arrow_width="24dp"
+                app:dropDownItem_text_color_selected="@color/main_blue"
+                app:divider_color="@color/light_gray"
+                app:dropDownItem_text_size_selected="16sp"
+                app:expansion_style="drawer"
+                app:last_item_has_divider="false"
+                app:arrow_align_end="false"
+                app:arrow_start_margin="8dp"
+                app:arrow_end_margin="16dp"
+                app:deselectable="false"
+                app:layout_constraintStart_toEndOf="@+id/my_pet_edit_iv_appearance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/my_pet_edit_iv_appearance"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/my_pet_edit_btn_back"
+        style="@style/common_text_16_dark_gray"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginVertical="20dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_gray_white"
+        android:padding="4dp"
+        android:text="@string/common_cancel"
+        app:button_duration="100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/my_pet_edit_btn_complete"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/my_pet_edit_btn_complete"
+        style="@style/common_text_16_bold_white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_main_blue"
+        android:padding="4dp"
+        android:text="@string/common_complete"
+        app:button_duration="100"
+        app:layout_constraintBottom_toBottomOf="@+id/my_pet_edit_btn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/my_pet_edit_btn_back"
+        app:layout_constraintTop_toTopOf="@+id/my_pet_edit_btn_back" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

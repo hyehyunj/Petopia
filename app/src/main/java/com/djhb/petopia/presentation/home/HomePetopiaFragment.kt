@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PetAppearance
 import com.djhb.petopia.databinding.FragmentHomePetopiaBinding
 import com.djhb.petopia.presentation.MainActivity
@@ -57,7 +58,7 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
-        loadDDayData()
+        if(LoginData.loginUser.dday != null)loadDDayData()
 
         mainHomeGuideViewModel.getUser()
 //        if () getUserAndPet()
