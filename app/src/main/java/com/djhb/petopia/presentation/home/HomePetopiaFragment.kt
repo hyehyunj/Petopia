@@ -57,7 +57,7 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
-        loadDDayData()
+//        loadDDayData()
 
         mainHomeGuideViewModel.getUser()
 //        if () getUserAndPet()

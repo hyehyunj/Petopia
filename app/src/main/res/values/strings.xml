@@ -120,6 +120,7 @@
     <string name="modify_nickname">보호자 닉네임</string>
     <string name="modify_email">이메일</string>
 
+    <string name="exist_passoword">기존 비밀번호</string>
     <string name="modify_passoword">비밀번호</string>
     <string name="modify_password_check">비밀번호 확인</string>
 

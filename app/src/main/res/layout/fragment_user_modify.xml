@@ -65,7 +65,7 @@
             android:orientation="horizontal">
 
             <com.skydoves.elasticviews.ElasticButton
-                android:id="@+id/btn_signup_cancel"
+                android:id="@+id/btn_modify_cancel"
                 style="@style/common_text_16_dark_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
 
 
             <com.skydoves.elasticviews.ElasticButton
-                android:id="@+id/btn_signup_check"
+                android:id="@+id/btn_modify_check"
                 style="@style/common_text_16_bold_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
