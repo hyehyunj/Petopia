@@ -1,6 +1,5 @@
 package com.djhb.petopia.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,11 +9,11 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PetLocalDatasource
 import com.djhb.petopia.data.PetModel
+import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.PetRepository
 import com.djhb.petopia.data.remote.PetRepositoryImpl
 import com.djhb.petopia.data.remote.SignRepository
 import com.djhb.petopia.data.remote.SignRepositoryImpl
-import com.djhb.petopia.presentation.register.RegisterViewModel
 import kotlinx.coroutines.launch
 
 
@@ -24,9 +23,6 @@ class MainHomeGuideSharedViewModel(
     private val petRepository: PetRepository
 ) :
     ViewModel() {
-
-    private val user = LoginData.loginUser
-
     //가이드 상태 :
     //NONE 가이드 미진행
     //ESSENTIAL 필수 가이드 진행중
@@ -51,6 +47,11 @@ class MainHomeGuideSharedViewModel(
     private val _userPetLiveData = MutableLiveData<PetModel?>()
     val userPetLiveData: LiveData<PetModel?> = _userPetLiveData
 
+    //유저 정보
+    private val _userDataLiveData = MutableLiveData(LoginData.loginUser)
+    val userDataLiveData: LiveData<UserModel> = _userDataLiveData
+    private val user = LoginData.loginUser
+
 
     //가이드 상태를 업데이트 해주는 함수
     fun updateGuideState(state: String) {
@@ -64,18 +65,14 @@ class MainHomeGuideSharedViewModel(
 
 
     //유저 정보를 불러오는 함수
-    fun getUser(): Boolean {
-        var skipGuide: Boolean
+    fun checkUserGuideState() {
         if (user.completedGuide) {
-            getPetData()
             _guideStateLiveData.value = "DONE"
-            skipGuide = true
         } else {
             _guideStateLiveData.value = "NONE"
-            skipGuide = false
         }
-        _userPetLiveData.value = user.pet
-        return skipGuide
+        _userDataLiveData.value = user
+        getPetData()
     }
 
     //유저 정보를 입력하는 함수
@@ -86,9 +83,10 @@ class MainHomeGuideSharedViewModel(
         viewModelScope.launch {
             signRepository.updateUser(user)
         }
+        _userDataLiveData.value = user
     }
 
-    //유저 정보를 불러오는 함수
+    //유저 반려동물 정보를 불러오는 함수
     private fun getPetData() {
         _userPetLiveData.value = user.pet
     }
@@ -103,29 +101,6 @@ class MainHomeGuideSharedViewModel(
     fun updateCurrentHome(fragmentPosition: Int) {
         _currentHomeLiveData.value = fragmentPosition
     }
-
-
-
-    //가이드에서 설명하는 기능을 업데이트 해주는 함수
-//    fun updateFunction(function: Int) {
-//        val guideFunctionData = mapOf(
-//            9 to "GALLERY_LETTER_GONE",
-//            10 to "GALLERY_LETTER",
-//            11 to "D_DAY",
-//            13 to "MOVE_MEMORY_BRIDGE",
-//            14 to "MEMORY",
-//            15 to "EMOTION",
-//            17 to "MOVE_EARTH",
-//            18 to "CLOUD",
-//            19 to "COMMUNITY",
-//            20 to "MOVE_UPPER",
-//            21 to "MY",
-//            22 to "END"
-//        )
-//        _guideFunctionLiveData.value = guideFunctionData[function]
-//    }
-
-
 }
 
 class MainHomeGuideSharedViewModelFactory : ViewModelProvider.Factory {

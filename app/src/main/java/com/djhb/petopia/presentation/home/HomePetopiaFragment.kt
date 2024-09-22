@@ -60,7 +60,7 @@ class HomePetopiaFragment : Fragment() {
         guideDataObserver()
         if(LoginData.loginUser.dday != null)loadDDayData()
 
-        mainHomeGuideViewModel.getUser()
+        mainHomeGuideViewModel.checkUserGuideState()
 //        if () getUserAndPet()
 
 //구름 애니메이션
@@ -69,11 +69,6 @@ class HomePetopiaFragment : Fragment() {
         initFlowerAnimation()
 //반딧불 애니메이션
         initFireflyAnimation()
-
-
-        mainHomeGuideViewModel.userPetLiveData.observe(viewLifecycleOwner) {
-            getUserAndPet()
-        }
 
         // UI를 시간에 따라 업데이트
         updateUIBasedOnTime()
@@ -277,7 +272,9 @@ class HomePetopiaFragment : Fragment() {
         //가이드 버튼 클릭이벤트 : 클릭시 가이드 시작
         binding.homeTvGuide.setOnClickListener {
             binding.homeTvGuide.clearAnimation() // 애니메이션 중지
-            (activity as MainActivity).showGuideFragment()
+            if(mainHomeGuideViewModel.userDataLiveData.value?.completedGuide == true)
+                (activity as MainActivity).showWelcomeGuideFragment()
+            else (activity as MainActivity).showGuideFragment()
         }
 
         //디데이 버튼 클릭이벤트 : 클릭시 디데이 설정 이동
@@ -311,7 +308,7 @@ class HomePetopiaFragment : Fragment() {
                     }
                 }
 
-                "ESSENTIAL" -> {
+                "ESSENTIAL", "OPTIONAL" -> {
                     binding.apply {
                         homeTvGuide.isVisible = false
                         homeIvCall.isVisible = false
@@ -321,7 +318,7 @@ class HomePetopiaFragment : Fragment() {
                 }
 
                 "ESSENTIAL_DONE" -> {
-                    mainHomeGuideViewModel.setPetData()
+                    if(LoginData.loginUser.pet?.petName == null)mainHomeGuideViewModel.setPetData()
                     binding.apply {
                         homeTvNameUser.isVisible = true
                         homeTvNamePet.isVisible = true
@@ -409,8 +406,8 @@ class HomePetopiaFragment : Fragment() {
     private fun getUserAndPet() {
         binding.apply {
             homeTvNameUser.text = "보호자 : " + mainHomeGuideViewModel.getUserName() + " 님"
-            homeTvNamePet.text = mainHomeGuideViewModel.userPetLiveData.value?.petName
-            when (mainHomeGuideViewModel.userPetLiveData.value?.petAppearance) {
+            homeTvNamePet.text = mainHomeGuideViewModel.userDataLiveData.value?.pet?.petName
+            when (mainHomeGuideViewModel.userDataLiveData.value?.pet?.petAppearance) {
                 PetAppearance.ABYSSINIAN -> binding.homeIvPet.setImageResource(R.drawable.img_abyssinian)
                 PetAppearance.AMERICANSHORTHAIR -> binding.homeIvPet.setImageResource(R.drawable.img_americanshoerthair)
                 PetAppearance.BICHON -> binding.homeIvPet.setImageResource(R.drawable.img_bichon)
@@ -479,6 +476,9 @@ class HomePetopiaFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        mainHomeGuideViewModel.userDataLiveData.observe(viewLifecycleOwner) {
+            getUserAndPet()
+        }
         initAnimation()
 
     }

@@ -123,6 +123,9 @@ class MainActivity : AppCompatActivity(){
 //            .commit()
     }
 
+    fun welcomeGuide() {
+        mainHomeGuideSharedViewModel.updateGuideState("NONE")
+    }
 
     fun showGuideFragment() {
         mainHomeGuideSharedViewModel.updateGuideState("ESSENTIAL")
@@ -135,6 +138,19 @@ class MainActivity : AppCompatActivity(){
             .commit()
 
     }
+
+    fun showWelcomeGuideFragment() {
+        mainHomeGuideSharedViewModel.updateGuideState("OPTIONAL")
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_guide_frame, GuideFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+
+    }
+
 
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {

@@ -113,9 +113,6 @@ object GuideLocalDataSource {
         if (pageNumber == 8) {
             guideModel = guideModel.copy(status = "ESSENTIAL_DONE")
         }
-        if (pageNumber == 9) {
-            guideModel = guideModel.copy(status = "OPTIONAL")
-        }
         if (pageNumber == 24) {
             guideModel = guideModel.copy(status = "DONE")
         }

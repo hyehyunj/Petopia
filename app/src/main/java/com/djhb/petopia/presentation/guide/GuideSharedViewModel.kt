@@ -7,11 +7,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.djhb.petopia.data.GuideLocalDataSource
 import com.djhb.petopia.data.GuideModel
-import com.djhb.petopia.data.PetAppearance
 import com.djhb.petopia.data.PetAppearanceModel
 import com.djhb.petopia.data.PetLocalDatasource
-import com.djhb.petopia.data.PetModel
-import com.djhb.petopia.data.PetRelation
 import com.djhb.petopia.data.remote.GuideRepository
 import com.djhb.petopia.data.remote.GuideRepositoryImpl
 import com.djhb.petopia.data.remote.PetRepository
@@ -25,7 +22,7 @@ class GuideSharedViewModel(
     ViewModel() {
 
     //페이지
-    private val _guidePageNumberLiveData = MutableLiveData(0)
+    private val _guidePageNumberLiveData = MutableLiveData<Int>(0)
     val guidePageNumberLiveData: LiveData<Int> = _guidePageNumberLiveData
 
     //가이드데이터클래스
@@ -47,11 +44,11 @@ class GuideSharedViewModel(
     private val _appearanceLiveData = MutableLiveData("")
     val appearanceLiveData: LiveData<String> = _appearanceLiveData
 
-    var appearanceMutableListLiveData = _appearanceListLiveData.value?.toMutableList()
+    private var appearanceMutableListLiveData = _appearanceListLiveData.value?.toMutableList()
 
-
-
-
+fun setWelcomeGuidePage() {
+     _guidePageNumberLiveData.value = 8
+}
     //클릭된 버튼에 따라 페이지 변경해주는 함수
     fun guideButtonClickListener(pressedButton: String) {
         _pressedButtonLiveData.value = pressedButton

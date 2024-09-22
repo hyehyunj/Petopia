@@ -8,6 +8,9 @@
     tools:context=".presentation.my.MyPetEditFragment">
 
 
+
+
+
     <TextView
         android:id="@+id/my_pet_edit_tv_title"
         style="@style/common_text_20_bold_dark_gray"
@@ -20,28 +23,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:scrollbars="none"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_title"
-        app:layout_constraintBottom_toTopOf="@+id/my_pet_edit_btn_back">
+        app:layout_constraintBottom_toTopOf="@+id/my_pet_edit_btn_back"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
+
+
+
     <TextView
         android:id="@+id/my_pet_edit_tv_appearance_title"
         style="@style/common_text_18_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:layout_marginHorizontal="16dp"
         android:text="캐릭터"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/my_pet_edit_ddv_layout_appearance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,15 +63,48 @@
         app:layout_constraintStart_toStartOf="@+id/my_pet_edit_tv_appearance_title"
         app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_appearance_title" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_pet_edit_ddv_layout_appearance"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_gray_white"
+        android:layout_marginHorizontal="16dp"
+        android:padding="4dp"
+        app:layout_constraintStart_toEndOf="@+id/my_pet_edit_iv_appearance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/my_pet_edit_tv_appearance_title"
+        app:layout_constraintBottom_toTopOf="@+id/my_pet_edit_tv_name_title">
 
-
+    <com.asksira.dropdownview.DropDownView
+        android:id="@+id/my_pet_edit_ddv_appearance"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:placeholder_text="캐릭터 변경"
+        app:dropdownItem_text_gravity="start"
+        app:filter_bar_background_color="@color/white"
+        app:filter_text_color="@color/main_blue"
+        app:arrow_width="24dp"
+        app:dropDownItem_text_color_selected="@color/main_blue"
+        app:divider_color="@color/light_gray"
+        app:dropDownItem_text_size_selected="16sp"
+        app:expansion_style="reveal"
+        app:last_item_has_divider="false"
+        app:arrow_align_end="false"
+        app:arrow_start_margin="8dp"
+        app:arrow_end_margin="16dp"
+        app:deselectable="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/my_pet_edit_tv_name_title"
         style="@style/common_text_18_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="48dp"
         android:text="이름"
         app:layout_constraintEnd_toEndOf="@+id/my_pet_edit_tv_appearance_title"
         app:layout_constraintStart_toStartOf="@+id/my_pet_edit_iv_appearance"
@@ -99,54 +140,52 @@
         app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_et_name"
         app:layout_constraintEnd_toEndOf="@+id/my_pet_edit_et_name"/>
 
-            <com.asksira.dropdownview.DropDownView
-                android:id="@+id/my_pet_edit_ddv_relation"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:arrow_align_end="false"
-                app:arrow_end_margin="16dp"
-                app:arrow_start_margin="8dp"
-                app:arrow_width="24dp"
-                app:deselectable="false"
-                app:divider_color="@color/light_gray"
-                app:dropDownItem_text_color_selected="@color/main_blue"
-                app:dropDownItem_text_size_selected="16sp"
-                app:dropdownItem_text_gravity="start"
-                app:expansion_style="drawer"
-                app:filter_bar_background_color="@color/white"
-                app:filter_text_color="@color/main_blue"
-                app:last_item_has_divider="false"
-                app:layout_constraintEnd_toEndOf="@+id/my_pet_edit_tv_relation_title"
-                app:layout_constraintStart_toStartOf="@+id/my_pet_edit_tv_relation_title"
-                app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_relation_title"
-                app:placeholder_text="이미지 변경" />
 
-            <com.asksira.dropdownview.DropDownView
-                android:id="@+id/my_pet_edit_ddv_appearance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                app:placeholder_text="캐릭터 변경"
-                app:dropdownItem_text_gravity="start"
-                app:filter_bar_background_color="@color/white"
-                app:filter_text_color="@color/main_blue"
-                app:arrow_width="24dp"
-                app:dropDownItem_text_color_selected="@color/main_blue"
-                app:divider_color="@color/light_gray"
-                app:dropDownItem_text_size_selected="16sp"
-                app:expansion_style="drawer"
-                app:last_item_has_divider="false"
-                app:arrow_align_end="false"
-                app:arrow_start_margin="8dp"
-                app:arrow_end_margin="16dp"
-                app:deselectable="false"
-                app:layout_constraintStart_toEndOf="@+id/my_pet_edit_iv_appearance"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/my_pet_edit_iv_appearance"/>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/my_pet_edit_ddv_layout_relation"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gray_white"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="16dp"
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_pet_edit_tv_relation_title"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.asksira.dropdownview.DropDownView
+            android:id="@+id/my_pet_edit_ddv_relation"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:arrow_align_end="false"
+            app:arrow_end_margin="16dp"
+            app:arrow_start_margin="8dp"
+            app:arrow_width="24dp"
+            app:deselectable="false"
+            app:divider_color="@color/light_gray"
+            app:dropDownItem_text_color_selected="@color/main_blue"
+            app:dropDownItem_text_size_selected="16sp"
+            app:dropdownItem_text_gravity="start"
+            app:expansion_style="reveal"
+            app:placeholder_text="이미지 변경"
+            app:filter_bar_background_color="@color/white"
+            app:filter_text_color="@color/main_blue"
+            app:last_item_has_divider="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+</ScrollView>
+
 
     <com.skydoves.elasticviews.ElasticButton
         android:id="@+id/my_pet_edit_btn_back"
