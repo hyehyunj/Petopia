@@ -1,10 +1,11 @@
 package com.djhb.petopia.presentation.guide
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import com.djhb.petopia.databinding.FragmentGuideBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import io.github.muddz.styleabletoast.StyleableToast
+
 
 //가이드 프래그먼트 : 앱 사용방법과 특징을 안내하는 튜토리얼
 class GuideFragment : Fragment() {
@@ -100,13 +102,12 @@ class GuideFragment : Fragment() {
                 "OPTIONAL" -> guideViewModel.setWelcomeGuidePage()
 
             }
-            Log.d("상태는?", "${it}")
         }
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
-            Log.d("페이지는?" , "${it}")
 
             guideViewModel.makeGuideModel()
             when (it) {
+                7-> setBlur()
                 8 -> {
                     binding.apply {
                         guideTvProgressText.isVisible = false
@@ -183,6 +184,29 @@ class GuideFragment : Fragment() {
         }
 
     }
+
+    private fun setBlur() {
+        binding.guideIvBlur.apply {
+            isVisible = true
+            val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blur)
+            animation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                }
+                override fun onAnimationEnd(animation: Animation?) {
+                    guideViewModel.guideButtonClickListener(
+                        "NEXT"
+                    )
+                    isVisible = false
+                }
+                override fun onAnimationRepeat(animation: Animation?) {
+                }
+            })
+            startAnimation(animation)
+
+        }
+    }
+
+
 }
 
 
