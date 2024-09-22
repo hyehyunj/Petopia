@@ -46,6 +46,7 @@ class MyFragment : DialogFragment() {
         myButtonClickListener()
         modifyButtonClickListener()
         modifyPasswordButtonClickListener()
+        deleteButtonClickListener()
 
         registerViewModel.userNickName.observe(viewLifecycleOwner) { user ->
             binding.myTvName.text = user
@@ -79,8 +80,20 @@ class MyFragment : DialogFragment() {
         }
     }
 
+    private fun deleteButtonClickListener() {
+        binding.myTvWithdraw.setOnClickListener {
+            deleteUser()
+        }
+    }
+
 
     private fun logout() {
+        //자동로그인 해제
+        val sharedPref = requireContext().getSharedPreferences("login_data", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            clear()
+            apply()
+        }
 
         //다이얼로그를 닫고 이동
         dismiss()
@@ -98,6 +111,10 @@ class MyFragment : DialogFragment() {
     //비밀번호 수정페이지
     private fun modifyPassword() {
         UserPasswordModifyFragment().show(childFragmentManager, "MODIFY_DIALOG")
+    }
+
+    private fun deleteUser() {
+        DeleteUserFragment().show(childFragmentManager, "DELETE_DIALOG")
     }
 
 
