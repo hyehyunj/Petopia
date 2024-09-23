@@ -70,8 +70,6 @@ class DeleteUserFragment : DialogFragment() {
         registerViewModel.deleteUser(LoginData.loginUser.id)
 
 
-        registerViewModel.updateUser()
-
         dismiss()
         //RegisterActivity 재실행
         val intent = Intent(requireContext(), RegisterActivity::class.java)
