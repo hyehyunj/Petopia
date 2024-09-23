@@ -7,25 +7,23 @@
     android:layout_height="match_parent"
     android:background="@drawable/petopia_sky"
     tools:context=".presentation.home.HomePetopiaFragment">
-<!--저녁 8시 이후 요소-->
-<ImageView
-    android:id="@+id/sky_background"
-    android:visibility="gone"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
-    />
+    <!--저녁 8시 이후 요소-->
+    <ImageView
+        android:id="@+id/sky_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:visibility="gone" />
 
 
     <ImageView
         android:id="@+id/home_img_cloud"
         android:layout_width="1800dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/pettopia_clould"
         android:scaleType="centerInside"
-        app:layout_constraintTop_toTopOf="@id/home_img_tree1"
+        android:src="@drawable/pettopia_clould"
         android:translationX="-40dp"
-        />
+        app:layout_constraintTop_toTopOf="@id/home_img_tree1" />
 
 
     <ImageView
@@ -34,55 +32,51 @@
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
         android:src="@drawable/petopia_floor"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-        <ImageView
-            android:id="@+id/home_img_tree1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/petopia_tree1"
-            app:layout_constraintBottom_toBottomOf="@id/home_img_floor"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginBottom="310dp"
-            />
+    <ImageView
+        android:id="@+id/home_img_tree1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="310dp"
+        android:src="@drawable/petopia_tree1"
+        app:layout_constraintBottom_toBottomOf="@id/home_img_floor"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/home_img_tree2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
         android:src="@drawable/petopia_tree2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/home_img_cloud"
-        android:layout_marginTop="150dp"
-        />
+        app:layout_constraintTop_toTopOf="@id/home_img_cloud" />
 
     <ImageView
         android:id="@+id/home_left_flower1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/petopia_flower_left1"
-        app:layout_constraintTop_toBottomOf="@id/home_img_tree1"
-        />
+        app:layout_constraintTop_toBottomOf="@id/home_img_tree1" />
 
     <ImageView
         android:id="@+id/home_left_flower2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/petopia_flower_left2"
-        app:layout_constraintTop_toBottomOf="@id/home_img_tree1"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="20dp"
         android:layout_marginTop="80dp"
-        />
+        android:src="@drawable/petopia_flower_left2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_img_tree1" />
 
     <ImageView
         android:id="@+id/home_left_flower3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/petopia_flower_left3"
-        app:layout_constraintTop_toBottomOf="@id/home_left_flower1"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="45dp"
+        android:src="@drawable/petopia_flower_left3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_left_flower1"
 
         />
 
@@ -90,11 +84,11 @@
         android:id="@+id/home_left_flower4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="80dp"
+        android:layout_marginBottom="65dp"
         android:src="@drawable/petopia_flower_left4"
         app:layout_constraintBottom_toBottomOf="@id/home_left_flower3"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="80dp"
-        android:layout_marginBottom="65dp"
 
         />
 
@@ -102,19 +96,18 @@
         android:id="@+id/home_right_flower1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/petopia_flower_right1"
-        app:layout_constraintTop_toTopOf="@id/home_left_flower1"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        />
+        android:src="@drawable/petopia_flower_right1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/home_left_flower1" />
 
     <ImageView
         android:id="@+id/home_right_flower2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/petopia_flower_right2"
-        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
 
 
         />
@@ -123,11 +116,11 @@
         android:id="@+id/home_right_flower3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/petopia_flower_right3"
-        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="10dp"
         android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/petopia_flower_right3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
 
         />
 
@@ -135,11 +128,11 @@
         android:id="@+id/home_right_flower4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/petopia_flower_right4"
-        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/petopia_flower_right4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
 
         />
 
@@ -147,25 +140,24 @@
         android:id="@+id/home_right_flower5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/petopia_flower_right5"
-        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
-        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="50dp"
+        android:src="@drawable/petopia_flower_right5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_right_flower1"
 
         />
-<!--저녁 8시 이후 요소-->
+    <!--저녁 8시 이후 요소-->
     <ImageView
         android:id="@+id/home_img_night_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         android:alpha="0.4"
+        android:background="@color/black"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
@@ -174,75 +166,65 @@
         android:layout_height="wrap_content"
         android:src="@drawable/petopia_moon"
         android:translationY="-50dp"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/firefly"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
+        <ImageView
+            android:id="@+id/firefly1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="300dp"
+            android:src="@drawable/firefly1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <ImageView
+            android:id="@+id/firefly2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginBottom="300dp"
+            android:src="@drawable/firefly2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/firefly"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="gone"
-    >
+        <ImageView
+            android:id="@+id/firefly3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginBottom="300dp"
+            android:src="@drawable/firefly3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/firefly1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/firefly1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="300dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="30dp"
-        />
+        <ImageView
+            android:id="@+id/firefly4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="150dp"
+            android:layout_marginBottom="300dp"
+            android:src="@drawable/firefly4"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/firefly2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/firefly2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="300dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="150dp"
-        />
-
-    <ImageView
-        android:id="@+id/firefly3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/firefly3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="300dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="150dp"
-        />
-
-    <ImageView
-        android:id="@+id/firefly4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/firefly4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="300dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="150dp"
-        />
-
-    <ImageView
-        android:id="@+id/firefly5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/firefly5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="300dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="30dp"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/firefly5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="300dp"
+            android:src="@drawable/firefly5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <ImageView
@@ -250,30 +232,31 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/bg_translucent_background_down"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/home_tv_name_pet"
-        style="@style/point_text_50_dark_gray"
+        style="@style/common_text_24_bold_dark_gray"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:text=""
+        android:layout_marginTop="40dp"
+        android:includeFontPadding="false"
+        android:text="펫네임"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/home_tv_name_user"
-        style="@style/common_text_16_dark_gray"
+        style="@style/common_text_20_bold_dark_gray"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:gravity="center"
-        android:text=""
+        android:text="보호자이름"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_tv_name_pet" />
@@ -297,31 +280,29 @@
         app:layout_constraintTop_toBottomOf="@+id/home_iv_gallery" />
 
 
-
-
-
     <com.skydoves.elasticviews.ElasticButton
-    android:id="@+id/home_iv_date"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-android:background="@android:color/transparent"
-    style="@style/common_text_32_bold_dark_gray"
+        android:id="@+id/home_iv_date"
+        style="@style/common_text_32_bold_dark_gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="333"
+        android:layout_marginStart="20dp"
         android:textColor="@color/white"
-    android:text="333"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="@id/home_iv_gallery"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/home_iv_gallery" />
 
     <ImageView
         android:id="@+id/home_iv_pet"
         android:layout_width="200dp"
         android:layout_height="0dp"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintDimensionRatio="1:1"
         android:src="@drawable/img_chihuahua"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
 
     <ImageView
         android:id="@+id/home_iv_arrow_under"
@@ -334,54 +315,53 @@ android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent" />
 
 
-
     <ImageView
         android:id="@+id/home_iv_call"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/img_petopia_call"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/home_tv_call_title"
+        style="@style/common_text_24_bold_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="펫토피아 입국사무소"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintVertical_bias="0.2" />
 
-        <TextView
-            android:id="@+id/home_tv_call_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="펫토피아 입국사무소"
-            android:gravity="center"
-            app:layout_constraintVertical_bias="0.2"
-            style="@style/common_text_24_bold_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <TextView
-            android:id="@+id/home_tv_call_sub_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="버튼을 클릭해 화면 연결하기"
-            android:gravity="center"
-            app:layout_constraintVertical_bias="0.9"
-            app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/common_text_16_white"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+        android:id="@+id/home_tv_call_sub_title"
+        style="@style/common_text_16_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="버튼을 클릭해 화면 연결하기"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.9" />
 
     <com.skydoves.elasticviews.ElasticButton
         android:id="@+id/home_tv_guide"
         android:layout_width="100dp"
         android:layout_height="0dp"
-        app:layout_constraintVertical_bias="0.8"
-        app:layout_constraintDimensionRatio="1:0.7"
         android:background="@drawable/icon_petopia_call"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:0.7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
 
     <FrameLayout
         android:id="@+id/home_petopia_container"

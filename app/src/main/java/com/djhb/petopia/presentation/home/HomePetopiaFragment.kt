@@ -105,6 +105,7 @@ class HomePetopiaFragment : Fragment() {
             binding.homeImgNightBackground.visibility = View.VISIBLE
             binding.petopiaMoon.visibility = View.VISIBLE
             binding.firefly.visibility = View.VISIBLE
+            binding.homeImgBackground.visibility = View.GONE
             //글자색 흰색으로
             binding.homeTvNameUser.setTextColor(
                 ContextCompat.getColor(
@@ -123,7 +124,7 @@ class HomePetopiaFragment : Fragment() {
             binding.homeImgNightBackground.visibility = View.GONE
             binding.petopiaMoon.visibility = View.GONE
             binding.firefly.visibility = View.GONE
-
+            binding.homeImgBackground.visibility = View.VISIBLE
             binding.homeTvNameUser.setTextAppearance(R.style.common_text_16_dark_gray)
             binding.homeTvNamePet.setTextAppearance(R.style.common_text_16_dark_gray)
         }

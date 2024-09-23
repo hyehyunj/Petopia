@@ -75,13 +75,11 @@ class HomeEarthFragment : Fragment() {
         if (isAfterEightPM() || isBeforeEightAM()) {
             binding.earthNightSky.visibility = View.VISIBLE
             binding.homeImgNightBackground.visibility = View.VISIBLE
-            binding.homeImgBackground.visibility = View.GONE
 
 
         } else {
             binding.earthNightSky.visibility = View.GONE
             binding.homeImgNightBackground.visibility = View.GONE
-            binding.homeImgBackground.visibility = View.VISIBLE
 
         }
     }

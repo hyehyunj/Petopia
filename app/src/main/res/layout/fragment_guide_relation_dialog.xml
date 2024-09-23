@@ -54,6 +54,7 @@
                 android:background="@drawable/sel_btn_guide_appearance"
                 android:button="@android:color/transparent"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:text="@string/guide_relation_child" />
 
             <RadioButton
@@ -65,6 +66,7 @@
                 android:background="@drawable/sel_btn_guide_appearance"
                 android:button="@android:color/transparent"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:padding="24dp"
                 android:text="@string/guide_relation_younger"
                 app:layout_constraintEnd_toStartOf="@+id/guide_relation_dialog_rb_friend"
@@ -80,6 +82,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/sel_btn_guide_appearance"
                 android:button="@android:color/transparent"
+                android:includeFontPadding="false"
                 android:padding="24dp"
                 android:text="@string/guide_relation_friend"
                 app:layout_constraintBottom_toBottomOf="@+id/guide_relation_dialog_rb_child"
@@ -100,6 +103,7 @@
             android:background="@drawable/bg_gray_white"
             android:padding="4dp"
             android:text="@string/common_cancel"
+            android:includeFontPadding="false"
             app:button_duration="100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guide_relation_dialog_tv_complete"
@@ -117,6 +121,7 @@
             android:background="@drawable/bg_main_blue"
             android:padding="4dp"
             android:text="@string/common_complete"
+            android:includeFontPadding="false"
             app:button_duration="100"
             app:layout_constraintBottom_toBottomOf="@+id/guide_relation_dialog_tv_back"
             app:layout_constraintEnd_toEndOf="parent"
