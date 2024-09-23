@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentMyBinding
+import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.register.RegisterActivity
 import com.djhb.petopia.presentation.register.RegisterViewModel
 
@@ -60,6 +61,15 @@ class MyFragment : DialogFragment() {
         binding.myBtnLogout.setOnClickListener {
             logout()
         }
+
+        binding.myTvPetEdit.setOnClickListener {
+            MyPetEditFragment().show(childFragmentManager, "MY_PET_EDIT_FRAGMENT")
+        }
+        binding.myTvGuide.setOnClickListener {
+            (activity as MainActivity).welcomeGuide()
+        }
+
+
     }
 
     private fun modifyButtonClickListener() {
@@ -74,6 +84,8 @@ class MyFragment : DialogFragment() {
         }
     }
 
+
+
     private fun backButtonClickListener() {
         binding.myIvBack.setOnClickListener {
             dismiss()
@@ -85,6 +97,7 @@ class MyFragment : DialogFragment() {
             deleteUser()
         }
     }
+
 
 
     private fun logout() {

@@ -61,7 +61,7 @@
     <string name="guide_dog">강아지</string>
     <string name="guide_cat">고양이</string>
     <string name="guide_select_name">반려동물의 이름을 입력해주세요.</string>
-    <string name="guide_text_limit_20">20글자 이내</string>
+    <string name="guide_text_limit_20">이름을 입력해주세요.(20글자 이내)</string>
     <string name="guide_select_relation">반려동물을 생각했을 때\n떠오르는 이미지를 선택해주세요.</string>
     <string name="guide_relation_child">사랑스러운\n아이</string>
     <string name="guide_relation_younger">귀여운\n동생</string>

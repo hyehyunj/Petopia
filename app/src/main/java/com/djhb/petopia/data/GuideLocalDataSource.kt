@@ -113,9 +113,6 @@ object GuideLocalDataSource {
         if (pageNumber == 8) {
             guideModel = guideModel.copy(status = "ESSENTIAL_DONE")
         }
-        if (pageNumber == 9) {
-            guideModel = guideModel.copy(status = "OPTIONAL")
-        }
         if (pageNumber == 24) {
             guideModel = guideModel.copy(status = "DONE")
         }
@@ -160,6 +157,38 @@ object GuideLocalDataSource {
             )
         }
         return petList
+    }
+
+    fun getAppearanceListData(): List<String> {
+        return listOf(
+            "강아지 - 리트리버",
+            "강아지 - 말티즈",
+            "강아지 - 비숑",
+            "강아지 - 시바",
+            "강아지 - 시츄",
+            "강아지 - 웰시코기",
+            "강아지 - 치와와",
+            "강아지 - 포메라니안",
+            "강아지 - 푸들",
+            "고양이 - 노르웨이숲",
+            "고양이 - 러시안블루",
+            "고양이 - 샴",
+            "고양이 - 스코티쉬폴드",
+            "고양이 - 아메리칸숏헤어",
+            "고양이 - 아비시니안",
+            "고양이 - 코리안숏헤어",
+            "고양이 - 터키쉬앙고라",
+            "고양이 - 페르시안"
+        )
+    }
+
+    fun getRelationListData(guideOrMy:String): List<String> {
+       var list = listOf<String>()
+        when(guideOrMy){
+            "GUIDE" -> list = listOf("사랑스러운\n아이","귀여운\n동생","친한\n친구")
+                "MY" -> list = listOf("사랑스러운 아이","귀여운 동생","친한 친구")
+        }
+        return list
     }
 }
 

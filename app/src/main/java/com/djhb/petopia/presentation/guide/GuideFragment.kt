@@ -1,10 +1,11 @@
 package com.djhb.petopia.presentation.guide
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,8 +15,8 @@ import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentGuideBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
-import com.skydoves.elasticviews.elasticAnimation
 import io.github.muddz.styleabletoast.StyleableToast
+
 
 //가이드 프래그먼트 : 앱 사용방법과 특징을 안내하는 튜토리얼
 class GuideFragment : Fragment() {
@@ -91,12 +92,23 @@ class GuideFragment : Fragment() {
     private fun guideDataObserver() {
         //페이지 변화감지 : 다음으로 또는 뒤로가기 버튼 클릭에 따라 페이지 번호 변경
 
+        mainHomeGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                "DONE", "NONE" -> {
+                    parentFragmentManager.beginTransaction()
+                        .remove(this)
+                        .commit()
+                }
+                "OPTIONAL" -> guideViewModel.setWelcomeGuidePage()
 
+            }
+        }
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
+
             guideViewModel.makeGuideModel()
             when (it) {
+                7-> setBlur()
                 8 -> {
-//                    mainHomeGuideSharedViewModel.getPetData()
                     binding.apply {
                         guideTvProgressText.isVisible = false
                         guideIvProgressBar.isVisible = false
@@ -157,31 +169,13 @@ class GuideFragment : Fragment() {
             }
         }
 
-        mainHomeGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
-            if (it == "DONE" || it == "NONE")
-                parentFragmentManager.beginTransaction()
-                    .remove(this)
-                    .commit()
-        }
         mainHomeGuideSharedViewModel.currentHomeLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                0
-
-                -> if (mainHomeGuideSharedViewModel.guideStateLiveData.value != "ESSENTIAL" && mainHomeGuideSharedViewModel.guideStateLiveData.value != "DONE")
-
-                StyleableToast.makeText(
-                    requireActivity(),
-                    "아래로 이동해보세요!",
-                    R.style.toast_common
-                ).show()
-
                 1 -> if (mainHomeGuideSharedViewModel.guideFunctionLiveData.value != "MOVE_EARTH") guideViewModel.guideButtonClickListener(
                     "NEXT"
                 )
 
-                2
-
-                -> guideViewModel.guideButtonClickListener(
+                2-> guideViewModel.guideButtonClickListener(
                     "NEXT"
                 )
 
@@ -190,6 +184,29 @@ class GuideFragment : Fragment() {
         }
 
     }
+
+    private fun setBlur() {
+        binding.guideIvBlur.apply {
+            isVisible = true
+            val animation = AnimationUtils.loadAnimation(requireContext(), R.anim.blur)
+            animation.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+                }
+                override fun onAnimationEnd(animation: Animation?) {
+                    guideViewModel.guideButtonClickListener(
+                        "NEXT"
+                    )
+                    isVisible = false
+                }
+                override fun onAnimationRepeat(animation: Animation?) {
+                }
+            })
+            startAnimation(animation)
+
+        }
+    }
+
+
 }
 
 
