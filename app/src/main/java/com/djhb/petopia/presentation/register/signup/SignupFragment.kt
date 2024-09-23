@@ -54,9 +54,11 @@ class SignupFragment : Fragment() {
             if (!isViewMoreClicked) {
                 makeTermsVisible()
                 isViewMoreClicked = true
+                binding.btnViewmore.setImageResource(R.drawable.icon_minus)
             } else {
                 makeTermsGone()
                 isViewMoreClicked = false
+                binding.btnViewmore.setImageResource(R.drawable.icon_plus)
             }
         }
 
@@ -72,6 +74,7 @@ class SignupFragment : Fragment() {
 
             if (!isViewMoreClicked) {
                 makeTermsVisible()
+                binding.btnViewmore.setImageResource(R.drawable.icon_minus)
                 isViewMoreClicked = true
             }
 
