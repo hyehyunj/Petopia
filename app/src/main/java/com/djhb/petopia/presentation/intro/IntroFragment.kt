@@ -64,10 +64,11 @@ class IntroFragment : Fragment() {
                     1 -> binding.introBackground.setBackgroundResource(R.drawable.img_home_background)
                     2 ->binding.introBackground.setBackgroundResource(R.drawable.bridge)
                     3 ->binding.introBackground.setBackgroundResource(R.drawable.earth_background)
-                    4 -> {binding.introBackground.setBackgroundResource(R.drawable.img_login_cloud)
+                    4 -> {binding.introBackground.setBackgroundResource(R.drawable.img_petopia_call)
                         binding.introIndicator.isVisible = true
                         binding.introBtnComplete.isVisible = false}
-                    5 -> {binding.introIndicator.isVisible = false
+                    5 -> {binding.introBackground.setBackgroundResource(R.drawable.img_login_cloud)
+                        binding.introIndicator.isVisible = false
                         binding.introBtnComplete.isVisible = true}
                 }
             }

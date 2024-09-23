@@ -227,15 +227,15 @@ class MemoryFragment() : DialogFragment() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
-
         val size = Point()
         display.getSize(size)
         size.x
         size.y
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
+        val deviceHeight = size.y
         params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 1.8).toInt()
+        params?.height = (deviceHeight * 1.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
