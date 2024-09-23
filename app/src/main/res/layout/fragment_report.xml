@@ -32,8 +32,9 @@
         style="@style/common_text_20_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
         android:text="신고"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/report_tv_title" />
@@ -42,6 +43,7 @@
         android:id="@+id/report_rg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:checkedButton="@+id/report_rb_1"
         app:layout_constraintStart_toStartOf="@id/report_tv_report_title"
         app:layout_constraintTop_toBottomOf="@id/report_tv_report_title">
@@ -89,6 +91,8 @@
         style="@style/common_text_20_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:includeFontPadding="false"
         android:text="신고사유"
         app:layout_constraintStart_toStartOf="@id/report_rg"
         app:layout_constraintTop_toBottomOf="@id/report_rg" />
@@ -96,14 +100,15 @@
     <EditText
         android:id="@+id/et_report_content"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:padding="10dp"
-        android:layout_marginHorizontal="30dp"
+        android:layout_height="250dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/border_letter_round"
-        android:hint="신고내용"
         android:gravity="start"
+        android:hint="신고내용"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="@+id/tv_report_content_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_report_content_title"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_report_content_title" />
 
     <!-- 차단
     <TextView
@@ -151,10 +156,12 @@
     <TextView
         android:id="@+id/report_tv_complete"
         style="@style/common_text_16_bold_white"
-        android:layout_width="120dp"
-        android:layout_height="66dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
         android:background="@drawable/sel_btn_round_square_blue_white"
+        android:gravity="center"
+        android:includeFontPadding="false"
         android:text="@string/common_complete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
