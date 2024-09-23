@@ -2,11 +2,11 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/user_modify_fragment_container"
+    android:id="@+id/frame_user_delete"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".presentation.my.UserModifyFragment">
+    tools:context=".presentation.my.DeleteUserFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,57 +15,41 @@
         android:paddingHorizontal="15dp">
 
         <TextView
-            android:id="@+id/tv_modify_title"
+            android:id="@+id/tv_user_delete_title"
             style="@style/common_text_24_bold_dark_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="50dp"
-            android:text="닉네임 설정" />
+            android:layout_marginBottom="20dp"
+            android:text="@string/delete_user_title" />
+
 
         <TextView
-            android:id="@+id/tv_modify_subtitle"
+            android:id="@+id/tv_user_delete_content"
             style="@style/common_text_14_gray"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:text="@string/my_modify_nickname_rule" />
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/delete_user_content" />
 
+        <CheckBox
+            android:id="@+id/cb_user_delete_last_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="동의합니다." />
 
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
+            android:id="@+id/user_delete_button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:hint="@string/modify_nickname"
-            android:textColorHint="@color/dark_gray"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:boxStrokeColor="@color/main_blue"
-            app:boxStrokeErrorColor="@color/error"
-            app:boxStrokeWidth="1dp"
-            app:hintTextColor="@color/main_blue">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_modify_nickname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLength="6"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:id="@+id/signup_button_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <com.skydoves.elasticviews.ElasticButton
-                android:id="@+id/btn_modify_cancel"
+                android:id="@+id/btn_user_delete_cancel"
                 style="@style/common_text_16_dark_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,7 +63,7 @@
 
 
             <com.skydoves.elasticviews.ElasticButton
-                android:id="@+id/btn_modify_check"
+                android:id="@+id/btn_user_delete_check"
                 style="@style/common_text_16_bold_white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,6 +78,5 @@
 
         </LinearLayout>
     </LinearLayout>
-
 
 </FrameLayout>

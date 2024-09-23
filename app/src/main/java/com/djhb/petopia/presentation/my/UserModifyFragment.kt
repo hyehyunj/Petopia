@@ -44,7 +44,7 @@ class UserModifyFragment : DialogFragment() {
 
         initDialog()
 
-        binding.btnSignupCheck.setOnClickListener {
+        binding.btnModifyCheck.setOnClickListener {
             if (binding.etModifyNickname.text.toString()
                     .isNotEmpty() && binding.etModifyNickname.text.toString().length <= 6
             ) {
@@ -55,7 +55,7 @@ class UserModifyFragment : DialogFragment() {
 
         }
 
-        binding.btnSignupCancel.setOnClickListener {
+        binding.btnModifyCancel.setOnClickListener {
             parentFragmentManager.beginTransaction().remove(this).commit()
         }
 

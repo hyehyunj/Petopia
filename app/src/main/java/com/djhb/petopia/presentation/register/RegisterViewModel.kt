@@ -53,6 +53,15 @@ class RegisterViewModel :
         }
     }
 
+    fun modifyPassword(password: String) {
+        _userPassword.value = password
+
+        LoginData.loginUser?.let { user ->
+            user.password = password
+            updateUser()
+        }
+    }
+
     fun setUserData(
         userNickname: String,
         userId: String,
@@ -83,6 +92,21 @@ class RegisterViewModel :
             }
         }
     }
+
+//    fun checkPasswordMatch(
+//        inputPassword: String,
+//        onSuccess: () -> Unit,
+//        onFailure: () -> Unit
+//    ) {
+//        viewModelScope.launch {
+//            val user = signRepository.selectUser(inputPassword)
+//            if(user != null && user.password == inputPassword){
+//                onSuccess()
+//            }else{
+//                onFailure()
+//            }
+//        }
+//    }
 
     fun isIdExist(
         id: String, onResult: (Boolean) -> Unit

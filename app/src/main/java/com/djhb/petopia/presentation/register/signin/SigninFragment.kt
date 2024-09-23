@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.register.signin
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.SignRepositoryImpl
 import com.djhb.petopia.databinding.FragmentSigninBinding
@@ -60,6 +62,30 @@ class SigninFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 자동로그인
+        val sharedPref = requireContext().getSharedPreferences("login_data", Context.MODE_PRIVATE)
+        val savedId = sharedPref.getString("saved_id", null)
+        val savedPassword = sharedPref.getString("saved_password", null)
+
+        if (savedId != null && savedPassword != null) {
+            registerViewModel.signing(
+                savedId, savedPassword,
+                onSuccess = {
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                },
+                onFailure = {
+                    StyleableToast.makeText(
+                        requireActivity(),
+                        "아이디 또는 비밀번호를 확인해주세요.",
+                        R.style.toast_warning
+                    ).show()
+                }
+            )
+        }
+        // google 로그인
+
         auth = FirebaseAuth.getInstance()
 
         val googleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -84,6 +110,11 @@ class SigninFragment : Fragment() {
                         "로그인 완료",
                         R.style.toast_common
                     ).show()
+
+                    if (binding.cbAutoSignin.isChecked) saveSignInData(
+                        userInputId,
+                        userInputPassword
+                    )
 
                     val intent = Intent(requireContext(), MainActivity::class.java)
                     startActivity(intent)
@@ -196,6 +227,14 @@ class SigninFragment : Fragment() {
             }
     }
 
+    fun saveSignInData(id: String, password: String) {
+        val sharedPref = requireContext().getSharedPreferences("login_data", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString("saved_id", id)
+            putString("saved_password", password)
+            apply()
+        }
+    }
 
     fun showUndoToast() {
         StyleableToast.makeText(
