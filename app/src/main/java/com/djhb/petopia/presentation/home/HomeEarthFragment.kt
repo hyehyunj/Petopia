@@ -50,8 +50,8 @@ class HomeEarthFragment : Fragment() {
         homeEarthButtonClickListener()
         homeEarthDataObserver()
         // 꽃잎 애니메이션 시작
-//        startPetalsAnimation()
-//        updateUIBasedOnTime()
+        startPetalsAnimation()
+        updateUIBasedOnTime()
     //시간 체크
     }
 
