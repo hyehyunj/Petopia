@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.intro
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.djhb.petopia.data.AdminPostModel
+import com.djhb.petopia.data.DDayModel
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.data.IntroLocalDataSource
 import com.djhb.petopia.data.IntroModel
@@ -32,28 +34,27 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlin.math.sign
 
-//관리자게시글 공유 뷰모델
+//인트로 뷰모델
 class IntroViewModel(private val introRepository: IntroRepository) :
     ViewModel() {
-    private val user = LoginData.loginUser
 
-    // 배웅하기 리스트
-    private val _adminPostLeftListLiveData = MutableLiveData<List<AdminPostModel>>(listOf())
-    val adminPostLeftListLiveData: LiveData<List<AdminPostModel>> = _adminPostLeftListLiveData
-
-    // 잘지내기 리스트
-    private val _adminPostRightListLiveData = MutableLiveData<List<AdminPostModel>>(listOf())
-    val adminPostRightListLiveData: LiveData<List<AdminPostModel>> = _adminPostRightListLiveData
-
-
-    //소개글 불러오기
+    //인트로 리스트를 불러오는 함수
     fun loadInitIntroList() : List<IntroModel> {
         return introRepository.getIntroData()
     }
 
+    //인트로 스킵여부를 불러오는 함수
+    fun loadIntroSkipData(context: Context) : Boolean {
+        return introRepository.loadIntroSkip(context)
+    }
 
+    //인트로 스킵여부를 저장하는 함수
+    fun updateIntroSkipData(context: Context) {
+        viewModelScope.launch {
+            introRepository.updateIntroSkip(context, false)
+        }
+    }
 }
-
 
 class IntroViewModelFactory : ViewModelProvider.Factory {
     private val introRepository = IntroRepositoryImpl(IntroLocalDataSource)

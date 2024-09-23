@@ -19,7 +19,7 @@
 
     <me.relex.circleindicator.CircleIndicator
         android:id="@+id/intro_indicator"
-        android:layout_width="50dp"
+        android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_margin="50dp"
         app:ci_drawable="@drawable/bg_round_main_blue"
@@ -29,5 +29,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/intro_btn_complete"
+        style="@style/common_text_16_bold_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_main_blue"
+        android:padding="4dp"
+        android:visibility="gone"
+        android:text="@string/intro_start"
+        app:button_duration="100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

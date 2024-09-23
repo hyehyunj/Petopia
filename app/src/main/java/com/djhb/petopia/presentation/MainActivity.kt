@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
@@ -18,6 +19,8 @@ import com.djhb.petopia.presentation.guide.GuideFragment
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
 import com.djhb.petopia.presentation.intro.IntroFragment
+import com.djhb.petopia.presentation.intro.IntroViewModel
+import com.djhb.petopia.presentation.intro.IntroViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,6 +28,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
     private val mainHomeGuideSharedViewModel by viewModels<MainHomeGuideSharedViewModel> {
         MainHomeGuideSharedViewModelFactory()
+    }
+    private val introViewModel by viewModels<IntroViewModel> {
+        IntroViewModelFactory()
     }
     private lateinit var viewPager: ViewPager2
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -42,6 +48,19 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
+        mainDataObserver()
+        introViewModel.updateIntroSkipData(this)
+        if(introViewModel.loadIntroSkipData(this)) else showIntroFragment()
+
+        //레이아웃 초기화
+        initLayout()
+
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+
+    private fun mainDataObserver(){
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
             when (it) {
                 "NONE" -> binding.mainViewPager.isUserInputEnabled = true
@@ -72,12 +91,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
-        showIntroFragment()
-        //레이아웃 초기화
-        initLayout()
-
-        onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
     //레이아웃 초기화 함수 : 뷰페이저, 탭레이아웃 연결
@@ -97,18 +110,6 @@ class MainActivity : AppCompatActivity() {
         AdminExileDialogFragment().show(supportFragmentManager, "ADMIN_EXILE_DIALOG_FRAGMENT")
     }
 
-
-
-
-    //    fun clearGuide() {
-//        binding.mainViewPager.isUserInputEnabled = true
-//        supportFragmentManager.beginTransaction()
-//            .remove(GuideFragment())
-//            .commit()
-//    }
-    //이 3줄 추가하면 다이얼로그! 버튼이벤트.setOnClickListener {
-    //        (activity as MainActivity).showDialog()
-    //    }
 //다이얼로그 띄우는 함수
     fun showDialog() {
         mainDialogSharedViewModel = ViewModelProvider(this)[MainDialogSharedViewModel::class.java]
@@ -152,7 +153,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun showIntroFragment() {
+    private fun showIntroFragment() {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.main_sub_frame, IntroFragment()
@@ -160,9 +161,12 @@ class MainActivity : AppCompatActivity() {
             .setReorderingAllowed(true)
             .addToBackStack(null)
             .commit()
-
     }
-
+    fun removeIntroFragment() {
+        supportFragmentManager.beginTransaction()
+            .remove(IntroFragment())
+            .commit()
+    }
 
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {
