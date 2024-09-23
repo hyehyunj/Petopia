@@ -148,6 +148,29 @@ class SignupFragment : Fragment() {
                 return false
             }
         }
+        if (userNickname.length > 6) {
+            StyleableToast.makeText(
+                requireActivity(),
+                "닉네임은 6자 이하로 입력해주세요",
+                R.style.toast_warning
+            ).show()
+        }
+
+        if (!userId.matches(Regex("^[a-zA-Z0-9]*$"))) {
+            StyleableToast.makeText(
+                requireActivity(),
+                "아이디는 영문자와 숫자로만 입력해주세요",
+                R.style.toast_warning
+            ).show()
+        }
+
+        if (userId.length > 12) {
+            StyleableToast.makeText(
+                requireActivity(),
+                "아이디는 12자 이하로 입력해주세요",
+                R.style.toast_warning
+            ).show()
+        }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
             StyleableToast.makeText(
@@ -166,6 +189,7 @@ class SignupFragment : Fragment() {
             ).show()
             return false
         }
+
 
 
         if (userPassword.length < 8 || userPasswordCheck.length < 8) {
