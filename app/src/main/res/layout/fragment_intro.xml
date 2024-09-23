@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/intro_background"
+    android:background="@drawable/img_login_cloud"
+    tools:context=".presentation.intro.IntroFragment">
+
+    <com.example.lib.Deck
+        android:id="@+id/intro_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <me.relex.circleindicator.CircleIndicator
+        android:id="@+id/intro_indicator"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_margin="50dp"
+        app:ci_drawable="@drawable/bg_round_main_blue"
+        app:ci_height="7dp"
+        app:ci_margin="4dp"
+        app:ci_width="7dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

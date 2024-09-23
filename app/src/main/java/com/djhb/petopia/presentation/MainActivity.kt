@@ -17,8 +17,9 @@ import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
+import com.djhb.petopia.presentation.intro.IntroFragment
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity(){
         }
 
 
-
+        showIntroFragment()
         //레이아웃 초기화
         initLayout()
 
@@ -144,6 +145,17 @@ class MainActivity : AppCompatActivity(){
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.main_guide_frame, GuideFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+
+    }
+
+    fun showIntroFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_sub_frame, IntroFragment()
             )
             .setReorderingAllowed(true)
             .addToBackStack(null)

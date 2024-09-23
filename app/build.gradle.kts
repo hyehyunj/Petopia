@@ -50,6 +50,7 @@ android {
 
 
 dependencies {
+    implementation("com.codemybrainsout.onboarding:onboarder:1.0.4")
     implementation("com.github.mmin18:RealtimeBlurView:82df3520b4")
     implementation("com.github.siralam:DropDownView:b664b916de")
     implementation("com.github.RiccardoMoro:RMSwitch:v1.2.2")
