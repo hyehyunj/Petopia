@@ -10,53 +10,52 @@
     <!--저녁 8시 이후 요소-->
     <ImageView
         android:id="@+id/earth_night_sky"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/earth_night_sky"
-        />
+        android:visibility="gone" />
+
     <ImageView
         android:id="@+id/home_img_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/bg_translucent_background_down"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/home_img_night_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         android:alpha="0.4"
+        android:background="@color/black"
         android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBaseline_toBottomOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBaseline_toBottomOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/home_earth_fab_top"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:src="@drawable/icon_arrow_translucent_white"
         android:rotation="180"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/icon_arrow_translucent_white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:shapeAppearanceOverlay="@style/common_fab"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/common_fab" />
 
 
     <ImageView
         android:id="@+id/home_earth_iv_my"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/sel_icon_setting_blue_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/home_earth_fab_top" />
@@ -65,48 +64,92 @@
         android:id="@+id/home_earth_iv_cloud_left"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+       android:layout_marginTop="40dp"
         android:background="@drawable/img_earth_clouds"
+        android:scaleX="3"
+        android:scaleY="3"
         app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintEnd_toStartOf="@+id/home_earth_iv_cloud_right"
-        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_earth_fab_top" />
+
+    <TextView
+        style="@style/common_text_16_white"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/bg_translucent_black_square"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="배웅하기"
+        app:layout_constraintEnd_toEndOf="@id/home_earth_iv_cloud_left"
+        app:layout_constraintStart_toStartOf="@id/home_earth_iv_cloud_left"
+        app:layout_constraintTop_toBottomOf="@id/home_earth_iv_cloud_left" />
 
     <ImageView
         android:id="@+id/home_earth_iv_cloud_right"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
         android:background="@drawable/img_earth_clouds"
+        android:scaleX="3"
+        android:scaleY="3"
         app:layout_constraintDimensionRatio="2:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="0.5"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/home_earth_iv_cloud_left"
         app:layout_constraintTop_toBottomOf="@+id/home_earth_iv_cloud_left" />
+
+
+    <TextView
+        style="@style/common_text_16_white"
+        android:layout_width="80dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/bg_translucent_black_square"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="잘지내기"
+        app:layout_constraintEnd_toEndOf="@id/home_earth_iv_cloud_right"
+        app:layout_constraintStart_toStartOf="@id/home_earth_iv_cloud_right"
+        app:layout_constraintTop_toBottomOf="@id/home_earth_iv_cloud_right" />
 
 
     <ImageView
         android:id="@+id/home_earth_iv_community"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/earth_tree"
         android:layout_marginBottom="14dp"
-        app:layout_constraintVertical_bias="0.8"
+        android:src="@drawable/earth_tree"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
+    <TextView
+        style="@style/common_text_20_bold_white"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="150dp"
+        android:background="@drawable/bg_translucent_black_square"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="커뮤니티"
+        app:layout_constraintEnd_toEndOf="@id/home_earth_iv_community"
+        app:layout_constraintStart_toStartOf="@id/home_earth_iv_community"
+        app:layout_constraintTop_toTopOf="@id/home_earth_iv_community" />
+
 
     <ImageView
         android:id="@+id/earth_petals1"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:src="@drawable/fallen_leaves1"
-        android:translationY="-510dp"
-        />
-
+        android:translationY="-510dp" />
 
 
     <ImageView
@@ -114,24 +157,21 @@
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:src="@drawable/fallen_leaves2"
-        android:translationY="-510dp"
-       />
+        android:translationY="-510dp" />
 
     <ImageView
         android:id="@+id/earth_petals3"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:src="@drawable/fallen_leaves1"
-        android:translationY="-510dp"
-        />
+        android:translationY="-510dp" />
 
     <ImageView
         android:id="@+id/earth_petals4"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:src="@drawable/fallen_leaves2"
-        android:translationY="-510dp"
-        />
+        android:translationY="-510dp" />
 
     <FrameLayout
         android:id="@+id/home_earth_container"

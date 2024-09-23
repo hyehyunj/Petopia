@@ -52,6 +52,7 @@
                 android:button="@android:color/transparent"
                 android:checked="true"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:text="@string/guide_dog" />
 
 
@@ -64,6 +65,7 @@
                 android:background="@drawable/sel_btn_guide_appearance_right"
                 android:button="@android:color/transparent"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:text="@string/guide_cat" />
 
         </RadioGroup>
@@ -81,13 +83,13 @@
         <ImageView
             android:id="@+id/guide_appearance_dialog_iv_pet"
             android:layout_width="100dp"
-            app:layout_constraintDimensionRatio="1:1"
             android:layout_height="0dp"
             android:layout_margin="16dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guide_appearance_dialog_tv_back"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rv"
-            app:layout_constraintBottom_toTopOf="@+id/guide_appearance_dialog_tv_back"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guide_appearance_dialog_rv" />
 
 
         <com.skydoves.elasticviews.ElasticButton
@@ -95,8 +97,8 @@
             style="@style/common_text_16_dark_gray"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginVertical="20dp"
+            android:layout_marginStart="16dp"
             android:layout_weight="1"
             android:background="@drawable/bg_gray_white"
             android:padding="4dp"

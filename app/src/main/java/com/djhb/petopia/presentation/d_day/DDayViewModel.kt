@@ -67,15 +67,26 @@ class DDayViewModel(private val dDayRepository: DDayRepository,
 
     //디데이 계산해주는 함수
     fun calculateDate() {
-        Log.d("디데이모델날짜","${_dDayModelLiveData.value?.date}")
-        Log.d("날짜","${_userDateLiveData.value}")
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        _userDateLiveData.value = LocalDate.parse(_dDayModelLiveData.value?.date, formatter)
-        val date = _userDateLiveData.value
-        val today = LocalDate.now()
-        val calculateResult = ChronoUnit.DAYS.between(today, date)
-        _dDayLiveData.value = if (calculateResult >= 0) "-${calculateResult}" else "+${-calculateResult}"
-        updateDDayModel()
+        val dDayDate = _dDayModelLiveData.value?.date
+        Log.d("디데이모델날짜", "$dDayDate")
+        Log.d("날짜", "${_userDateLiveData.value}")
+
+        if (!dDayDate.isNullOrBlank()) {
+            try {
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                _userDateLiveData.value = LocalDate.parse(dDayDate, formatter)
+                val date = _userDateLiveData.value
+                val today = LocalDate.now()
+                val calculateResult = ChronoUnit.DAYS.between(today, date)
+                _dDayLiveData.value = if (calculateResult >= 0) "-${calculateResult}" else "+${-calculateResult}"
+                updateDDayModel()
+            } catch (e: Exception) {
+                Log.e("DDayViewModel", "날짜 파싱 오류: ${e.message}")
+            }
+        } else {
+            Log.e("DDayViewModel", "디데이 날짜가 비어있거나 잘못되었습니다.")
+            // 추가적인 에러 처리를 여기에 구현할 수 있습니다.
+        }
     }
 
 
