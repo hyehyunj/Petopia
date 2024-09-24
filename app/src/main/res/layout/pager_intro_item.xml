@@ -19,45 +19,34 @@
         android:id="@+id/intro_item_iv_icon"
         android:layout_width="80dp"
         android:layout_height="0dp"
-        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/intro_item_tv_title"
         app:layout_constraintDimensionRatio="1:1"
-app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
 
     <TextView
         android:id="@+id/intro_item_tv_title"
         style="@style/point_text_40_dark_gray"
-        android:textColor="@color/main_blue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:text="Title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intro_item_iv_icon"/>
-
-
-    <ImageView
-        android:id="@+id/intro_item_iv_image"
-        android:layout_width="100dp"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:scaleType="fitCenter"
+        android:textColor="@color/main_blue"
         app:layout_constraintBottom_toTopOf="@+id/intro_item_tv_info"
-        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/intro_item_tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/intro_item_iv_icon" />
 
     <TextView
         android:id="@+id/intro_item_tv_info"
         style="@style/common_text_20_bold_dark_gray"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:text="본문 읽기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
