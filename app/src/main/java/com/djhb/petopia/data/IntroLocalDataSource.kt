@@ -19,8 +19,8 @@ object IntroLocalDataSource {
             R.drawable.icon_paw,
             R.drawable.icon_rainbow,
             R.drawable.icon_tree,
-            R.drawable.icon_petopia_call,
-            R.drawable.logo,)
+            R.drawable.icon_intro_call,
+            R.drawable.icon_logo_intro,)
 
         val introInfoList = listOf(
             "화면은 3층 구조입니다.\n\n위 아래로 이동해\n여러가지 기능을\n이용해보세요!",

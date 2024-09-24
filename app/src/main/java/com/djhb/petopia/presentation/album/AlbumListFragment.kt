@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.album
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentAlbumListBinding
+import com.djhb.petopia.presentation.MainActivity
 
-
+//앨범리스트 프래그먼트 : 앨범 두번째 페이지
 class AlbumListFragment : Fragment() {
 
     private lateinit var albumListRecyclerViewAdapter: AlbumListRecyclerViewAdapter
@@ -21,7 +24,6 @@ class AlbumListFragment : Fragment() {
         FragmentAlbumListBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-
     private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
         AlbumSharedViewModelFactory()
     }
@@ -40,15 +42,17 @@ class AlbumListFragment : Fragment() {
         albumButtonClickListener()
         //데이터 변화감지
         albumDataObserver()
+        //앨범 리스트 데이터 불러오기
         albumSharedViewModel.loadAlbumList()
     }
 
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun albumButtonClickListener() {
-        //뒤로가기버튼 클릭이벤트 : 앨범 종료
         binding.apply {
+            //뒤로가기버튼 클릭이벤트 : 앨범 종료
             albumIvBack.setOnClickListener {
+                (activity as MainActivity).removeAlbumFragment()
             }
 
             //삭제버튼 클릭이벤트 : 체크박스 활성화
@@ -59,7 +63,7 @@ class AlbumListFragment : Fragment() {
             //추가버튼 클릭이벤트 : 상세페이지로 이동하여 사진 추가
             albumIvAdd.setOnClickListener {
                 albumSharedViewModel.changeLayoutMode("ADD")
-                albumSharedViewModel.preparePhotoList()
+                albumSharedViewModel.prepareNewAlbumList()
                 AlbumEditFragment().show(childFragmentManager, "ALBUM_EDIT_FRAGMENT")
                 if (albumSharedViewModel.removeModeLiveData.value == "REMOVE") albumSharedViewModel.cancelRemoveMode()
             }
@@ -89,14 +93,15 @@ class AlbumListFragment : Fragment() {
 
         //삭제모드 변화감지
         albumSharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
+            Log.d("클릭", "it")
             albumListRecyclerViewAdapter.updateRemoveMode(it)
-            albumSharedViewModel.updateRemoveGalleryList(it)
+            albumSharedViewModel.updateRemovedAlbumList(it)
         }
 
         //삭제할 사진 클릭 감지
-        albumSharedViewModel.checkedPhotoLiveData.observe(viewLifecycleOwner) {
+        albumSharedViewModel.checkedAlbumLiveData.observe(viewLifecycleOwner) {
             albumListRecyclerViewAdapter.updateCheckedList(
-                albumSharedViewModel.removePhotoList.toList(),
+                albumSharedViewModel.removeAlbumList.toList(),
                 it
             )
         }
@@ -116,11 +121,15 @@ class AlbumListFragment : Fragment() {
             albumSharedViewModel.albumListLiveData.value ?: listOf(),
             //사진 클릭이벤트 : 상세페이지로 이동하여 사진 편집, 삭제모드인 경우 삭제할 항목에 추가
             itemClickListener = { item, position ->
-                albumSharedViewModel.loadUriList(item)
                 when (albumSharedViewModel.removeModeLiveData.value) {
                     "COMPLETE" -> {
+                        albumSharedViewModel.loadUriList(item)
                         albumSharedViewModel.changeLayoutMode("READ")
-                        AlbumReadFragment().show(childFragmentManager, "ALBUM_READ_FRAGMENT")
+                        showAlbumReadFragment()
+//                        AlbumReadFragment().show(childFragmentManager, "ALBUM_READ_FRAGMENT")
+                    }
+                    "REMOVE" -> {
+                        albumSharedViewModel.considerRemoveAlbumList(item, position)
                     }
                 }
             },
@@ -134,6 +143,14 @@ class AlbumListFragment : Fragment() {
         binding.albumRv.layoutManager = GridLayoutManager(requireContext(), 1)
     }
 
+fun showAlbumReadFragment() {
+
+    childFragmentManager.beginTransaction()
+        .replace(R.id.album_frame, AlbumReadFragment())
+        .setReorderingAllowed(true)
+        .addToBackStack(null)
+        .commit()
+}
 
     //뒤로가기 버튼 함수 : 홈프래그먼트로 돌아간다.
 //    private fun btnBackListener() {

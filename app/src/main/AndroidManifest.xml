@@ -38,7 +38,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"
+            />
         <receiver
             android:name=".presentation.d_day.DDayAlarmReceiver"
             android:exported="true" >

@@ -19,14 +19,12 @@ class IntroPagerAdapter(
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view = LayoutInflater.from(context).inflate(R.layout.pager_intro_item, container, false)
         container?.addView(view, 0)
-        if(position == 0 || position == 4) {
+        if(position == 0 || position == 5) {
             view.findViewById<ImageView>(R.id.intro_item_iv_background).setImageResource(R.drawable.bg_intro_gradient)
         }
-
         view.findViewById<TextView>(R.id.intro_item_tv_title).text = items[position].introTitle
         view.findViewById<ImageView>(R.id.intro_item_iv_icon).setBackgroundResource(items[position].introImage)
         view.findViewById<TextView>(R.id.intro_item_tv_info).text = items[position].introInfo
-
 
         return view
     }

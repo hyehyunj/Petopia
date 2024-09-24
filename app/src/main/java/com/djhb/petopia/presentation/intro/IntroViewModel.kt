@@ -33,6 +33,7 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlin.math.sign
+import kotlin.math.truncate
 
 //인트로 뷰모델
 class IntroViewModel(private val introRepository: IntroRepository) :
@@ -51,7 +52,7 @@ class IntroViewModel(private val introRepository: IntroRepository) :
     //인트로 스킵여부를 저장하는 함수
     fun updateIntroSkipData(context: Context) {
         viewModelScope.launch {
-            introRepository.updateIntroSkip(context, false)
+            introRepository.updateIntroSkip(context, true)
         }
     }
 }

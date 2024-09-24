@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.djhb.petopia.databinding.FragmentAlbumMainBinding
+import com.djhb.petopia.presentation.MainActivity
 
 
 class AlbumMainFragment : Fragment() {
@@ -44,7 +45,9 @@ class AlbumMainFragment : Fragment() {
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun albumMainButtonClickListener() {
-
+binding.albumBtnBack.setOnClickListener {
+    (activity as MainActivity).removeAlbumFragment()
+}
 
     }
 

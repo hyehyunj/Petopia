@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -50,7 +49,7 @@ class AlbumReadFragment : DialogFragment() {
 //                )
 //            }
 //        }
-        albumSharedViewModel.currentPhotoLiveData.observe(viewLifecycleOwner) {
+        albumSharedViewModel.currentAlbumLiveData.observe(viewLifecycleOwner) {
             readOnlyMode(
                 it
             )

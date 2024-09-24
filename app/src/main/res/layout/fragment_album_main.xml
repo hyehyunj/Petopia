@@ -24,20 +24,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:src="@drawable/sel_btn_left"
-            app:layout_constraintBottom_toBottomOf="@id/album_btn_remove"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-
-        <ImageView
-            android:id="@+id/album_btn_remove"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="48dp"
-            android:src="@drawable/icon_delete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/album_btn_back" />
-
 
         <TextView
             android:id="@+id/album_tv_title"
@@ -47,7 +35,6 @@
             android:layout_marginBottom="16dp"
             android:text="누구와의 앨범"
             app:layout_constraintBottom_toTopOf="@+id/album_iv_title"
-            app:layout_constraintEnd_toEndOf="@+id/album_btn_remove"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/album_btn_back"
             app:layout_constraintTop_toTopOf="parent"
@@ -57,10 +44,11 @@
             android:id="@+id/album_iv_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/img_photo_frame"
+            android:layout_marginEnd="48dp"
+            android:src="@drawable/img_persian"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@+id/album_btn_remove"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/album_btn_back"
             app:layout_constraintTop_toBottomOf="@+id/album_tv_title" />

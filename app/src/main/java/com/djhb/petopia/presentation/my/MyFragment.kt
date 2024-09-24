@@ -58,15 +58,19 @@ class MyFragment : DialogFragment() {
 
 
     private fun myButtonClickListener() {
-        binding.myBtnLogout.setOnClickListener {
-            logout()
-        }
 
         binding.myTvPetEdit.setOnClickListener {
             MyPetEditFragment().show(childFragmentManager, "MY_PET_EDIT_FRAGMENT")
         }
+        binding.myTvPetopiaIntro.setOnClickListener {
+            (activity as MainActivity).showIntroFragment()
+        }
         binding.myTvGuide.setOnClickListener {
             (activity as MainActivity).welcomeGuide()
+        }
+
+        binding.myBtnLogout.setOnClickListener {
+            logout()
         }
 
 
@@ -131,26 +135,7 @@ class MyFragment : DialogFragment() {
     }
 
 
-    //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현
-    private fun initDialog() {
-        val windowManager =
-            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-
-        val size = Point()
-        display.getSize(size)
-        size.x
-        size.y
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        params?.width = (deviceWidth * 1).toInt()
-        params?.height = (deviceWidth * 2.1).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
     override fun onResume() {
         super.onResume()
-        initDialog()
     }
 }

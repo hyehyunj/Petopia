@@ -13,6 +13,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.ActivityMainBinding
 import com.djhb.petopia.presentation.admin.AdminExileDialogFragment
+import com.djhb.petopia.presentation.album.AlbumFragment
 import com.djhb.petopia.presentation.dialog.DialogFragment
 import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
@@ -21,6 +22,7 @@ import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
 import com.djhb.petopia.presentation.intro.IntroFragment
 import com.djhb.petopia.presentation.intro.IntroViewModel
 import com.djhb.petopia.presentation.intro.IntroViewModelFactory
+import com.djhb.petopia.presentation.my.MyFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -153,28 +155,68 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun showIntroFragment() {
+    //앨범 프래그먼트 호출해주는 함수
+    fun showAlbumFragment() {
         supportFragmentManager.beginTransaction()
             .replace(
-                R.id.main_sub_frame, IntroFragment()
+                R.id.main_Intro_frame, AlbumFragment()
             )
             .setReorderingAllowed(true)
             .addToBackStack(null)
             .commit()
     }
-    fun removeIntroFragment() {
+
+    fun removeAlbumFragment() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
+        if (fragment is AlbumFragment) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.search_recommend_exit,R.anim.search_recommend_exit)
+                .remove(fragment)
+                .commit()
+        }
+    }
+    //마이 프래그먼트 호출해주는 함수
+    fun showMyFragment() {
         supportFragmentManager.beginTransaction()
-            .remove(IntroFragment())
+            .replace(
+                R.id.main_Intro_frame, MyFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
             .commit()
+    }
+
+    //인트로 프래그먼트 호출해주는 함수
+    fun showIntroFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_Intro_frame, IntroFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+    //인트로 프래그먼트 제거해주는 함수
+    fun removeIntroFragment() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
+        if (fragment is IntroFragment) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.disappear,R.anim.disappear)
+                .remove(fragment)
+                .commit()
+        }
     }
 
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {
         moveToPetopia()
         binding.mainViewPager.isUserInputEnabled = true
-        supportFragmentManager.beginTransaction()
-            .remove(GuideFragment())
-            .commit()
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_guide_frame)
+        if (fragment is GuideFragment) {
+            supportFragmentManager.beginTransaction()
+                .remove(fragment)
+                .commit()
+        }
 
     }
 

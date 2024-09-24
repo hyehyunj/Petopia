@@ -10,20 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.databinding.FragmentAlbumBinding
 import com.wajahatkarim3.easyflipviewpager.BookFlipPageTransformer2
 
-
-class AlbumFragment : DialogFragment() {
-
-
+//앨범 프래그먼트
+class AlbumFragment : Fragment() {
     private val _binding: FragmentAlbumBinding by lazy {
         FragmentAlbumBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-
     private lateinit var albumViewPager: ViewPager2
     private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
         AlbumSharedViewModelFactory()
@@ -42,9 +40,8 @@ class AlbumFragment : DialogFragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-        initDialog()
+//        initDialog()
         initAlbumViewPager()
-        albumSharedViewModel.loadAlbumList()
     }
 
 
@@ -74,23 +71,26 @@ class AlbumFragment : DialogFragment() {
 
     }
 
+fun fixPage() {
+    binding.albumPager.isUserInputEnabled = true
+}
 
     //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현
-    private fun initDialog() {
-        val windowManager =
-            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-
-        val size = Point()
-        display.getSize(size)
-        size.x
-        size.y
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        params?.width = (deviceWidth * 1).toInt()
-        params?.height = (deviceWidth * 2.1).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
+//    private fun initDialog() {
+//        val windowManager =
+//            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
+//        val display = windowManager.defaultDisplay
+//
+//        val size = Point()
+//        display.getSize(size)
+//        size.x
+//        size.y
+//        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
+//        val deviceWidth = size.x
+//        params?.width = (deviceWidth * 1).toInt()
+//        params?.height = (deviceWidth * 2.1).toInt()
+//        dialog?.window?.attributes = params as WindowManager.LayoutParams
+//        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//    }
 
 }

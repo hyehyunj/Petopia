@@ -4,13 +4,6 @@
     android:repeatCount="3"
     android:interpolator="@android:anim/cycle_interpolator">
 
-<!--    <translate-->
-<!--        android:duration="1000"-->
-<!--        android:fromYDelta="500"-->
-<!--        android:toYDelta="0"/>-->
-
-    <!--    떨어지는 모션    -->
-
 <set>
     <translate
         android:startOffset="4000"
@@ -20,18 +13,6 @@
         android:repeatMode="reverse"
         android:duration="1000"/>
 </set>
-
-
-
-<!--    <alpha-->
-<!--        android:startOffset="3700"-->
-<!--        android:fromAlpha="1.0"-->
-<!--        android:toAlpha="0"-->
-<!--        android:repeatCount="infinite"-->
-<!--        android:repeatMode="reverse"-->
-<!--        android:duration="3000"/>-->
-
-
 
 
 </set>

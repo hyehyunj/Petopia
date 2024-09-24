@@ -12,7 +12,6 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.databinding.FragmentDialogBinding
-import com.djhb.petopia.presentation.home.HomeSharedViewModel
 
 //다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
 open class DialogFragment : DialogFragment() {
@@ -20,14 +19,12 @@ open class DialogFragment : DialogFragment() {
         FragmentDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var sharedViewModel: HomeSharedViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        sharedViewModel = ViewModelProvider(requireActivity()).get(HomeSharedViewModel::class.java)
 
         binding.dialogTvAction.setOnClickListener {}
 

@@ -243,9 +243,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
+        android:gravity="center"
         android:includeFontPadding="false"
         android:text="펫네임"
-        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -285,12 +285,28 @@
         style="@style/common_text_32_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:background="@android:color/transparent"
         android:text="333"
-        android:layout_marginStart="20dp"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/home_iv_gallery" />
+
+    <TextView
+        android:id="@+id/home_tv_pet_massage"
+        style="@style/common_text_16_white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:padding="20dp"
+        android:background="@drawable/bg_translucent_black_square"
+        android:gravity="center"
+        android:text="text"
+        app:layout_constraintBottom_toTopOf="@+id/home_iv_pet"
+        app:layout_constraintDimensionRatio="1:0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_iv_letter" />
 
     <ImageView
         android:id="@+id/home_iv_pet"
@@ -320,6 +336,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/img_petopia_call"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

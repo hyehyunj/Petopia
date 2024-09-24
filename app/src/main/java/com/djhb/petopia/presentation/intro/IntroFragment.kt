@@ -20,10 +20,8 @@ class IntroFragment : Fragment() {
     }
     private val binding get() = _binding
     private lateinit var introViewModel: IntroViewModel
-
     private val introViewPager by lazy { binding.introPager }
     private lateinit var introViewPagerAdapter: IntroPagerAdapter
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,6 +75,7 @@ class IntroFragment : Fragment() {
         })
     }
 
+//시작하기 버튼클릭이벤트
 private fun introButtonClickListener() {
     binding.introBtnComplete.setOnClickListener {
         introViewModel.updateIntroSkipData(requireActivity())

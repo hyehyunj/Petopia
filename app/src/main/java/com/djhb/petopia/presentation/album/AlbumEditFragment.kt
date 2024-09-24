@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
 import com.djhb.petopia.R
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentAlbumEditBinding
@@ -37,12 +41,17 @@ class AlbumEditFragment : DialogFragment() {
             if (uri.isNotEmpty()) {
                 val flag = Intent.FLAG_GRANT_READ_URI_PERMISSION
                     uri.forEach{context?.contentResolver?.takePersistableUriPermission(it, flag)}
-//                binding.galleryEditIvTitle.setImageURI(uri[0])
-//                if(uri.size == 2)binding.galleryEditIvTitle2.setImageURI(uri[1]) else
-//                    binding.galleryEditIvTitle2.setImageResource(R.drawable.bg_translucent_white_square)
-                albumSharedViewModel.considerNewPhotoUri(uri)
+                albumSharedViewModel.considerNewAlbumListUri(uri)
             }
         }
+    private val cropImage = registerForActivityResult(CropImageContract()) { result ->
+        if (result.isSuccessful) result.uriContent?.let { albumSharedViewModel.changeCropUri(it) }
+        else StyleableToast.makeText(
+            requireActivity(),
+            "사진을 편집할 수 없습니다.",
+            R.style.toast_warning
+        ).show()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,7 +68,7 @@ class AlbumEditFragment : DialogFragment() {
 
         //갤러리에서 선택한 모드에 따라 레이아웃 변경
         albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-           albumSharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
+           albumSharedViewModel.currentAlbumLiveData.value?.let { currentPhoto ->
                     addOrEditMode(
                         it, currentPhoto
                     )
@@ -67,7 +76,7 @@ class AlbumEditFragment : DialogFragment() {
         }
 
         //사용자가 선택한 사진으로 변경
-        albumSharedViewModel.newPhotoListLiveData.observe(viewLifecycleOwner) {
+        albumSharedViewModel.newUriListLiveData.observe(viewLifecycleOwner) {
             albumEditRecyclerViewAdapter.updateList(it)
         }
 
@@ -83,17 +92,30 @@ class AlbumEditFragment : DialogFragment() {
     //어댑터 초기화 함수 : 사용자 입력 사진을 리사이클러뷰로 보여주는 함수.
     private fun initAdapter() {
         albumEditRecyclerViewAdapter = AlbumEditRecyclerViewAdapter(
-            albumSharedViewModel.newPhotoListLiveData.value ?: listOf(),
-            itemClickListener = { item, position ->
-                albumSharedViewModel.removeNewPhotoUri(position)
+            albumSharedViewModel.newUriListLiveData.value ?: listOf(),
+            removeItemClickListener = { item, position ->
+                albumSharedViewModel.removeNewUriList(position)
             },
-            itemLongClickListener = { item, position ->  },
+            cropItemClickListener = { item, position ->
+                if(albumSharedViewModel.layoutModeLiveData.value == "EDIT") StyleableToast.makeText(
+                requireActivity(),
+                "저장된 사진은 편집하실 수 없습니다.",
+                R.style.toast_warning
+            ).show() else cropImage(item, position)}
         )
         binding.galleryEditRv.adapter = albumEditRecyclerViewAdapter
         binding.galleryEditRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
-
+    private fun cropImage(uri: Uri, position: Int) {
+        albumSharedViewModel.updateCropPosition(position)
+        cropImage.launch(
+            CropImageContractOptions(
+            uri = uri,
+            cropImageOptions = CropImageOptions()
+        )
+        )
+    }
 
 
 
@@ -102,7 +124,7 @@ class AlbumEditFragment : DialogFragment() {
         //편집모드는 이전 데이터를 불러온다.
         if (layoutMode == "EDIT") {
             binding.apply {
-                albumSharedViewModel.preparePhotoList()
+                albumSharedViewModel.prepareNewAlbumList()
                 galleryEditEtTitle.setText(item.titleText)
                 galleryEditTvCalendarInput.text = if(item.photoDate == "")getString(R.string.album_select_date) else item.photoDate
             }
@@ -122,7 +144,7 @@ class AlbumEditFragment : DialogFragment() {
                 val day = calendar.get(Calendar.DAY_OF_MONTH)
                 val listener = DatePickerDialog.OnDateSetListener { datePicker, yy, mm, dd ->
                     binding.galleryEditTvCalendarInput.text = "${yy}. ${mm + 1}. ${dd}"
-                    albumSharedViewModel.considerNewPhotoDate("${yy}.${mm + 1}.${dd}")
+                    albumSharedViewModel.considerNewAlbumListDate("${yy}.${mm + 1}.${dd}")
                 }
                 val picker = DatePickerDialog(requireContext(), listener, year, month, day)
                 picker.show()
@@ -131,9 +153,9 @@ class AlbumEditFragment : DialogFragment() {
             //완료버튼 : 새로운 사진으로 등록 또는 변경 후 읽기전용모드로 전환한다.
             galleryEditTvComplete.apply {
                 setOnClickListener {
-                    albumSharedViewModel.considerNewPhotoTitle(binding.galleryEditEtTitle.text.toString())
-                    if (albumSharedViewModel.checkPrepared()) {
-                        albumSharedViewModel.updateNewGallery(
+                    albumSharedViewModel.considerNewUriListTitle(binding.galleryEditEtTitle.text.toString())
+                    if (albumSharedViewModel.checkPreparedNewAlbumList()) {
+                        albumSharedViewModel.updateAlbumList(
                             item.index
                         )
                         setBackgroundResource(R.drawable.icon_write)

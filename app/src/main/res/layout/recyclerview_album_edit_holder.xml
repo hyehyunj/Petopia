@@ -6,7 +6,7 @@
     android:layout_marginHorizontal="8dp">
 
     <ImageView
-        android:id="@+id/ivAddImage"
+        android:id="@+id/album_edit_holder_iv"
         android:layout_width="120dp"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
@@ -17,13 +17,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.widget.Button
-        android:id="@+id/ivDeleteImage"
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/album_edit_holder_btn_crop"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="4dp"
+        app:button_duration="100"
+        android:background="@drawable/icon_photo_crop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.skydoves.elasticviews.ElasticButton
+        android:id="@+id/album_edit_holder_btn_remove"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
-        android:background="@drawable/icon_cancellation_white"
+        app:button_duration="100"
+        android:background="@drawable/icon_photo_remove"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
