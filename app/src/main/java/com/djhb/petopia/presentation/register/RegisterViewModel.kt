@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.register
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -39,6 +40,12 @@ class RegisterViewModel :
 
     private val _userLiveData = MutableLiveData<UserModel?>()
     val userLiveData: LiveData<UserModel?> = _userLiveData
+
+    private val _isIdExist = MutableLiveData<Boolean>()
+    val isIdExist: LiveData<Boolean> = _isIdExist
+
+    private val _findedId = MutableLiveData<String>()
+    val findedId: LiveData<String> = _findedId
 
     private val signRepository: SignRepository by lazy {
         SignRepositoryImpl()
@@ -92,6 +99,34 @@ class RegisterViewModel :
             }
         }
     }
+
+    fun checkIdExist(
+        inputNickname: String,
+        inputEmail: String,
+        onSuccess: () -> Unit,
+        onFailure: () -> Unit,
+    ) {
+        viewModelScope.launch {
+            val user = signRepository.selectNickname(inputNickname)
+
+            if (user != null && user.email == inputEmail) {
+                _userId.value = user.id
+                //닉네임으로 찾은 아이디 뷰모델에 저장
+                onSuccess()
+            } else {
+                onFailure()
+            }
+        }
+    }
+
+    fun setIsIdExist(isExist: Boolean) {
+        _isIdExist.value = isExist
+    }
+
+    fun setFindedId(id: String) {
+        _findedId.value = id
+    }
+
 
 //    fun checkPasswordMatch(
 //        inputPassword: String,
