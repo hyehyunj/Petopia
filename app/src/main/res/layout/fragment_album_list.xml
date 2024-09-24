@@ -107,7 +107,7 @@
     </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
     <FrameLayout
-        android:id="@+id/album_photo_container"
+        android:id="@+id/album_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

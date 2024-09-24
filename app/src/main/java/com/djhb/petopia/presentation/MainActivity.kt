@@ -7,23 +7,32 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.ActivityMainBinding
 import com.djhb.petopia.presentation.admin.AdminExileDialogFragment
+import com.djhb.petopia.presentation.album.AlbumFragment
 import com.djhb.petopia.presentation.dialog.DialogFragment
 import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModelFactory
+import com.djhb.petopia.presentation.intro.IntroFragment
+import com.djhb.petopia.presentation.intro.IntroViewModel
+import com.djhb.petopia.presentation.intro.IntroViewModelFactory
+import com.djhb.petopia.presentation.my.MyFragment
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     private lateinit var mainDialogSharedViewModel: MainDialogSharedViewModel
     private val mainHomeGuideSharedViewModel by viewModels<MainHomeGuideSharedViewModel> {
         MainHomeGuideSharedViewModelFactory()
+    }
+    private val introViewModel by viewModels<IntroViewModel> {
+        IntroViewModelFactory()
     }
     private lateinit var viewPager: ViewPager2
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
@@ -41,6 +50,19 @@ class MainActivity : AppCompatActivity(){
 
 
 
+
+        mainDataObserver()
+        introViewModel.updateIntroSkipData(this)
+        if(introViewModel.loadIntroSkipData(this)) else showIntroFragment()
+
+        //레이아웃 초기화
+        initLayout()
+
+        onBackPressedDispatcher.addCallback(onBackPressedCallback)
+    }
+
+
+    private fun mainDataObserver(){
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(this) {
             when (it) {
                 "NONE" -> binding.mainViewPager.isUserInputEnabled = true
@@ -71,12 +93,6 @@ class MainActivity : AppCompatActivity(){
 
         }
 
-
-
-        //레이아웃 초기화
-        initLayout()
-
-        onBackPressedDispatcher.addCallback(onBackPressedCallback)
     }
 
     //레이아웃 초기화 함수 : 뷰페이저, 탭레이아웃 연결
@@ -96,18 +112,6 @@ class MainActivity : AppCompatActivity(){
         AdminExileDialogFragment().show(supportFragmentManager, "ADMIN_EXILE_DIALOG_FRAGMENT")
     }
 
-
-
-
-    //    fun clearGuide() {
-//        binding.mainViewPager.isUserInputEnabled = true
-//        supportFragmentManager.beginTransaction()
-//            .remove(GuideFragment())
-//            .commit()
-//    }
-    //이 3줄 추가하면 다이얼로그! 버튼이벤트.setOnClickListener {
-    //        (activity as MainActivity).showDialog()
-    //    }
 //다이얼로그 띄우는 함수
     fun showDialog() {
         mainDialogSharedViewModel = ViewModelProvider(this)[MainDialogSharedViewModel::class.java]
@@ -151,14 +155,68 @@ class MainActivity : AppCompatActivity(){
 
     }
 
+    //앨범 프래그먼트 호출해주는 함수
+    fun showAlbumFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_Intro_frame, AlbumFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    fun removeAlbumFragment() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
+        if (fragment is AlbumFragment) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.search_recommend_exit,R.anim.search_recommend_exit)
+                .remove(fragment)
+                .commit()
+        }
+    }
+    //마이 프래그먼트 호출해주는 함수
+    fun showMyFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_Intro_frame, MyFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    //인트로 프래그먼트 호출해주는 함수
+    fun showIntroFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.main_Intro_frame, IntroFragment()
+            )
+            .setReorderingAllowed(true)
+            .addToBackStack(null)
+            .commit()
+    }
+    //인트로 프래그먼트 제거해주는 함수
+    fun removeIntroFragment() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
+        if (fragment is IntroFragment) {
+            supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.disappear,R.anim.disappear)
+                .remove(fragment)
+                .commit()
+        }
+    }
 
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {
         moveToPetopia()
         binding.mainViewPager.isUserInputEnabled = true
-        supportFragmentManager.beginTransaction()
-            .remove(GuideFragment())
-            .commit()
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_guide_frame)
+        if (fragment is GuideFragment) {
+            supportFragmentManager.beginTransaction()
+                .remove(fragment)
+                .commit()
+        }
 
     }
 

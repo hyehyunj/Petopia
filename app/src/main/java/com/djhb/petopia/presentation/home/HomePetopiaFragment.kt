@@ -37,7 +37,9 @@ class HomePetopiaFragment : Fragment() {
     private val dDayViewModel by viewModels<DDayViewModel> {
         DDayViewModelFactory()
     }
-
+    private val homePetopiaViewModel by viewModels<HomePetopiaViewModel> {
+        HomePetopiaViewModelFactory()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +60,7 @@ class HomePetopiaFragment : Fragment() {
 
         homePetopiaButtonClickListener()
         guideDataObserver()
-        if(LoginData.loginUser.dday != null)loadDDayData()
+        if (LoginData.loginUser.dday != null) loadDDayData()
 
         mainHomeGuideViewModel.checkUserGuideState()
 //        if () getUserAndPet()
@@ -105,6 +107,7 @@ class HomePetopiaFragment : Fragment() {
             binding.homeImgNightBackground.visibility = View.VISIBLE
             binding.petopiaMoon.visibility = View.VISIBLE
             binding.firefly.visibility = View.VISIBLE
+            binding.homeImgBackground.visibility = View.GONE
             //글자색 흰색으로
             binding.homeTvNameUser.setTextColor(
                 ContextCompat.getColor(
@@ -123,7 +126,7 @@ class HomePetopiaFragment : Fragment() {
             binding.homeImgNightBackground.visibility = View.GONE
             binding.petopiaMoon.visibility = View.GONE
             binding.firefly.visibility = View.GONE
-
+            binding.homeImgBackground.visibility = View.VISIBLE
             binding.homeTvNameUser.setTextAppearance(R.style.common_text_16_dark_gray)
             binding.homeTvNamePet.setTextAppearance(R.style.common_text_16_dark_gray)
         }
@@ -261,7 +264,7 @@ class HomePetopiaFragment : Fragment() {
 
         binding.homeIvGallery.setOnClickListener {
             if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
-                toastMoveUnder() else showGalleryFragment()
+                toastMoveUnder() else showAlbumFragment()
         }
         //편지버튼 클릭이벤트 : 클릭시 편지함 이동
         binding.homeIvLetter.setOnClickListener {
@@ -272,7 +275,7 @@ class HomePetopiaFragment : Fragment() {
         //가이드 버튼 클릭이벤트 : 클릭시 가이드 시작
         binding.homeTvGuide.setOnClickListener {
             binding.homeTvGuide.clearAnimation() // 애니메이션 중지
-            if(mainHomeGuideViewModel.userDataLiveData.value?.completedGuide == true)
+            if (mainHomeGuideViewModel.userDataLiveData.value?.completedGuide == true)
                 (activity as MainActivity).showWelcomeGuideFragment()
             else (activity as MainActivity).showGuideFragment()
         }
@@ -297,6 +300,7 @@ class HomePetopiaFragment : Fragment() {
                         homeTvNameUser.isVisible = false
                         homeTvNamePet.isVisible = false
                         homeIvPet.isVisible = false
+                        homeTvPetMassage.isVisible = false
                         homeIvArrowUnder.isVisible = false
                         homeIvGallery.isVisible = false
                         homeIvDate.isVisible = false
@@ -318,7 +322,7 @@ class HomePetopiaFragment : Fragment() {
                 }
 
                 "ESSENTIAL_DONE" -> {
-                    if(LoginData.loginUser.pet?.petName == null)mainHomeGuideViewModel.setPetData()
+                    if (LoginData.loginUser.pet?.petName == null) mainHomeGuideViewModel.setPetData()
                     binding.apply {
                         homeTvNameUser.isVisible = true
                         homeTvNamePet.isVisible = true
@@ -332,6 +336,7 @@ class HomePetopiaFragment : Fragment() {
                         homeTvNamePet.isVisible = true
                         homeIvPet.isVisible = true
                         homeIvDate.isVisible = true
+                        homeTvPetMassage.isVisible = true
                         homeIvArrowUnder.isVisible = true
                         homeIvGallery.isVisible = true
                         homeIvLetter.isVisible = true
@@ -364,7 +369,6 @@ class HomePetopiaFragment : Fragment() {
                 "MOVE_MEMORY_BRIDGE" -> {
                     binding.homeIvArrowUnder.isVisible = true
                 }
-
             }
         }
 
@@ -403,6 +407,12 @@ class HomePetopiaFragment : Fragment() {
             .show()
     }
 
+    //반려동물 메시지 출력해주는 함수
+    private fun showPetMassage() {
+        binding.homeTvPetMassage.text = homePetopiaViewModel.getPetMassage()
+    }
+
+    //반려동물과 보호자 정보를 화면에 표시해주는 함수
     private fun getUserAndPet() {
         binding.apply {
             homeTvNameUser.text = "보호자 : " + mainHomeGuideViewModel.getUserName() + " 님"
@@ -431,32 +441,10 @@ class HomePetopiaFragment : Fragment() {
         }
     }
 
-    private fun showGalleryFragment() {
-        AlbumFragment().show(childFragmentManager, "GALLERY_FRAGMENT")
-
-
-//        childFragmentManager.beginTransaction()
-//            .replace(
-//                R.id.home_petopia_container, GalleryFragment()
-//            )
-//            .setReorderingAllowed(true)
-//            .addToBackStack(null)
-//            .commit()
-
-        //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
-        // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)
-        //위는 자식프래그먼트로 추가하기(뒤로가기시 트랜잭션 정의해줘야함)
-        // 아래는 액티비티에서 추가하기(프레임 달라서 뒤로가기 정의 필요없음)
-//        requireActivity().supportFragmentManager.beginTransaction()
-//            .replace(
-//                R.id.main_sub_frame, GalleryFragment(), "BACK_PETOPIA"
-//            )
-//            .setReorderingAllowed(true)
-//            .addToBackStack("BACK_PETOPIA")
-//            .commitAllowingStateLoss()
-
+    private fun showAlbumFragment() {
+        (activity as MainActivity).showAlbumFragment()
+//        AlbumFragment().show(childFragmentManager, "ALBUM_FRAGMENT")
     }
-
 
     private fun initGuideAnimation() {
         binding.homeTvGuide.startAnimation(
@@ -480,7 +468,7 @@ class HomePetopiaFragment : Fragment() {
             getUserAndPet()
         }
         initAnimation()
-
+        showPetMassage()
     }
 
 }
