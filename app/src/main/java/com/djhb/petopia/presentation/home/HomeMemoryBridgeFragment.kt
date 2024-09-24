@@ -23,6 +23,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.presentation.memory.MemoryViewModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
@@ -41,6 +42,7 @@ class HomeMemoryBridgeFragment : Fragment() {
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
     private lateinit var memoryViewModel: MemoryViewModel
 
+    private val user = LoginData.loginUser.id
 
     private lateinit var emojiViews: List<ImageView>
 
@@ -70,8 +72,9 @@ class HomeMemoryBridgeFragment : Fragment() {
 
 
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
-            Log.d("memoryText", text)
-            binding.homeMemoryBridgeTvMemoryTitle.text = text
+            if (memoryViewModel.isMemorySaved.value == false) {
+                binding.homeMemoryBridgeTvMemoryTitle.text = text
+            }
         }
 
         val currentTitle = binding.homeMemoryBridgeTvMemoryTitle.text.toString()
@@ -316,7 +319,13 @@ class HomeMemoryBridgeFragment : Fragment() {
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
             memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
                 if (it == true) {
-                    binding.homeMemoryBridgeTvMemoryTitle.text = "메모리북 기록 완료"
+                    binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+
+                    val sharedPreferences = requireContext().getSharedPreferences(
+                        "${user}MemoryisSaved",
+                        Context.MODE_PRIVATE
+                    )
+                    sharedPreferences.edit().putBoolean("isSaved", true).apply()
                 }
             }
         }
@@ -386,12 +395,28 @@ class HomeMemoryBridgeFragment : Fragment() {
     private fun loadMemory() {
         val sharedPreferences =
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
+
+        val isSavedSharedPreferences =
+            requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
+        val isSaved = isSavedSharedPreferences.getBoolean("isSaved", false)
         val memoryText = sharedPreferences.getString("memoryText", null)
 
-        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
-        memoryViewModel.setMemoryTitle(memoryText.toString())
 
-        Log.d("memoryText", memoryText.toString())
+        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+
+        if (memoryViewModel.isMemorySaved.value != true) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+            memoryViewModel.setMemoryTitle(memoryText.toString())
+        }
+
+        if (isSaved) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = "메모리북 기록 완료"
+        } else {
+            binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+            memoryViewModel.setMemoryTitle(memoryText.toString())
+        }
+
+
     }
 
     private fun homeMemoryBridgeDataObserver() {
