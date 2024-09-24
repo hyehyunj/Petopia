@@ -112,6 +112,9 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx:22.0.0")
     implementation("com.google.gms:google-services:4.3.15")
 
+    //ScalableLayout
+    implementation("com.ssomai:android.scalablelayout:2.1.6")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
