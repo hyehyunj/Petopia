@@ -50,6 +50,7 @@ android {
 
 
 dependencies {
+    implementation("com.github.Yasic:ParticleTextView:77a4f4c4a8")
     implementation("com.vanniktech:android-image-cropper:4.5.0")
     implementation("com.codemybrainsout.onboarding:onboarder:1.0.4")
     implementation("com.github.mmin18:RealtimeBlurView:82df3520b4")
