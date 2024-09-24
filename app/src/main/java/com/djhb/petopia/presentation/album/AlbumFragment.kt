@@ -12,8 +12,10 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.databinding.FragmentAlbumBinding
+import com.djhb.petopia.presentation.d_day.DDayViewModel
 import com.wajahatkarim3.easyflipviewpager.BookFlipPageTransformer2
 
 //앨범 프래그먼트
@@ -23,9 +25,8 @@ class AlbumFragment : Fragment() {
     }
     private val binding get() = _binding
     private lateinit var albumViewPager: ViewPager2
-    private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
-        AlbumSharedViewModelFactory()
-    }
+    private val albumViewModel = AlbumViewModel()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +55,23 @@ class AlbumFragment : Fragment() {
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun galleryDataObserver() {
+        albumViewModel.albumPageLiveData.observe(viewLifecycleOwner) {
+            when (it) {
+                1 -> {
+                    binding.albumPager.isUserInputEnabled = false
+                    albumViewPager.registerOnPageChangeCallback(object :
+                        ViewPager2.OnPageChangeCallback() {
+                        override fun onPageSelected(position: Int) {
+                            super.onPageSelected(position)
+                            albumViewModel.updateCurrentPage(position)
+                        }
+                    })
+                }
 
+
+            }
+
+        }
 
     }
 
@@ -72,7 +89,7 @@ class AlbumFragment : Fragment() {
     }
 
 fun fixPage() {
-    binding.albumPager.isUserInputEnabled = true
+
 }
 
     //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현

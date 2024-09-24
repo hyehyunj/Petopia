@@ -33,6 +33,7 @@ class AlbumListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         initAlbumListRecyclerViewAdapter()
+
         return binding.root
     }
 
@@ -125,8 +126,8 @@ class AlbumListFragment : Fragment() {
                     "COMPLETE" -> {
                         albumSharedViewModel.loadUriList(item)
                         albumSharedViewModel.changeLayoutMode("READ")
-                        showAlbumReadFragment()
-//                        AlbumReadFragment().show(childFragmentManager, "ALBUM_READ_FRAGMENT")
+//                        showAlbumReadFragment()
+                        AlbumReadFragment().show(childFragmentManager, "ALBUM_READ_FRAGMENT")
                     }
                     "REMOVE" -> {
                         albumSharedViewModel.considerRemoveAlbumList(item, position)
@@ -143,14 +144,14 @@ class AlbumListFragment : Fragment() {
         binding.albumRv.layoutManager = GridLayoutManager(requireContext(), 1)
     }
 
-fun showAlbumReadFragment() {
-
-    childFragmentManager.beginTransaction()
-        .replace(R.id.album_frame, AlbumReadFragment())
-        .setReorderingAllowed(true)
-        .addToBackStack(null)
-        .commit()
-}
+//fun showAlbumReadFragment() {
+//
+//    childFragmentManager.beginTransaction()
+//        .replace(R.id.album_frame, AlbumReadFragment())
+//        .setReorderingAllowed(true)
+//        .addToBackStack(null)
+//        .commit()
+//}
 
     //뒤로가기 버튼 함수 : 홈프래그먼트로 돌아간다.
 //    private fun btnBackListener() {

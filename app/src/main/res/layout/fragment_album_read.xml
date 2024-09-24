@@ -21,7 +21,8 @@
         android:id="@+id/album_read_tv_exit"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/sel_btn_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,7 +32,7 @@
         android:id="@+id/album_read_iv_action"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="48dp"
         android:background="@drawable/icon_write"
         app:layout_constraintBottom_toBottomOf="@+id/album_read_tv_exit"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,10 +56,11 @@
         style="@style/point_text_24_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintTop_toBottomOf="@+id/album_read_tv_title"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="@+id/album_read_iv_action"
+
+        />
 
 <com.wenchao.cardstack.CardStack
     android:id="@+id/album_read_layout_inside"
@@ -72,7 +74,7 @@
     app:card_enable_rotation="true"
     app:card_gravity="top"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toEndOf="@+id/album_read_iv_action"
     app:layout_constraintTop_toBottomOf="@+id/album_read_tv_calendar"
     app:layout_constraintBottom_toTopOf="@+id/album_read_tv_info"/>
 

@@ -119,13 +119,14 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
 
     //사진 리스트를 추가 또는 편집하기 위해 준비해주는 함수
     fun prepareNewAlbumList() {
-        val stringToUri = mutableListOf<Uri>()
-        if (_layoutModeLiveData.value == "EDIT") {
-            _currentAlbumLiveData.value?.imageUris?.forEach {
-                stringToUri.add(it.toUri())
-            }
-        }
-        _newUriListLiveData.value = stringToUri
+        _newUriListLiveData.value = listOf()
+//        val stringToUri = mutableListOf<Uri>()
+//        if (_layoutModeLiveData.value == "EDIT") {
+//            _currentAlbumLiveData.value?.imageUris?.forEach {
+//                stringToUri.add(it.toUri())
+//            }
+//        }
+//        _newUriListLiveData.value = stringToUri
     }
 
     //추가 또는 편집될 가능성이 있는 새로운 사진을 담는 함수
@@ -151,10 +152,29 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     //사진을 추가하거나 편집하기 위한 준비를 마쳤는지 확인하는 함수
     fun checkPreparedNewAlbumList(): Boolean {
         val photoList = mutableListOf<String>()
-        _newUriListLiveData.value!!.forEach { photoList.add(it.toString()) }
+
+        // photoList 초기화
+        _newUriListLiveData.value?.let {
+            it.forEach { photoList.add(it.toString()) }
+        }
+
         newUriList = newUriList.copy(imageUris = photoList)
-        return newUriList.imageUris.isNotEmpty() && newUriList.titleText.isNotEmpty() && newUriList.photoDate.isNotEmpty()
+
+        return when (layoutModeLiveData.value) {
+            "ADD" -> newUriList.imageUris.isNotEmpty() && newUriList.titleText.isNotEmpty() && newUriList.photoDate.isNotEmpty()
+            "EDIT" -> {
+                // _newUriListLiveData가 비어있으면 true 반환
+                if (_newUriListLiveData.value?.isEmpty() == true) return true
+                newUriList.titleText.isNotEmpty() && newUriList.photoDate.isNotEmpty()
+            }
+            else -> false // 기본값 처리
+        }
     }
+
+
+
+
+
 
     //현재 사진을 새 사진으로 교체하는 함수
     fun updateAlbumList(index: Int) {

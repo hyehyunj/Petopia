@@ -98,10 +98,11 @@ class AlbumEditFragment : DialogFragment() {
             },
             cropItemClickListener = { item, position ->
                 if(albumSharedViewModel.layoutModeLiveData.value == "EDIT") StyleableToast.makeText(
-                requireActivity(),
-                "저장된 사진은 편집하실 수 없습니다.",
-                R.style.toast_warning
-            ).show() else cropImage(item, position)}
+                    requireActivity(),
+                    "저장된 사진은 편집할 수 없습니다.",
+                    R.style.toast_warning
+                ).show()
+                else cropImage(item, position)}
         )
         binding.galleryEditRv.adapter = albumEditRecyclerViewAdapter
         binding.galleryEditRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
@@ -58,8 +59,7 @@ class AlbumReadFragment : DialogFragment() {
 
         //닫기 버튼이벤트 : 클릭시 갤러리로 이동
         binding.albumReadTvExit.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .remove(this).commit()
+       dismiss()
         }
     }
 
@@ -90,9 +90,7 @@ class AlbumReadFragment : DialogFragment() {
             //수정버튼 : 현재사진을 수정할 수 있도록 편집모드로 전환한다.
             albumReadIvAction.setOnClickListener {
                 albumSharedViewModel.changeLayoutMode("EDIT")
-                dismiss()
-                AlbumEditFragment().show(parentFragmentManager, "")
-
+                AlbumEditFragment().show(parentFragmentManager, "ALBUM_EDIT_FRAGMENT")
             }
         }
     }
@@ -119,17 +117,15 @@ class AlbumReadFragment : DialogFragment() {
         size.y
         val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
         val deviceWidth = size.x
-        params?.width = (deviceWidth * 0.9).toInt()
-        params?.height = (deviceWidth * 1.8).toInt()
+        params?.width = (deviceWidth * 1).toInt()
+        params?.height = (deviceWidth * 2).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
-
 
     override fun onResume() {
         super.onResume()
         initDialog()
     }
-
 
 }
