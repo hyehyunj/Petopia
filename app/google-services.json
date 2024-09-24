@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:176593614331:android:5b33507a3b41b375a5475e",
         "android_client_info": {
-          "package_name": "com.djhb.petopia"
+          "package_name": "com.android.petopia"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "176593614331-24g5ml6nkgppj3t1e3l5dadhlunfqc8n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.djhb.petopia",
+            "package_name": "com.android.petopia",
             "certificate_hash": "90e2e4f72de95ca2ef873f82510f371760986db3"
           }
         },
