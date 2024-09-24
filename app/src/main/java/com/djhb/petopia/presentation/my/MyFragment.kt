@@ -13,11 +13,14 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.replace
+import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentMyBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.register.RegisterActivity
 import com.djhb.petopia.presentation.register.RegisterViewModel
+import com.djhb.petopia.presentation.register.signup.TermFragment
 
 
 class MyFragment : DialogFragment() {
@@ -26,10 +29,6 @@ class MyFragment : DialogFragment() {
 
     private val registerViewModel: RegisterViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +47,7 @@ class MyFragment : DialogFragment() {
         modifyButtonClickListener()
         modifyPasswordButtonClickListener()
         deleteButtonClickListener()
+        termButtonClickListener()
 
         registerViewModel.userNickName.observe(viewLifecycleOwner) { user ->
             binding.myTvName.text = user
@@ -85,7 +85,6 @@ class MyFragment : DialogFragment() {
     }
 
 
-
     private fun backButtonClickListener() {
         binding.myIvBack.setOnClickListener {
             dismiss()
@@ -98,6 +97,11 @@ class MyFragment : DialogFragment() {
         }
     }
 
+    private fun termButtonClickListener() {
+        binding.myTvTerms.setOnClickListener {
+            toTermFragment()
+        }
+    }
 
 
     private fun logout() {
@@ -130,6 +134,9 @@ class MyFragment : DialogFragment() {
         DeleteUserFragment().show(childFragmentManager, "DELETE_DIALOG")
     }
 
+    private fun toTermFragment() {
+        TermFragment().show(childFragmentManager, "TERM_DIALOG")
+    }
 
     //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현
     private fun initDialog() {

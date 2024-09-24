@@ -249,20 +249,11 @@ class SignupFragment : Fragment() {
     }
 
     private fun setTermFragment() {
-        parentFragmentManager.beginTransaction()
-            .hide(this)
-            .add(R.id.register_fragment_container, TermFragment())
-            .addToBackStack(null)
-            .commit()
+        TermFragment().show(childFragmentManager, "TERM_DIALOG")
     }
 
     private fun setPersonalTermFragment() {
-        parentFragmentManager.beginTransaction()
-            .hide(this)
-            .add(R.id.register_fragment_container, PersonalTermFragment())
-            .addToBackStack(null)
-            .commit()
-
+        PersonalTermFragment().show(childFragmentManager, "PERSONAL_TERM_DIALOG")
     }
 
     private fun makeTermsVisible() {
