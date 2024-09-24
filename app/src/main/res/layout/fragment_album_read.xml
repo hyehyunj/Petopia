@@ -5,16 +5,24 @@
     android:id="@+id/photo_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_white_30"
     android:gravity="center"
     tools:context=".presentation.album.AlbumReadFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/img_album_page"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
     <ImageView
         android:id="@+id/album_read_tv_exit"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:src="@drawable/sel_btn_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +32,7 @@
         android:id="@+id/album_read_iv_action"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="48dp"
         android:background="@drawable/icon_write"
         app:layout_constraintBottom_toBottomOf="@+id/album_read_tv_exit"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,10 +56,11 @@
         style="@style/point_text_24_dark_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         app:layout_constraintTop_toBottomOf="@+id/album_read_tv_title"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="@+id/album_read_iv_action"
+
+        />
 
 <com.wenchao.cardstack.CardStack
     android:id="@+id/album_read_layout_inside"
@@ -65,7 +74,7 @@
     app:card_enable_rotation="true"
     app:card_gravity="top"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintEnd_toEndOf="@+id/album_read_iv_action"
     app:layout_constraintTop_toBottomOf="@+id/album_read_tv_calendar"
     app:layout_constraintBottom_toTopOf="@+id/album_read_tv_info"/>
 
@@ -132,7 +141,7 @@
 <!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

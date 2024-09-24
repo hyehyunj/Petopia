@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
@@ -75,13 +76,11 @@ class HomeEarthFragment : Fragment() {
         if (isAfterEightPM() || isBeforeEightAM()) {
             binding.earthNightSky.visibility = View.VISIBLE
             binding.homeImgNightBackground.visibility = View.VISIBLE
-            binding.homeImgBackground.visibility = View.GONE
 
 
         } else {
             binding.earthNightSky.visibility = View.GONE
             binding.homeImgNightBackground.visibility = View.GONE
-            binding.homeImgBackground.visibility = View.VISIBLE
 
         }
     }
@@ -99,7 +98,9 @@ class HomeEarthFragment : Fragment() {
                     .show() else if (LoginData.loginUser.authority == Authority.ADMIN) {
                 AdminFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
             } else {
-                MyFragment().show(childFragmentManager, "MY_FRAGMENT")
+                (activity as MainActivity).showMyFragment()
+
+//                MyFragment().show(childFragmentManager, "MY_FRAGMENT")
             }
         }
 
