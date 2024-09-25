@@ -161,6 +161,12 @@ class CommunityEditFragment : Fragment() {
             checkbox.isChecked = true
         }
 
+        binding.header.tvTitle.text = when(postType) {
+            Table.QUESTION_POST -> "질문 게시판"
+            Table.INFORMATION_POST -> "정보 공유 게시판"
+            else -> "갤러리 게시판"
+        }
+
         binding.etTitle.setText(post.title)
         binding.etContent.setText(post.content)
 //        Log.i("CommunityEditFragment", "post.key = ${post.key}")

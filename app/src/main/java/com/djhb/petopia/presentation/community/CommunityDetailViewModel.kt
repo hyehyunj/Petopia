@@ -54,11 +54,11 @@ class CommunityDetailViewModel(val postType: Table): ViewModel() {
     }
 
     private val commentRepository: CommentRepository by lazy {
-        CommentRepositoryImpl(currentTables?.get(0)?:Table.NONE)
+        CommentRepositoryImpl(currentTables?.get(1)?:Table.NONE)
     }
 
     private val likeRepository: LikeRepository by lazy {
-        LikeRepositoryImpl(currentTables?.get(0)?:Table.NONE)
+        LikeRepositoryImpl(currentTables?.get(2)?:Table.NONE)
     }
 
     fun selectPostFromKey(postKey: String) {

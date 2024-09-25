@@ -217,6 +217,11 @@ class CommunityDetailFragment : Fragment() {
 
         }
 
+        binding.header.tvTitle.text = when(postType) {
+            Table.QUESTION_POST -> "질문 게시판"
+            Table.INFORMATION_POST -> "정보 공유 게시판"
+            else -> "갤러리 게시판"
+        }
 
 
         binding.tvDetailTitle.text = post.title
@@ -269,57 +274,7 @@ class CommunityDetailFragment : Fragment() {
         binding.header.ivBack.setOnClickListener {
 //            mainActivity.showViewPager()
         }
-        Log.i("CommunityDetailFragment", "post.writer.id = ${post.writer.id}")
-        Log.i("CommunityDetailFragment", "LoginData.loginUser.id = ${LoginData.loginUser.id}")
 
-//        if (post.writer.id == LoginData.loginUser.id) {
-//
-//            binding.btnDelete.visibility = ImageView.VISIBLE
-//            binding.btnEdit.visibility = ImageView.VISIBLE
-//
-////            binding.btnDelete.setOnClickListener {
-////                lifecycleScope.launch {
-////                    communityViewModel.deletePost(post.key)
-////                }
-////
-////
-////                requireActivity().supportFragmentManager.beginTransaction()
-////                    .replace(R.id.main_sub_frame,CommunityMainFragment())
-////                    .commit()
-////            }
-//
-//
-//            binding.btnDelete.setOnClickListener {
-////                val deleteDialogFragment = PostDeleteDialogFragment(post.key) { key ->
-//                val deleteDialogFragment = PostDeleteDialogFragment(postKey) { key ->
-//                    lifecycleScope.launch {
-//                        communityViewModel.deletePost(key)
-//                        communityViewModel.deletePostImages(key)
-//                    }
-//                }
-//                deleteDialogFragment.show(childFragmentManager, "DELETE POST")
-//            }
-//
-//            binding.btnEdit.setOnClickListener {
-//
-//                if(post.title == "") {
-//                    Toast.makeText(requireActivity(), "잠시만 기다려주세요.", Toast.LENGTH_SHORT).show()
-//                    return@setOnClickListener
-//                }
-//
-//                val editFragment = CommunityEditFragment.newInstance(post)
-////                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
-//                requireActivity().supportFragmentManager
-//                    .beginTransaction()
-//                    .replace(R.id.main_sub_frame, editFragment)
-//                    .addToBackStack(null)
-//                    .commit()
-//            }
-//
-//        } else {
-//            binding.btnDelete.visibility = ImageView.GONE
-//            binding.btnEdit.visibility = ImageView.GONE
-//        }
 
         binding.ivLike.setOnClickListener {
             currentLikeState = !currentLikeState
