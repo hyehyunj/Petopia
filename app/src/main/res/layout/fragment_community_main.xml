@@ -29,10 +29,12 @@
 
             <TextView
                 android:id="@+id/tvCbTitle"
-                android:layout_width=""
-                android:layout_height=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="필터 선택 :"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
 
 
