@@ -48,10 +48,9 @@ class SigninFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
-    //    private val registerViewModel: RegisterViewModel by activityViewModels {
-//        RegisterViewModel.RegisterViewModelFactory(signRepository)
-//    }
+    //    }
     private val registerViewModel: RegisterViewModel by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,6 +106,8 @@ class SigninFragment : Fragment() {
             registerViewModel.signing(userInputId, userInputPassword,
                 onSuccess = {
                     //로그인 성공
+                    saveLoginMethod(false)
+
                     StyleableToast.makeText(
                         requireActivity(),
                         "로그인 완료",
@@ -152,17 +153,11 @@ class SigninFragment : Fragment() {
             showUndoToast()
         }
 
-        binding.btnKakaoSignin.setOnClickListener {
-            showUndoToast()
-        }
 
         binding.btnGoogleSignin.setOnClickListener {
             signInWithGoogle()
         }
 
-        binding.btnNaverSignin.setOnClickListener {
-            showUndoToast()
-        }
     }
 
     private val googleSignInLauncher = registerForActivityResult(
@@ -198,16 +193,26 @@ class SigninFragment : Fragment() {
                     firebaseUser?.let {
                         Log.d("SigninFragment", "Firebase Auth 성공: ${it.uid}")
 
-                        val userModel = UserModel(
-                            id = it.uid,
-                            email = it.email ?: "",
-                            nickname = it.displayName ?: "사용자",  // 닉네임이 없는 경우 기본값
-                            authority = Authority.CLIENT  // 기본 권한 설정
-                        )
+                        // 기존 아이디가 있을경우 그냥 로그인 아니면 생성 후 로그인
+                        registerViewModel.isIdExist(it.uid) { isExist ->
+                            if (isExist) {
+                                registerViewModel.googleSignIn(it.uid) {
+                                    saveLoginMethod(true)
+                                    Log.d("Logindata", "${LoginData.loginUser}")
+                                }
+                            } else {
+                                val userModel = UserModel(
+                                    id = it.uid,
+                                    email = it.email ?: "",
+                                    nickname = it.displayName ?: "사용자",  // 닉네임이 없는 경우 기본값
+                                    authority = Authority.CLIENT  // 기본 권한 설정
+                                )
+                                registerViewModel.createUser(userModel)
+                                LoginData.loginUser = userModel
+                                saveLoginMethod(true)
 
-                        // ViewModel 또는 로컬/원격 저장소에 UserModel 저장
-                        registerViewModel.saveUser(userModel)
-
+                            }
+                        }
                         StyleableToast.makeText(
                             requireActivity(),
                             "Google 로그인 성공",
@@ -240,6 +245,15 @@ class SigninFragment : Fragment() {
 
     private fun setFindIdFragment() {
         FindIdFragment().show(childFragmentManager, "FIND_ID_DIALOG")
+    }
+
+    private fun saveLoginMethod(isGoogleLogin: Boolean) {
+        val sharedPref =
+            requireContext().getSharedPreferences("login_data", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putBoolean("isGoogleLogin", isGoogleLogin)
+            apply()
+        }
     }
 
     fun showUndoToast() {

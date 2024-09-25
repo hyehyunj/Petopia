@@ -111,13 +111,13 @@ class HomePetopiaFragment : Fragment() {
             //글자색 흰색으로
             binding.homeTvNameUser.setTextColor(
                 ContextCompat.getColor(
-                    requireContext(),
+                    requireActivity(),
                     R.color.white
                 )
             )
             binding.homeTvNamePet.setTextColor(
                 ContextCompat.getColor(
-                    requireContext(),
+                    requireActivity(),
                     R.color.white
                 )
             )

@@ -1,5 +1,6 @@
 package com.djhb.petopia.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -78,12 +79,17 @@ class MainHomeGuideSharedViewModel(
     //유저 정보를 입력하는 함수
     fun setPetData() {
         _userPetLiveData.value = petRepository.getPetData().copy(id = user.id)
+
         user.pet = _userPetLiveData.value
         user.completedGuide = true
+
         viewModelScope.launch {
             signRepository.updateUser(user)
+            Log.d("logindata","$user")
         }
+
         _userDataLiveData.value = user
+
     }
 
     //유저 반려동물 정보를 불러오는 함수

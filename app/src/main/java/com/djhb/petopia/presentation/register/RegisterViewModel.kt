@@ -100,6 +100,19 @@ class RegisterViewModel :
         }
     }
 
+    fun googleSignIn(
+        inputId: String,
+        onSuccess: () -> Unit
+    ) {
+        viewModelScope.launch {
+            val user = signRepository.selectUser(inputId)
+            if (user != null) {
+                LoginData.loginUser = user
+                onSuccess()
+            }
+        }
+    }
+
     fun checkIdExist(
         inputNickname: String,
         inputEmail: String,
