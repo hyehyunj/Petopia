@@ -9,7 +9,7 @@ class UpdateMemoryTextWorker(context: Context, workerParams: WorkerParameters) :
     Worker(context, workerParams) {
 
     override fun doWork(): Result {
-        Log.d("UpdateMemoryTextWorker", "doWork() called")
+//        Log.d("UpdateMemoryTextWorker", "doWork() called")
 
         val memoryText: MutableList<String> = mutableListOf()
         memoryText.add("우리 친구와의 첫만남은 어땠나요?")
@@ -31,7 +31,7 @@ class UpdateMemoryTextWorker(context: Context, workerParams: WorkerParameters) :
         val sharedPreferences =
             applicationContext.getSharedPreferences("Memory", Context.MODE_PRIVATE)
         sharedPreferences.edit().putString("memoryText", selectedText).commit()
-        Log.d("UpdateMemoryTextWorker", "selectedText: $selectedText")
+//        Log.d("UpdateMemoryTextWorker", "selectedText: $selectedText")
 
         return Result.success()
     }

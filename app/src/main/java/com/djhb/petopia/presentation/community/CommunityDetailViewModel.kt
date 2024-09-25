@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.djhb.petopia.Table
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LikeModel
 import com.djhb.petopia.data.LoginData
@@ -17,7 +18,16 @@ import com.djhb.petopia.data.remote.PostRepositoryImpl
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class CommunityDetailViewModel: ViewModel() {
+class CommunityDetailViewModel(val postType: Table): ViewModel() {
+
+    private val postTypeToTables = mutableMapOf(
+        Table.QUESTION_POST to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
+        Table.INFORMATION_POST to listOf(Table.INFORMATION_POST, Table.INFORMATION_COMMENT, Table.INFORMATION_LIKE),
+        Table.GALLERY_POST to listOf(Table.GALLERY_POST, Table.GALLERY_COMMENT, Table.GALLERY_LIKE)
+    )
+
+    private val currentTables = postTypeToTables[postType]
+
 
     private val _currentPost = MutableLiveData<PostModel>()
     val currentPost get() = _currentPost
@@ -40,15 +50,15 @@ class CommunityDetailViewModel: ViewModel() {
     private var likesResult = mutableListOf<LikeModel>()
 
     private val postRepository: PostRepository by lazy {
-        PostRepositoryImpl()
+        PostRepositoryImpl(currentTables?.get(0)?:Table.NONE)
     }
 
     private val commentRepository: CommentRepository by lazy {
-        CommentRepositoryImpl()
+        CommentRepositoryImpl(currentTables?.get(0)?:Table.NONE)
     }
 
     private val likeRepository: LikeRepository by lazy {
-        LikeRepositoryImpl()
+        LikeRepositoryImpl(currentTables?.get(0)?:Table.NONE)
     }
 
     fun selectPostFromKey(postKey: String) {

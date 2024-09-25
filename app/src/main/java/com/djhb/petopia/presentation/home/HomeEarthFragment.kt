@@ -3,6 +3,7 @@ package com.djhb.petopia.presentation.home
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.djhb.petopia.presentation.admin.AdminViewModel
 import com.djhb.petopia.presentation.admin.post.AdminPostLeftFragment
 import com.djhb.petopia.presentation.admin.post.AdminPostRightFragment
 import com.djhb.petopia.presentation.community.Authority
+import com.djhb.petopia.presentation.community.CommunityActivity
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.my.MyFragment
 import io.github.muddz.styleabletoast.StyleableToast
@@ -136,15 +138,19 @@ class HomeEarthFragment : Fragment() {
                     "가이드 종료 후 이용 가능합니다.",
                     R.style.toast_common
                 )
-                    .show() else
-
-                childFragmentManager.beginTransaction()
-                    .replace(
-                        R.id.home_earth_container, CommunityMainFragment()
-                    )
-                    .setReorderingAllowed(true)
-                    .addToBackStack(null)
-                    .commit()
+                    .show()
+//            else
+//                childFragmentManager.beginTransaction()
+//                    .replace(
+//                        R.id.home_earth_container, CommunityMainFragment()
+//                    )
+//                    .setReorderingAllowed(true)
+//                    .addToBackStack(null)
+//                    .commit()
+            else {
+                val intent = Intent(requireActivity(), CommunityActivity::class.java)
+                requireActivity().startActivity(intent)
+            }
 
         }
 

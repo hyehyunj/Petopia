@@ -1,6 +1,7 @@
 package com.djhb.petopia.data.remote
 
 import android.util.Log
+import com.djhb.petopia.Table
 import com.djhb.petopia.data.CommentModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.DocumentSnapshot
@@ -14,9 +15,10 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class CommentRepositoryImpl: CommentRepository {
+class CommentRepositoryImpl(val table: Table): CommentRepository {
 
-    private val reference = Firebase.firestore.collection("questionComment")
+    //    private val reference = Firebase.firestore.collection(Table.QUESTION_COMMENT.tableName)
+    private val reference = Firebase.firestore.collection(table.tableName)
 
     override suspend fun createComment(comment: CommentModel): CommentModel {
 
@@ -27,7 +29,7 @@ class CommentRepositoryImpl: CommentRepository {
                     continuation.resume(comment)
                     return@addOnCompleteListener
                 } else {
-                    continuation.resumeWithException(Exception("Unknown error"))
+                    continuation.resumeWithException(Exception(task.exception))
                 }
             }.addOnFailureListener {
                 continuation.resumeWithException(it)
@@ -50,7 +52,7 @@ class CommentRepositoryImpl: CommentRepository {
                         continuation.resume(convertToCommentModels(documents))
                         return@addOnCompleteListener
                     } else {
-                        continuation.resumeWithException(Exception("Unknown error"))
+                        continuation.resumeWithException(Exception(task.exception))
                     }
                 }.addOnFailureListener {
                     continuation.resumeWithException(it)

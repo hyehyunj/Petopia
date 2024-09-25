@@ -23,10 +23,10 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-class PostRepositoryImpl : PostRepository {
+class PostRepositoryImpl(val table: Table) : PostRepository {
 
-    private val storeReference = Firebase.firestore.collection(Table.QUESTION_POST.tableName)
-    private val storageReference = Firebase.storage.getReference(Table.QUESTION_POST.tableName)
+    private val storeReference = Firebase.firestore.collection(table.tableName)
+    private val storageReference = Firebase.storage.getReference(table.tableName)
 
 //    override suspend fun createPost(post: PostModel, imageUris: MutableList<String>): PostModel {
 //        return suspendCancellableCoroutine { continuation ->
