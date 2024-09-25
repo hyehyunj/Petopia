@@ -85,7 +85,7 @@ class MainHomeGuideSharedViewModel(
 
         viewModelScope.launch {
             signRepository.updateUser(user)
-            Log.d("logindata","$user")
+            Log.d("logindata", "$user")
         }
 
         _userDataLiveData.value = user
