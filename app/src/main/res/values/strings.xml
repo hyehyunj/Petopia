@@ -45,7 +45,7 @@
     <!--  SignIn : 로그인에서 사용되는 String  -->
     <string name="signin_id_search">아이디 찾기</string>
     <string name="signin_password_search">비밀번호 찾기</string>
-    <string name="signin_autologin_guide">다른 계정으로 간편 로그인</string>
+    <string name="signin_autologin_guide">구글 계정으로 간편 로그인</string>
     <string name="signin_by_google">Google로 로그인</string>
     <string name="signin_by_kakao">KakaoTalk으로 로그인</string>
     <string name="signin_by_naver">Naver로 로그인</string>
