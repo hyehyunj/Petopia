@@ -227,7 +227,6 @@ class MemoryFragment() : DialogFragment() {
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
-
         val size = Point()
         display.getSize(size)
         size.x

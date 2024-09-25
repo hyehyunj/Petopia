@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/guide_select_name"
+            app:layout_constraintBottom_toTopOf="@+id/dialog_name_et"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -46,6 +47,7 @@
             android:maxLines="1"
             android:paddingHorizontal="16dp"
             android:paddingVertical="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/dialog_name_tv_back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dialog_name_tv_title" />
@@ -61,6 +63,7 @@
             android:background="@drawable/bg_gray_white"
             android:padding="4dp"
             android:text="@string/common_cancel"
+            android:includeFontPadding="false"
             app:button_duration="100"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/dialog_name_tv_complete"
@@ -77,6 +80,7 @@
             android:background="@drawable/bg_main_blue"
             android:padding="4dp"
             android:text="@string/common_complete"
+            android:includeFontPadding="false"
             app:button_duration="100"
             app:layout_constraintBottom_toBottomOf="@+id/dialog_name_tv_back"
             app:layout_constraintEnd_toEndOf="parent"

@@ -15,9 +15,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+
 
             <ImageView
                 android:id="@+id/my_iv_back"
@@ -242,30 +245,28 @@
                 app:layout_constraintTop_toTopOf="@+id/my_iv_information" />
 
             <com.skydoves.elasticviews.ElasticButton
+                android:id="@+id/my_tv_petopia_intro"
+                style="@style/common_text_16_dark_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="start"
+                android:text="Petopia 소개"
+                app:button_duration="100"
+                app:layout_constraintStart_toStartOf="@+id/my_tv_information"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_information" />
+
+            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_guide"
                 style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="start"
-
                 android:text="가이드 보기"
                 app:button_duration="100"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_information"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_information" />
-
-            <com.skydoves.elasticviews.ElasticButton
-                android:id="@+id/my_tv_question_frequency"
-                style="@style/common_text_16_dark_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:gravity="start"
-
-                android:text="자주묻는 질문"
-                app:button_duration="100"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_guide"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_guide" />
+                app:layout_constraintStart_toStartOf="@+id/my_tv_petopia_intro"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_petopia_intro" />
 
             <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_question_direct"
@@ -277,8 +278,8 @@
 
                 android:text="1:1 문의"
                 app:button_duration="100"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_question_frequency"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_question_frequency" />
+                app:layout_constraintStart_toStartOf="@+id/my_tv_guide"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_guide" />
 
             <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_terms"
@@ -313,4 +314,11 @@
 
     </ScrollView>
 
+    <FrameLayout
+        android:id="@+id/my_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

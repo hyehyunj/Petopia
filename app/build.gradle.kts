@@ -22,15 +22,28 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        getByName("debug") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
         }
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -50,6 +63,9 @@ android {
 
 
 dependencies {
+    implementation("com.github.Yasic:ParticleTextView:77a4f4c4a8")
+    implementation("com.vanniktech:android-image-cropper:4.5.0")
+    implementation("com.codemybrainsout.onboarding:onboarder:1.0.4")
     implementation("com.github.mmin18:RealtimeBlurView:82df3520b4")
     implementation("com.github.siralam:DropDownView:b664b916de")
     implementation("com.github.RiccardoMoro:RMSwitch:v1.2.2")
@@ -111,6 +127,8 @@ dependencies {
     implementation("com.google.gms:google-services:4.3.15")
 
     implementation("com.google.android.material:material:1.7.0")
+    implementation("com.ssomai:android.scalablelayout:2.1.6")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

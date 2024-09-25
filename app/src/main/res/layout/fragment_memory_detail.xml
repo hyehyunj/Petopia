@@ -7,103 +7,105 @@
     android:background="@android:color/transparent"
     tools:context=".presentation.memory.MemoryDetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_white_30">
-
-        <ImageView
-            android:id="@+id/btn_memory_detail_exit"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/sel_btn_left"
-            app:layout_constraintBottom_toBottomOf="@id/tv_memory_detail_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_memory_detail_title" />
-
-
-        <TextView
-            android:id="@+id/tv_memory_detail_title"
-            style="@style/common_text_20_bold_dark_gray"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/memory_list_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btn_memory_detail_modify"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/icon_write"
-            app:layout_constraintBottom_toBottomOf="@id/tv_memory_detail_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_memory_detail_title" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="20dp"
-            android:background="@drawable/img_memory_paper"
-            android:padding="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/iv_memory_origami_1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_title">
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_white_30">
+
+            <ImageView
+                android:id="@+id/btn_memory_detail_exit"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/sel_btn_left"
+                app:layout_constraintBottom_toBottomOf="@id/tv_memory_detail_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_memory_detail_title" />
+
 
             <TextView
-                android:id="@+id/tv_memory_detail_question"
-                style="@style/point_text_24_dark_gray"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginHorizontal="2dp"
-                android:layout_marginTop="16dp"
-                android:gravity="start"
-                android:maxLines="2"
-                android:text="@string/memory_list_rv_title"
+                android:id="@+id/tv_memory_detail_title"
+                style="@style/common_text_20_bold_dark_gray"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/memory_list_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_memory_detail_date"
-                style="@style/common_text_16_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="20dp"
-                android:text="YYYY-MM-dd"
+            <ImageView
+                android:id="@+id/btn_memory_detail_modify"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/icon_write"
+                app:layout_constraintBottom_toBottomOf="@id/tv_memory_detail_title"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_question" />
+                app:layout_constraintTop_toTopOf="@id/tv_memory_detail_title" />
 
-            <TextView
-                android:id="@+id/et_memory_detail_content"
-                style="@style/common_text_16_dark_gray"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginBottom="16dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/img_memory_paper"
+                android:padding="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/iv_memory_origami_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_title">
+
+                <TextView
+                    android:id="@+id/tv_memory_detail_question"
+                    style="@style/point_text_24_dark_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="2dp"
+                    android:layout_marginTop="16dp"
+                    android:gravity="start"
+                    android:maxLines="2"
+                    android:text="@string/memory_list_rv_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_memory_detail_date"
+                    style="@style/common_text_16_gray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="20dp"
+                    android:text="YYYY-MM-dd"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_question" />
+
+                <TextView
+                    android:id="@+id/et_memory_detail_content"
+                    style="@style/common_text_16_dark_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_marginBottom="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_memory_detail_question"
+                    app:layout_constraintStart_toStartOf="@+id/tv_memory_detail_question"
+                    app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_date" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <ImageView
+                android:id="@+id/iv_memory_origami_1"
+                android:layout_width="120dp"
+                android:layout_height="0dp"
+                android:src="@drawable/img_origami_1"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tv_memory_detail_question"
-                app:layout_constraintStart_toStartOf="@+id/tv_memory_detail_question"
-                app:layout_constraintTop_toBottomOf="@id/tv_memory_detail_date" />
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-        <ImageView
-            android:id="@+id/iv_memory_origami_1"
-            android:layout_width="120dp"
-            android:layout_height="0dp"
-            android:src="@drawable/img_origami_1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

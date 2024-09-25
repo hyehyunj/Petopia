@@ -23,6 +23,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.djhb.petopia.R
+import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.presentation.memory.MemoryViewModel
 import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
@@ -41,6 +42,7 @@ class HomeMemoryBridgeFragment : Fragment() {
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
     private lateinit var memoryViewModel: MemoryViewModel
 
+    private val user = LoginData.loginUser.id
 
     private lateinit var emojiViews: List<ImageView>
 
@@ -70,8 +72,9 @@ class HomeMemoryBridgeFragment : Fragment() {
 
 
         memoryViewModel.memoryTitle.observe(viewLifecycleOwner) { text ->
-            Log.d("memoryText", text)
-            binding.homeMemoryBridgeTvMemoryTitle.text = text
+            if (memoryViewModel.isMemorySaved.value == false) {
+                binding.homeMemoryBridgeTvMemoryTitle.text = text
+            }
         }
 
         val currentTitle = binding.homeMemoryBridgeTvMemoryTitle.text.toString()
@@ -109,17 +112,26 @@ class HomeMemoryBridgeFragment : Fragment() {
         )
 
         setupEmojiClickListeners()
+        setupClickOutsideListener()
         updateUIBasedOnTime()
     }
 
 
+    private fun setupClickOutsideListener() {
+        binding.root.setOnClickListener {
+            // 감정 컨테이너가 보이는 경우 숨기기
+            if (binding.homeMemoryBridgeFeelingsContainer.isVisible) {
+                resetEmojiState()
+            }
+        }
+    }
 
     private fun setupEmojiClickListeners() {
         emojiViews.forEach { emoji ->
             emoji.setOnClickListener {
                 // 선택된 이모지를 확대, 다른 이모지는 GONE
                 animateSelectedEmoji(emoji)
-
+                changeBalloonBackground(emoji)
                 // 풍선 배경 변경
                 changeBalloonBackground(emoji)
 
@@ -139,31 +151,37 @@ class HomeMemoryBridgeFragment : Fragment() {
                 balloon2.setImageResource(R.drawable.img_yello__balloon)
                 balloon3.setImageResource(R.drawable.img_yello__balloon)
             }
+
             binding.emjSad -> {
                 balloon1.setImageResource(R.drawable.img_blue__balloon)
                 balloon2.setImageResource(R.drawable.img_blue__balloon)
                 balloon3.setImageResource(R.drawable.img_blue__balloon)
             }
+
             binding.emjBad -> {
                 balloon1.setImageResource(R.drawable.img_red_balloon)
                 balloon2.setImageResource(R.drawable.img_red_balloon)
                 balloon3.setImageResource(R.drawable.img_red_balloon)
             }
+
             binding.emjSoso -> {
                 balloon1.setImageResource(R.drawable.img_green__balloon)
                 balloon2.setImageResource(R.drawable.img_green__balloon)
                 balloon3.setImageResource(R.drawable.img_green__balloon)
             }
+
             binding.emjWhirl -> {
                 balloon1.setImageResource(R.drawable.img_purple__balloon)
                 balloon2.setImageResource(R.drawable.img_purple__balloon)
                 balloon3.setImageResource(R.drawable.img_purple__balloon)
             }
+
             binding.emjGloomy -> {
                 balloon1.setImageResource(R.drawable.img_sodomy__balloon)
                 balloon2.setImageResource(R.drawable.img_sodomy__balloon)
                 balloon3.setImageResource(R.drawable.img_sodomy__balloon)
             }
+
             binding.emjSick -> {
                 balloon1.setImageResource(R.drawable.img_orange_balloon)
                 balloon2.setImageResource(R.drawable.img_orange_balloon)
@@ -179,9 +197,18 @@ class HomeMemoryBridgeFragment : Fragment() {
     }
 
 
-
     // 선택된 이모지를 중앙에 배치하고 확대
     private fun animateSelectedEmoji(selectedEmoji: ImageView) {
+
+        emojiViews.forEach { emoji ->
+            (emoji.tag as? List<ObjectAnimator>)?.forEach { it.cancel() } // 애니메이션 취소
+            emoji.clearAnimation() // 이모지에 걸린 모든 애니메이션 취소
+            emoji.translationX = 0f
+            emoji.translationY = 0f
+            emoji.scaleX = 1f
+            emoji.scaleY = 1f
+            emoji.alpha = 1f
+        }
         // 이모지를 확대 및 중앙으로 이동시키기 위한 애니메이션
         val scaleXAnimator = ObjectAnimator.ofFloat(selectedEmoji, "scaleX", 1f, 3f)
         val scaleYAnimator = ObjectAnimator.ofFloat(selectedEmoji, "scaleY", 1f, 3f)
@@ -191,13 +218,14 @@ class HomeMemoryBridgeFragment : Fragment() {
         layoutParams.setMargins(0, 0, 0, 0)
         selectedEmoji.layoutParams = layoutParams
 
-        // 이모지를 부모 레이아웃의 중앙으로 배치
+        // 중앙으로 이동
         val parentView = binding.root
         val centerX = (parentView.width / 2) - (selectedEmoji.width * 1.5f / 2)
         val centerY = (parentView.height / 2) - (selectedEmoji.height * 1.5f / 2)
 
         val moveXAnimator = ObjectAnimator.ofFloat(selectedEmoji, "x", selectedEmoji.x, centerX)
         val moveYAnimator = ObjectAnimator.ofFloat(selectedEmoji, "y", selectedEmoji.y, centerY)
+
 
         // Y축 애니메이션
         val floatAnimatorY = ObjectAnimator.ofFloat(selectedEmoji, "translationY", 0f, -50f, 0f)
@@ -218,14 +246,14 @@ class HomeMemoryBridgeFragment : Fragment() {
         scaleYAnimator.start()
 
         // 이모지 애니메이션 시작
-        floatAnimatorY.start()
         selectedEmoji.tag =
             listOf(scaleXAnimator, scaleYAnimator, floatAnimatorY, moveXAnimator, moveYAnimator)
-        selectedEmoji.isClickable = false
-        selectedEmoji.isFocusable = false
+
 
         //이모지 5초뒤 사라지기
         selectedEmoji.postDelayed({
+            selectedEmoji.translationY = 0f // 초기 위치로 되돌리기
+
             val fadeOutAnimator = ObjectAnimator.ofFloat(selectedEmoji, "alpha", 1f, 0f)
             fadeOutAnimator.duration = 1000
             fadeOutAnimator.start()
@@ -238,7 +266,7 @@ class HomeMemoryBridgeFragment : Fragment() {
                 }
             })
 
-        }, 5000)
+        }, 3000)
     }
 
     // 이모지 상태 초기화 함수
@@ -291,7 +319,13 @@ class HomeMemoryBridgeFragment : Fragment() {
             // 메모리 작성 완료시 투데이 메모리문구, 버튼 변경
             memoryViewModel.isMemorySaved.observe(viewLifecycleOwner) {
                 if (it == true) {
-                    binding.homeMemoryBridgeTvMemoryTitle.text = "메모리북 기록 완료"
+                    binding.homeMemoryBridgeTvMemoryTitle.setText("메모리북 기록 완료")
+
+                    val sharedPreferences = requireContext().getSharedPreferences(
+                        "${user}MemoryisSaved",
+                        Context.MODE_PRIVATE
+                    )
+                    sharedPreferences.edit().putBoolean("isSaved", true).apply()
                 }
             }
         }
@@ -361,12 +395,28 @@ class HomeMemoryBridgeFragment : Fragment() {
     private fun loadMemory() {
         val sharedPreferences =
             requireContext().getSharedPreferences("Memory", Context.MODE_PRIVATE)
+
+        val isSavedSharedPreferences =
+            requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
+        val isSaved = isSavedSharedPreferences.getBoolean("isSaved", false)
         val memoryText = sharedPreferences.getString("memoryText", null)
 
-        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
-        memoryViewModel.setMemoryTitle(memoryText.toString())
 
-        Log.d("memoryText", memoryText.toString())
+        binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+
+        if (memoryViewModel.isMemorySaved.value != true) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+            memoryViewModel.setMemoryTitle(memoryText.toString())
+        }
+
+        if (isSaved) {
+            binding.homeMemoryBridgeTvMemoryTitle.text = "메모리북 기록 완료"
+        } else {
+            binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
+            memoryViewModel.setMemoryTitle(memoryText.toString())
+        }
+
+
     }
 
     private fun homeMemoryBridgeDataObserver() {

@@ -14,14 +14,5 @@
         android:repeatMode="reverse"
         android:duration="1000"/>
 </set>
-<!--    <set>-->
-<!--        <alpha-->
-<!--         android:fromAlpha="1"-->
-<!--            android:toAlpha="0.3"-->
-<!--            android:repeatCount="infinite"-->
-<!--            android:repeatMode="reverse"-->
-<!--            android:duration="2000"/>-->
-<!--    </set>-->
-
 
 </set>

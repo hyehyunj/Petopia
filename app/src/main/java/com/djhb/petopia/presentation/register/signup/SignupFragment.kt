@@ -54,9 +54,11 @@ class SignupFragment : Fragment() {
             if (!isViewMoreClicked) {
                 makeTermsVisible()
                 isViewMoreClicked = true
+                binding.btnViewmore.setImageResource(R.drawable.icon_minus)
             } else {
                 makeTermsGone()
                 isViewMoreClicked = false
+                binding.btnViewmore.setImageResource(R.drawable.icon_plus)
             }
         }
 
@@ -72,6 +74,7 @@ class SignupFragment : Fragment() {
 
             if (!isViewMoreClicked) {
                 makeTermsVisible()
+                binding.btnViewmore.setImageResource(R.drawable.icon_minus)
                 isViewMoreClicked = true
             }
 
@@ -246,21 +249,14 @@ class SignupFragment : Fragment() {
     }
 
     private fun setTermFragment() {
-        parentFragmentManager.beginTransaction()
-            .hide(this)
-            .add(R.id.register_fragment_container, TermFragment())
-            .addToBackStack(null)
-            .commit()
+        TermFragment().show(childFragmentManager, "TERM_DIALOG")
     }
 
     private fun setPersonalTermFragment() {
-        parentFragmentManager.beginTransaction()
-            .hide(this)
-            .add(R.id.register_fragment_container, PersonalTermFragment())
-            .addToBackStack(null)
-            .commit()
-
+        PersonalTermFragment().show(childFragmentManager, "PERSONAL_TERM_DIALOG")
     }
+
+
 
     private fun makeTermsVisible() {
         binding.cbCheckTerms.visibility = View.VISIBLE

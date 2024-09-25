@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:176593614331:android:5b33507a3b41b375a5475e",
         "android_client_info": {
-          "package_name": "com.djhb.petopia"
+          "package_name": "com.android.petopia"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "176593614331-24g5ml6nkgppj3t1e3l5dadhlunfqc8n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.djhb.petopia",
+            "package_name": "com.android.petopia",
             "certificate_hash": "90e2e4f72de95ca2ef873f82510f371760986db3"
           }
         },
@@ -51,6 +51,30 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "176593614331-1gmt17jpefotqhv8p8ba4rvh7rsu50bi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djhb.petopia",
+            "certificate_hash": "a314e9c4f83ec4cbb155b2646ee9ec3ee9bcab5e"
+          }
+        },
+        {
+          "client_id": "176593614331-bu358gagrkid62vu1q44b5ff38jjrqfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djhb.petopia",
+            "certificate_hash": "f9a10dc974b0cbce8fca094a7857f60f0efce9c9"
+          }
+        },
+        {
+          "client_id": "176593614331-if93vfirdn98nsui2is34ti3etol4d3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djhb.petopia",
+            "certificate_hash": "f9f9f93a8c16f51d205d6923ba70ce5f21b4b2bb"
+          }
+        },
         {
           "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
           "client_type": 3

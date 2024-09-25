@@ -19,6 +19,7 @@ import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signup.SignupFragment
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -93,6 +94,7 @@ class SigninFragment : Fragment() {
             .requestEmail()
             .build()
 
+
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
 
 
@@ -143,7 +145,7 @@ class SigninFragment : Fragment() {
         //미구현 버튼들
 
         binding.btnIdSearch.setOnClickListener {
-            showUndoToast()
+            setFindIdFragment()
         }
 
         binding.btnPasswordSearch.setOnClickListener {
@@ -234,6 +236,10 @@ class SigninFragment : Fragment() {
             putString("saved_password", password)
             apply()
         }
+    }
+
+    private fun setFindIdFragment() {
+        FindIdFragment().show(childFragmentManager, "FIND_ID_DIALOG")
     }
 
     fun showUndoToast() {
