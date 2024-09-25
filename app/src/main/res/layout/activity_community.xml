@@ -7,17 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".presentation.community.CommunityActivity">
 
-<!--    <include-->
-<!--        android:id="@+id/header"-->
-<!--        layout="@layout/post_header"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content" />-->
+    <include
+        android:id="@+id/header"
+        layout="@layout/post_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabCommunity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
+        android:background="@color/white"
+        app:tabIndicatorGravity="bottom"
+        app:tabTextColor="@color/gray"
+        app:tabIndicatorHeight="3dp"
+        app:tabIndicatorFullWidth="false"
+        app:tabRippleColor="@android:color/transparent"
+        app:tabIndicatorAnimationMode="elastic"
+        app:tabSelectedTextColor="@color/main_blue"
+        app:tabIndicatorColor="@color/main_blue"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

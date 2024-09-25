@@ -204,7 +204,13 @@
         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/sel_text_guide_appearance</item>
     </style>
-
+    <!-- Community -->
+    <style name="community_text_20_gray">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@drawable/sel_text_blue_white</item>
+        <item name="android:gravity">center</item>
+    </style>
 
     <!-- List -->
 

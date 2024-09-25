@@ -22,7 +22,7 @@ class CommunityActivity : AppCompatActivity() {
         CommunityViewPagerAdapter(this)
     }
 
-    private val postTypes = listOf("질문 게시판", "정보 공유 게시판", "갤러리")
+    private val postTypes = listOf("질문 게시판", "정보 공유 게시판", "사진 게시판")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
