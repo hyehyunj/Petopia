@@ -68,6 +68,14 @@
           }
         },
         {
+          "client_id": "176593614331-if93vfirdn98nsui2is34ti3etol4d3l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djhb.petopia",
+            "certificate_hash": "f9f9f93a8c16f51d205d6923ba70ce5f21b4b2bb"
+          }
+        },
+        {
           "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
           "client_type": 3
         }

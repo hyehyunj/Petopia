@@ -11,8 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
-import com.djhb.petopia.data.getAdminPostLeftItems
+import androidx.fragment.app.viewModels
 import com.djhb.petopia.databinding.FragmentAdminPostBinding
 import com.github.matteobattilana.weather.PrecipType
 import com.github.matteobattilana.weather.WeatherView
@@ -24,7 +23,9 @@ class AdminPostLeftFragment : DialogFragment() {
         FragmentAdminPostBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private val adminPostViewModel: AdminPostViewModel by activityViewModels()
+    private val adminPostViewModel by viewModels<AdminPostViewModel> {
+        AdminPostViewModelFactory()
+    }
     private val deckPager by lazy { binding.adminPostDeck }
 
 
@@ -76,7 +77,7 @@ class AdminPostLeftFragment : DialogFragment() {
     private fun initAdapter() {
         deckPager.apply {
             offscreenPageLimit = 5
-            adapter = AdminPostAdapter(requireContext(), getAdminPostLeftItems(),
+            adapter = AdminPostAdapter(requireContext(), adminPostViewModel.getAdminPostLeftList(),
                 itemClickListener = { item, position ->
                     binding.adminPostTvPost.apply {
                         isVisible = true
