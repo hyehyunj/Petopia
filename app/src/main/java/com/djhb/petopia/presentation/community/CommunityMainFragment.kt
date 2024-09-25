@@ -1,34 +1,31 @@
 package com.djhb.petopia.presentation.community
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.OnScrollListener
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
-import com.djhb.petopia.data.UserModel
+import com.djhb.petopia.Table
 import com.djhb.petopia.databinding.FragmentCommunityMainBinding
-import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.adapter.PostAdapter
 import com.djhb.petopia.presentation.community.adapter.RankPostAdapter
-import com.djhb.petopia.presentation.home.HomeEarthFragment
-import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
+private const val POST_TYPE = "param1"
 private const val ARG_PARAM2 = "param2"
 
 /**
@@ -38,7 +35,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class CommunityMainFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
+    private lateinit var postType: Table
     private var param2: String? = null
 
     private val binding: FragmentCommunityMainBinding by lazy {
@@ -47,26 +44,26 @@ class CommunityMainFragment : Fragment() {
 
 //    private val viewModel: CommunityViewModel by activityViewModels()
     private val viewModel: CommunityViewModel by lazy {
-        CommunityViewModel()
+        CommunityViewModel(postType)
     }
 
-    private val mainActivity: MainActivity by lazy {
-        requireActivity() as MainActivity
+    private val communityActivity: CommunityActivity by lazy {
+        requireActivity() as CommunityActivity
     }
 
     private val selectedCategories = mutableListOf<FilteringType>()
 
     private val rankPostAdapter by lazy {
-        RankPostAdapter { post ->
+        RankPostAdapter(postType) { post ->
 //            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
 
 //            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
 //            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
-            val detailFragment = CommunityDetailFragment.newInstance(post.key)
+            val detailFragment = CommunityDetailFragment.newInstance(post.key, postType)
 
             requireActivity().supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_sub_frame, detailFragment)
+                .replace(R.id.layoutCommunity, detailFragment)
                 .addToBackStack("questionMain")
                 .commit()
 
@@ -75,22 +72,22 @@ class CommunityMainFragment : Fragment() {
                 viewModel.addPostViewCount(post.key)
             }
 
-            mainActivity.hideViewPager()
+            communityActivity.hideViewPager()
 
         }
     }
 
     private val allPostAdapter by lazy {
-        PostAdapter { post ->
+        PostAdapter(postType) { post ->
 //            Toast.makeText(requireActivity(), "post = ${post}", Toast.LENGTH_SHORT).show()
 //            Log.i("CommunityMainFramgment", "before copy imageUris.size = ${post.imageUris.size}")
 //            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
 //            Log.i("CommunityMainFramgment", "after copy imageUris.size = ${postAddedViewCount.imageUris.size}")
 //            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
-            val detailFragment = CommunityDetailFragment.newInstance(post.key)
+            val detailFragment = CommunityDetailFragment.newInstance(post.key, postType)
             requireActivity().supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_sub_frame, detailFragment)
+                .replace(R.id.layoutCommunity, detailFragment)
                 .addToBackStack(null)
                 .commit()
 
@@ -100,7 +97,7 @@ class CommunityMainFragment : Fragment() {
                 viewModel.addPostViewCount(post.key)
             }
 
-            mainActivity.hideViewPager()
+            communityActivity.hideViewPager()
         }
     }
 
@@ -111,11 +108,11 @@ class CommunityMainFragment : Fragment() {
 //    private var imageUri: Uri? = null
 
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
         }
     }
 
@@ -145,34 +142,34 @@ class CommunityMainFragment : Fragment() {
         }
         binding.recyclerViewQuestionMain.isNestedScrollingEnabled = false
         binding.recyclerViewQuestionRank.isNestedScrollingEnabled = false
-        binding.header.ivSearch.visibility = ImageView.INVISIBLE
+//        binding.header.ivSearch.visibility = ImageView.INVISIBLE
 
     }
 
     private fun initListener() {
-        binding.header.ivBack.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.home_earth_container, HomeEarthFragment())
-                .addToBackStack(null)
-                .commit()
-        }
-
-        binding.header.ivSearch.setOnClickListener {
-            StyleableToast.makeText(
-                requireActivity(),
-                getString(R.string.messege_undo),
-                R.style.toast_undo
-            ).show()
-        }
+//        binding.header.ivBack.setOnClickListener {
+//            parentFragmentManager.beginTransaction()
+//                .replace(R.id.home_earth_container, HomeEarthFragment())
+//                .addToBackStack(null)
+//                .commit()
+//        }
+//
+//        binding.header.ivSearch.setOnClickListener {
+//            StyleableToast.makeText(
+//                requireActivity(),
+//                getString(R.string.messege_undo),
+//                R.style.toast_undo
+//            ).show()
+//        }
 
         binding.btnCreatePost.setOnClickListener {
             requireActivity().supportFragmentManager
                 .beginTransaction()
-                .replace(R.id.main_sub_frame, CommunityCreateFragment())
+                .replace(R.id.layoutCommunity, CommunityCreateFragment.newInstance(postType))
                 .addToBackStack(null)
                 .commit()
 
-            mainActivity.hideViewPager()
+            communityActivity.hideViewPager()
         }
 
 //        binding.recyclerViewQuestionMain.addOnScrollListener(object : OnScrollListener(){
@@ -315,7 +312,17 @@ class CommunityMainFragment : Fragment() {
     private fun initAdapter() {
         binding.recyclerViewQuestionRank.adapter = rankPostAdapter
         binding.recyclerViewQuestionMain.adapter = allPostAdapter
-//        binding.recyclerViewQuestionRank.layoutManager = LinearLayoutManager(requireActivity())
+        binding.recyclerViewQuestionMain.layoutManager =
+            if(postType == Table.GALLERY_POST)
+                GridLayoutManager(requireActivity(), 3)
+            else
+                LinearLayoutManager(requireActivity())
+
+        binding.recyclerViewQuestionRank.layoutManager =
+        if(postType == Table.GALLERY_POST)
+            GridLayoutManager(requireActivity(), 3)
+        else
+            LinearLayoutManager(requireActivity())
     }
 
 
@@ -382,8 +389,16 @@ class CommunityMainFragment : Fragment() {
         fun newInstance(param1: String, param2: String) =
             CommunityMainFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putString(POST_TYPE, param1)
                     putString(ARG_PARAM2, param2)
+                }
+            }
+
+        @JvmStatic
+        fun newInstance(postType: Table) =
+            CommunityMainFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(POST_TYPE, postType)
                 }
             }
     }

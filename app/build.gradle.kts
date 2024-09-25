@@ -110,6 +110,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth-ktx:22.0.0")
     implementation("com.google.gms:google-services:4.3.15")
 
+    implementation("com.google.android.material:material:1.7.0")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

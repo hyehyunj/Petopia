@@ -11,9 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class LikeRepositoryImpl: LikeRepository {
+class LikeRepositoryImpl(val table: Table): LikeRepository {
 
-    private val reference = Firebase.firestore.collection(Table.QUESTION_LIKE.tableName)
+//    private val reference = Firebase.firestore.collection(Table.QUESTION_LIKE.tableName)
+    private val reference = Firebase.firestore.collection(table.tableName)
 
     override suspend fun selectLikeList(postKey: String): MutableList<LikeModel> {
         return withContext(Dispatchers.IO) {

@@ -110,6 +110,10 @@
     <string name="community_create_filtering_dog">강아지</string>
     <string name="community_create_filtering_cat">고양이</string>
 
+    <string name="community_tab_question">질문 게시판</string>
+    <string name="community_tab_information">정보 공유 게시판</string>
+    <string name="community_tab_gallery">갤러리 게시판</string>
+
 
     <!--  Setting : 설정에서 사용되는 String  -->
     <string name="setting_list_title">설정</string>
