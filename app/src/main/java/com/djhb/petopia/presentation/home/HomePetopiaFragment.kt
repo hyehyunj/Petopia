@@ -3,6 +3,7 @@ package com.djhb.petopia.presentation.home
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,7 @@ class HomePetopiaFragment : Fragment() {
         if (LoginData.loginUser.dday != null) loadDDayData()
 
         mainHomeGuideViewModel.checkUserGuideState()
+        Log.d("guidedata", "checkUserGuideState: ${LoginData.loginUser}")
 //        if () getUserAndPet()
 
 //구름 애니메이션

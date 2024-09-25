@@ -76,7 +76,7 @@ class UserPasswordModifyFragment : DialogFragment() {
         if (existPassword != LoginData.loginUser.password) {
 
             Log.d("existPassword", existPassword)
-            Log.d("userPassword", LoginData.loginUser.password)
+            LoginData.loginUser.password?.let { Log.d("userPassword", it) }
 
             StyleableToast.makeText(
                 requireActivity(),

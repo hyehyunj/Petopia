@@ -2,25 +2,20 @@ package com.djhb.petopia.presentation.my
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.replace
-import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentMyBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.register.RegisterActivity
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signup.TermFragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
 
 class MyFragment : DialogFragment() {
@@ -109,13 +104,14 @@ class MyFragment : DialogFragment() {
 
 
     private fun logout() {
-        //자동로그인 해제
         val sharedPref = requireContext().getSharedPreferences("login_data", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            clear()
-            apply()
-        }
+        val isGoogleLogin = sharedPref.getBoolean("isGoogleLogin", false)
 
+        if (isGoogleLogin) {
+            googleLogout()
+        } else {
+            normalLogout()
+        }
         //다이얼로그를 닫고 이동
         dismiss()
         //RegisterActivity 재실행
@@ -123,6 +119,29 @@ class MyFragment : DialogFragment() {
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
+
+    private fun googleLogout() {
+        val googleSignInClient =
+            GoogleSignIn.getClient(requireContext(), GoogleSignInOptions.DEFAULT_SIGN_IN)
+        googleSignInClient.signOut()
+            .addOnCompleteListener(requireActivity()) {
+                val sharedPref =
+                    requireContext().getSharedPreferences("login_data", Context.MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putBoolean("isGoogleLogin", false)
+                    apply()
+                }
+            }
+    }
+
+    private fun normalLogout() {
+        val sharedPref = requireContext().getSharedPreferences("login_data", Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            clear()
+            apply()
+        }
+    }
+
 
     //닉네임 수정페이지
     private fun modify() {
