@@ -157,6 +157,7 @@ class SignupFragment : Fragment() {
                 "닉네임은 6자 이하로 입력해주세요",
                 R.style.toast_warning
             ).show()
+            return false
         }
 
         if (!userId.matches(Regex("^[a-zA-Z0-9]*$"))) {
@@ -165,6 +166,7 @@ class SignupFragment : Fragment() {
                 "아이디는 영문자와 숫자로만 입력해주세요",
                 R.style.toast_warning
             ).show()
+            return false
         }
 
         if (userId.length > 12) {
@@ -173,6 +175,7 @@ class SignupFragment : Fragment() {
                 "아이디는 12자 이하로 입력해주세요",
                 R.style.toast_warning
             ).show()
+            return false
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail).matches()) {
