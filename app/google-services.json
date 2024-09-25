@@ -52,6 +52,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "176593614331-1gmt17jpefotqhv8p8ba4rvh7rsu50bi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djhb.petopia",
+            "certificate_hash": "a314e9c4f83ec4cbb155b2646ee9ec3ee9bcab5e"
+          }
+        },
+        {
+          "client_id": "176593614331-bu358gagrkid62vu1q44b5ff38jjrqfs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djhb.petopia",
+            "certificate_hash": "f9a10dc974b0cbce8fca094a7857f60f0efce9c9"
+          }
+        },
+        {
           "client_id": "176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com",
           "client_type": 3
         }

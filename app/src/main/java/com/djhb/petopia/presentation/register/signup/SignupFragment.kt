@@ -256,6 +256,8 @@ class SignupFragment : Fragment() {
         PersonalTermFragment().show(childFragmentManager, "PERSONAL_TERM_DIALOG")
     }
 
+
+
     private fun makeTermsVisible() {
         binding.cbCheckTerms.visibility = View.VISIBLE
         binding.btnReadTerms.visibility = View.VISIBLE

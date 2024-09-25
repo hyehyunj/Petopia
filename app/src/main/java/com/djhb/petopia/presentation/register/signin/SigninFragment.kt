@@ -145,7 +145,7 @@ class SigninFragment : Fragment() {
         //미구현 버튼들
 
         binding.btnIdSearch.setOnClickListener {
-            showUndoToast()
+            setFindIdFragment()
         }
 
         binding.btnPasswordSearch.setOnClickListener {
@@ -236,6 +236,10 @@ class SigninFragment : Fragment() {
             putString("saved_password", password)
             apply()
         }
+    }
+
+    private fun setFindIdFragment() {
+        FindIdFragment().show(childFragmentManager, "FIND_ID_DIALOG")
     }
 
     fun showUndoToast() {
