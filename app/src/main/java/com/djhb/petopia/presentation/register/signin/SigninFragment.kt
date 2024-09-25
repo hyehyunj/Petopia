@@ -151,17 +151,8 @@ class SigninFragment : Fragment() {
         binding.btnPasswordSearch.setOnClickListener {
             showUndoToast()
         }
-
-        binding.btnKakaoSignin.setOnClickListener {
-            showUndoToast()
-        }
-
         binding.btnGoogleSignin.setOnClickListener {
             signInWithGoogle()
-        }
-
-        binding.btnNaverSignin.setOnClickListener {
-            showUndoToast()
         }
     }
 
