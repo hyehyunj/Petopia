@@ -7,10 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
+import com.djhb.petopia.data.AdminPostLocalDataSource
 import com.djhb.petopia.data.AdminPostModel
 import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.ReportModel
+import com.djhb.petopia.data.remote.AdminPostRepository
+import com.djhb.petopia.data.remote.AdminPostRepositoryImpl
 import com.djhb.petopia.data.remote.AdminRepository
 import com.djhb.petopia.data.remote.AdminRepositoryImpl
 import com.djhb.petopia.data.remote.CommentRepository
@@ -28,7 +31,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.sign
 
 //관리자게시글 공유 뷰모델
-class AdminPostViewModel :
+class AdminPostViewModel(private val adminPostRepository : AdminPostRepository) :
     ViewModel() {
     private val user = LoginData.loginUser
 
@@ -42,24 +45,25 @@ class AdminPostViewModel :
 
 
     //관리자 게시글 불러오기
-    fun loadInitReportList() {
-
+    fun getAdminPostLeftList() : List<AdminPostModel> {
+   return adminPostRepository.getAdminPostLeftData()
     }
 
-
+    fun getAdminPostRightList() : List<AdminPostModel> {
+        return adminPostRepository.getAdminPostRightData()
+    }
 }
 
 
-//class AdminViewModelFactory : ViewModelProvider.Factory {
-//    private val repository =
-//        AdminRepositoryImpl()
-//
-//    override fun <T : ViewModel> create(
-//        modelClass: Class<T>,
-//        extras: CreationExtras
-//    ): T {
-//        return AdminViewModel(
-//            repository
-//        ) as T
-//    }
-//}
+class AdminPostViewModelFactory : ViewModelProvider.Factory {
+    private val adminPostRepository = AdminPostRepositoryImpl(AdminPostLocalDataSource)
+
+    override fun <T : ViewModel> create(
+        modelClass: Class<T>,
+        extras: CreationExtras
+    ): T {
+        return AdminPostViewModel(
+            adminPostRepository
+        ) as T
+    }
+}
