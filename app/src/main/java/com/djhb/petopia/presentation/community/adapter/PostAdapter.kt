@@ -77,6 +77,7 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
             currentHolder.viewCount.text = item.viewCount.toString()
 //        hocurrentHder.likeCount.text = item.likeCount.toString()
             currentHolder.likeCount.text = item.likes.size.toString()
+            currentHolder.commentCount.text = item.commentCount.toString()
             currentHolder.userId.text = item.writer.nickname
             currentHolder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)
             currentHolder.binding.root.setOnClickListener {
@@ -99,11 +100,12 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
 
     class PostItem(val binding: PostHolderBinding): ViewHolder(binding.root){
         val mainImage = binding.ivMainImage
-        var title = binding.tvTitle
-        var viewCount = binding.tvViewCount
-        var likeCount = binding.tvLikeCount
-        var userId = binding.tvWriter
-        var createdDate = binding.tvCreatedDate
+        val title = binding.tvTitle
+        val viewCount = binding.tvViewCount
+        val likeCount = binding.tvLikeCount
+        val commentCount = binding.tvCommentCount
+        val userId = binding.tvWriter
+        val createdDate = binding.tvCreatedDate
     }
 
     class GalleryPostItem(val binding: GalleryPostMainHolderBinding): ViewHolder(binding.root) {

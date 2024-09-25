@@ -4,6 +4,7 @@ import android.util.Log
 import com.djhb.petopia.Table
 import com.djhb.petopia.data.CommentModel
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
@@ -57,6 +58,17 @@ class CommentRepositoryImpl(val table: Table): CommentRepository {
                 }.addOnFailureListener {
                     continuation.resumeWithException(it)
                 }
+        }
+    }
+
+    override suspend fun selectCommentCount(postKey: String): Long {
+        return withContext(Dispatchers.IO) {
+
+            val snapshot = reference.whereEqualTo("postKey", postKey)
+                .count()
+                .get(AggregateSource.SERVER)
+                .await()
+            snapshot.count
         }
     }
 

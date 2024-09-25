@@ -74,6 +74,10 @@ class RankPostAdapter(val postType: Table, private val onClick: (post: PostModel
             currentHolder.rankImage.visibility = ImageView.VISIBLE
             currentHolder.rankImage.setImageResource(rankMedalImages[position])
 
+            currentHolder.binding.root.setOnClickListener {
+                onClick(item)
+            }
+
             if (item.imageUris.size == 0)
                 currentHolder.mainImage.visibility = ImageView.INVISIBLE
             else {
@@ -95,6 +99,7 @@ class RankPostAdapter(val postType: Table, private val onClick: (post: PostModel
             currentHolder.viewCount.text = item.viewCount.toString()
 //        currentHolder.likeCount.text = item.likeCount.toString()
             currentHolder.likeCount.text = item.likes.size.toString()
+            currentHolder.commentCount.text = item.commentCount.toString()
             currentHolder.userId.text = item.writer.nickname
             currentHolder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)
             currentHolder.rankImage.setImageResource(rankMedalImages[position])
@@ -118,11 +123,14 @@ class RankPostAdapter(val postType: Table, private val onClick: (post: PostModel
     class RankPostHolder(val binding: PostRankHolderBinding): ViewHolder(binding.root) {
         val rankImage = binding.ivRank
         val mainImage = binding.ivMainImage
-        var title = binding.tvTitle
-        var viewCount = binding.tvViewCount
-        var likeCount = binding.tvLikeCount
-        var userId = binding.tvWriter
-        var createdDate = binding.tvCreatedDate
+        val title = binding.tvTitle
+        val viewCount = binding.tvViewCount
+        val likeCount = binding.tvLikeCount
+        val commentCount = binding.tvCommentCount
+        val userId = binding.tvWriter
+        val createdDate = binding.tvCreatedDate
+
+
     }
 
     class GalleryRankPostHolder(val binding: GalleryPostMainHolderBinding): ViewHolder(binding.root) {

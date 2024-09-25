@@ -183,7 +183,13 @@ class CommunityCreateFragment : Fragment() {
             ,binding.cbCat to FilteringType.CAT
         )
 
-        binding.header.tvTitle.text = "글쓰기(질문 게시판)"
+        binding.header.tvTitle.text = when(postType) {
+            Table.QUESTION_POST -> "질문 게시판"
+            Table.INFORMATION_POST -> "정보 공유 게시판"
+            else -> "갤러리 게시판"
+        }
+
+//        binding.header.tvTitle.text = "글쓰기(질문 게시판)"
 //        binding.header.ivSearch.isVisible =
         binding.header.ivSearch.visibility = ImageView.INVISIBLE
 //        val title = binding.etTitle.text.toString()
