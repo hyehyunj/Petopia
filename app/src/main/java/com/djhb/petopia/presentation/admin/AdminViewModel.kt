@@ -53,13 +53,13 @@ class AdminViewModel :
         SignRepositoryImpl()
     }
 
-    private val postRepository: PostRepository by lazy {
-        PostRepositoryImpl()
-    }
-
-    private val commentRepository: CommentRepository by lazy {
-        CommentRepositoryImpl()
-    }
+//    private val postRepository: PostRepository by lazy {
+//        PostRepositoryImpl()
+//    }
+//
+//    private val commentRepository: CommentRepository by lazy {
+//        CommentRepositoryImpl()
+//    }
 
 
     fun selectReport(report: ReportModel) {
@@ -99,18 +99,18 @@ class AdminViewModel :
         viewModelScope.launch {
             adminRepository.deleteReport(report.uid)
             signRepository.deleteUser(report.targetUserId)
-            val posts = postRepository.selectPostFromUser(report.targetUserId)
-            for (post in posts) {
-                postRepository.deletePost(post.key)
-                postRepository.deletePostImages(post.key)
-            }
-
-            val comments =
-                commentRepository.selectAllCommentsFromUser(report.targetUserId)
-
-            for (comment in comments) {
-                commentRepository.deleteComment(comment.key)
-            }
+//            val posts = postRepository.selectPostFromUser(report.targetUserId)
+////            for (post in posts) {
+////                postRepository.deletePost(post.key)
+////                postRepository.deletePostImages(post.key)
+////            }
+////
+////            val comments =
+////                commentRepository.selectAllCommentsFromUser(report.targetUserId)
+////
+////            for (comment in comments) {
+////                commentRepository.deleteComment(comment.key)
+////            }
 
             reportListResult.removeIf{
                 it.uid == report.uid

@@ -1,11 +1,10 @@
 package com.djhb.petopia.presentation.community
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.FilteringType
-import com.djhb.petopia.data.LikeModel
+import com.djhb.petopia.Table
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.data.remote.LikeRepository
@@ -13,7 +12,6 @@ import com.djhb.petopia.data.remote.LikeRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.Filter
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -21,7 +19,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
 
-class CommunityViewModel : ViewModel() {
+class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
+
+    private val postTypeToTables = mutableMapOf(
+        Table.QUESTION_POST to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
+        Table.INFORMATION_POST to listOf(Table.INFORMATION_POST, Table.INFORMATION_COMMENT, Table.INFORMATION_LIKE),
+        Table.GALLERY_POST to listOf(Table.GALLERY_POST, Table.GALLERY_COMMENT, Table.GALLERY_LIKE)
+    )
+
+    private val currentTables = postTypeToTables[postType]
 
     private val _rankPosts = MutableLiveData<MutableList<PostModel>>()
     val rankPosts get() = _rankPosts
@@ -55,11 +61,11 @@ class CommunityViewModel : ViewModel() {
 
 
     private val postRepository: PostRepository by lazy {
-        PostRepositoryImpl()
+        PostRepositoryImpl(currentTables?.get(0)?:Table.NONE)
     }
 
     private val likeRepository: LikeRepository by lazy {
-        LikeRepositoryImpl()
+        LikeRepositoryImpl(currentTables?.get(0)?:Table.NONE)
     }
 
     private lateinit var lastSnapshot: DocumentSnapshot
