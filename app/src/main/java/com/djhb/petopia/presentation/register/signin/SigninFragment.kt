@@ -19,6 +19,7 @@ import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.community.Authority
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signup.SignupFragment
+import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -92,6 +93,7 @@ class SigninFragment : Fragment() {
             .requestIdToken("176593614331-5sh34isikt90vbk8f11qcfgltkg18ii3.apps.googleusercontent.com")
             .requestEmail()
             .build()
+
 
         googleSignInClient = GoogleSignIn.getClient(requireActivity(), googleSignInOptions)
 
