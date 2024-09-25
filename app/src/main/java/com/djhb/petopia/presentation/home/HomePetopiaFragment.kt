@@ -128,7 +128,7 @@ class HomePetopiaFragment : Fragment() {
             binding.firefly.visibility = View.GONE
             binding.homeImgBackground.visibility = View.VISIBLE
             binding.homeTvNameUser.setTextAppearance(R.style.common_text_16_dark_gray)
-            binding.homeTvNamePet.setTextAppearance(R.style.common_text_16_dark_gray)
+            binding.homeTvNamePet.setTextAppearance(R.style.point_text_32_dark_gray)
         }
 
 
