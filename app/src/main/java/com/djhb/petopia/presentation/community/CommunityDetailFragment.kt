@@ -19,6 +19,7 @@ import com.djhb.petopia.DateFormatUtils
 import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
 import com.djhb.petopia.ReportContentType
+import com.djhb.petopia.Table
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.data.LikeModel
 import com.djhb.petopia.data.LoginData
@@ -40,6 +41,7 @@ import me.relex.circleindicator.CircleIndicator3
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private const val POST_TYPE = "postType"
 
 /**
  * A simple [Fragment] subclass.
@@ -50,13 +52,14 @@ class CommunityDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var post = PostModel()
     private lateinit var postKey: String
+    private lateinit var postType: Table
 
     private val binding: FragmentCommunityDetailBinding by lazy {
         FragmentCommunityDetailBinding.inflate(layoutInflater)
     }
 
-    private val mainActivity: MainActivity by lazy {
-        requireActivity() as MainActivity
+    private val communityActivity: CommunityActivity by lazy {
+        requireActivity() as CommunityActivity
     }
 
     private lateinit var filteringTypeToTextView: MutableMap<FilteringType, TextView>
@@ -67,7 +70,7 @@ class CommunityDetailFragment : Fragment() {
 
             if (isEnabled) {
                 isEnabled = false
-                mainActivity.showViewPager()
+                communityActivity.showViewPager()
             }
         }
     }
@@ -108,8 +111,15 @@ class CommunityDetailFragment : Fragment() {
         })
     }
 
-    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
-    private val communityViewModel: CommunityViewModel by activityViewModels()
+//    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
+//    private val communityViewModel: CommunityViewModel by activityViewModels()
+    private val detailViewModel: CommunityDetailViewModel by lazy {
+        CommunityDetailViewModel(postType)
+    }
+    private val communityViewModel: CommunityViewModel by lazy {
+        CommunityViewModel(postType)
+    }
+
     private val reportViewModel: ReportViewModel by activityViewModels()
 
     private lateinit var viewPager: ViewPager2
@@ -133,6 +143,7 @@ class CommunityDetailFragment : Fragment() {
 
         arguments?.let {
             postKey = it.getString(ARG_PARAM1)?:"empty key"
+            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
         }
 
     }
@@ -256,7 +267,7 @@ class CommunityDetailFragment : Fragment() {
         }
 
         binding.header.ivBack.setOnClickListener {
-            mainActivity.showViewPager()
+//            mainActivity.showViewPager()
         }
         Log.i("CommunityDetailFragment", "post.writer.id = ${post.writer.id}")
         Log.i("CommunityDetailFragment", "LoginData.loginUser.id = ${LoginData.loginUser.id}")
@@ -401,11 +412,11 @@ class CommunityDetailFragment : Fragment() {
                         return@setOnClickListener
                     }
 
-                    val editFragment = CommunityEditFragment.newInstance(post)
+                    val editFragment = CommunityEditFragment.newInstance(post, postType)
 //                Log.i("communityDetailFragment", "post.imageUris.size = ${post.imageUris.size}")
                     requireActivity().supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.main_sub_frame, editFragment)
+                        .replace(R.id.layoutCommunity, editFragment)
                         .addToBackStack(null)
                         .commit()
                 }
@@ -467,10 +478,11 @@ class CommunityDetailFragment : Fragment() {
             }
 
         @JvmStatic
-        fun newInstance(key: String) =
+        fun newInstance(key: String, postType: Table) =
             CommunityDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, key)
+                    putParcelable(POST_TYPE, postType)
                 }
             }
 
@@ -479,6 +491,14 @@ class CommunityDetailFragment : Fragment() {
             CommunityDetailFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_PARAM1, post)
+                }
+            }
+
+        @JvmStatic
+        fun newInstance(postType: Table) =
+            CommunityDetailFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(POST_TYPE, postType)
                 }
             }
     }
@@ -526,6 +546,7 @@ class CommunityDetailFragment : Fragment() {
 
 
     }
+
 
 
 }

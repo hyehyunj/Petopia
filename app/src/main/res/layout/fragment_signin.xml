@@ -231,43 +231,12 @@
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@+id/btn_naver_signin"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/choose_login" />
 
-            <ImageView
-                android:id="@+id/btn_naver_signin"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:background="@drawable/bg_round_green"
-                android:elevation="5dp"
-                android:padding="20dp"
-                android:src="@drawable/icon_naver"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toStartOf="@+id/btn_kakao_signin"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btn_google_signin"
-                app:layout_constraintTop_toTopOf="@+id/btn_google_signin" />
 
-            <ImageView
-                android:id="@+id/btn_kakao_signin"
-                android:layout_width="66dp"
-                android:layout_height="66dp"
-                android:background="@drawable/bg_round_yellow"
-                android:clipToOutline="true"
-                android:elevation="5dp"
-                android:padding="6dp"
-                android:src="@drawable/img_kakao"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="@+id/btn_google_signin"
-                app:layout_constraintDimensionRatio="1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/btn_naver_signin"
-                app:layout_constraintTop_toTopOf="@+id/btn_google_signin" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

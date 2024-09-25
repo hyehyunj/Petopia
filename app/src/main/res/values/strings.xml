@@ -45,7 +45,7 @@
     <!--  SignIn : 로그인에서 사용되는 String  -->
     <string name="signin_id_search">아이디 찾기</string>
     <string name="signin_password_search">비밀번호 찾기</string>
-    <string name="signin_autologin_guide">다른 계정으로 간편 로그인</string>
+    <string name="signin_autologin_guide">구글 계정으로 간편 로그인</string>
     <string name="signin_by_google">Google로 로그인</string>
     <string name="signin_by_kakao">KakaoTalk으로 로그인</string>
     <string name="signin_by_naver">Naver로 로그인</string>
@@ -110,6 +110,10 @@
     <string name="community_detail_hint_comment">댓글을 입력하세요</string>
     <string name="community_create_filtering_dog">강아지</string>
     <string name="community_create_filtering_cat">고양이</string>
+
+    <string name="community_tab_question">질문 게시판</string>
+    <string name="community_tab_information">정보 공유 게시판</string>
+    <string name="community_tab_gallery">갤러리 게시판</string>
 
 
     <!--  Setting : 설정에서 사용되는 String  -->
