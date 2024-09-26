@@ -104,6 +104,8 @@ class HomePetopiaFragment : Fragment() {
 
     // 시간에 따라 UI 업데이트
     private fun updateUIBasedOnTime() {
+        if (!isAdded) return // 액티비티에 연결되지 않았다면 리턴
+
         if (isAfterEightPM() || isBeforeEightAM()) {
             binding.skyBackground.visibility = View.VISIBLE
             binding.homeImgNightBackground.visibility = View.VISIBLE
