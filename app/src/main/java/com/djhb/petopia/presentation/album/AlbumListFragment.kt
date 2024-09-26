@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -90,6 +91,7 @@ class AlbumListFragment : Fragment() {
         //앨범 리스트 변화감지
         albumSharedViewModel.albumListLiveData.observe(viewLifecycleOwner) {
             albumListRecyclerViewAdapter.updateList(it)
+            binding.albumIvNone.isVisible = it.isEmpty()
         }
 
         //삭제모드 변화감지
@@ -143,15 +145,6 @@ class AlbumListFragment : Fragment() {
         binding.albumRv.adapter = albumListRecyclerViewAdapter
         binding.albumRv.layoutManager = GridLayoutManager(requireContext(), 1)
     }
-
-//fun showAlbumReadFragment() {
-//
-//    childFragmentManager.beginTransaction()
-//        .replace(R.id.album_frame, AlbumReadFragment())
-//        .setReorderingAllowed(true)
-//        .addToBackStack(null)
-//        .commit()
-//}
 
     //뒤로가기 버튼 함수 : 홈프래그먼트로 돌아간다.
 //    private fun btnBackListener() {

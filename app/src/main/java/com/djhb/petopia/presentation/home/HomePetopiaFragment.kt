@@ -3,6 +3,7 @@ package com.djhb.petopia.presentation.home
 import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,7 @@ class HomePetopiaFragment : Fragment() {
         if (LoginData.loginUser.dday != null) loadDDayData()
 
         mainHomeGuideViewModel.checkUserGuideState()
+        Log.d("guidedata", "checkUserGuideState: ${LoginData.loginUser}")
 //        if () getUserAndPet()
 
 //구름 애니메이션
@@ -102,6 +104,8 @@ class HomePetopiaFragment : Fragment() {
 
     // 시간에 따라 UI 업데이트
     private fun updateUIBasedOnTime() {
+        if (!isAdded) return // 액티비티에 연결되지 않았다면 리턴
+
         if (isAfterEightPM() || isBeforeEightAM()) {
             binding.skyBackground.visibility = View.VISIBLE
             binding.homeImgNightBackground.visibility = View.VISIBLE
@@ -111,13 +115,13 @@ class HomePetopiaFragment : Fragment() {
             //글자색 흰색으로
             binding.homeTvNameUser.setTextColor(
                 ContextCompat.getColor(
-                    requireActivity(),
+                    requireContext(),
                     R.color.white
                 )
             )
             binding.homeTvNamePet.setTextColor(
                 ContextCompat.getColor(
-                    requireActivity(),
+                    requireContext(),
                     R.color.white
                 )
             )

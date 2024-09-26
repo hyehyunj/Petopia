@@ -63,7 +63,18 @@
         app:layout_constraintTop_toTopOf="@+id/album_iv_back" />
 
 
-
+<TextView
+    android:id="@+id/album_iv_none"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:text="둘만의 사진으로 채워보세요!"
+    android:visibility="invisible"
+    style="@style/common_text_16_gray"
+app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
 
 
     <ScrollView

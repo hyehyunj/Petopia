@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.UserModel
@@ -27,6 +28,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.FormBody
@@ -156,6 +158,7 @@ class SigninFragment : Fragment() {
         binding.btnGoogleSignin.setOnClickListener {
             signInWithGoogle()
         }
+
     }
 
     private val googleSignInLauncher = registerForActivityResult(
@@ -196,7 +199,14 @@ class SigninFragment : Fragment() {
                             if (isExist) {
                                 registerViewModel.googleSignIn(it.uid) {
                                     saveLoginMethod(true)
-                                    Log.d("Logindata", "${LoginData.loginUser}")
+                                    lifecycleScope.launch {
+                                        Log.d("Logindata", "${signRepository.selectUser(it.uid)}")
+                                    }
+                                    val intent =
+                                        Intent(requireContext(), MainActivity::class.java)
+                                    startActivity(intent)
+                                    requireActivity().finish()
+
                                 }
                             } else {
                                 val userModel = UserModel(
@@ -205,9 +215,22 @@ class SigninFragment : Fragment() {
                                     nickname = it.displayName ?: "사용자",  // 닉네임이 없는 경우 기본값
                                     authority = Authority.CLIENT  // 기본 권한 설정
                                 )
-                                registerViewModel.createUser(userModel)
-                                LoginData.loginUser = userModel
-                                saveLoginMethod(true)
+                                lifecycleScope.launch {
+                                    try {
+                                        signRepository.createUser(userModel)
+                                        LoginData.loginUser = userModel
+                                        saveLoginMethod(true)
+                                        Log.d("LogindataCheck", "$userModel")
+
+                                        val intent =
+                                            Intent(requireContext(), MainActivity::class.java)
+                                        startActivity(intent)
+                                        requireActivity().finish()
+                                    } catch (e: Exception) {
+                                        Log.e("SigninFragment", "Firebase Auth 실패", e)
+                                    }
+
+                                }
 
                             }
                         }
@@ -217,9 +240,7 @@ class SigninFragment : Fragment() {
                             R.style.toast_common
                         ).show()
 
-                        val intent = Intent(requireContext(), MainActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
+
                     }
                 } else {
                     Log.e("SigninFragment", "Firebase Auth 실패", task.exception)

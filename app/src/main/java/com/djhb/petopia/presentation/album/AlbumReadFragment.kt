@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,15 +43,8 @@ class AlbumReadFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        //갤러리에서 선택한 모드에 따라 레이아웃 변경
-//        albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
-//            albumSharedViewModel.currentPhotoLiveData.value?.let { currentPhoto ->
-//                readOnlyMode(
-//                    currentPhoto
-//                )
-//            }
-//        }
         albumSharedViewModel.currentAlbumLiveData.observe(viewLifecycleOwner) {
+            Log.d("현재사진", "${it}")
             readOnlyMode(
                 it
             )
@@ -66,24 +60,9 @@ class AlbumReadFragment : DialogFragment() {
     //읽기전용 모드 함수 : 레이아웃을 입력 불가능한 모드로 구성한다.
     private fun readOnlyMode(item: GalleryModel) {
         binding.apply {
-//            Glide.with(requireParentFragment())
-//                .load(item.imageUris[0].toUri())
-//                .centerCrop()
-//                .into(albumReadIvTitle)
-//            albumReadIvTitle.setImageURI(item.imageUris[0].toUri())
-//
-//            albumReadViewPagerAdapter = AlbumReadViewPagerAdapter()
-//            albumReadViewPager = binding.albumReadIvTitle
-//            albumReadViewPager.adapter = albumReadViewPagerAdapter
-//            albumReadViewPagerAdapter.submitList(item.imageUris)
-//            albumReadIndicator.setViewPager(albumReadViewPager)
-//            albumReadIndicator.createIndicators(item.imageUris.size, 0)
             initAdapter(item)
 
             albumReadTvTitle.text = item.titleText
-
-//            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.KOREAN)
-//            val date = dateFormat.format(item.updatedDate)
             albumReadTvCalendar.text = item.photoDate
 
 

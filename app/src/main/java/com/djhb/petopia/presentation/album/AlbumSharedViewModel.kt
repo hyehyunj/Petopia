@@ -1,6 +1,7 @@
 package com.djhb.petopia.presentation.album
 
 import android.net.Uri
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -111,7 +112,7 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
                 _currentAlbumLiveData.value = newUriList
             }
 
-            "EDIT" -> newUriList = _currentAlbumLiveData.value ?: GalleryModel(
+            "EDIT"-> newUriList = _currentAlbumLiveData.value ?: GalleryModel(
                 "", writer = user
             )
         }
@@ -163,11 +164,10 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
         return when (layoutModeLiveData.value) {
             "ADD" -> newUriList.imageUris.isNotEmpty() && newUriList.titleText.isNotEmpty() && newUriList.photoDate.isNotEmpty()
             "EDIT" -> {
-                // _newUriListLiveData가 비어있으면 true 반환
                 if (_newUriListLiveData.value?.isEmpty() == true) return true
                 newUriList.titleText.isNotEmpty() && newUriList.photoDate.isNotEmpty()
             }
-            else -> false // 기본값 처리
+            else -> false
         }
     }
 
@@ -189,9 +189,9 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
             }
 
             "EDIT" -> {
-                _currentAlbumLiveData.value = newUriList
-                albumList[index] = _currentAlbumLiveData.value!!
+               _currentAlbumLiveData.value = newUriList
                 saveAlbumList()
+                albumList[index] = _currentAlbumLiveData.value!!
             }
         }
         _albumListLiveData.value = albumList
