@@ -3,16 +3,22 @@ package com.djhb.petopia.presentation.home
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateInterpolator
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.replace
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentHomeEarthBinding
@@ -26,6 +32,8 @@ import com.djhb.petopia.presentation.community.CommunityActivity
 import com.djhb.petopia.presentation.community.CommunityMainFragment
 import com.djhb.petopia.presentation.my.MyFragment
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class HomeEarthFragment : Fragment() {
@@ -35,6 +43,22 @@ class HomeEarthFragment : Fragment() {
     private val binding get() = _binding
     private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
     private val adminViewModel: AdminViewModel by activityViewModels()
+    private var isClickedBack = false
+
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if(isClickedBack) {
+                requireActivity().finish()
+            } else {
+                isClickedBack = true
+                Toast.makeText(requireActivity(), "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    delay(2000)
+                    isClickedBack = false
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +79,7 @@ class HomeEarthFragment : Fragment() {
         // 꽃잎 애니메이션 시작
         startPetalsAnimation()
         updateUIBasedOnTime()
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
     //시간 체크
     }
 

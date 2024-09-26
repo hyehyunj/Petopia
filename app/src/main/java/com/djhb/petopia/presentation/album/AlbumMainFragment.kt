@@ -5,15 +5,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentAlbumMainBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.yasic.library.particletextview.MovingStrategy.RandomMovingStrategy
 import com.yasic.library.particletextview.Object.ParticleTextViewConfig
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class AlbumMainFragment : Fragment() {
@@ -29,6 +34,28 @@ class AlbumMainFragment : Fragment() {
         AlbumSharedViewModelFactory()
     }
 //    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
+    private val backPressedCallbackAlbum = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            (activity as MainActivity).removeAlbumFragment()
+            requireActivity().onBackPressedDispatcher.addCallback(backPressedCallbackEntire)
+        }
+    }
+
+    private var isClickedBack = false
+    private val backPressedCallbackEntire = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if(isClickedBack) {
+                requireActivity().finish()
+            } else {
+                isClickedBack = true
+                Toast.makeText(requireActivity(), "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    delay(2000)
+                    isClickedBack = false
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,10 +76,11 @@ class AlbumMainFragment : Fragment() {
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun albumMainButtonClickListener() {
-binding.albumBtnBack.setOnClickListener {
-    (activity as MainActivity).removeAlbumFragment()
-}
+        binding.albumBtnBack.setOnClickListener {
+            (activity as MainActivity).removeAlbumFragment()
+        }
 
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallbackAlbum)
     }
 
 

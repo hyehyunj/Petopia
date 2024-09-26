@@ -313,8 +313,13 @@ class CommunityDetailFragment : Fragment() {
 
         detailViewModel.imageUris.observe(viewLifecycleOwner) {
             Log.i("CommunityDetailFragment", "observe imageUris.size = ${it.size}")
-            viewPagerAdapter.submitList(it.toMutableList())
-            binding.indicatorDetail.createIndicators(it.size, 0)
+            if(it.size == 0) {
+                viewPager.visibility = ViewPager2.GONE
+                binding.indicatorDetail.visibility = CircleIndicator3.GONE
+            } else {
+                viewPagerAdapter.submitList(it.toMutableList())
+                binding.indicatorDetail.createIndicators(it.size, 0)
+            }
         }
 
         detailViewModel.currentPost.observe(viewLifecycleOwner) { post ->
