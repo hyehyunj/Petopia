@@ -153,6 +153,9 @@ class HomeEarthFragment : Fragment() {
             }
 
         }
+        binding.homeEarthFabTop.setOnClickListener {
+            (activity as MainActivity).moveToPetopia()
+        }
 
     }
 

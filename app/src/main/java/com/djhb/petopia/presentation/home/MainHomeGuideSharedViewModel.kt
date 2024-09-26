@@ -67,6 +67,7 @@ class MainHomeGuideSharedViewModel(
 
     //유저 정보를 불러오는 함수
     fun checkUserGuideState() {
+        Log.d("가이드는?","${user}")
         if (user.completedGuide) {
             _guideStateLiveData.value = "DONE"
         } else {
@@ -94,6 +95,7 @@ class MainHomeGuideSharedViewModel(
 
     //유저 반려동물 정보를 불러오는 함수
     private fun getPetData() {
+
         _userPetLiveData.value = user.pet
     }
 
