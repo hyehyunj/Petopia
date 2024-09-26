@@ -55,7 +55,11 @@ class HomePetopiaFragment : Fragment() {
                 requireActivity().finish()
             } else {
                 isClickedBack = true
-                Toast.makeText(requireActivity(), "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "한 번 더 누르면 앱이 종료됩니다.",
+                    R.style.toast_common
+                ).show()
                 lifecycleScope.launch {
                     delay(2000)
                     isClickedBack = false
@@ -471,7 +475,6 @@ class HomePetopiaFragment : Fragment() {
 
     private fun showAlbumFragment() {
         (activity as MainActivity).showAlbumFragment()
-//        AlbumFragment().show(childFragmentManager, "ALBUM_FRAGMENT")
     }
 
     private fun initGuideAnimation() {

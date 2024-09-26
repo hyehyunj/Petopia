@@ -94,6 +94,7 @@ class MainHomeGuideSharedViewModel(
 
     //유저 반려동물 정보를 불러오는 함수
     private fun getPetData() {
+
         _userPetLiveData.value = user.pet
     }
 

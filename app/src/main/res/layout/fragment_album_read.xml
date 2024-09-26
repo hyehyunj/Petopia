@@ -85,7 +85,7 @@
         style="@style/common_text_14_gray"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginBottom="32dp"
         android:text="사진을 넘기면 다음 사진을 볼 수 있습니다."
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"

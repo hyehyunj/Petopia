@@ -63,7 +63,11 @@ class SigninFragment : Fragment() {
                 requireActivity().finish()
             } else {
                 isClickedBack = true
-                Toast.makeText(requireActivity(), "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "한 번 더 누르면 앱이 종료됩니다.",
+                    R.style.toast_common
+                ).show()
                 lifecycleScope.launch {
                     delay(2000)
                     isClickedBack = false
@@ -174,7 +178,6 @@ class SigninFragment : Fragment() {
         binding.btnPasswordSearch.setOnClickListener {
             showUndoToast()
         }
-
 
         binding.btnGoogleSignin.setOnClickListener {
             signInWithGoogle()

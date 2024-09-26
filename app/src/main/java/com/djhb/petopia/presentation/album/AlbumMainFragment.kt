@@ -12,11 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentAlbumMainBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.yasic.library.particletextview.MovingStrategy.RandomMovingStrategy
 import com.yasic.library.particletextview.Object.ParticleTextViewConfig
+import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -48,7 +50,11 @@ class AlbumMainFragment : Fragment() {
                 requireActivity().finish()
             } else {
                 isClickedBack = true
-                Toast.makeText(requireActivity(), "한 번 더 누르면 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "한 번 더 누르면 앱이 종료됩니다.",
+                    R.style.toast_common
+                ).show()
                 lifecycleScope.launch {
                     delay(2000)
                     isClickedBack = false

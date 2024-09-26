@@ -61,7 +61,7 @@ class MyFragment : DialogFragment() {
             (activity as MainActivity).showIntroFragment()
         }
         binding.myTvGuide.setOnClickListener {
-            (activity as MainActivity).welcomeGuide()
+            MyGuideDialogFragment().show(childFragmentManager, "MY_GUIDE_FRAGMENT")
         }
 
         binding.myBtnLogout.setOnClickListener {
