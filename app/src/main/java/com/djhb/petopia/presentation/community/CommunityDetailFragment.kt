@@ -279,6 +279,7 @@ class CommunityDetailFragment : Fragment() {
 
         binding.header.ivBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
+            parentFragmentManager.popBackStack()
 //            mainActivity.showViewPager()
         }
 
