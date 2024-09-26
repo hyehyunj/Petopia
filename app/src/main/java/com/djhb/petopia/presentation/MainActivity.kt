@@ -13,6 +13,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.ActivityMainBinding
 import com.djhb.petopia.presentation.admin.AdminExileDialogFragment
+import com.djhb.petopia.presentation.admin.post.AdminPostLeftFragment
+import com.djhb.petopia.presentation.admin.post.AdminPostRightFragment
 import com.djhb.petopia.presentation.album.AlbumFragment
 import com.djhb.petopia.presentation.dialog.DialogFragment
 import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
@@ -205,6 +207,38 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
     }
+
+    //앨범 프래그먼트 호출해주는 함수
+    fun showAdminPostFragment(cloud: String) {
+        when(cloud) {
+            "LEFT" -> supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.main_Intro_frame, AdminPostLeftFragment()
+                )
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit()
+            "RIGHT" -> supportFragmentManager.beginTransaction()
+                .replace(
+                    R.id.main_Intro_frame, AdminPostRightFragment()
+                )
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .commit()
+        }
+    }
+
+    fun removeAdminPostFragment() {
+        val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
+        when (fragment) {
+            is AdminPostLeftFragment, is AdminPostRightFragment -> {
+                supportFragmentManager.beginTransaction()
+                    .remove(fragment)
+                    .commit()
+            }
+        }
+    }
+
 
     //가이드 완료 함수 : 가이드 완료 후 펫토피아로 이동
     private fun finishGuideFragment() {

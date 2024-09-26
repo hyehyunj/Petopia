@@ -115,7 +115,7 @@ class HomeEarthFragment : Fragment() {
                     R.style.toast_common
                 )
                     .show() else
-                AdminPostLeftFragment().show(childFragmentManager, "ADMIN_POST_LEFT_FRAGMENT")
+                (activity as MainActivity).showAdminPostFragment("LEFT")
         }
 
         //우측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
@@ -127,7 +127,7 @@ class HomeEarthFragment : Fragment() {
                     R.style.toast_common
                 )
                     .show() else
-            AdminPostRightFragment().show(childFragmentManager, "ADMIN_POST_RIGHT_FRAGMENT")
+                (activity as MainActivity).showAdminPostFragment("RIGHT")
         }
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
@@ -164,6 +164,9 @@ class HomeEarthFragment : Fragment() {
         //가이드 상태 변화감지 : 가이드 상태에 따라 화면구성 변경
 
     }
+
+
+
 
     // 꽃잎 애니메이션 함수
     private fun startPetalsAnimation() {

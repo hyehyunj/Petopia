@@ -447,7 +447,6 @@ class HomePetopiaFragment : Fragment() {
 
     private fun showAlbumFragment() {
         (activity as MainActivity).showAlbumFragment()
-//        AlbumFragment().show(childFragmentManager, "ALBUM_FRAGMENT")
     }
 
     private fun initGuideAnimation() {

@@ -11,14 +11,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.djhb.petopia.databinding.FragmentAdminPostBinding
+import com.djhb.petopia.presentation.MainActivity
 import com.github.matteobattilana.weather.PrecipType
 import com.github.matteobattilana.weather.WeatherView
 
 //관리자 페이지
-class AdminPostRightFragment : DialogFragment() {
+class AdminPostRightFragment : Fragment() {
     private val _binding: FragmentAdminPostBinding by lazy {
         FragmentAdminPostBinding.inflate(layoutInflater)
     }
@@ -39,7 +41,7 @@ class AdminPostRightFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.adminPostTvTitle.text = "잘지내기"
+        binding.adminPostTvTitle.text = "안녕하기"
         initAdapter()
         adminPostLeftDataObserver()
         adminPostLeftButtonClickListener()
@@ -50,7 +52,7 @@ class AdminPostRightFragment : DialogFragment() {
     private fun adminPostLeftButtonClickListener() {
         //뒤로가기버튼 클릭이벤트 :
         binding.adminPostIvBack.setOnClickListener {
-      dismiss()
+            (activity as MainActivity).removeAdminPostFragment()
         }
 
     }
@@ -102,28 +104,6 @@ class AdminPostRightFragment : DialogFragment() {
 
 
         }
-    }
-
-    private fun initDialog() {
-        val windowManager =
-            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = windowManager.defaultDisplay
-
-        val size = Point()
-        display.getSize(size)
-        size.x
-        size.y
-        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-        val deviceWidth = size.x
-        params?.width = (deviceWidth * 1).toInt()
-        params?.height = (deviceWidth * 2.1).toInt()
-        dialog?.window?.attributes = params as WindowManager.LayoutParams
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        initDialog()
     }
 
 }
