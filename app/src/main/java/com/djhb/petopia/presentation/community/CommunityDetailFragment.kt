@@ -66,7 +66,7 @@ class CommunityDetailFragment : Fragment() {
 
     private val backPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-
+            communityActivity.showViewPager()
 
             if (isEnabled) {
                 isEnabled = false
@@ -95,9 +95,11 @@ class CommunityDetailFragment : Fragment() {
                 }
             }
 
+
             override fun onClickReport(key: String, targetUserId: String) {
 //                reportViewModel.setContent(ReportContentType.QUESTION_COMMENT, key)
-                reportViewModel.setContent(ReportModel(
+                reportViewModel.setContent(
+                    ReportModel(
                         reporterId = LoginData.loginUser.id,
                         targetUserId = targetUserId,
                         contentType = ReportContentType.QUESTION_COMMENT,
@@ -111,7 +113,7 @@ class CommunityDetailFragment : Fragment() {
         })
     }
 
-//    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
+    //    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
 //    private val communityViewModel: CommunityViewModel by activityViewModels()
     private val detailViewModel: CommunityDetailViewModel by lazy {
         CommunityDetailViewModel(postType)
@@ -142,8 +144,8 @@ class CommunityDetailFragment : Fragment() {
 
 
         arguments?.let {
-            postKey = it.getString(ARG_PARAM1)?:"empty key"
-            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
+            postKey = it.getString(ARG_PARAM1) ?: "empty key"
+            postType = it.getParcelable(POST_TYPE, Table::class.java) ?: Table.NONE
         }
 
     }
@@ -171,7 +173,10 @@ class CommunityDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 //        Log.i("CommunityDetailFragment", "likes = ${post.likes}")
-
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            backPressedCallback
+        )
 
 //        initObserver()
         initListener()
@@ -217,7 +222,7 @@ class CommunityDetailFragment : Fragment() {
 
         }
 
-        binding.header.tvTitle.text = when(postType) {
+        binding.header.tvTitle.text = when (postType) {
             Table.QUESTION_POST -> "질문 게시판"
             Table.INFORMATION_POST -> "정보 공유 게시판"
             else -> "갤러리 게시판"
@@ -239,7 +244,8 @@ class CommunityDetailFragment : Fragment() {
     private fun initListener() {
         binding.ivReport.setOnClickListener {
 //            reportViewModel.setContent(ReportContentType.QUESTION_POST, post.key)
-            reportViewModel.setContent(ReportModel(
+            reportViewModel.setContent(
+                ReportModel(
                     reporterId = LoginData.loginUser.id,
                     targetUserId = post.writer.id,
                     contentType = ReportContentType.QUESTION_POST,
@@ -265,13 +271,14 @@ class CommunityDetailFragment : Fragment() {
                             comment
                         )
                     )
-                    binding.svDetail.smoothScrollTo(0, view?.bottom?:0)
+                    binding.svDetail.smoothScrollTo(0, view?.bottom ?: 0)
                     binding.etComment.setText("")
                 }
             }
         }
 
         binding.header.ivBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
 //            mainActivity.showViewPager()
         }
 
@@ -279,20 +286,20 @@ class CommunityDetailFragment : Fragment() {
         binding.ivLike.setOnClickListener {
             currentLikeState = !currentLikeState
             Log.i("CommunityDetailFragment", "click like postKey = ${postKey}")
-            if(currentLikeState) {
+            if (currentLikeState) {
                 Log.i("CommunityDetailFragment", "click like is true")
                 binding.ivLike.setImageResource(R.drawable.icon_heart)
                 lifecycleScope.launch {
-                    detailViewModel.createLike(loginUserLike
-                        .copy(
+                    detailViewModel.createLike(
+                        loginUserLike
+                            .copy(
 //                            postKey = post.key,
-                            postKey = postKey,
-                            userId = LoginData.loginUser.id
-                        )
+                                postKey = postKey,
+                                userId = LoginData.loginUser.id
+                            )
                     )
                 }
-            }
-            else {
+            } else {
                 Log.i("CommunityDetailFragment", "click like is false")
                 binding.ivLike.setImageResource(R.drawable.icon_empty_heart)
                 lifecycleScope.launch {
@@ -313,7 +320,7 @@ class CommunityDetailFragment : Fragment() {
 
         detailViewModel.imageUris.observe(viewLifecycleOwner) {
             Log.i("CommunityDetailFragment", "observe imageUris.size = ${it.size}")
-            if(it.size == 0) {
+            if (it.size == 0) {
                 viewPager.visibility = ViewPager2.GONE
                 binding.indicatorDetail.visibility = CircleIndicator3.GONE
             } else {
@@ -367,7 +374,7 @@ class CommunityDetailFragment : Fragment() {
 
                 binding.btnEdit.setOnClickListener {
 
-                    if(post.title == "") {
+                    if (post.title == "") {
                         Toast.makeText(requireActivity(), "잠시만 기다려주세요.", Toast.LENGTH_SHORT).show()
                         return@setOnClickListener
                     }
@@ -391,7 +398,6 @@ class CommunityDetailFragment : Fragment() {
             }
 
 
-
 //            post = it
             binding.tvDetailTitle.text = post.title
             binding.tvContent.text = post.content
@@ -405,7 +411,7 @@ class CommunityDetailFragment : Fragment() {
             Log.i("CommunityDetailFragment", "observe likes = ${likes.size}")
             binding.tvLike.text = likes.size.toString()
             for (like in likes) {
-                if(like.userId == LoginData.loginUser.id) {
+                if (like.userId == LoginData.loginUser.id) {
                     binding.ivLike.setImageResource(R.drawable.icon_heart)
                     detailViewModel.currentUserLike = like
 //                loginUserLike = like
@@ -489,7 +495,7 @@ class CommunityDetailFragment : Fragment() {
 
         // create or delete likeCount
 
-        if(initLikeState != currentLikeState) {
+        if (initLikeState != currentLikeState) {
 //            lifecycleScope.launch {
 //                if(currentLikeState) {
 //                    detailViewModel.createLike(loginUserLike
@@ -506,7 +512,6 @@ class CommunityDetailFragment : Fragment() {
 
 
     }
-
 
 
 }

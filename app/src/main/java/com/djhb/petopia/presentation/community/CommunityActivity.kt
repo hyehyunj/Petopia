@@ -67,7 +67,10 @@ class CommunityActivity : AppCompatActivity() {
             tab.text = postTypes[position]
         }.attach()
 
-//        this.onBackPressedDispatcher.addCallback(backPressedCallback)
+
+        binding.header.ivBack.setOnClickListener{
+            onBackPressedDispatcher.onBackPressed()
+        }//        this.onBackPressedDispatcher.addCallback(backPressedCallback)
 
     }
 
