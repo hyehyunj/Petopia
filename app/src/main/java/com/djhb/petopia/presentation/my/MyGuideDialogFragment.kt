@@ -31,7 +31,6 @@ open class MyGuideDialogFragment : DialogFragment() {
         binding.dialogTvTitle.text = "가이드를 진행하시겠습니까?"
 
 
-
         binding.dialogTvAction.setOnClickListener {
             StyleableToast.makeText(requireActivity(), "이제 펫토피아에서 연결이 가능합니다.", R.style.toast_warning)
                 .show()

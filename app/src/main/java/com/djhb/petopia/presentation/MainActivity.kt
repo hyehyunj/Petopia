@@ -113,25 +113,12 @@ class MainActivity : AppCompatActivity() {
         AdminExileDialogFragment().show(supportFragmentManager, "ADMIN_EXILE_DIALOG_FRAGMENT")
     }
 
-//다이얼로그 띄우는 함수
-    fun showDialog() {
-        mainDialogSharedViewModel = ViewModelProvider(this)[MainDialogSharedViewModel::class.java]
-//        mainDialogSharedViewModel.updateDialogMode(mode)
-        DialogFragment().show(supportFragmentManager, "DIALOG_FRAGMENT")
-
-
-//        supportFragmentManager.beginTransaction()
-//            .replace(R.id.main_signin_container, DialogFragment()
-//            )
-//            .setReorderingAllowed(true)
-//            .addToBackStack(null)
-//            .commit()
-    }
-
+    //가이드 다시보여줄 준비하는 함수
     fun welcomeGuide() {
         mainHomeGuideSharedViewModel.updateGuideState("NONE")
     }
 
+    //가이드 다시 보여주는 함수
     fun showGuideFragment() {
         mainHomeGuideSharedViewModel.updateGuideState("ESSENTIAL")
         supportFragmentManager.beginTransaction()
@@ -144,6 +131,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //마이페이지에서 가이드 다시 보여주는 함수
     fun showWelcomeGuideFragment() {
         mainHomeGuideSharedViewModel.updateGuideState("OPTIONAL")
         supportFragmentManager.beginTransaction()
@@ -167,6 +155,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+    //앨범 프래그먼트 제거해주는 함수
     fun removeAlbumFragment() {
         val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
         if (fragment is AlbumFragment) {
@@ -208,7 +197,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //앨범 프래그먼트 호출해주는 함수
+    //관리자게시글 프래그먼트 호출해주는 함수
     fun showAdminPostFragment(cloud: String) {
         when(cloud) {
             "LEFT" -> supportFragmentManager.beginTransaction()
@@ -227,7 +216,7 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
     }
-
+    //관리자게시글 프래그먼트 제거해주는 함수
     fun removeAdminPostFragment() {
         val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
         when (fragment) {
@@ -253,6 +242,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    //펫토피아로 이동해주는 함수
     fun moveToPetopia() {
         viewPager.setCurrentItem(0, true)
     }

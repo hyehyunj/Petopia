@@ -14,11 +14,14 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -29,6 +32,8 @@ import com.djhb.petopia.data.remote.MemoryRepositoryImpl
 import com.djhb.petopia.databinding.FragmentHomeMemoryBridgeBinding
 import com.djhb.petopia.presentation.memory.MemoryFragment
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
 
@@ -45,6 +50,26 @@ class HomeMemoryBridgeFragment : Fragment() {
     private val user = LoginData.loginUser.id
 
     private lateinit var emojiViews: List<ImageView>
+    private var isClickedBack = false
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if(isClickedBack) {
+                requireActivity().finish()
+            } else {
+                isClickedBack = true
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "한 번 더 누르면 앱이 종료됩니다.",
+                    R.style.toast_common
+                ).show()
+                lifecycleScope.launch {
+                    delay(2000)
+                    isClickedBack = false
+                }
+            }
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -114,6 +139,7 @@ class HomeMemoryBridgeFragment : Fragment() {
         setupEmojiClickListeners()
         setupClickOutsideListener()
         updateUIBasedOnTime()
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
     }
 
 

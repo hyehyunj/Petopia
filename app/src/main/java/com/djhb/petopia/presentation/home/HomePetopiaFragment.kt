@@ -10,11 +10,14 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PetAppearance
@@ -26,6 +29,8 @@ import com.djhb.petopia.presentation.d_day.DDayViewModel
 import com.djhb.petopia.presentation.d_day.DDayViewModelFactory
 import com.djhb.petopia.presentation.letter.LetterFragment
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 
@@ -40,6 +45,27 @@ class HomePetopiaFragment : Fragment() {
     }
     private val homePetopiaViewModel by viewModels<HomePetopiaViewModel> {
         HomePetopiaViewModelFactory()
+    }
+
+    private var isClickedBack = false
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            Log.i("HomePetopiaFragment", "click back")
+            if(isClickedBack) {
+                requireActivity().finish()
+            } else {
+                isClickedBack = true
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "한 번 더 누르면 앱이 종료됩니다.",
+                    R.style.toast_common
+                ).show()
+                lifecycleScope.launch {
+                    delay(2000)
+                    isClickedBack = false
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -86,6 +112,8 @@ class HomePetopiaFragment : Fragment() {
             }
         }
         handler.post(updateRunnable)
+
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
     }
 
     // 현재 시간이 20시 이후인지 확인

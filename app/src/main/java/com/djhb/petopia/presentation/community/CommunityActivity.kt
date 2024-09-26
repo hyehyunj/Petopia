@@ -1,7 +1,10 @@
 package com.djhb.petopia.presentation.community
 
+import android.content.DialogInterface
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,6 +27,26 @@ class CommunityActivity : AppCompatActivity() {
 
     private val postTypes = listOf("질문 게시판", "정보 공유 게시판", "사진 게시판")
 
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val builder = AlertDialog.Builder(this@CommunityActivity)
+            builder.setTitle("앱 종료")
+            builder.setMessage("정말 나가시겠습니까?")
+            builder.setIcon(R.drawable.icon_heart)
+
+            builder.setPositiveButton("확인") {dialog, which ->
+                when(which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        finish()
+                    }
+                }
+            }
+
+            builder.setNegativeButton("취소", null)
+            builder.show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -43,6 +66,8 @@ class CommunityActivity : AppCompatActivity() {
 //            tab.text = "tab + ${position + 1}"
             tab.text = postTypes[position]
         }.attach()
+
+//        this.onBackPressedDispatcher.addCallback(backPressedCallback)
 
     }
 

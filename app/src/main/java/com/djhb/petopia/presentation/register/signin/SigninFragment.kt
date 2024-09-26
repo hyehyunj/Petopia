@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -28,6 +30,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import io.github.muddz.styleabletoast.StyleableToast
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
@@ -53,6 +56,25 @@ class SigninFragment : Fragment() {
     //    }
     private val registerViewModel: RegisterViewModel by activityViewModels()
 
+    private var isClickedBack = false
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if(isClickedBack) {
+                requireActivity().finish()
+            } else {
+                isClickedBack = true
+                StyleableToast.makeText(
+                    requireActivity(),
+                    "한 번 더 누르면 앱이 종료됩니다.",
+                    R.style.toast_common
+                ).show()
+                lifecycleScope.launch {
+                    delay(2000)
+                    isClickedBack = false
+                }
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -144,6 +166,8 @@ class SigninFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
+
+        requireActivity().onBackPressedDispatcher.addCallback(backPressedCallback)
 
         //미구현 버튼들
 
