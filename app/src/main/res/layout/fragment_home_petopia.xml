@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/petopia_sky"
     tools:context=".presentation.home.HomePetopiaFragment">
-    <!--저녁 8시 이후 요소-->
+
+    <!--저녁 8시 이후 요소   -->
     <ImageView
         android:id="@+id/sky_background"
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
     <ImageView
         android:id="@+id/home_img_floor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="380dp"
         android:scaleType="fitXY"
         android:src="@drawable/petopia_floor"
         app:layout_constraintBottom_toBottomOf="parent" />
