@@ -82,6 +82,7 @@ class RankPostAdapter(val postType: Table, private val onClick: (post: PostModel
             if (item.imageUris.size == 0)
                 currentHolder.mainImage.visibility = ImageView.INVISIBLE
             else {
+                currentHolder.mainImage.visibility = ImageView.VISIBLE
                 Glide
                     .with(currentHolder.mainImage.context)
                     .load(item.imageUris[0].toUri())
@@ -112,6 +113,7 @@ class RankPostAdapter(val postType: Table, private val onClick: (post: PostModel
             if (item.imageUris.size == 0)
                 currentHolder.mainImage.visibility = ImageView.INVISIBLE
             else {
+                currentHolder.mainImage.visibility = ImageView.VISIBLE
                 Glide
                     .with(currentHolder.mainImage.context)
                     .load(item.imageUris[0].toUri())
