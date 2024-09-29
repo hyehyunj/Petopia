@@ -25,12 +25,15 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
 //        Log.i("PostAdapter", "areItemsTheSame = ${oldItem.key == newItem.key}")
 
         return oldItem.key == newItem.key && oldItem.imageUris.hashCode() == newItem.imageUris.hashCode()
+//        return oldItem.key == newItem.key
+//        return false
     }
 
     override fun areContentsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
 //        Log.i("PostAdapter", "areContentTheSame = ${oldItem == newItem}")
 //        Log.i("PostAdapter", "----------------------")
-        return oldItem == newItem
+//        return oldItem == newItem
+        return false
     }
 }) {
 
@@ -57,7 +60,7 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
 
 //        Log.i("PostAdapter", "item = ${item}")
         if(postType == Table.GALLERY_POST) {
-            Log.i("PostAdapter : ", "itemCount = ${itemCount}")
+//            Log.i("PostAdapter : ", "itemCount = ${itemCount}")
             val currentHolder = holder as GalleryPostItem
 
             currentHolder.binding.root.setOnClickListener {
@@ -66,11 +69,13 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
 
             if (item.imageUris.size == 0)
                 currentHolder.mainImage.visibility = ImageView.INVISIBLE
-            else
+            else {
+                currentHolder.mainImage.visibility = ImageView.VISIBLE
                 Glide.with(currentHolder.mainImage.context)
                     .load(item.imageUris[0].toUri())
                     .centerCrop()
                     .into(currentHolder.mainImage)
+            }
         } else {
             val currentHolder = holder as PostItem
             currentHolder.title.text = item.title
@@ -89,6 +94,8 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
             if (item.imageUris.size == 0)
                 currentHolder.mainImage.visibility = ImageView.INVISIBLE
             else {
+                currentHolder.mainImage.visibility = ImageView.VISIBLE
+
                 Glide
                     .with(currentHolder.mainImage.context)
                     .load(item.imageUris[0].toUri())
