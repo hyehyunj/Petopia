@@ -13,11 +13,11 @@ interface PostRepository {
     suspend fun selectRankPosts(): MutableList<PostModel>
     suspend fun selectRankPostsWhereFiltering(categories: List<FilteringType>): MutableList<PostModel>
 //    suspend fun selectPosts(): MutableList<PostModel>
-    suspend fun selectInitPosts(): List<DocumentSnapshot>
-    suspend fun selectInitPostsWhereFiltering(categories: List<FilteringType>): List<DocumentSnapshot>
+    suspend fun selectInitPosts(limit: Long = 10): List<DocumentSnapshot>
+    suspend fun selectInitPostsWhereFiltering(categories: List<FilteringType>, limit: Long = 10): List<DocumentSnapshot>
 
-    suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot): List<DocumentSnapshot>
-    suspend fun selectNextPostsWhereFiltering(lastSnapshot: DocumentSnapshot, categories: List<FilteringType>): List<DocumentSnapshot>
+    suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot, limit: Long = 10): List<DocumentSnapshot>
+    suspend fun selectNextPostsWhereFiltering(lastSnapshot: DocumentSnapshot, categories: List<FilteringType>, limit: Long = 10): List<DocumentSnapshot>
     suspend fun selectPostFromUser(userId: String): MutableList<PostModel>
     suspend fun selectPostFromKey(postKey: String): PostModel
 //    suspend fun selectPostMainImage(posts: MutableList<PostModel>): MutableList<PostModel>

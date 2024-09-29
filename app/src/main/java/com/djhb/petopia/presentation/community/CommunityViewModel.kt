@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
 
-class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
+class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
 
     private val postTypeToTables = mutableMapOf(
         Table.QUESTION_POST to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
@@ -35,6 +35,9 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
     private val _rankPosts = MutableLiveData<MutableList<PostModel>>()
     val rankPosts get() = _rankPosts
 
+    private val _rankPostsWithMainImage = MutableLiveData<MutableList<PostModel>>()
+    val rankPostsWithMainImage get() = _rankPostsWithMainImage
+
     var rankPostResult = mutableListOf<PostModel>()
     var isCompleteRankPost = MutableLiveData<Boolean>()
 
@@ -45,6 +48,8 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
 
     private val _searchPostWithImages = MutableLiveData<MutableList<PostModel>>()
     val searchPostWithImages get() = _searchPostWithImages
+
+    private val searchPostWithImagesResult = mutableListOf<PostModel>()
 
     private val _postImageUris = MutableLiveData<MutableList<String>>()
     val postImageUris get() = _postImageUris
@@ -61,6 +66,8 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
     val filteringCategories get() = _filteringCategories
 
     val filteringResult = mutableListOf<FilteringType>()
+
+    var nextPostIndex = 0
 
 
     private val postRepository: PostRepository by lazy {
@@ -123,6 +130,27 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
                 rankPostResult[postIndex] = rankPostResult[postIndex].copy(commentCount = commentCount)
             }
 
+//            val imageUris = mutableListOf<StorageReference?>()
+//
+//            for (post in rankPostResult) {
+//                post.imageUris.clear()
+//                imageUris.add(postRepository.selectPostMainImage(post))
+//            }
+//
+//            for ((uriIndex, uri) in imageUris.withIndex()) {
+//                if(uri != null) {
+//                    rankPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
+//                }
+//            }
+
+            _rankPosts.value = rankPostResult
+
+        }
+
+    }
+
+    suspend fun selectRankListWithImage(){
+        viewModelScope.launch {
             val imageUris = mutableListOf<StorageReference?>()
 
             for (post in rankPostResult) {
@@ -135,11 +163,8 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
                     rankPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
                 }
             }
-
-            _rankPosts.value = rankPostResult
-
+            rankPostsWithMainImage.value = rankPostResult
         }
-
     }
 
     suspend fun selectInitPostList(categories: List<FilteringType>){
@@ -148,10 +173,19 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
             addedSearchResult.clear()
             _isProgressing.value = true
 
-            var documents = when {
-                categories.size > 0 -> postRepository.selectInitPostsWhereFiltering(categories)
-                else -> postRepository.selectInitPosts()
-            }
+            var documents =
+                if(postType == Table.GALLERY_POST) {
+                    when {
+                        categories.size > 0 -> postRepository.selectInitPostsWhereFiltering(categories, limit = 18)
+                        else -> postRepository.selectInitPosts(limit = 18)
+                    }
+                } else {
+                    when {
+                        categories.size > 0 -> postRepository.selectInitPostsWhereFiltering(categories)
+                        else -> postRepository.selectInitPosts()
+                    }
+                }
+
 
             if (documents.size > 0) {
                 lastSnapshot = documents[documents.size - 1]
@@ -162,14 +196,29 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
                     LoginData.loginUser.reportList.contains(it.writer.id)
                 }
 
-                while (addedSearchResult.size < 8 && documents.size > 0){
+                while (documents.size > 0
+                    && ((postType == Table.GALLERY_POST && addedSearchResult.size < 18)
+                            || (postType != Table.GALLERY_POST && addedSearchResult.size < 10))){
 
-                    documents = when {
-                        categories.size > 0 ->
-                            postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
-                        else ->
-                            postRepository.selectNextPosts(lastSnapshot)
-                    }
+                    documents =
+                        if(postType == Table.GALLERY_POST) {
+                            when {
+                                categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories, limit = 18)
+                                else -> postRepository.selectInitPosts(limit = 18)
+                            }
+                        } else {
+                            when {
+                                categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
+                                else -> postRepository.selectInitPosts()
+                            }
+                        }
+
+//                        when {
+//                        categories.size > 0 ->
+//                            postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
+//                        else ->
+//                            postRepository.selectNextPosts(lastSnapshot)
+//                    }
                     if (documents.size > 0) {
                         lastSnapshot = documents[documents.size - 1]
 
@@ -190,7 +239,7 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
                     addedSearchResult[postIndex] = addedSearchResult[postIndex].copy(commentCount = commentCount)
                 }
 
-
+                searchPostResult.addAll(addedSearchResult)
                 _addedSearchPost.value = addedSearchResult
 
             } else
@@ -212,19 +261,36 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
 
             if(documents.size > 0) {
                 lastSnapshot = documents[documents.size - 1]
-                addedSearchResult = postRepository.convertToPostModel(documents)
+//                addedSearchResult = postRepository.convertToPostModel(documents)
+                addedSearchResult.addAll(postRepository.convertToPostModel(documents))
 
                 addedSearchResult.removeIf {
                     LoginData.loginUser.reportList.contains(it.writer.id)
                 }
 
-                while (addedSearchResult.size < 8 && documents.size > 0){
-                    documents = when {
-                        categories.size > 0 ->
-                            postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
-                        else ->
-                            postRepository.selectNextPosts(lastSnapshot)
-                    }
+                while (documents.size > 0
+                    && ((postType == Table.GALLERY_POST && addedSearchResult.size < 9)
+                            || (postType != Table.GALLERY_POST && addedSearchResult.size < 5))){
+
+                    documents =
+                        if(postType == Table.GALLERY_POST) {
+                            when {
+                                categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories, limit = 9)
+                                else -> postRepository.selectInitPosts(limit = 9)
+                            }
+                        } else {
+                            when {
+                                categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
+                                else -> postRepository.selectInitPosts()
+                            }
+                        }
+
+//                    when {
+//                        categories.size > 0 ->
+//                            postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
+//                        else ->
+//                            postRepository.selectNextPosts(lastSnapshot)
+//                    }
 //                    Log.i("CommunityViewModel", "need more post documents.size = ${documents.size}")
                     if (documents.size > 0) {
                         lastSnapshot = documents[documents.size - 1]
@@ -244,7 +310,10 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
                     addedSearchResult[postIndex] = addedSearchResult[postIndex].copy(commentCount = commentCount)
                 }
 
-                _addedSearchPost.value = addedSearchResult
+                searchPostResult.addAll(addedSearchResult)
+//                _searchPostWithImages.value = searchPostResult
+//                _addedSearchPost.value = addedSearchResult
+                _addedSearchPost.value = searchPostResult
 
             } else
                 isProgressing.value = false
@@ -256,6 +325,7 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
             val references = mutableListOf<StorageReference?>()
 
 
+//            for(searchIndex in 0..addedSearchResult.size-1) {
             for(searchIndex in 0..addedSearchResult.size-1) {
                 val post = addedSearchResult[searchIndex]
                 post.imageUris.clear()
@@ -277,12 +347,30 @@ class CommunityViewModel(postType: Table = Table.NONE) : ViewModel() {
     fun combinePostToImages(imageUris: MutableList<String>){
 
         for ((uriIndex, imageUri) in imageUris.withIndex()) {
-            if(imageUri != "")
-                addedSearchResult[uriIndex].imageUris.add(imageUri)
+            Log.i("CommunityViewModel", "searchPostResult's index = ${nextPostIndex + uriIndex}")
+            if(imageUri != "") {
+                Log.i("CommunityViewModel", "exist image")
+
+//                addedSearchResult[uriIndex].imageUris.add(imageUri)
+                searchPostResult[nextPostIndex + uriIndex].imageUris.add(imageUri)
+            }
         }
-        searchPostResult.addAll(addedSearchResult)
+
+//        searchPostResult.addAll(addedSearchResult)
+
+        for (postModel in searchPostResult) {
+            Log.i("CommunityViewModel", "searchPostResult = ${postModel}")
+        }
+
         _searchPostWithImages.value = searchPostResult
+
+
+
         isProgressing.value = false
+
+//        nextPostIndex += searchPostResult.size
+        nextPostIndex += addedSearchResult.size
+        Log.i("CommunityViewModel", "nextPostIndex = ${nextPostIndex}")
     }
 
     fun updatePost(post: PostModel) {

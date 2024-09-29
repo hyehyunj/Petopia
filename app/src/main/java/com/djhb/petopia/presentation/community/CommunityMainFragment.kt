@@ -231,9 +231,17 @@ class CommunityMainFragment : Fragment() {
 //            for (postModel in it) {
 //                Log.i("CommunityMainFragment", "observe rank postModel.hashCode : ${postModel.hashCode()}")
 //            }
-
-            rankPostAdapter.submitList(it.toMutableList())
+            lifecycleScope.launch {
+                rankPostAdapter.submitList(it.toMutableList())
+                viewModel.selectRankListWithImage()
+            }
         }
+
+        viewModel.rankPostsWithMainImage.observe(viewLifecycleOwner) {
+//            Log.i("CommunityMainFragment", "observe rankPostsWithMainImage : ${it}")
+            rankPostAdapter.submitList(it.toList())
+        }
+
         viewModel.searchPost.observe(viewLifecycleOwner){
 //            Log.i("CommunityMainFragment", "123. observe search : ${it}")
             lifecycleScope.launch {
@@ -246,7 +254,9 @@ class CommunityMainFragment : Fragment() {
 
         viewModel.addedSearchPost.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
-//                allPostAdapter.submitList(it.toMutableList())
+//                Log.i("CommunityMainFragment", "observe addedSearchPost")
+                if(postType != Table.GALLERY_POST)
+                    allPostAdapter.submitList(it.toMutableList())
 //                allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
 //                async { viewModel.selectAllImageList()}.await()
                 async { viewModel.selectAllImageList()}.await()
@@ -269,7 +279,7 @@ class CommunityMainFragment : Fragment() {
 //                Log.i("CommunityMainFragment", "after postImageUris adapter element = ${postModel}")
 //            }
 //            allPostAdapter.notifyDataSetChanged()
-            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
+//            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
         }
 
         viewModel.searchPostWithImages.observe(viewLifecycleOwner) {
@@ -283,7 +293,7 @@ class CommunityMainFragment : Fragment() {
 //            Log.i("CommunityMainFragment", "123. viewModel.searchPostResult.hashCode : ${viewModel.searchPostResult.hashCode()}")
 //            Log.i("CommunityMainFragment", "123. viewModel.searchPostResult.toMutableList().hashCode : ${viewModel.searchPostResult.toMutableList().hashCode()}")
 
-            allPostAdapter.submitList(it.toList())
+            allPostAdapter.submitList(it.toMutableList())
 //            allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
         }
 
@@ -295,7 +305,7 @@ class CommunityMainFragment : Fragment() {
         }
 
         viewModel.filteringCategories.observe(viewLifecycleOwner) {
-            Log.i("CommunityManinFragment", "filteringCategories = ${it}")
+//            Log.i("CommunityManinFragment", "filteringCategories = ${it}")
 
             lifecycleScope.launch {
                 viewModel.selectRankList(it)

@@ -64,7 +64,6 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
 
 
         }
-//            continuation.resume(post)
 
     }
 
@@ -79,71 +78,16 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
                     "PostRepositoryImpl",
                     "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}"
                 )
-//                val imageTask =
-                    storageReference
-                        .child(post.key)
-                        .child(imageName)
-                        .putFile(imageUri.toUri())
-                        .await()
-//                imageTask.addOnSuccessListener {
-//                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
-//                }.addOnFailureListener {
-//                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
-//                    storeReference.document(post.key).delete()
-//                }
+                storageReference
+                    .child(post.key)
+                    .child(imageName)
+                    .putFile(imageUri.toUri())
+                    .await()
             }
             true
         }
     }
 
-//    override suspend fun createPostImages(post: PostModel, imageUris: MutableList<String>): Boolean {
-//        return suspendCancellableCoroutine { continuation ->
-//            for ((index, imageUri) in imageUris.withIndex()) {
-//                val imageName =
-//                    DateFormatUtils.convertToImageFormat(post.createdDate) + "_0" + (index + 1) + ".png"
-//                Log.i("PostRepositoryImpl", "createdDate = ${post.createdDate}")
-//                Log.i("PostRepositoryImpl", "createdDateForamt = ${DateFormatUtils.convertToImageFormat(post.createdDate)}")
-//                val imageTask = storageReference.child(post.key).child(imageName).putFile(imageUri.toUri())
-//                imageTask.addOnSuccessListener {
-//                    Log.i("PostRepositoryImpl", "success create question post image : ${it}")
-//                }.addOnFailureListener {
-//                    Log.e("PostRepositoryImpl", "fail create question post image: ${it}")
-//                    storeReference.document(post.key).delete()
-//                }
-//            }
-//        }
-//    }
-
-//    override suspend fun selectRankPosts(): MutableList<PostModel> {
-//        return suspendCancellableCoroutine { continuation ->
-//
-//            storeReference
-//                .orderBy("viewCount", Query.Direction.DESCENDING)
-//                .limit(3)
-//                .get().addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        Log.i("PostRepositoryImpl", "success select rank question post : ${task}")
-//                        val rankPosts = mutableListOf<PostModel>()
-//                        for (document in task.result.documents) {
-//                            val hashMap = document.data as HashMap<*, *>
-//                            val gson = Gson()
-//                            val toJson = gson.toJson(hashMap)
-//                            val fromJson = gson.fromJson(toJson, PostModel::class.java)
-//                            rankPosts.add(fromJson)
-//                        }
-//                        continuation.resume(rankPosts)
-//                        return@addOnCompleteListener
-//                    } else {
-//                        continuation.resumeWithException(Exception("unknown error"))
-//                    }
-//                }.addOnFailureListener {
-//                    continuation.resumeWithException(it)
-//                }
-//
-//        }
-//    }
-
-//    override suspend fun selectRankPosts(): MutableList<PostModel> {
     override suspend fun selectRankPosts(): MutableList<PostModel> {
         return withContext(Dispatchers.IO) {
 
@@ -165,23 +109,6 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
             Log.i("PostRepositoryImpl", "rankPosts = ${rankPosts}")
 
             rankPosts
-
-//                { task ->
-//                    if (task.isSuccessful) {
-//                        Log.i("PostRepositoryImpl", "success select rank question post : ${task}")
-//                        val rankPosts = mutableListOf<PostModel>()
-//                        for (document in task.result.documents) {
-//                            val hashMap = document.data as HashMap<*, *>
-//                            val gson = Gson()
-//                            val toJson = gson.toJson(hashMap)
-//                            val fromJson = gson.fromJson(toJson, PostModel::class.java)
-//                            rankPosts.add(fromJson)
-//                        }
-//                        continuation.resume(rankPosts)
-//                        return@addOnCompleteListener
-//                    } else {
-//                        continuation.resumeWithException(Exception("unknown error"))
-//                    }
 
         }
     }
@@ -209,80 +136,14 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
 
             rankPosts
 
-//                { task ->
-//                    if (task.isSuccessful) {
-//                        Log.i("PostRepositoryImpl", "success select rank question post : ${task}")
-//                        val rankPosts = mutableListOf<PostModel>()
-//                        for (document in task.result.documents) {
-//                            val hashMap = document.data as HashMap<*, *>
-//                            val gson = Gson()
-//                            val toJson = gson.toJson(hashMap)
-//                            val fromJson = gson.fromJson(toJson, PostModel::class.java)
-//                            rankPosts.add(fromJson)
-//                        }
-//                        continuation.resume(rankPosts)
-//                        return@addOnCompleteListener
-//                    } else {
-//                        continuation.resumeWithException(Exception("unknown error"))
-//                    }
-
         }
     }
 
-//    override suspend fun selectPosts(): MutableList<PostModel> {
-//        return suspendCancellableCoroutine { continuation ->
-//
-//            storeReference
-//                .orderBy("createdDate", Query.Direction.DESCENDING)
-//                .get().addOnCompleteListener { task ->
-//                    if (task.isSuccessful) {
-//                        Log.i("PostRepositoryImpl", "success select question post : ${task}")
-//                        val rankPosts = mutableListOf<PostModel>()
-//                        for (document in task.result.documents) {
-//                            val hashMap = document.data as HashMap<*, *>
-//                            val gson = Gson()
-//                            val toJson = gson.toJson(hashMap)
-//                            val fromJson = gson.fromJson(toJson, PostModel::class.java)
-//                            rankPosts.add(fromJson)
-//                        }
-//                        continuation.resume(rankPosts)
-//                        return@addOnCompleteListener
-//                    } else {
-//                        continuation.resumeWithException(Exception("unknown error"))
-//                    }
-//                }.addOnFailureListener {
-//                    continuation.resumeWithException(it)
-//                }
-//
-//        }
-//    }
-
-    //    override suspend fun selectPosts(): MutableList<PostModel> {
-//        return withContext(Dispatchers.IO) {
-//
-//            val snapshot = storeReference
-//                .orderBy("createdDate", Query.Direction.DESCENDING)
-//                .get()
-//                .await()
-//
-//            val allPosts = mutableListOf<PostModel>()
-//            for (document in snapshot.documents) {
-//                val hashMap = document.data as HashMap<*, *>
-//                val gson = Gson()
-//                val toJson = gson.toJson(hashMap)
-//                val fromJson = gson.fromJson(toJson, PostModel::class.java)
-//                allPosts.add(fromJson)
-//            }
-//
-//            Log.i("PostRepositoryImpl", "rankPosts = ${allPosts}")
-//            allPosts
-//        }
-//    }
-    override suspend fun selectInitPosts(): List<DocumentSnapshot> {
+    override suspend fun selectInitPosts(limit: Long): List<DocumentSnapshot> {
         return withContext(Dispatchers.IO){
             val snapshot = storeReference
                 .orderBy("createdDate", Query.Direction.DESCENDING)
-                .limit(10)
+                .limit(limit)
                 .get()
                 .await()
 
@@ -290,12 +151,12 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
         }
     }
 
-    override suspend fun selectInitPostsWhereFiltering(categories: List<FilteringType>): List<DocumentSnapshot> {
+    override suspend fun selectInitPostsWhereFiltering(categories: List<FilteringType>, limit: Long): List<DocumentSnapshot> {
         return withContext(Dispatchers.IO){
             val snapshot = storeReference
                 .whereArrayContainsAny("filteringType", categories)
                 .orderBy("createdDate", Query.Direction.DESCENDING)
-                .limit(10)
+                .limit(limit)
                 .get()
                 .await()
 
@@ -303,12 +164,12 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
         }
     }
 
-    override suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot): List<DocumentSnapshot> {
+    override suspend fun selectNextPosts(lastSnapshot: DocumentSnapshot, limit: Long): List<DocumentSnapshot> {
         return withContext(Dispatchers.IO){
             val snapshot = storeReference
                 .orderBy("createdDate", Query.Direction.DESCENDING)
                 .startAfter(lastSnapshot)
-                .limit(10)
+                .limit(limit)
                 .get()
                 .await()
 
@@ -318,14 +179,15 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
 
     override suspend fun selectNextPostsWhereFiltering(
         lastSnapshot: DocumentSnapshot,
-        categories: List<FilteringType>
+        categories: List<FilteringType>,
+        limit: Long
     ): List<DocumentSnapshot> {
         return withContext(Dispatchers.IO){
             val snapshot = storeReference
                 .whereArrayContainsAny("filteringType", categories)
                 .orderBy("createdDate", Query.Direction.DESCENDING)
                 .startAfter(lastSnapshot)
-                .limit(10)
+                .limit(limit)
                 .get()
                 .await()
 

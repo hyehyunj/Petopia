@@ -25,7 +25,8 @@ class RankPostAdapter(val postType: Table, private val onClick: (post: PostModel
 
     override fun areContentsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
 //        Log.i("RankPostAdapter", "oldItem == newItem : ${oldItem == newItem}")
-        return oldItem == newItem
+//        return oldItem == newItem
+        return false
     }
 }) {
 
