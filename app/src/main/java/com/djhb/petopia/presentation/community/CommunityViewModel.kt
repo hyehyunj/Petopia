@@ -172,7 +172,7 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
             searchPostResult.clear()
             addedSearchResult.clear()
             _isProgressing.value = true
-
+            nextPostIndex = 0
             var documents =
                 if(postType == Table.GALLERY_POST) {
                     when {
@@ -204,12 +204,12 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
                         if(postType == Table.GALLERY_POST) {
                             when {
                                 categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories, limit = 18)
-                                else -> postRepository.selectInitPosts(limit = 18)
+                                else -> postRepository.selectNextPosts(lastSnapshot, limit = 18)
                             }
                         } else {
                             when {
                                 categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
-                                else -> postRepository.selectInitPosts()
+                                else -> postRepository.selectNextPosts(lastSnapshot, limit = 10)
                             }
                         }
 
@@ -276,12 +276,14 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
                         if(postType == Table.GALLERY_POST) {
                             when {
                                 categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories, limit = 9)
-                                else -> postRepository.selectInitPosts(limit = 9)
+//                                else -> postRepository.selectInitPosts(limit = 9)
+                                else -> postRepository.selectNextPosts(lastSnapshot, limit = 9)
                             }
                         } else {
                             when {
                                 categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories)
-                                else -> postRepository.selectInitPosts()
+//                                else -> postRepository.selectInitPosts()
+                                else -> postRepository.selectNextPosts(lastSnapshot, limit = 9)
                             }
                         }
 
