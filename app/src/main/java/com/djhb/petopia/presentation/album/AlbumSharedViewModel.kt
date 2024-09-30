@@ -93,6 +93,8 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
         }
     }
 
+
+
     //추가 또는 편집한 사진을 데이터베이스에 저장하는 함수
     private fun saveAlbumList() {
         viewModelScope.launch {

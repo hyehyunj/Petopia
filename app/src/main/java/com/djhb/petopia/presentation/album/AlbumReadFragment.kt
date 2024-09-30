@@ -27,8 +27,6 @@ class AlbumReadFragment : DialogFragment() {
     }
     private val binding get() = _binding
     private lateinit var albumSharedViewModel: AlbumSharedViewModel
-    private lateinit var albumReadViewPagerAdapter: AlbumReadViewPagerAdapter
-    private lateinit var albumReadViewPager: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +42,6 @@ class AlbumReadFragment : DialogFragment() {
 
 
         albumSharedViewModel.currentAlbumLiveData.observe(viewLifecycleOwner) {
-            Log.d("현재사진", "${it}")
             readOnlyMode(
                 it
             )
