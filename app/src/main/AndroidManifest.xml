@@ -4,8 +4,8 @@
 
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission
@@ -46,6 +46,10 @@
             android:name="com.canhub.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat"
             />
+        <activity
+            android:name=".presentation.MainActivity"
+            android:exported="false" >
+        </activity>
         <receiver
             android:name=".presentation.d_day.DDayAlarmReceiver"
             android:exported="true" >
@@ -53,11 +57,6 @@
                 <action android:name="android.intent.action.PETOPIA" />
             </intent-filter>
         </receiver>
-
-        <activity
-            android:name=".presentation.MainActivity"
-            android:exported="false" >
-        </activity>
     </application>
 
 </manifest>

@@ -65,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/home_earth_fab_top" />
 
     <TextView
-        style="@style/common_text_16_white"
+        style="@style/point_text_20_white"
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:layout_marginTop="25dp"
@@ -94,7 +94,7 @@
 
 
     <TextView
-        style="@style/common_text_16_white"
+        style="@style/point_text_20_white"
         android:layout_width="80dp"
         android:layout_height="30dp"
         android:layout_marginTop="25dp"
@@ -121,7 +121,7 @@
         app:layout_constraintVertical_bias="0.8" />
 
     <TextView
-        style="@style/common_text_20_bold_white"
+        style="@style/point_text_24_white"
         android:layout_width="120dp"
         android:layout_height="40dp"
         android:layout_marginTop="150dp"

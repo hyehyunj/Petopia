@@ -120,13 +120,8 @@ class HomeEarthFragment : Fragment() {
     private fun homeEarthButtonClickListener() {
         //설정버튼 클릭이벤트 : 클릭시 설정 이동
         binding.homeEarthIvMy.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
-                StyleableToast.makeText(
-                    requireActivity(),
-                    "가이드 종료 후 이용 가능합니다.",
-                    R.style.toast_common
-                )
-                    .show() else if (LoginData.loginUser.authority == Authority.ADMIN) {
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE") showToast()
+            else if (LoginData.loginUser.authority == Authority.ADMIN) {
                 AdminFragment().show(childFragmentManager, "ADMIN_FRAGMENT")
             } else {
                 (activity as MainActivity).showMyFragment()
@@ -137,37 +132,22 @@ class HomeEarthFragment : Fragment() {
 
         //좌측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 배웅하기 이동
         binding.homeEarthIvCloudLeft.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
-                StyleableToast.makeText(
-                    requireActivity(),
-                    "가이드 종료 후 이용 가능합니다.",
-                    R.style.toast_common
-                )
-                    .show() else
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
+                showToast() else
                 (activity as MainActivity).showAdminPostFragment("LEFT")
         }
 
         //우측구름버튼 클릭이벤트 : 클릭시 관리자 추천글 잘지내기 이동
         binding.homeEarthIvCloudRight.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
-                StyleableToast.makeText(
-                    requireActivity(),
-                    "가이드 종료 후 이용 가능합니다.",
-                    R.style.toast_common
-                )
-                    .show() else
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
+                showToast() else
                 (activity as MainActivity).showAdminPostFragment("RIGHT")
         }
 
         //커뮤니티버튼 클릭이벤트 : 클릭시 커뮤니티 이동
         binding.homeEarthIvCommunity.setOnClickListener {
             if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
-                StyleableToast.makeText(
-                    requireActivity(),
-                    "가이드 종료 후 이용 가능합니다.",
-                    R.style.toast_common
-                )
-                    .show()
+                showToast()
 //            else
 //                childFragmentManager.beginTransaction()
 //                    .replace(
@@ -183,6 +163,8 @@ class HomeEarthFragment : Fragment() {
 
         }
         binding.homeEarthFabTop.setOnClickListener {
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
+                showToast() else
             (activity as MainActivity).moveToPetopia()
         }
 
@@ -305,10 +287,10 @@ class HomeEarthFragment : Fragment() {
     }
 
 
-    fun showUndoToast() {
+    fun showToast() {
         StyleableToast.makeText(
             requireActivity(),
-            getString(R.string.messege_undo),
+            "가이드 종료 후 이용 가능합니다.",
             R.style.toast_undo
         ).show()
     }
