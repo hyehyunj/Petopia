@@ -158,7 +158,7 @@ class DDayFragment : DialogFragment() {
     //알람리시버에 알림을 예약하는 함수
     @SuppressLint("ScheduleExactAlarm")
     private fun reserveAlarm(calendar:Calendar) {
-        val alarmManager = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), DDayAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             requireContext(),

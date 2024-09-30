@@ -35,7 +35,7 @@ open class DDayDialogFragment : DialogFragment() {
 
         binding.dialogTvAction.setOnClickListener {
             val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-                putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
+                putExtra(Settings.EXTRA_APP_PACKAGE, requireActivity().packageName)
             }
             startActivity(intent)
             dismiss()

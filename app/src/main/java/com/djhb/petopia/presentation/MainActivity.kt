@@ -54,7 +54,6 @@ class MainActivity : AppCompatActivity() {
 
 
         mainDataObserver()
-        introViewModel.updateIntroSkipData(this)
         if(introViewModel.loadIntroSkipData(this)) else showIntroFragment()
 
         //레이아웃 초기화

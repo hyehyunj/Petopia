@@ -89,9 +89,7 @@ class HomePetopiaFragment : Fragment() {
         guideDataObserver()
         if (LoginData.loginUser.dday != null) loadDDayData()
 
-        mainHomeGuideViewModel.checkUserGuideState()
-        Log.d("guidedata", "checkUserGuideState: ${LoginData.loginUser}")
-//        if () getUserAndPet()
+
 
 //구름 애니메이션
         initCloudAnimation()
@@ -501,6 +499,8 @@ class HomePetopiaFragment : Fragment() {
         }
         initAnimation()
         showPetMassage()
+        mainHomeGuideViewModel.checkUserGuideState()
+
     }
 
 }
