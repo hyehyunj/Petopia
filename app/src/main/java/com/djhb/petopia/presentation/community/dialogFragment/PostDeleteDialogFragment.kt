@@ -5,10 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.djhb.petopia.data.PostModel
-import com.djhb.petopia.databinding.FragmentCommunityDetailBinding
 import com.djhb.petopia.databinding.FragmentDialogBinding
-import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.community.CommunityActivity
 import com.djhb.petopia.presentation.dialog.DialogFragment
 
 // TODO: Rename parameter arguments, choose names that match
@@ -29,8 +27,8 @@ class PostDeleteDialogFragment(
         FragmentDialogBinding.inflate(layoutInflater)
     }
 
-    private val mainActivity: MainActivity by lazy {
-        requireActivity() as MainActivity
+    private val communityActivity: CommunityActivity by lazy {
+        requireActivity() as CommunityActivity
     }
 
 //    private val parentFragment: FragmentCommunityDetailBinding by lazy {
@@ -54,8 +52,9 @@ class PostDeleteDialogFragment(
         binding.dialogTvAction.setOnClickListener {
             onClickDelete(postKey)
 //            parentFragmentManager.popBackStack()
-            mainActivity.supportFragmentManager.popBackStack()
-            mainActivity.showViewPager()
+//            communityActivity.supportFragmentManager.popBackStack()
+//            communityActivity.showViewPager()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
             dismiss()
         }
 
