@@ -305,7 +305,7 @@ class CommunityMainFragment : Fragment() {
         }
 
         viewModel.filteringCategories.observe(viewLifecycleOwner) {
-//            Log.i("CommunityManinFragment", "filteringCategories = ${it}")
+            Log.i("CommunityManinFragment", "filteringCategories = ${it}")
 
             lifecycleScope.launch {
                 viewModel.selectRankList(it)

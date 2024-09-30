@@ -117,7 +117,7 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
         return withContext(Dispatchers.IO) {
 
             val snapshot = storeReference
-                .whereArrayContainsAny("filteringType", categories)
+                .whereArrayContainsAny("filteringTypes", categories)
                 .orderBy("viewCount", Query.Direction.DESCENDING)
                 .limit(3)
                 .get()
@@ -154,7 +154,7 @@ class PostRepositoryImpl(val table: Table) : PostRepository {
     override suspend fun selectInitPostsWhereFiltering(categories: List<FilteringType>, limit: Long): List<DocumentSnapshot> {
         return withContext(Dispatchers.IO){
             val snapshot = storeReference
-                .whereArrayContainsAny("filteringType", categories)
+                .whereArrayContainsAny("filteringTypes", categories)
                 .orderBy("createdDate", Query.Direction.DESCENDING)
                 .limit(limit)
                 .get()
