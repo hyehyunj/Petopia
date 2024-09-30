@@ -52,7 +52,7 @@ class IntroViewModel(private val introRepository: IntroRepository) :
     //인트로 스킵여부를 저장하는 함수
     fun updateIntroSkipData(context: Context) {
         viewModelScope.launch {
-            introRepository.updateIntroSkip(context, true)
+            introRepository.updateIntroSkip(context, false)
         }
     }
 }

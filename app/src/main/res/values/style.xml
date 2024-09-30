@@ -143,6 +143,13 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="point_text_20_white">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="point_text_24_dark_gray">
         <item name="android:textSize">24sp</item>
         <item name="fontFamily">@font/kotra_hope</item>
@@ -152,6 +159,13 @@
 
     <style name="point_text_24_white">
         <item name="android:textSize">24sp</item>
+        <item name="fontFamily">@font/kotra_hope</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="point_text_32_white">
+        <item name="android:textSize">32sp</item>
         <item name="fontFamily">@font/kotra_hope</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>

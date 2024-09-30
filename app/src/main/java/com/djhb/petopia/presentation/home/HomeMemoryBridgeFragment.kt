@@ -113,7 +113,7 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         // `homeMemoryBridgeIvEmotion` 클릭 시 이모지를 다시 보이도록 설정
         binding.homeMemoryBridgeIvEmotion.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE")
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE"&& mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
                 toastMoveUnder()
             else {
 
@@ -337,7 +337,7 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         //메모리버튼 클릭이벤트 : 클릭시 메모리북 이동
         binding.homeMemoryBridgeMemoryContainer.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value == "OPTIONAL")
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
                 toastMoveUnder() else setMemoryFragment()
 
             Log.d("memorybuttonclick", "메모리버튼 클릭")

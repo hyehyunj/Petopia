@@ -11,15 +11,21 @@ import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.icu.util.Calendar
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.Toast
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentDDayBinding
+import com.djhb.petopia.presentation.memory.MemoryFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.rm.rmswitch.RMSwitch
 import io.github.muddz.styleabletoast.StyleableToast
 import java.text.SimpleDateFormat
@@ -77,13 +83,21 @@ class DDayFragment : DialogFragment() {
 
         binding.dDayBtnAlarm.addSwitchObserver(object : RMSwitch.RMSwitchObserver {
             override fun onCheckStateChange(switchView: RMSwitch, isChecked: Boolean) {
-                dDayViewModel.updateAlarmSwitch(isChecked)
-                StyleableToast.makeText(
-                    requireContext(),
-                    "${if (isChecked) "디데이 알림이 설정되었습니다." else "디데이 알림이 해제되었습니다."}",
-                    R.style.toast_common
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !NotificationManagerCompat.from(
+                        requireContext()
+                    ).areNotificationsEnabled()
                 )
-                    .show()
+                {binding.dDayBtnAlarm.isChecked = false
+                    requireAlarmPermission()}
+                else {
+                    dDayViewModel.updateAlarmSwitch(isChecked)
+                    StyleableToast.makeText(
+                        requireContext(),
+                        "${if (isChecked) "디데이 알림이 설정되었습니다." else "디데이 알림이 해제되었습니다."}",
+                        R.style.toast_common
+                    )
+                        .show()
+                }
             }
         })
 
@@ -103,6 +117,11 @@ class DDayFragment : DialogFragment() {
             dismiss()
         }
 
+    }
+
+    //알림권한 허가를 요청하는 함수
+    private fun requireAlarmPermission() {
+        DDayDialogFragment().show(childFragmentManager, "DDAY_DIALOG_FRAGMENT")
     }
 
     private fun loadDDayData(){

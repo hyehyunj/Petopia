@@ -333,7 +333,7 @@ class HomePetopiaFragment : Fragment() {
                         homeTvNamePet.isVisible = false
                         homeIvPet.isVisible = false
                         homeTvPetMassage.isVisible = false
-                        homeIvArrowUnder.isVisible = false
+                        homeIvArrowUnder.isVisible = true
                         homeIvGallery.isVisible = false
                         homeIvDate.isVisible = false
                         homeIvLetter.isVisible = false
@@ -350,6 +350,7 @@ class HomePetopiaFragment : Fragment() {
                         homeIvCall.isVisible = false
                         homeTvCallTitle.isVisible = false
                         homeTvCallSubTitle.isVisible = false
+                        homeIvArrowUnder.isVisible = false
                     }
                 }
 

@@ -288,7 +288,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:background="@android:color/transparent"
-        android:text="333"
+        android:text=""
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/home_iv_gallery" />

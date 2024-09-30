@@ -8,20 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.R
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentMyBinding
 import com.djhb.petopia.presentation.MainActivity
+import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 import com.djhb.petopia.presentation.register.RegisterActivity
 import com.djhb.petopia.presentation.register.RegisterViewModel
 import com.djhb.petopia.presentation.register.signup.TermFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import io.github.muddz.styleabletoast.StyleableToast
 
 
 class MyFragment : DialogFragment() {
     private var _binding: FragmentMyBinding? = null
     private val binding get() = _binding as FragmentMyBinding
-
+    private lateinit var mainHomeGuideViewModel: MainHomeGuideSharedViewModel
     private val registerViewModel: RegisterViewModel by activityViewModels()
 
 
@@ -61,7 +65,9 @@ class MyFragment : DialogFragment() {
             (activity as MainActivity).showIntroFragment()
         }
         binding.myTvGuide.setOnClickListener {
-            MyGuideDialogFragment().show(childFragmentManager, "MY_GUIDE_FRAGMENT")
+            if(LoginData.loginUser.completedGuide) MyGuideDialogFragment().show(childFragmentManager, "MY_GUIDE_FRAGMENT")
+            else StyleableToast.makeText(requireActivity(), "펫토피아 입국사무소에 연결해보세요!", R.style.toast_common)
+                .show()
         }
 
         binding.myBtnLogout.setOnClickListener {
