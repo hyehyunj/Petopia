@@ -172,7 +172,7 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
             searchPostResult.clear()
             addedSearchResult.clear()
             _isProgressing.value = true
-
+            nextPostIndex = 0
             var documents =
                 if(postType == Table.GALLERY_POST) {
                     when {
