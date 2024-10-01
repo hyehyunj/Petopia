@@ -22,6 +22,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -53,7 +54,7 @@ class HomeMemoryBridgeFragment : Fragment() {
     private var isClickedBack = false
     private val backPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if(isClickedBack) {
+            if (isClickedBack) {
                 requireActivity().finish()
             } else {
                 isClickedBack = true
@@ -113,7 +114,7 @@ class HomeMemoryBridgeFragment : Fragment() {
 
         // `homeMemoryBridgeIvEmotion` 클릭 시 이모지를 다시 보이도록 설정
         binding.homeMemoryBridgeIvEmotion.setOnClickListener {
-            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE"&& mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
+            if (mainHomeGuideViewModel.guideStateLiveData.value != "DONE" && mainHomeGuideViewModel.guideStateLiveData.value != "NONE")
                 toastMoveUnder()
             else {
 
@@ -384,7 +385,11 @@ class HomeMemoryBridgeFragment : Fragment() {
                 TimeUnit.MILLISECONDS
             ).build()
 
-        WorkManager.getInstance(requireContext()).enqueue(workRequest)
+        WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
+            "UpdateMemoryTextWorker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
     }
 
     // 현재 시간이 20시 이후인지 확인
@@ -425,7 +430,7 @@ class HomeMemoryBridgeFragment : Fragment() {
         val isSavedSharedPreferences =
             requireContext().getSharedPreferences("${user}MemoryisSaved", Context.MODE_PRIVATE)
         val isSaved = isSavedSharedPreferences.getBoolean("isSaved", false)
-        val memoryText = sharedPreferences.getString("memoryText", null)
+        val memoryText = sharedPreferences.getString("memoryText", "첫 만남을 기록해보세요!")
 
 
         binding.homeMemoryBridgeTvMemoryTitle.text = memoryText
