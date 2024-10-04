@@ -19,7 +19,7 @@ import com.djhb.petopia.data.GalleryModel
 import com.djhb.petopia.databinding.FragmentAlbumReadBinding
 import com.wenchao.cardstack.CardStack
 
-//읽기전용 프래그먼트 : 사진 조회할 때 나타나는 프래그먼트
+//앨범 읽기전용 프래그먼트 : 사진 조회할 때 나타나는 프래그먼트
 class AlbumReadFragment : DialogFragment() {
 
     private val _binding: FragmentAlbumReadBinding by lazy {
@@ -47,8 +47,7 @@ class AlbumReadFragment : DialogFragment() {
             )
         }
 
-
-        //닫기 버튼이벤트 : 클릭시 갤러리로 이동
+        //닫기 버튼이벤트 : 클릭시 앨범 리스트로 이동
         binding.albumReadTvExit.setOnClickListener {
        dismiss()
         }
@@ -71,14 +70,12 @@ class AlbumReadFragment : DialogFragment() {
         }
     }
 
+    //사진리스트를 카드스택으로 보여주는 함수
     private fun initAdapter(item: GalleryModel) {
         val cardStack: CardStack = binding.albumReadLayoutInside
-
         cardStack.setContentResource(R.layout.layout_album_read)
         cardStack.setStackMargin(40)
         val readAdapter = AlbumReadAdapter(requireContext(),item.imageUris)
-
-// 어댑터를 CardStack에 설정
         cardStack.setAdapter(readAdapter)
     }
 

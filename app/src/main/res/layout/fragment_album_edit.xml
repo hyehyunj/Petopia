@@ -89,7 +89,7 @@
         android:paddingHorizontal="16dp"
         android:background="@drawable/bg_gray_white"
         android:ems="16"
-        android:hint="@string/gallery_please_enter_title"
+        android:hint="@string/album_please_enter_title"
         android:inputType="text"
         android:maxLength="16"
         app:layout_constraintEnd_toEndOf="parent"

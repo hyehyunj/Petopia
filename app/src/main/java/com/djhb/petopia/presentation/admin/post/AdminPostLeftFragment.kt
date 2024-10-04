@@ -19,7 +19,7 @@ import com.github.matteobattilana.weather.PrecipType
 import com.github.matteobattilana.weather.WeatherView
 
 
-//관리자 게시글
+//배웅하기 프래그먼트 : 좌측 구름을 클릭하면 볼 수 있는 관리자 게시글
 class AdminPostLeftFragment : Fragment() {
     private val _binding: FragmentAdminPostBinding by lazy {
         FragmentAdminPostBinding.inflate(layoutInflater)
@@ -41,9 +41,7 @@ class AdminPostLeftFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         binding.adminPostTvTitle.text = "배웅하기"
-        adminPostLeftDataObserver()
         adminPostLeftButtonClickListener()
         initAdapter()
         weatherChange("RAIN")
@@ -52,13 +50,13 @@ class AdminPostLeftFragment : Fragment() {
 
     //버튼 클릭이벤트 함수 : 눌린 버튼에 따라 동작해주는 함수
     private fun adminPostLeftButtonClickListener() {
-        //뒤로가기버튼 클릭이벤트 :
+        //뒤로가기버튼 클릭이벤트 : 클릭시 프래그먼트 제거
         binding.adminPostIvBack.setOnClickListener {
             (activity as MainActivity).removeAdminPostFragment()
         }
-
     }
 
+    //배경날씨 변경해주는 함수
     private fun weatherChange(weather: String) {
         val weatherView: WeatherView = binding.adminPostWv
 
@@ -75,7 +73,7 @@ class AdminPostLeftFragment : Fragment() {
 
     }
 
-
+    //게시글 구성해주는 함수
     private fun initAdapter() {
         deckPager.apply {
             offscreenPageLimit = 5
@@ -96,12 +94,6 @@ class AdminPostLeftFragment : Fragment() {
             pageMargin = 30
 
 
-        }
-    }
-
-    //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
-    private fun adminPostLeftDataObserver() {
-        adminPostViewModel.adminPostLeftListLiveData.observe(viewLifecycleOwner) { post ->
         }
     }
 }

@@ -13,6 +13,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.data.AdminPostModel
 import com.djhb.petopia.data.GalleryModel
 
+//관리자게시글 페이저 어댑터
 class AdminPostAdapter(private val context: Context, private val items: List<AdminPostModel>, private val itemClickListener: (item: AdminPostModel, position: Int) -> Unit) : PagerAdapter() {
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {

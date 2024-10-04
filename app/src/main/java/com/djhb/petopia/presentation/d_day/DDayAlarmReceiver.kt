@@ -13,7 +13,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.presentation.MainActivity
 import com.djhb.petopia.presentation.register.RegisterActivity
 
-
+//디데이 알람 리시버
 class DDayAlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
 

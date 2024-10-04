@@ -15,7 +15,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentGuideRelationDialogBinding
 import io.github.muddz.styleabletoast.StyleableToast
 
-//다이얼로그 프래그먼트 : 전역에서 사용되는 다이얼로그
+//반려동물 관계 다이얼로그 프래그먼트 : 사용자와 반려동물의 관계를 입력받는 다이얼로그
 class GuideRelationDialogFragment : DialogFragment() {
     private val _binding: FragmentGuideRelationDialogBinding by lazy {
         FragmentGuideRelationDialogBinding.inflate(layoutInflater)
@@ -37,9 +37,9 @@ class GuideRelationDialogFragment : DialogFragment() {
 
 
         guideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
+            ViewModelProvider(requireParentFragment())[GuideSharedViewModel::class.java]
 
-
+        //값을 담아주는 클릭 이벤트
         binding.guideRelationDialogRg.setOnCheckedChangeListener { _, id ->
             when (id) {
                 R.id.guide_relation_dialog_rb_child -> guideSharedViewModel.setPetRelation("CHILD")
@@ -67,8 +67,6 @@ class GuideRelationDialogFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-
-        //다이얼로그 사용자 폰에 맞춰 크기조정, 리팩토링 필요
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
@@ -83,30 +81,6 @@ class GuideRelationDialogFragment : DialogFragment() {
         params?.height = (deviceWidth * 0.9).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-//            requireContext().dialogFragmentResize(this, 0.9f, 0.8f)
-//        }
-//        private fun Context.dialogFragmentResize(
-//            dialogFragment: DialogFragment,
-//            width: Float,
-//            height: Float,
-//        ) {
-//            val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-//            if (Build.VERSION.SDK_INT < 30) {
-//                val display = windowManager.defaultDisplay
-//                val size = Point()
-//                display.getSize(size)
-//                val window = dialogFragment.dialog?.window
-//                val x = (size.x * width).toInt()
-//                val y = (size.y * height).toInt()
-//                window?.setLayout(x, y)
-//            } else {
-//                val rect = windowManager.currentWindowMetrics.bounds
-//                val window = dialogFragment.dialog?.window
-//                val x = (rect.width() * width).toInt()
-//                val y = (rect.height() * height).toInt()
-//                window?.setLayout(x, y)
-//            }
     }
 
 

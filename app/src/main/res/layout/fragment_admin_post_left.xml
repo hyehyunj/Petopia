@@ -24,7 +24,7 @@
         style="@style/common_text_20_bold_dark_gray"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="잘 지내기"
+        android:text=""
         android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="@+id/admin_post_left_iv_back"
         app:layout_constraintEnd_toEndOf="parent"

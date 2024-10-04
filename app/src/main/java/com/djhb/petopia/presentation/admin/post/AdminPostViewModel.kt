@@ -39,16 +39,16 @@ class AdminPostViewModel(private val adminPostRepository : AdminPostRepository) 
     private val _adminPostLeftListLiveData = MutableLiveData<List<AdminPostModel>>(listOf())
     val adminPostLeftListLiveData: LiveData<List<AdminPostModel>> = _adminPostLeftListLiveData
 
-    // 잘지내기 리스트
+    // 안녕하기 리스트
     private val _adminPostRightListLiveData = MutableLiveData<List<AdminPostModel>>(listOf())
     val adminPostRightListLiveData: LiveData<List<AdminPostModel>> = _adminPostRightListLiveData
 
 
-    //관리자 게시글 불러오기
+    //배웅하기(좌측 구름 관리자 게시글) 불러오는 함수
     fun getAdminPostLeftList() : List<AdminPostModel> {
    return adminPostRepository.getAdminPostLeftData()
     }
-
+    //안녕하기(우측 구름 관리자 게시글) 불러오는 함수
     fun getAdminPostRightList() : List<AdminPostModel> {
         return adminPostRepository.getAdminPostRightData()
     }

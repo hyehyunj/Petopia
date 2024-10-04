@@ -17,7 +17,7 @@ import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentAlbumListBinding
 import com.djhb.petopia.presentation.MainActivity
 
-//앨범리스트 프래그먼트 : 앨범 두번째 페이지
+//앨범 리스트 프래그먼트 : 앨범 두번째 페이지
 class AlbumListFragment : Fragment() {
 
     private lateinit var albumListRecyclerViewAdapter: AlbumListRecyclerViewAdapter
@@ -96,7 +96,6 @@ class AlbumListFragment : Fragment() {
 
         //삭제모드 변화감지
         albumSharedViewModel.removeModeLiveData.observe(viewLifecycleOwner) {
-            Log.d("클릭", "it")
             albumListRecyclerViewAdapter.updateRemoveMode(it)
             albumSharedViewModel.updateRemovedAlbumList(it)
         }

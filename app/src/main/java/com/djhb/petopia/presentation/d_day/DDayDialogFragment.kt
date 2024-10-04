@@ -18,7 +18,7 @@ import com.djhb.petopia.databinding.FragmentDialogBinding
 import com.djhb.petopia.presentation.MainActivity
 import io.github.muddz.styleabletoast.StyleableToast
 
-//다이얼로그 프래그먼트
+//디데이 알림권한 다이얼로그 프래그먼트
 open class DDayDialogFragment : DialogFragment() {
     private val _binding: FragmentDialogBinding by lazy {
         FragmentDialogBinding.inflate(layoutInflater)
@@ -42,10 +42,10 @@ open class DDayDialogFragment : DialogFragment() {
 
         }
 
-
         //취소버튼 클릭이벤트
         binding.dialogTvCancel.setOnClickListener {
-            StyleableToast.makeText(requireActivity(), "알림을 이용하시려면 권한 설정이 필요합니다.", R.style.toast_common)
+            StyleableToast.makeText(requireActivity(),
+                getString(R.string.d_day_dialog_alert_need_permission), R.style.toast_common)
                 .show()
             dismiss()
         }

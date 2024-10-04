@@ -1,19 +1,13 @@
 package com.djhb.petopia.presentation.album
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
 import com.djhb.petopia.R
-import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.databinding.FragmentAlbumMainBinding
 import com.djhb.petopia.presentation.MainActivity
 import com.yasic.library.particletextview.MovingStrategy.RandomMovingStrategy
@@ -22,20 +16,13 @@ import io.github.muddz.styleabletoast.StyleableToast
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
+//앨범 메인 프래그먼트 : 앨범 첫번째 페이지
 class AlbumMainFragment : Fragment() {
-
 
     private val _binding: FragmentAlbumMainBinding by lazy {
         FragmentAlbumMainBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-
-
-    private val albumSharedViewModel by viewModels<AlbumSharedViewModel> {
-        AlbumSharedViewModelFactory()
-    }
-//    private val gallerySharedViewModel by viewModels<GallerySharedViewModel>()
     private val backPressedCallbackAlbum = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             (activity as MainActivity).removeAlbumFragment()
@@ -75,7 +62,7 @@ class AlbumMainFragment : Fragment() {
         //버튼 클릭이벤트
         albumMainButtonClickListener()
         //데이터 변화감지
-        albumMainDataObserver()
+        showAlbumMainTextAnimation()
 
     }
 
@@ -85,14 +72,12 @@ class AlbumMainFragment : Fragment() {
         binding.albumBtnBack.setOnClickListener {
             (activity as MainActivity).removeAlbumFragment()
         }
-
         requireActivity().onBackPressedDispatcher.addCallback(backPressedCallbackAlbum)
     }
 
 
-    //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
-    private fun albumMainDataObserver() {
-
+    //앨범 메인 텍스트 애니메이션 함수 : 앨범 첫페이지의 문구 애니메이션을 정의하는 함수
+    private fun showAlbumMainTextAnimation() {
        val particleTextBuilder = ParticleTextViewConfig.Builder()
             .setRowStep(8)
             .setColumnStep(8)

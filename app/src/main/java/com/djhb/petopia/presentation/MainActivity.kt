@@ -7,8 +7,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.R
 import com.djhb.petopia.databinding.ActivityMainBinding
@@ -16,7 +14,6 @@ import com.djhb.petopia.presentation.admin.AdminExileDialogFragment
 import com.djhb.petopia.presentation.admin.post.AdminPostLeftFragment
 import com.djhb.petopia.presentation.admin.post.AdminPostRightFragment
 import com.djhb.petopia.presentation.album.AlbumFragment
-import com.djhb.petopia.presentation.dialog.DialogFragment
 import com.djhb.petopia.presentation.guide.GuideCancelDialogFragment
 import com.djhb.petopia.presentation.guide.GuideFragment
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
@@ -160,7 +157,7 @@ class MainActivity : AppCompatActivity() {
         val fragment = supportFragmentManager.findFragmentById(R.id.main_Intro_frame)
         if (fragment is AlbumFragment) {
             supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.search_recommend_exit,R.anim.search_recommend_exit)
+                .setCustomAnimations(R.anim.exit,R.anim.exit)
                 .remove(fragment)
                 .commit()
         }
