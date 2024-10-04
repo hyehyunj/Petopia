@@ -55,112 +55,113 @@
                 app:layout_constraintTop_toBottomOf="@+id/my_iv_guardian" />
 
 
-            <ImageView
-                android:id="@+id/my_iv_setting"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="50dp"
-                android:src="@drawable/icon_setting_blue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_name" />
+<!--            <ImageView-->
+<!--                android:id="@+id/my_iv_setting"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:layout_marginTop="50dp"-->
+<!--                android:src="@drawable/icon_setting_blue"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/my_tv_name" />-->
 
-            <TextView
-                android:id="@+id/my_tv_setting"
-                style="@style/common_text_16_bold_blue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="환경설정"
-                app:layout_constraintBottom_toBottomOf="@+id/my_iv_setting"
-                app:layout_constraintStart_toEndOf="@+id/my_iv_setting"
-                app:layout_constraintTop_toTopOf="@+id/my_iv_setting" />
+<!--            <TextView-->
+<!--                android:id="@+id/my_tv_setting"-->
+<!--                style="@style/common_text_16_bold_blue"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="16dp"-->
+<!--                android:text="환경설정"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/my_iv_setting"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/my_iv_setting"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/my_iv_setting" />-->
 
-            <TextView
-                android:id="@+id/my_tv_alert"
-                style="@style/common_text_16_dark_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="디데이 알림"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_setting"
-                app:layout_constraintTop_toBottomOf="@id/my_iv_setting" />
-
-
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/my_rg_alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:enabled="true"
-                app:forceAspectRatio="false"
-                app:layout_constraintBottom_toBottomOf="@+id/my_tv_alert"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/my_tv_alert"
-                app:switchBkgCheckedColor="@color/baby_blue"
-                app:switchBkgNotCheckedColor="@color/light_gray"
-                app:switchDesign="android"
-                app:switchToggleCheckedColor="@color/main_blue"
-                app:switchToggleNotCheckedColor="@color/gray" />
-
-            <TextView
-                android:id="@+id/my_tv_music"
-                style="@style/common_text_16_dark_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="메모리 알림"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_alert"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_alert" />
-
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/my_rg_music"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:enabled="true"
-                app:forceAspectRatio="false"
-                app:layout_constraintBottom_toBottomOf="@+id/my_tv_music"
-                app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"
-                app:layout_constraintTop_toTopOf="@+id/my_tv_music"
-                app:switchBkgCheckedColor="@color/baby_blue"
-                app:switchBkgNotCheckedColor="@color/light_gray"
-                app:switchDesign="android"
-                app:switchToggleCheckedColor="@color/main_blue"
-                app:switchToggleNotCheckedColor="@color/gray" />
+<!--            <TextView-->
+<!--                android:id="@+id/my_tv_alert"-->
+<!--                style="@style/common_text_16_dark_gray"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="디데이 알림"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/my_tv_setting"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/my_iv_setting" />-->
 
 
-            <TextView
-                android:id="@+id/my_tv_theme"
-                style="@style/common_text_16_dark_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="환경"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_setting"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_music" />
+<!--            <com.rm.rmswitch.RMSwitch-->
+<!--                android:id="@+id/my_rg_alert"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="16dp"-->
+<!--                app:enabled="true"-->
+<!--                app:forceAspectRatio="false"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/my_tv_alert"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/my_tv_alert"-->
+<!--                app:switchBkgCheckedColor="@color/baby_blue"-->
+<!--                app:switchBkgNotCheckedColor="@color/light_gray"-->
+<!--                app:switchDesign="android"-->
+<!--                app:switchToggleCheckedColor="@color/main_blue"-->
+<!--                app:switchToggleNotCheckedColor="@color/gray" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/my_tv_music"-->
+<!--                style="@style/common_text_16_dark_gray"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="메모리 알림"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/my_tv_alert"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/my_tv_alert" />-->
+
+<!--            <com.rm.rmswitch.RMSwitch-->
+<!--                android:id="@+id/my_rg_music"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:enabled="true"-->
+<!--                app:forceAspectRatio="false"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/my_tv_music"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/my_tv_music"-->
+<!--                app:switchBkgCheckedColor="@color/baby_blue"-->
+<!--                app:switchBkgNotCheckedColor="@color/light_gray"-->
+<!--                app:switchDesign="android"-->
+<!--                app:switchToggleCheckedColor="@color/main_blue"-->
+<!--                app:switchToggleNotCheckedColor="@color/gray" />-->
 
 
-            <com.rm.rmswitch.RMSwitch
-                android:id="@+id/my_rg_theme"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:enabled="true"
-                app:forceAspectRatio="false"
-                app:layout_constraintBottom_toBottomOf="@+id/my_tv_theme"
-                app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"
-                app:layout_constraintTop_toTopOf="@+id/my_tv_theme"
-                app:switchBkgCheckedColor="@color/baby_blue"
-                app:switchBkgNotCheckedColor="@color/light_gray"
-                app:switchDesign="android"
-                app:switchToggleCheckedColor="@color/main_blue"
-                app:switchToggleNotCheckedColor="@color/gray" />
+<!--            <TextView-->
+<!--                android:id="@+id/my_tv_theme"-->
+<!--                style="@style/common_text_16_dark_gray"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="환경"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/my_tv_setting"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/my_tv_music" />-->
+
+
+<!--            <com.rm.rmswitch.RMSwitch-->
+<!--                android:id="@+id/my_rg_theme"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:enabled="true"-->
+<!--                app:forceAspectRatio="false"-->
+<!--                app:layout_constraintBottom_toBottomOf="@+id/my_tv_theme"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/my_rg_alert"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/my_tv_theme"-->
+<!--                app:switchBkgCheckedColor="@color/baby_blue"-->
+<!--                app:switchBkgNotCheckedColor="@color/light_gray"-->
+<!--                app:switchDesign="android"-->
+<!--                app:switchToggleCheckedColor="@color/main_blue"-->
+<!--                app:switchToggleNotCheckedColor="@color/gray" />-->
 
 
             <ImageView
                 android:id="@+id/my_iv_account"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="50dp"
                 android:src="@drawable/icon_user"
-                app:layout_constraintStart_toStartOf="@+id/my_iv_setting"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_theme" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_name" />
 
             <TextView
                 android:id="@+id/my_tv_account"
@@ -269,19 +270,6 @@
                 app:layout_constraintTop_toBottomOf="@id/my_tv_petopia_intro" />
 
             <com.skydoves.elasticviews.ElasticButton
-                android:id="@+id/my_tv_question_direct"
-                style="@style/common_text_16_dark_gray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:gravity="start"
-
-                android:text="1:1 문의"
-                app:button_duration="100"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_guide"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_guide" />
-
-            <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_tv_terms"
                 style="@style/common_text_16_dark_gray"
                 android:layout_width="wrap_content"
@@ -291,8 +279,8 @@
 
                 android:text="이용약관"
                 app:button_duration="100"
-                app:layout_constraintStart_toStartOf="@+id/my_tv_question_direct"
-                app:layout_constraintTop_toBottomOf="@id/my_tv_question_direct" />
+                app:layout_constraintStart_toStartOf="@+id/my_tv_guide"
+                app:layout_constraintTop_toBottomOf="@id/my_tv_guide" />
 
             <com.skydoves.elasticviews.ElasticButton
                 android:id="@+id/my_btn_logout"

@@ -31,7 +31,7 @@ import io.github.muddz.styleabletoast.StyleableToast
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
+//디데이 프래그먼트 : 생일, 기일 등 날짜를 입력하면 알려주는 프래그먼트
 class DDayFragment : DialogFragment() {
 
 
@@ -57,7 +57,6 @@ class DDayFragment : DialogFragment() {
         dDayButtonClickListener()
         //데이터 변화감지
         dDayDataObserver()
-        initDialog()
         loadDDayData()
 
 
@@ -124,6 +123,7 @@ class DDayFragment : DialogFragment() {
         DDayDialogFragment().show(childFragmentManager, "DDAY_DIALOG_FRAGMENT")
     }
 
+    //디데이 데이터를 불러와주는 함수
     private fun loadDDayData(){
         val dDayModel = dDayViewModel.dDayModelLiveData.value
         if(dDayModel?.date != "") binding.dDayTvSelectedDate.text = dDayModel?.date
@@ -133,10 +133,8 @@ class DDayFragment : DialogFragment() {
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun dDayDataObserver() {
-
-
         dDayViewModel.alarmLiveData.observe(viewLifecycleOwner) {
-            if(it) dDayViewModel.dDayModelLiveData.value?.let { it1 -> setAlarm(it1.date) }
+            if(it) dDayViewModel.dDayModelLiveData.value?.let { dDayModel -> setAlarm(dDayModel.date) }
         }
 
     }
@@ -155,10 +153,11 @@ class DDayFragment : DialogFragment() {
         }
                 reserveAlarm(calendar)
             }
+
     //알람리시버에 알림을 예약하는 함수
     @SuppressLint("ScheduleExactAlarm")
     private fun reserveAlarm(calendar:Calendar) {
-        val alarmManager = requireActivity().getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmManager = requireContext().getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(requireContext(), DDayAlarmReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             requireContext(),
@@ -189,6 +188,11 @@ class DDayFragment : DialogFragment() {
         params?.height = (deviceWidth * 1.1).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initDialog()
     }
 
 }

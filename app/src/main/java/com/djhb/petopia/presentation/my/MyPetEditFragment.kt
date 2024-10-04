@@ -84,7 +84,6 @@ class MyPetEditFragment : DialogFragment() {
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun myPetEditDataObserver() {
         myPetEditViewModel.appearanceLiveData.observe(viewLifecycleOwner) {
-            Log.d("정보", "${it}")
             when (it) {
                 "리트리버" -> binding.myPetEditIvAppearance.setImageResource(R.drawable.img_retriever)
                 "말티즈" -> binding.myPetEditIvAppearance.setImageResource(R.drawable.img_maltese)

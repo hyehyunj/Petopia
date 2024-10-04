@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-//갤러리와 포토의 공유 뷰모델
+//앨범 전역의 공유 뷰모델
 class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     ViewModel() {
     private val user = LoginData.loginUser
@@ -93,8 +93,6 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
         }
     }
 
-
-
     //추가 또는 편집한 사진을 데이터베이스에 저장하는 함수
     private fun saveAlbumList() {
         viewModelScope.launch {
@@ -123,13 +121,6 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
     //사진 리스트를 추가 또는 편집하기 위해 준비해주는 함수
     fun prepareNewAlbumList() {
         _newUriListLiveData.value = listOf()
-//        val stringToUri = mutableListOf<Uri>()
-//        if (_layoutModeLiveData.value == "EDIT") {
-//            _currentAlbumLiveData.value?.imageUris?.forEach {
-//                stringToUri.add(it.toUri())
-//            }
-//        }
-//        _newUriListLiveData.value = stringToUri
     }
 
     //추가 또는 편집될 가능성이 있는 새로운 사진을 담는 함수
@@ -172,11 +163,6 @@ class AlbumSharedViewModel(private val albumRepository: GalleryRepository) :
             else -> false
         }
     }
-
-
-
-
-
 
     //현재 사진을 새 사진으로 교체하는 함수
     fun updateAlbumList(index: Int) {

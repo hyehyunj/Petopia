@@ -74,24 +74,11 @@ class GuideFragment : Fragment() {
         binding.guideIvExit.setOnClickListener {
             (activity as MainActivity).cancelGuide()
         }
-
-//
-//
-//
-//            when(homePetopiaGuideSharedViewModel.guideStateLiveData.value) {
-//                "ESSENTIAL" -> homePetopiaGuideSharedViewModel.updateGuideState("NONE")
-//                "OPTIONAL" -> homePetopiaGuideSharedViewModel.updateGuideState("DONE")
-//            }
-//            parentFragmentManager.beginTransaction()
-//                .remove(this)
-//                .commit()
-//        }
     }
 
     //데이터 옵저버 함수 : 데이터 변화를 감지해 해당하는 동작을 진행해주는 함수
     private fun guideDataObserver() {
-        //페이지 변화감지 : 다음으로 또는 뒤로가기 버튼 클릭에 따라 페이지 번호 변경
-
+        //가이드 상태 변화감지
         mainHomeGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 "DONE", "NONE" -> {
@@ -103,8 +90,8 @@ class GuideFragment : Fragment() {
 
             }
         }
+        //페이지 변화감지 : 다음으로 또는 뒤로가기 버튼 클릭에 따라 페이지 번호 변경
         guideViewModel.guidePageNumberLiveData.observe(viewLifecycleOwner) {
-
             guideViewModel.makeGuideModel()
             when (it) {
                 7-> setBlur()
@@ -131,11 +118,8 @@ class GuideFragment : Fragment() {
             //상단진행부
             when (it.progressBar) {
                 "0%" -> binding.guideIvProgressBar.setImageResource(R.drawable.img_progressbar_1)
-
                 "20%" -> binding.guideIvProgressBar.setImageResource(R.drawable.img_progressbar_2)
-
                 "50%" -> binding.guideIvProgressBar.setImageResource(R.drawable.img_progressbar_3)
-
                 "100%" -> binding.guideIvProgressBar.setImageResource(R.drawable.img_progressbar_5)
             }
 
@@ -153,7 +137,7 @@ class GuideFragment : Fragment() {
 
 
 
-            //다이얼로그
+            //각 항목을 입력받기 위한 다이얼로그
             when (guideViewModel.guideModelLiveData.value?.dialog) {
                 "NAME" -> GuideNameDialogFragment().apply {
                     isCancelable = false
@@ -168,7 +152,7 @@ class GuideFragment : Fragment() {
                 }.show(childFragmentManager, "GUIDE_RELATION_DIALOG_FRAGMENT")
             }
         }
-
+        //홈 화면 변화감지
         mainHomeGuideSharedViewModel.currentHomeLiveData.observe(viewLifecycleOwner) {
             when (it) {
                 1 -> if (mainHomeGuideSharedViewModel.guideFunctionLiveData.value != "MOVE_EARTH") guideViewModel.guideButtonClickListener(
@@ -178,13 +162,12 @@ class GuideFragment : Fragment() {
                 2-> guideViewModel.guideButtonClickListener(
                     "NEXT"
                 )
-
-
             }
         }
 
     }
 
+    //반려동물 정보 불러올 때 카메라 조정효과를 나타내주는 함수
     private fun setBlur() {
         binding.guideIvBlur.apply {
             isVisible = true

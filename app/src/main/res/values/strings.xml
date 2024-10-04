@@ -1,14 +1,12 @@
 <resources>
     <string name="app_name">Petopia</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="messege_undo">추후 업데이트 예정</string>
-
 
     <!--  Common : 공통적으로 사용되는 String   -->
 
     <string name="common_petopia">펫토피아</string>
     <string name="common_memory_bridge">메모리브릿지</string>
-    <string name="common_earth">지구</string>
+    <string name="common_earth">어스</string>
 
     <string name="common_sign_in">로그인</string>
     <string name="common_sign_up">회원가입</string>
@@ -30,6 +28,7 @@
     <string name="common_complete">완료</string>
     <string name="common_cancel">취소</string>
     <string name="common_delete">삭제</string>
+    <string name="common_end">종료</string>
     <string name="common_ask_delete">삭제하시겠습니까?</string>
 
 
@@ -47,9 +46,6 @@
     <string name="signin_password_search">비밀번호 찾기</string>
     <string name="signin_autologin_guide">구글 계정으로 간편 로그인</string>
     <string name="signin_by_google">Google로 로그인</string>
-    <string name="signin_by_kakao">KakaoTalk으로 로그인</string>
-    <string name="signin_by_naver">Naver로 로그인</string>
-
 
     <!--  Main : 메인에서 사용되는 String  -->
 
@@ -68,6 +64,8 @@
     <string name="guide_relation_friend">친한\n친구</string>
     <string name="guide_start">펫토피아 화면연결</string>
     <string name="intro_start">시작하기</string>
+    <string name="guide_cancel_incomplete">다음에 찾아오시겠어요?\n처음부터 진행됩니다.</string>
+    <string name="guide_cancel_complete">가이드를 종료하시겠어요?\n마이페이지에서 다시 보실 수 있습니다.</string>
 
 
     <!--  Memory : 메모리에서 사용되는 String  -->
@@ -91,13 +89,15 @@
     <string name="letter_write_list_title">편지쓰기</string>
     <string name="letter_pad_title">편지지 선택</string>
 
-    <!--  Gallery : 갤러리에서 사용되는 String  -->
-    <string name="gallery_please_enter_title">사진의 제목을 입력해주세요.(16자 이내)</string>
+    <!--  Album : 앨범에서 사용되는 String  -->
+    <string name="album_please_enter_title">사진의 제목을 입력해주세요.(16자 이내)</string>
     <string name="common_album">앨범</string>
     <string name="album_select_date">날짜를 선택해주세요.</string>
 
     <!--  D-Day : 디데이에서 사용되는 String  -->
     <string name="d_day_please_enter_title">디데이의 이름을 입력해주세요.(16자 이내)</string>
+    <string name="d_day_dialog_alert_need_permission">알림을 이용하시려면 권한 설정이 필요합니다.</string>
+
 
     <!-- Community : 게시판에서 사용되는 String-->
     <string name="community_question_name">글쓰기(질문 게시판)</string>
@@ -134,5 +134,9 @@
     <string name="delete_user_content">회원탈퇴시 지금까지 작성한 모든 편지와 글이 \n 수정 불가능 합니다.\n\n지금 탈퇴하시겠습니까?</string>
 
 
+
     <!--  Setting : 설정에서 사용되는 String  -->
+    <!--  D : 설정에서 사용되는 String  -->
+
+
 </resources>

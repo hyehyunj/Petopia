@@ -27,7 +27,7 @@ import com.djhb.petopia.databinding.FragmentAlbumEditBinding
 import com.djhb.petopia.presentation.gallery.AlbumEditRecyclerViewAdapter
 import io.github.muddz.styleabletoast.StyleableToast
 
-//포토프래그먼트 : 갤러리에서 사진 조회, 추가, 수정할 때 나타나는 프래그먼트
+//앨범 편집 프래그먼트 : 추가, 수정할 때 나타나는 프래그먼트
 class AlbumEditFragment : DialogFragment() {
 
     private val _binding: FragmentAlbumEditBinding by lazy {
@@ -58,7 +58,7 @@ class AlbumEditFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         albumSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(AlbumSharedViewModel::class.java)
+            ViewModelProvider(requireParentFragment())[AlbumSharedViewModel::class.java]
         initAdapter()
         return binding.root
     }
@@ -66,7 +66,7 @@ class AlbumEditFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //갤러리에서 선택한 모드에 따라 레이아웃 변경
+        //모드에 따라 레이아웃 변경
         albumSharedViewModel.layoutModeLiveData.observe(viewLifecycleOwner) {
            albumSharedViewModel.currentAlbumLiveData.value?.let { currentPhoto ->
                     addOrEditMode(
@@ -108,6 +108,7 @@ class AlbumEditFragment : DialogFragment() {
         binding.galleryEditRv.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
     }
 
+    //사진 크롭해주는 함수
     private fun cropImage(uri: Uri, position: Int) {
         albumSharedViewModel.updateCropPosition(position)
         cropImage.launch(

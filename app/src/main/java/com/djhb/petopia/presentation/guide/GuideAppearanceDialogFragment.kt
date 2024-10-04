@@ -26,35 +26,32 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         FragmentGuideAppearanceDialogBinding.inflate(layoutInflater)
     }
     private val binding get() = _binding
-    private lateinit var guideSharedViewModel: com.djhb.petopia.presentation.guide.GuideSharedViewModel
-    private lateinit var guideAppearanceDialogRecyclerViewAdapter: com.djhb.petopia.presentation.guide.GuideAppearanceDialogRecyclerViewAdapter
+    private lateinit var guideSharedViewModel: GuideSharedViewModel
+    private lateinit var guideAppearanceDialogRecyclerViewAdapter: GuideAppearanceDialogRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         guideSharedViewModel =
-            ViewModelProvider(requireParentFragment()).get(GuideSharedViewModel::class.java)
-
+            ViewModelProvider(requireParentFragment())[GuideSharedViewModel::class.java]
         initAdapter()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        //이전으로버튼 클릭이벤트
+        //이전으로 버튼 클릭이벤트
         binding.guideAppearanceDialogTvBack.setOnClickListener {
             guideSharedViewModel.guideButtonClickListener("BACK")
             dismiss()
         }
-        // 클릭이벤트
+        //강아지, 고양이 클릭에 따라 외모 리스트 변경해주는 옵저버
         guideSharedViewModel.breedLiveData.observe(viewLifecycleOwner) {
             guideSharedViewModel.changeAppearance()
         }
 
+        //외모 리스트 클릭시 이미지 보여주는 옵저버
         guideSharedViewModel.appearanceLiveData.observe(viewLifecycleOwner) {
         when (it) {
             "아비시니안" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_abyssinian)
@@ -77,15 +74,15 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             "웰시코기" -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_welshcorgi)
             null -> binding.guideAppearanceDialogIvPet.setImageResource(R.drawable.img_shihtzu)
         }
-
         }
-
+        //외모 리스트 반영해주는 옵저버
         guideSharedViewModel.appearanceListLiveData.observe(viewLifecycleOwner) {
-//            guideAppearanceDialogRecyclerViewAdapter.notifyDataSetChanged(guideSharedViewModel.appearanceMutableListLiveData.toList())
-
             initAdapter()
         }
 
+
+
+        //강아지, 고양이 클릭 이벤트
         binding.guideAppearanceDialogRg.setOnCheckedChangeListener { _, id ->
             when (id) {
                 R.id.guide_appearance_dialog_rb_dog -> guideSharedViewModel.changeBreed("DOG")
@@ -93,6 +90,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
             }
         }
 
+        //완료버튼 클릭 이벤트
         binding.guideAppearanceDialogTvComplete.setOnClickListener {
             if (guideSharedViewModel.preparedPetData(1)) {
                 guideSharedViewModel.guideButtonClickListener("NEXT")
@@ -107,7 +105,7 @@ class GuideAppearanceDialogFragment : DialogFragment() {
     //어댑터 초기화 함수 : 클릭된 종 대분류에 따라 소분류를 리사이클러뷰로 보여주는 함수
     private fun initAdapter() {
         guideAppearanceDialogRecyclerViewAdapter =
-            com.djhb.petopia.presentation.guide.GuideAppearanceDialogRecyclerViewAdapter(
+            GuideAppearanceDialogRecyclerViewAdapter(
                 guideSharedViewModel.appearanceListLiveData.value ?: listOf(),
                 itemClickListener = { item, position ->
                     guideSharedViewModel.updateSelected(item.copy(selected = true),position)
@@ -137,30 +135,6 @@ class GuideAppearanceDialogFragment : DialogFragment() {
         params?.height = (deviceHeight * 0.8).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-//            requireContext().dialogFragmentResize(this, 0.9f, 0.8f)
-//        }
-//        private fun Context.dialogFragmentResize(
-//            dialogFragment: DialogFragment,
-//            width: Float,
-//            height: Float,
-//        ) {
-//            val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-//            if (Build.VERSION.SDK_INT < 30) {
-//                val display = windowManager.defaultDisplay
-//                val size = Point()
-//                display.getSize(size)
-//                val window = dialogFragment.dialog?.window
-//                val x = (size.x * width).toInt()
-//                val y = (size.y * height).toInt()
-//                window?.setLayout(x, y)
-//            } else {
-//                val rect = windowManager.currentWindowMetrics.bounds
-//                val window = dialogFragment.dialog?.window
-//                val x = (rect.width() * width).toInt()
-//                val y = (rect.height() * height).toInt()
-//                window?.setLayout(x, y)
-//            }
     }
 
     override fun onDismiss(dialog: DialogInterface) {

@@ -37,18 +37,20 @@ class GuideSharedViewModel(
     private val _breedLiveData = MutableLiveData("DOG")
     val breedLiveData: LiveData<String> = _breedLiveData
 
-    //반려동물 외모
+    //반려동물 외모 리스트
     private val _appearanceListLiveData = MutableLiveData(guideRepository.getPetListData("DOG"))
     val appearanceListLiveData: LiveData<List<PetAppearanceModel>> = _appearanceListLiveData
 
+    //반려동물 외모(선택값)
     private val _appearanceLiveData = MutableLiveData("")
     val appearanceLiveData: LiveData<String> = _appearanceLiveData
-
     private var appearanceMutableListLiveData = _appearanceListLiveData.value?.toMutableList()
 
+//가이드 재실행시 시작 페이지를 정해주는 함수
 fun setWelcomeGuidePage() {
      _guidePageNumberLiveData.value = 8
 }
+
     //클릭된 버튼에 따라 페이지 변경해주는 함수
     fun guideButtonClickListener(pressedButton: String) {
         _pressedButtonLiveData.value = pressedButton
@@ -67,19 +69,6 @@ fun setWelcomeGuidePage() {
         val page = _guidePageNumberLiveData.value ?: 0
         _guideModelLiveData.value = page?.let { guideRepository.getGuideData(it) }
     }
-
-    //가이드 상태 변경해주는 함수
-    fun getStatusData(status: String): String {
-        val status =
-            _guidePageNumberLiveData.value?.let {
-                guideRepository.updateStatusData(
-                    it,
-                    status
-                ).status
-            }
-        return status!!
-    }
-
 
     //반려동물 종 분류 입력받는 함수
     fun changeBreed(breed: String) {

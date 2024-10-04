@@ -21,7 +21,7 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
 
-//알람 뷰모델
+//디데이 뷰모델
 class DDayViewModel(private val dDayRepository: DDayRepository,
     private val signRepository: SignRepository) :
     ViewModel() {
@@ -43,7 +43,7 @@ class DDayViewModel(private val dDayRepository: DDayRepository,
         private var alarmSwitch = false
 
     //디데이모델
-    private val _dDayModelLiveData = MutableLiveData<DDayModel>(DDayModel())
+    private val _dDayModelLiveData = MutableLiveData(DDayModel())
     val dDayModelLiveData: LiveData<DDayModel> = _dDayModelLiveData
 
     //사용자 날짜를 불러오는 함수
@@ -68,9 +68,6 @@ class DDayViewModel(private val dDayRepository: DDayRepository,
     //디데이 계산해주는 함수
     fun calculateDate() {
         val dDayDate = _dDayModelLiveData.value?.date
-        Log.d("디데이모델날짜", "$dDayDate")
-        Log.d("날짜", "${_userDateLiveData.value}")
-
         if (!dDayDate.isNullOrBlank()) {
             try {
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -98,6 +95,7 @@ class DDayViewModel(private val dDayRepository: DDayRepository,
         }
     }
 
+    //알림설정 클릭상태를 담아주는 함수
     fun updateAlarmSwitch(isChecked: Boolean) {
         alarmSwitch = isChecked
     }
@@ -105,12 +103,10 @@ class DDayViewModel(private val dDayRepository: DDayRepository,
     //디데이 알림 설정해주는 함수
     fun updateAlarm(context: Context) {
         _alarmLiveData.value = dDayRepository.updateAlarm(context, alarmSwitch)
-        Log.d("알람","${_alarmLiveData.value}")
     }
 
     fun loadAlarm(context: Context) {
         _alarmLiveData.value = dDayRepository.loadAlarm(context)
-        Log.d("불러오셈","${_alarmLiveData.value}")
     }
 
 }

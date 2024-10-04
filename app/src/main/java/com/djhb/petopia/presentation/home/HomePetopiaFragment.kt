@@ -89,9 +89,7 @@ class HomePetopiaFragment : Fragment() {
         guideDataObserver()
         if (LoginData.loginUser.dday != null) loadDDayData()
 
-        mainHomeGuideViewModel.checkUserGuideState()
-        Log.d("guidedata", "checkUserGuideState: ${LoginData.loginUser}")
-//        if () getUserAndPet()
+
 
 //구름 애니메이션
         initCloudAnimation()
@@ -141,18 +139,8 @@ class HomePetopiaFragment : Fragment() {
             binding.firefly.visibility = View.VISIBLE
             binding.homeImgBackground.visibility = View.GONE
             //글자색 흰색으로
-            binding.homeTvNameUser.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
-            binding.homeTvNamePet.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.white
-                )
-            )
+            binding.homeTvNameUser.setTextAppearance(R.style.common_text_16_white)
+            binding.homeTvNamePet.setTextAppearance(R.style.point_text_32_white)
         } else {
             binding.skyBackground.visibility = View.GONE
             binding.homeImgNightBackground.visibility = View.GONE
@@ -501,6 +489,8 @@ class HomePetopiaFragment : Fragment() {
         }
         initAnimation()
         showPetMassage()
+        mainHomeGuideViewModel.checkUserGuideState()
+
     }
 
 }

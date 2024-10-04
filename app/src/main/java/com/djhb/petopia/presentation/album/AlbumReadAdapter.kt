@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.djhb.petopia.R
 
+//읽기전용 모드에서 각각의 사진을 보여주는 어댑터
 class AlbumReadAdapter(context: Context, private val items: List<String>) : ArrayAdapter<String>(context, 0, items) {
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {

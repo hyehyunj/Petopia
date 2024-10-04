@@ -18,7 +18,7 @@ import com.djhb.petopia.databinding.FragmentAlbumBinding
 import com.djhb.petopia.presentation.d_day.DDayViewModel
 import com.wajahatkarim3.easyflipviewpager.BookFlipPageTransformer2
 
-//앨범 프래그먼트
+//앨범 프래그먼트 : 뷰페이저로 앨범의 기반이 되는 프래그먼트
 class AlbumFragment : Fragment() {
     private val _binding: FragmentAlbumBinding by lazy {
         FragmentAlbumBinding.inflate(layoutInflater)
@@ -41,7 +41,6 @@ class AlbumFragment : Fragment() {
         galleryButtonClickListener()
         //데이터 변화감지
         galleryDataObserver()
-//        initDialog()
         initAlbumViewPager()
     }
 
@@ -75,7 +74,7 @@ class AlbumFragment : Fragment() {
 
     }
 
-
+    //
     private fun initAlbumViewPager() {
         albumViewPager = binding.albumPager
         val albumViewPagerAdapter = AlbumViewPagerAdapter(requireActivity())
@@ -87,27 +86,4 @@ class AlbumFragment : Fragment() {
 
 
     }
-
-fun fixPage() {
-
-}
-
-    //다이얼로그 초기화 함수 : 화면에 맞춰 갤러리 표현
-//    private fun initDialog() {
-//        val windowManager =
-//            requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
-//        val display = windowManager.defaultDisplay
-//
-//        val size = Point()
-//        display.getSize(size)
-//        size.x
-//        size.y
-//        val params: ViewGroup.LayoutParams? = dialog?.window?.attributes
-//        val deviceWidth = size.x
-//        params?.width = (deviceWidth * 1).toInt()
-//        params?.height = (deviceWidth * 2.1).toInt()
-//        dialog?.window?.attributes = params as WindowManager.LayoutParams
-//        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//    }
-
 }

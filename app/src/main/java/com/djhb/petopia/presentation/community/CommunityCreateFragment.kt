@@ -241,7 +241,6 @@ class CommunityCreateFragment : Fragment() {
         }
 
         binding.header.ivBack.setOnClickListener{
-            Toast.makeText(requireActivity(), "click back", Toast.LENGTH_SHORT).show()
             communityActivity.showViewPager()
             requireActivity().supportFragmentManager.popBackStack()
         }

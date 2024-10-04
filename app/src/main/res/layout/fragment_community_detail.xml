@@ -34,10 +34,10 @@
                 android:id="@+id/tvDetailTitle"
                 style="@style/point_text_32_dark_gray"
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:text="제목제목제목제목"
                 app:layout_constraintBottom_toTopOf="@+id/tvBorderLineUnderTitle"
                 app:layout_constraintStart_toStartOf="parent"
@@ -155,23 +155,21 @@
                 <TextView
                     android:id="@+id/tvFilteringDog"
                     android:layout_width="70dp"
-                    android:layout_height="20dp"
+                    android:layout_height="32dp"
                     android:visibility="gone"
-                    android:gravity="center"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/shape_community_detail_filtering"
                     android:text="@string/community_create_filtering_dog"
-                    android:textSize="12sp" />
+                    style="@style/point_text_20_white"/>
 
                 <TextView
                     android:id="@+id/tvFilteringCat"
                     android:layout_width="70dp"
-                    android:layout_height="20dp"
+                    android:layout_height="32dp"
                     android:visibility="gone"
-                    android:gravity="center"
                     android:background="@drawable/shape_community_detail_filtering"
                     android:text="@string/community_create_filtering_cat"
-                    android:textSize="12sp" />
+                    style="@style/point_text_20_white"/>
 
             </LinearLayout>
 

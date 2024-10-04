@@ -11,10 +11,11 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.djhb.petopia.R
 import com.djhb.petopia.databinding.FragmentDialogBinding
 import com.djhb.petopia.presentation.home.MainHomeGuideSharedViewModel
 
-
+//가이드 취소 다이얼로그
 class GuideCancelDialogFragment : DialogFragment() {
 
     private val _binding: FragmentDialogBinding by lazy {
@@ -29,12 +30,14 @@ class GuideCancelDialogFragment : DialogFragment() {
     ): View? {
         homePetopiaGuideSharedViewModel =
             ViewModelProvider(requireActivity()).get(MainHomeGuideSharedViewModel::class.java)
-        binding.dialogTvAction.text = "종료"
+        binding.dialogTvAction.text = getString(R.string.common_end)
 
         homePetopiaGuideSharedViewModel.guideStateLiveData.observe(viewLifecycleOwner) {
             when (it) {
-                "ESSENTIAL" -> binding.dialogTvTitle.text = "다음에 찾아오시겠어요?\n처음부터 진행됩니다."
-                "ESSENTIAL_DONE","OPTIONAL" -> binding.dialogTvTitle.text = "가이드를 종료하시겠어요?\n마이페이지에서 다시 보실 수 있습니다."
+                "ESSENTIAL" -> binding.dialogTvTitle.text =
+                    getString(R.string.guide_cancel_incomplete)
+                "ESSENTIAL_DONE","OPTIONAL" -> binding.dialogTvTitle.text =
+                    getString(R.string.guide_cancel_complete)
             }
         }
 
@@ -60,8 +63,6 @@ class GuideCancelDialogFragment : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-
-        //다이얼로그 사용자 폰에 맞춰 크기조정, 리팩토링 필요
         val windowManager =
             requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = windowManager.defaultDisplay
@@ -76,30 +77,6 @@ class GuideCancelDialogFragment : DialogFragment() {
         params?.height = (deviceWidth * 0.5).toInt()
         dialog?.window?.attributes = params as WindowManager.LayoutParams
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT)
-//            requireContext().dialogFragmentResize(this, 0.9f, 0.8f)
-//        }
-//        private fun Context.dialogFragmentResize(
-//            dialogFragment: DialogFragment,
-//            width: Float,
-//            height: Float,
-//        ) {
-//            val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
-//            if (Build.VERSION.SDK_INT < 30) {
-//                val display = windowManager.defaultDisplay
-//                val size = Point()
-//                display.getSize(size)
-//                val window = dialogFragment.dialog?.window
-//                val x = (size.x * width).toInt()
-//                val y = (size.y * height).toInt()
-//                window?.setLayout(x, y)
-//            } else {
-//                val rect = windowManager.currentWindowMetrics.bounds
-//                val window = dialogFragment.dialog?.window
-//                val x = (rect.width() * width).toInt()
-//                val y = (rect.height() * height).toInt()
-//                window?.setLayout(x, y)
-//            }
     }
 
 

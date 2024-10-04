@@ -11,6 +11,7 @@ import com.djhb.petopia.R.color.black
 import com.djhb.petopia.data.PetAppearanceModel
 import com.djhb.petopia.databinding.RecyclerviewGuideAppearanceDialogHolderBinding
 
+//반려동물 외형 리스트를 리사이클러뷰로 보여주는 어댑터
 class GuideAppearanceDialogRecyclerViewAdapter(
     private var appearanceList: List<PetAppearanceModel>,
     private val itemClickListener: (item: PetAppearanceModel, position: Int) -> Unit,
