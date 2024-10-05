@@ -16,6 +16,7 @@ data class PostModel(
     val key: String = UUID.randomUUID().toString(),
     val viewCount: Int = 0,
     val commentCount: Long = 0,
+    val likeCount: Long = 0,
     val createdDate: Long = System.currentTimeMillis(),
     val updatedDate: Long? = null,
 ) : Parcelable

@@ -8,6 +8,7 @@ interface LikeRepository {
     //    suspend fun selectLikeFromPost(post: PostModel, user: UserModel): CommentModel
 
     suspend fun selectLikeList(postKey: String): MutableList<LikeModel>
+    suspend fun selectLikeCount(postKey: String): Long
     suspend fun selectLikeFromUser(postKey: String, userId: String): LikeModel
     suspend fun createLike(like: LikeModel)
     suspend fun deleteLike(likeKey: String)

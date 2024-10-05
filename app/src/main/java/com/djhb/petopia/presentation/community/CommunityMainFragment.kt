@@ -35,7 +35,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class CommunityMainFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private lateinit var postType: Table
+    private lateinit var postType: String
     private var param2: String? = null
 
     private val binding: FragmentCommunityMainBinding by lazy {
@@ -112,7 +112,7 @@ class CommunityMainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
+            postType = it.getString(POST_TYPE)?:Table.NONE.tableName
         }
     }
 
@@ -255,7 +255,7 @@ class CommunityMainFragment : Fragment() {
         viewModel.addedSearchPost.observe(viewLifecycleOwner) {
             lifecycleScope.launch {
 //                Log.i("CommunityMainFragment", "observe addedSearchPost")
-                if(postType != Table.GALLERY_POST)
+                if(postType != Table.GALLERY_POST.tableName)
                     allPostAdapter.submitList(it.toMutableList())
 //                allPostAdapter.submitList(viewModel.searchPostResult.toMutableList())
 //                async { viewModel.selectAllImageList()}.await()
@@ -323,13 +323,13 @@ class CommunityMainFragment : Fragment() {
         binding.recyclerViewQuestionRank.adapter = rankPostAdapter
         binding.recyclerViewQuestionMain.adapter = allPostAdapter
         binding.recyclerViewQuestionMain.layoutManager =
-            if(postType == Table.GALLERY_POST)
+            if(postType == Table.GALLERY_POST.tableName)
                 GridLayoutManager(requireActivity(), 3)
             else
                 LinearLayoutManager(requireActivity())
 
         binding.recyclerViewQuestionRank.layoutManager =
-        if(postType == Table.GALLERY_POST)
+        if(postType == Table.GALLERY_POST.tableName)
             GridLayoutManager(requireActivity(), 3)
         else
             LinearLayoutManager(requireActivity())
@@ -405,10 +405,10 @@ class CommunityMainFragment : Fragment() {
             }
 
         @JvmStatic
-        fun newInstance(postType: Table) =
+        fun newInstance(postType: String) =
             CommunityMainFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(POST_TYPE, postType)
+                    putString(POST_TYPE, postType)
                 }
             }
     }

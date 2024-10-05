@@ -52,7 +52,8 @@ class CommunityDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var post = PostModel()
     private lateinit var postKey: String
-    private lateinit var postType: Table
+//    private lateinit var postType: Table
+    private lateinit var postType: String
 
     private val binding: FragmentCommunityDetailBinding by lazy {
         FragmentCommunityDetailBinding.inflate(layoutInflater)
@@ -145,7 +146,8 @@ class CommunityDetailFragment : Fragment() {
 
         arguments?.let {
             postKey = it.getString(ARG_PARAM1) ?: "empty key"
-            postType = it.getParcelable(POST_TYPE, Table::class.java) ?: Table.NONE
+//            postType = it.getParcelable(POST_TYPE, Table::class.java) ?: Table.NONE
+            postType = it.getString(POST_TYPE) ?: Table.NONE.tableName
         }
 
     }
@@ -223,8 +225,8 @@ class CommunityDetailFragment : Fragment() {
         }
 
         binding.header.tvTitle.text = when (postType) {
-            Table.QUESTION_POST -> "질문 게시판"
-            Table.INFORMATION_POST -> "정보 공유 게시판"
+            Table.QUESTION_POST.tableName -> "질문 게시판"
+            Table.INFORMATION_POST.tableName -> "정보 공유 게시판"
             else -> "갤러리 게시판"
         }
 
@@ -435,21 +437,22 @@ class CommunityDetailFragment : Fragment() {
          * @return A new instance of fragment CommunityDetailFragment.
          */
         // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            CommunityDetailFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+//        @JvmStatic
+//        fun newInstance(param1: String, param2: String) =
+//            CommunityDetailFragment().apply {
+//                arguments = Bundle().apply {
+//                    putString(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
+//                }
+//            }
 
         @JvmStatic
-        fun newInstance(key: String, postType: Table) =
+        fun newInstance(key: String, postType: String) =
             CommunityDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, key)
-                    putParcelable(POST_TYPE, postType)
+//                    putParcelable(POST_TYPE, postType)
+                    putString(POST_TYPE, postType)
                 }
             }
 

@@ -18,7 +18,7 @@ import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.GalleryPostMainHolderBinding
 import com.djhb.petopia.databinding.PostHolderBinding
 
-class PostAdapter(val postType: Table, private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel, ViewHolder>(object: DiffUtil.ItemCallback<PostModel>(){
+class PostAdapter(val postType: String, private val onClick: (post: PostModel) -> Unit): ListAdapter<PostModel, ViewHolder>(object: DiffUtil.ItemCallback<PostModel>(){
     override fun areItemsTheSame(oldItem: PostModel, newItem: PostModel): Boolean {
 //        Log.i("PostAdapter", "areItemsTheSame = ${oldItem.key == newItem.key}")
 //        Log.i("PostAdapter", "oldItem.imageUris = ${oldItem.imageUris}")
@@ -49,7 +49,7 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
 
     override fun getItemViewType(position: Int): Int {
         return when(postType) {
-            Table.GALLERY_POST -> TYPE_GALLERY
+            Table.GALLERY_POST.tableName -> TYPE_GALLERY
             else -> TYPE_NORMAL
         }
     }
@@ -59,7 +59,7 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
         val item = getItem(position)
 
 //        Log.i("PostAdapter", "item = ${item}")
-        if(postType == Table.GALLERY_POST) {
+        if(postType == Table.GALLERY_POST.tableName) {
 //            Log.i("PostAdapter : ", "itemCount = ${itemCount}")
             val currentHolder = holder as GalleryPostItem
 
@@ -81,7 +81,8 @@ class PostAdapter(val postType: Table, private val onClick: (post: PostModel) ->
             currentHolder.title.text = item.title
             currentHolder.viewCount.text = item.viewCount.toString()
 //        hocurrentHder.likeCount.text = item.likeCount.toString()
-            currentHolder.likeCount.text = item.likes.size.toString()
+//            currentHolder.likeCount.text = item.likes.size.toString()
+            currentHolder.likeCount.text = item.likeCount.toString()
             currentHolder.commentCount.text = item.commentCount.toString()
             currentHolder.userId.text = item.writer.nickname
             currentHolder.createdDate.text = DateFormatUtils.convertToPostFormat(item.createdDate)

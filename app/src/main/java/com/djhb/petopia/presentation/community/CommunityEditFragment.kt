@@ -4,6 +4,7 @@ import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -42,7 +43,8 @@ private const val POST_TYPE = "postType"
 class CommunityEditFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var post: PostModel
-    private lateinit var postType: Table
+//    private lateinit var postType: Table
+    private lateinit var postType: String
 
     private val binding: FragmentCommunityEditBinding by lazy {
         FragmentCommunityEditBinding.inflate(layoutInflater)
@@ -126,8 +128,12 @@ class CommunityEditFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            post = it.getParcelable(ARG_PARAM1, PostModel::class.java)?:PostModel()
-            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
+            post = if(SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+                it.getParcelable(ARG_PARAM1, PostModel::class.java)?:PostModel()
+            else
+                it.getParcelable(ARG_PARAM1)?:PostModel()
+//            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
+            postType = it.getString(POST_TYPE)?:Table.NONE.tableName
         }
     }
 
@@ -162,8 +168,8 @@ class CommunityEditFragment : Fragment() {
         }
 
         binding.header.tvTitle.text = when(postType) {
-            Table.QUESTION_POST -> "질문 게시판"
-            Table.INFORMATION_POST -> "정보 공유 게시판"
+            Table.QUESTION_POST.tableName -> "질문 게시판"
+            Table.INFORMATION_POST.tableName -> "정보 공유 게시판"
             else -> "갤러리 게시판"
         }
 
@@ -202,7 +208,7 @@ class CommunityEditFragment : Fragment() {
                 Toast.makeText(requireActivity(), "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
             } else if(content.isBlank()){
                 Toast.makeText(requireActivity(), "본문을 입력해주세요.", Toast.LENGTH_SHORT).show()
-            } else if(postType == Table.GALLERY_POST && imageUris.size <= 1){
+            } else if(postType == Table.GALLERY_POST.tableName && imageUris.size <= 1){
                 Toast.makeText(requireActivity(), "이미지를 1개 이상 첨부해주세요.", Toast.LENGTH_SHORT).show()
             }else {
 
@@ -290,12 +296,21 @@ class CommunityEditFragment : Fragment() {
          * @return A new instance of fragment CommunityEditFragment.
          */
         // TODO: Rename and change types and number of parameters
+//        @JvmStatic
+//        fun newInstance(post: PostModel, postType: Table) =
+//            CommunityEditFragment().apply {
+//                arguments = Bundle().apply {
+//                    putParcelable(ARG_PARAM1, post)
+//                    putParcelable(POST_TYPE, postType)
+//                }
+//            }
+
         @JvmStatic
-        fun newInstance(post: PostModel, postType: Table) =
+        fun newInstance(post: PostModel, postType: String) =
             CommunityEditFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_PARAM1, post)
-                    putParcelable(POST_TYPE, postType)
+                    putString(POST_TYPE, postType)
                 }
             }
 

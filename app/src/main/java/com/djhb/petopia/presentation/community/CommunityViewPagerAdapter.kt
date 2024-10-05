@@ -8,9 +8,9 @@ import com.djhb.petopia.Table
 class CommunityViewPagerAdapter(fragmentActivity: FragmentActivity): FragmentStateAdapter(fragmentActivity) {
 
     private val fragments = listOf(
-        CommunityMainFragment.newInstance(Table.QUESTION_POST),
-        CommunityMainFragment.newInstance(Table.INFORMATION_POST),
-        CommunityMainFragment.newInstance(Table.GALLERY_POST)
+        CommunityMainFragment.newInstance(Table.QUESTION_POST.tableName),
+        CommunityMainFragment.newInstance(Table.INFORMATION_POST.tableName),
+        CommunityMainFragment.newInstance(Table.GALLERY_POST.tableName)
     )
 
     override fun getItemCount(): Int {
