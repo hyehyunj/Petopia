@@ -45,9 +45,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class CommunityCreateFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    private lateinit var postType: Table
+    private lateinit var postType: String
 
     private val binding: FragmentCommunityCreateBinding by lazy {
         FragmentCommunityCreateBinding.inflate(layoutInflater)
@@ -153,7 +151,8 @@ class CommunityCreateFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
+//            postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
+            postType = it.getString(POST_TYPE)?:Table.NONE.tableName
         }
     }
 
@@ -184,8 +183,8 @@ class CommunityCreateFragment : Fragment() {
         )
 
         binding.header.tvTitle.text = when(postType) {
-            Table.QUESTION_POST -> "질문 게시판"
-            Table.INFORMATION_POST -> "정보 공유 게시판"
+            Table.QUESTION_POST.tableName -> "질문 게시판"
+            Table.INFORMATION_POST.tableName -> "정보 공유 게시판"
             else -> "갤러리 게시판"
         }
 
@@ -216,7 +215,7 @@ class CommunityCreateFragment : Fragment() {
                 Toast.makeText(requireActivity(), "제목을 확인 해주세요.", Toast.LENGTH_SHORT).show()
             else if (content.isBlank())
                 Toast.makeText(requireActivity(), "내용을 확인 해주세요.", Toast.LENGTH_SHORT).show()
-            else if(postType == Table.GALLERY_POST && imageUris.size <= 1){
+            else if(postType == Table.GALLERY_POST.tableName && imageUris.size <= 1){
                 Toast.makeText(requireActivity(), "이미지를 1개 이상 첨부해주세요.", Toast.LENGTH_SHORT).show()
             } else {
                 lifecycleScope.launch {
@@ -291,10 +290,10 @@ class CommunityCreateFragment : Fragment() {
             }
 
         @JvmStatic
-        fun newInstance(postType: Table) =
+        fun newInstance(postType: String) =
             CommunityCreateFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(POST_TYPE, postType)
+                    putString(POST_TYPE, postType)
                 }
             }
     }
