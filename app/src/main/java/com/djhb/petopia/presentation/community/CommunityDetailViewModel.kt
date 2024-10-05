@@ -2,6 +2,7 @@ package com.djhb.petopia.presentation.community
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.Table
@@ -15,10 +16,14 @@ import com.djhb.petopia.data.remote.LikeRepository
 import com.djhb.petopia.data.remote.LikeRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CommunityDetailViewModel(val postType: Table): ViewModel() {
+@HiltViewModel
+class CommunityDetailViewModel(private val postType: Table): ViewModel() {
+
 
     private val postTypeToTables = mutableMapOf(
         Table.QUESTION_POST to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),

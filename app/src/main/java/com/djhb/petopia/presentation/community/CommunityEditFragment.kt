@@ -18,6 +18,7 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
@@ -26,6 +27,7 @@ import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.FragmentCommunityEditBinding
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
 import com.djhb.petopia.presentation.community.adapter.OnclickImage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -39,6 +41,8 @@ private const val POST_TYPE = "postType"
  * Use the [CommunityEditFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+@AndroidEntryPoint
 class CommunityEditFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var post: PostModel
@@ -118,9 +122,10 @@ class CommunityEditFragment : Fragment() {
         })
     }
 
-    private val viewModel: CommunityViewModel by lazy {
-        CommunityViewModel(postType)
-    }
+//    private val viewModel: CommunityViewModel by lazy {
+//        CommunityViewModel(postType)
+//    }
+    private val viewModel: CommunityViewModel by viewModels()
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -129,6 +134,7 @@ class CommunityEditFragment : Fragment() {
             post = it.getParcelable(ARG_PARAM1, PostModel::class.java)?:PostModel()
             postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
         }
+        viewModel.state.set("postType", postType)
     }
 
     override fun onCreateView(

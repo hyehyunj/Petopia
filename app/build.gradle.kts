@@ -6,6 +6,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -55,6 +56,11 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
 
@@ -128,6 +134,10 @@ dependencies {
 
     implementation("com.google.android.material:material:1.7.0")
     implementation("com.ssomai:android.scalablelayout:2.1.6")
+
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt ("com.google.dagger:hilt-compiler:2.44")
+
 
 
     implementation(libs.androidx.core.ktx)

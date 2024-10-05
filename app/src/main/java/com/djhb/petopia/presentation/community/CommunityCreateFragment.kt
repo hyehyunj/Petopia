@@ -19,6 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.djhb.petopia.FilteringType
 import com.djhb.petopia.R
@@ -28,6 +29,7 @@ import com.djhb.petopia.data.PostModel
 import com.djhb.petopia.databinding.FragmentCommunityCreateBinding
 import com.djhb.petopia.presentation.community.adapter.CreateImageAdapter
 import com.djhb.petopia.presentation.community.adapter.OnclickImage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -43,6 +45,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CommunityCreateFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class CommunityCreateFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -68,10 +71,10 @@ class CommunityCreateFragment : Fragment() {
 
     private lateinit var checkboxToFiltering: MutableMap<CheckBox, FilteringType>
 
-//    private val viewModel: CommunityViewModel by activityViewModels()
-    private val viewModel: CommunityViewModel by lazy {
-        CommunityViewModel(postType)
-    }
+    private val viewModel: CommunityViewModel by viewModels()
+//    private val viewModel: CommunityViewModel by lazy {
+//        CommunityViewModel(postType)
+//    }
     private val detailViewModel: CommunityDetailViewModel by activityViewModels()
 
     private val createImageAdapter: CreateImageAdapter by lazy {
@@ -155,6 +158,7 @@ class CommunityCreateFragment : Fragment() {
         arguments?.let {
             postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
         }
+        viewModel.state.set("postType", postType)
     }
 
     override fun onCreateView(

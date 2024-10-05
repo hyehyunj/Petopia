@@ -2,6 +2,7 @@ package com.djhb.petopia.presentation.community
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.djhb.petopia.FilteringType
@@ -16,13 +17,25 @@ import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.StorageReference
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
+import javax.inject.Inject
 
-class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
+@HiltViewModel
+class CommunityViewModel @Inject constructor(val state: SavedStateHandle) : ViewModel() {
+
+    private var postType = Table.QUESTION_POST
+
+    init {
+        Log.i("CommunityViewModel", "before init block post Type = ${postType}")
+        postType = state.get("postType")?:Table.NONE
+        Log.i("CommunityViewModel", "after init block post Type = ${postType}")
+    }
+
 
     private val postTypeToTables = mutableMapOf(
         Table.QUESTION_POST to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
@@ -30,7 +43,7 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
         Table.GALLERY_POST to listOf(Table.GALLERY_POST, Table.GALLERY_COMMENT, Table.GALLERY_LIKE)
     )
 
-    private val currentTables = postTypeToTables[postType]
+    private lateinit var currentTables: List<Table>
 
     private val _rankPosts = MutableLiveData<MutableList<PostModel>>()
     val rankPosts get() = _rankPosts
@@ -110,6 +123,10 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
     suspend fun selectRankList(categories: List<FilteringType>) {
 
         viewModelScope.launch {
+            postType = state.get("postType")?:Table.NONE
+//            Log.i("CommuinityViewModel", "postType = ${postType}")
+            currentTables = postTypeToTables[postType]?: listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE)
+
             rankPostResult.clear()
             if(categories.size > 0)
                 rankPostResult = postRepository.selectRankPostsWhereFiltering(categories)

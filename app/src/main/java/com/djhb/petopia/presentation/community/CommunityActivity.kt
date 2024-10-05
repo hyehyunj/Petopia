@@ -14,7 +14,9 @@ import com.djhb.petopia.R
 import com.djhb.petopia.databinding.ActivityCommunityBinding
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CommunityActivity : AppCompatActivity() {
 
     private val binding: ActivityCommunityBinding by lazy {

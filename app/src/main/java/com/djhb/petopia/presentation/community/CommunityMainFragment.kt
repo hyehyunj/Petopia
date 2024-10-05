@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +20,7 @@ import com.djhb.petopia.Table
 import com.djhb.petopia.databinding.FragmentCommunityMainBinding
 import com.djhb.petopia.presentation.community.adapter.PostAdapter
 import com.djhb.petopia.presentation.community.adapter.RankPostAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -33,6 +35,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [CommunityMainFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class CommunityMainFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private lateinit var postType: Table
@@ -43,9 +46,10 @@ class CommunityMainFragment : Fragment() {
     }
 
 //    private val viewModel: CommunityViewModel by activityViewModels()
-    private val viewModel: CommunityViewModel by lazy {
-        CommunityViewModel(postType)
-    }
+//    private val viewModel: CommunityViewModel by lazy {
+//        CommunityViewModel(postType)
+//    }
+    private val viewModel: CommunityViewModel by viewModels()
 
     private val communityActivity: CommunityActivity by lazy {
         requireActivity() as CommunityActivity
@@ -114,6 +118,7 @@ class CommunityMainFragment : Fragment() {
         arguments?.let {
             postType = it.getParcelable(POST_TYPE, Table::class.java)?:Table.NONE
         }
+        viewModel.state.set("postType", postType)
     }
 
     override fun onCreateView(

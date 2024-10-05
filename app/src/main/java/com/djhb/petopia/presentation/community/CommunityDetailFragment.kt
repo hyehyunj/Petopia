@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.djhb.petopia.DateFormatUtils
@@ -34,6 +35,7 @@ import com.djhb.petopia.presentation.community.dialogFragment.CommentEditDialogF
 import com.djhb.petopia.presentation.community.dialogFragment.PostDeleteDialogFragment
 import com.djhb.petopia.presentation.report.ReportFragment
 import com.djhb.petopia.presentation.report.ReportViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator3
 
@@ -48,6 +50,8 @@ private const val POST_TYPE = "postType"
  * Use the [CommunityDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+@AndroidEntryPoint
 class CommunityDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var post = PostModel()
@@ -115,12 +119,16 @@ class CommunityDetailFragment : Fragment() {
 
     //    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
 //    private val communityViewModel: CommunityViewModel by activityViewModels()
-    private val detailViewModel: CommunityDetailViewModel by lazy {
-        CommunityDetailViewModel(postType)
-    }
-    private val communityViewModel: CommunityViewModel by lazy {
-        CommunityViewModel(postType)
-    }
+
+//    private val detailViewModel: CommunityDetailViewModel by lazy {
+//        CommunityDetailViewModel(postType)
+//    }
+
+    private val detailViewModel: CommunityDetailViewModel by viewModels()
+    private val communityViewModel: CommunityViewModel by viewModels()
+//    private val communityViewModel: CommunityViewModel by lazy {
+//        CommunityViewModel(postType)
+//    }
 
     private val reportViewModel: ReportViewModel by activityViewModels()
 
@@ -142,11 +150,13 @@ class CommunityDetailFragment : Fragment() {
 //            post = it.getParcelable(ARG_PARAM1, PostModel::class.java) ?: PostModel()
 //        }
 
-
         arguments?.let {
             postKey = it.getString(ARG_PARAM1) ?: "empty key"
             postType = it.getParcelable(POST_TYPE, Table::class.java) ?: Table.NONE
         }
+
+//        detailViewModel.state.set("postType", postType)
+        communityViewModel.state.set("postType", postType)
 
     }
 
