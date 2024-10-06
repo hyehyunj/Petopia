@@ -84,6 +84,7 @@ class CommunityMainFragment : Fragment() {
 //            val postAddedViewCount = post.copy(viewCount = post.viewCount + 1)
 //            Log.i("CommunityMainFramgment", "after copy imageUris.size = ${postAddedViewCount.imageUris.size}")
 //            val detailFragment = CommunityDetailFragment.newInstance(postAddedViewCount)
+//            throw RuntimeException("test crash")
             val detailFragment = CommunityDetailFragment.newInstance(post.key, postType)
             requireActivity().supportFragmentManager
                 .beginTransaction()
