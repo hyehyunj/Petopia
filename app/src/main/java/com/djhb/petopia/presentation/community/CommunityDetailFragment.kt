@@ -83,7 +83,7 @@ class CommunityDetailFragment : Fragment() {
 //                    viewModel.updateComment(comment)
 //                }
 
-                val commentAddDialogFragment = CommentEditDialogFragment.newInstance(comment)
+                val commentAddDialogFragment = CommentEditDialogFragment.newInstance(comment, postType)
                 commentAddDialogFragment.show(
                     requireActivity().supportFragmentManager,
                     "addCommentDialog"
@@ -116,7 +116,7 @@ class CommunityDetailFragment : Fragment() {
 
     //    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
 //    private val communityViewModel: CommunityViewModel by activityViewModels()
-    private val detailViewModel: CommunityDetailViewModel by lazy {
+    val detailViewModel: CommunityDetailViewModel by lazy {
         CommunityDetailViewModel(postType)
     }
     private val communityViewModel: CommunityViewModel by lazy {
