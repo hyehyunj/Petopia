@@ -18,12 +18,13 @@ import com.djhb.petopia.data.remote.PostRepositoryImpl
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class CommunityDetailViewModel(val postType: Table): ViewModel() {
+//class CommunityDetailViewModel(val postType: Table): ViewModel() {
+class CommunityDetailViewModel(val postType: String): ViewModel() {
 
     private val postTypeToTables = mutableMapOf(
-        Table.QUESTION_POST to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
-        Table.INFORMATION_POST to listOf(Table.INFORMATION_POST, Table.INFORMATION_COMMENT, Table.INFORMATION_LIKE),
-        Table.GALLERY_POST to listOf(Table.GALLERY_POST, Table.GALLERY_COMMENT, Table.GALLERY_LIKE)
+        Table.QUESTION_POST.tableName to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
+        Table.INFORMATION_POST.tableName to listOf(Table.INFORMATION_POST, Table.INFORMATION_COMMENT, Table.INFORMATION_LIKE),
+        Table.GALLERY_POST.tableName to listOf(Table.GALLERY_POST, Table.GALLERY_COMMENT, Table.GALLERY_LIKE)
     )
 
     private val currentTables = postTypeToTables[postType]

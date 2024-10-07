@@ -8,13 +8,16 @@ import com.djhb.petopia.FilteringType
 import com.djhb.petopia.Table
 import com.djhb.petopia.data.LoginData
 import com.djhb.petopia.data.PostModel
+import com.djhb.petopia.data.UserModel
 import com.djhb.petopia.data.remote.CommentRepository
 import com.djhb.petopia.data.remote.CommentRepositoryImpl
 import com.djhb.petopia.data.remote.LikeRepository
 import com.djhb.petopia.data.remote.LikeRepositoryImpl
 import com.djhb.petopia.data.remote.PostRepository
 import com.djhb.petopia.data.remote.PostRepositoryImpl
+import com.djhb.petopia.data.remote.SignRepositoryImpl
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.storage.StorageReference
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -22,12 +25,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Collections
 
-class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
+//class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
+class CommunityViewModel(private val postType: String) : ViewModel() {
 
     private val postTypeToTables = mutableMapOf(
-        Table.QUESTION_POST to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
-        Table.INFORMATION_POST to listOf(Table.INFORMATION_POST, Table.INFORMATION_COMMENT, Table.INFORMATION_LIKE),
-        Table.GALLERY_POST to listOf(Table.GALLERY_POST, Table.GALLERY_COMMENT, Table.GALLERY_LIKE)
+        Table.QUESTION_POST.tableName to listOf(Table.QUESTION_POST, Table.QUESTION_COMMENT, Table.QUESTION_LIKE),
+        Table.INFORMATION_POST.tableName to listOf(Table.INFORMATION_POST, Table.INFORMATION_COMMENT, Table.INFORMATION_LIKE),
+        Table.GALLERY_POST.tableName to listOf(Table.GALLERY_POST, Table.GALLERY_COMMENT, Table.GALLERY_LIKE)
     )
 
     private val currentTables = postTypeToTables[postType]
@@ -82,6 +86,10 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
         LikeRepositoryImpl(currentTables?.get(2)?:Table.NONE)
     }
 
+    private val signRepository: SignRepositoryImpl by lazy{
+        SignRepositoryImpl()
+    }
+
 
     private lateinit var lastSnapshot: DocumentSnapshot
 
@@ -120,14 +128,22 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
                 LoginData.loginUser.reportList.contains(it.writer.id)
             }
 
-            for (postModel in rankPostResult) {
-                postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
-            }
+//            for (postModel in rankPostResult) {
+////                postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
+//                postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
+//            }
 
             for(postIndex in 0..rankPostResult.size-1) {
                 val post = rankPostResult[postIndex]
                 val commentCount = commentRepository.selectCommentCount(post.key)
-                rankPostResult[postIndex] = rankPostResult[postIndex].copy(commentCount = commentCount)
+                val likeCount = likeRepository.selectLikeCount(post.key)
+                val writer = signRepository.selectUser(post.writer.id)?:UserModel()
+                Log.i("CommunityViewModel", "rank commentCount = ${commentCount}")
+                Log.i("CommunityViewModel", "rank likeCount = ${likeCount}")
+                rankPostResult[postIndex] = rankPostResult[postIndex].copy(
+                    commentCount = commentCount,
+                    likeCount = likeCount,
+                    writer = writer)
             }
 
 //            val imageUris = mutableListOf<StorageReference?>()
@@ -142,8 +158,8 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
 //                    rankPostResult[uriIndex].imageUris.add(postRepository.selectDownloadUri(uri))
 //                }
 //            }
-
             _rankPosts.value = rankPostResult
+            Log.i("CommunityViewModel", "finish selectRankList")
 
         }
 
@@ -174,7 +190,7 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
             _isProgressing.value = true
             nextPostIndex = 0
             var documents =
-                if(postType == Table.GALLERY_POST) {
+                if(postType == Table.GALLERY_POST.tableName) {
                     when {
                         categories.size > 0 -> postRepository.selectInitPostsWhereFiltering(categories, limit = 18)
                         else -> postRepository.selectInitPosts(limit = 18)
@@ -197,11 +213,11 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
                 }
 
                 while (documents.size > 0
-                    && ((postType == Table.GALLERY_POST && addedSearchResult.size < 18)
-                            || (postType != Table.GALLERY_POST && addedSearchResult.size < 10))){
+                    && ((postType == Table.GALLERY_POST.tableName && addedSearchResult.size < 18)
+                            || (postType != Table.GALLERY_POST.tableName && addedSearchResult.size < 10))){
 
                     documents =
-                        if(postType == Table.GALLERY_POST) {
+                        if(postType == Table.GALLERY_POST.tableName) {
                             when {
                                 categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories, limit = 18)
                                 else -> postRepository.selectNextPosts(lastSnapshot, limit = 18)
@@ -229,14 +245,20 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
                     }
                 }
 
-                for (postModel in addedSearchResult) {
-                    postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
-                }
+//                for (postModel in addedSearchResult) {
+//                    postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
+//                }
 
                 for(postIndex in 0..addedSearchResult.size-1) {
                     val post = addedSearchResult[postIndex]
                     val commentCount = commentRepository.selectCommentCount(post.key)
-                    addedSearchResult[postIndex] = addedSearchResult[postIndex].copy(commentCount = commentCount)
+                    val likeCount = likeRepository.selectLikeCount(post.key)
+                    val writer = signRepository.selectUser(post.writer.id)?:UserModel()
+                    addedSearchResult[postIndex] = addedSearchResult[postIndex].copy(
+                        commentCount = commentCount,
+                        likeCount = likeCount,
+                        writer = writer
+                    )
                 }
 
                 searchPostResult.addAll(addedSearchResult)
@@ -269,11 +291,11 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
                 }
 
                 while (documents.size > 0
-                    && ((postType == Table.GALLERY_POST && addedSearchResult.size < 9)
-                            || (postType != Table.GALLERY_POST && addedSearchResult.size < 5))){
+                    && ((postType == Table.GALLERY_POST.tableName && addedSearchResult.size < 9)
+                            || (postType != Table.GALLERY_POST.tableName && addedSearchResult.size < 5))){
 
                     documents =
-                        if(postType == Table.GALLERY_POST) {
+                        if(postType == Table.GALLERY_POST.tableName) {
                             when {
                                 categories.size > 0 -> postRepository.selectNextPostsWhereFiltering(lastSnapshot, categories, limit = 9)
 //                                else -> postRepository.selectInitPosts(limit = 9)
@@ -307,9 +329,16 @@ class CommunityViewModel(val postType: Table = Table.NONE) : ViewModel() {
                 for(postIndex in 0..addedSearchResult.size-1) {
                     val post = addedSearchResult[postIndex]
                     val commentCount = commentRepository.selectCommentCount(post.key)
-                    Log.i("CommunityViewModel", "post title = ${post.title}")
-                    Log.i("CommunityViewModel", "commentCount = ${commentCount}")
-                    addedSearchResult[postIndex] = addedSearchResult[postIndex].copy(commentCount = commentCount)
+                    val likeCount = likeRepository.selectLikeCount(post.key)
+                    val writer = signRepository.selectUser(post.writer.id)?:UserModel()
+//                    Log.i("CommunityViewModel", "post title = ${post.title}")
+//                    Log.i("CommunityViewModel", "commentCount = ${commentCount}")
+                    addedSearchResult[postIndex] =
+                        addedSearchResult[postIndex].copy(
+                        commentCount = commentCount,
+                        likeCount = likeCount,
+                        writer = writer
+                    )
                 }
 
                 searchPostResult.addAll(addedSearchResult)

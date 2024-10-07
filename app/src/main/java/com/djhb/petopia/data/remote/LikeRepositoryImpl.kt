@@ -4,6 +4,7 @@ import android.util.Log
 import com.djhb.petopia.Table
 import com.djhb.petopia.data.LikeModel
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.firestore
 import com.google.gson.Gson
@@ -30,6 +31,17 @@ class LikeRepositoryImpl(val table: Table): LikeRepository {
             }
 
             likes
+        }
+    }
+
+    override suspend fun selectLikeCount(postKey: String): Long {
+        return withContext(Dispatchers.IO) {
+            val snapshot = reference.whereEqualTo("postKey", postKey)
+                .count()
+                .get(AggregateSource.SERVER)
+                .await()
+
+            snapshot.count
         }
     }
 

@@ -1,3 +1,4 @@
+import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
 import org.jetbrains.kotlin.ir.backend.js.compile
 
 plugins {
@@ -6,6 +7,7 @@ plugins {
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -38,6 +40,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            configure<CrashlyticsExtension> {
+                nativeSymbolUploadEnabled = true
+            }
         }
         getByName("debug") {
             signingConfig = signingConfigs.getByName("debug")
@@ -125,6 +130,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:22.0.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.0.0")
     implementation("com.google.gms:google-services:4.3.15")
+    implementation("com.google.firebase:firebase-crashlytics")
+    implementation("com.google.firebase:firebase-analytics")
 
     implementation("com.google.android.material:material:1.7.0")
     implementation("com.ssomai:android.scalablelayout:2.1.6")
