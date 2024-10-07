@@ -4,7 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
+import android.os.Build.VERSION.SDK_INT
+import android.os.Build.VERSION_CODES.TIRAMISU
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,12 +13,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.djhb.petopia.Table
 import com.djhb.petopia.data.CommentModel
 import com.djhb.petopia.databinding.FragmentCommentAddBinding
+import com.djhb.petopia.presentation.community.CommunityDetailFragment
 import com.djhb.petopia.presentation.community.CommunityDetailViewModel
 import kotlinx.coroutines.launch
 
@@ -28,21 +29,44 @@ import kotlinx.coroutines.launch
  */
 class CommentEditDialogFragment : DialogFragment() {
     // TODO: Rename and change types of parameters
-    private val ARG_PARAM1 = "comment"
+    private val ARG_COMMENT = "comment"
+    private val ARG_POST_TYPE = "postType"
 
     private lateinit var comment: CommentModel
+    private lateinit var postType: String
+    private lateinit var detailFragment: CommunityDetailFragment
 
     private val binding: FragmentCommentAddBinding by lazy {
         FragmentCommentAddBinding.inflate(layoutInflater)
     }
 
-    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
+//    private val detailViewModel: CommunityDetailViewModel by activityViewModels()
+    private val detailViewModel: CommunityDetailViewModel by lazy {
+//        CommunityDetailViewModel(postType)
+        detailFragment.detailViewModel
+    }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            comment = it.getParcelable(ARG_PARAM1, CommentModel::class.java)?: CommentModel()
+            comment =
+                if(SDK_INT >= TIRAMISU)
+                    it.getParcelable(ARG_COMMENT, CommentModel::class.java)?: CommentModel()
+                else
+                    it.getParcelable(ARG_COMMENT)?:CommentModel()
+
+            postType = it.getString(ARG_POST_TYPE)?: Table.NONE.tableName
+            val fragments = parentFragmentManager.fragments
+//
+            for (fragmentIndex in fragments.size-1 downTo 0) {
+                val fragment = fragments[fragmentIndex]
+                if(fragment is CommunityDetailFragment) {
+                    detailFragment = fragment
+                    break
+                }
+            }
         }
     }
 
@@ -89,14 +113,6 @@ class CommentEditDialogFragment : DialogFragment() {
 
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        Log.i("CommentAddDialogFragment", "detach()")
-//        detailFragment.observeComment()
-//        detailViewModel.comments.value = detailViewModel.commentsResult
-
-    }
-
     private fun removeDialog(){
         requireActivity().supportFragmentManager
             .beginTransaction()
@@ -138,7 +154,16 @@ class CommentEditDialogFragment : DialogFragment() {
         fun newInstance(comment: CommentModel) =
             CommentEditDialogFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PARAM1, comment)
+                    putParcelable(ARG_COMMENT, comment)
+                }
+            }
+
+        @JvmStatic
+        fun newInstance(comment: CommentModel, postType: String) =
+            CommentEditDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_COMMENT, comment)
+                    putString(ARG_POST_TYPE, postType)
                 }
             }
     }
