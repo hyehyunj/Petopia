@@ -8,7 +8,7 @@ interface SignRepository {
     suspend fun createUser(user: UserModel)
     
     // 로그인(id로 user 조회)
-    suspend fun selectUser(id: String): UserModel?
+    suspend fun selectUser(id: String): UserModel
 
     //닉네임으로 user 조회
     suspend fun selectNickname(nickname: String): UserModel?

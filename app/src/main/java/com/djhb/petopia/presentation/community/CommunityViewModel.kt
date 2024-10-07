@@ -133,18 +133,38 @@ class CommunityViewModel(private val postType: String) : ViewModel() {
 //                postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
 //            }
 
+            val commentCounts = mutableListOf<Long>()
             for(postIndex in 0..rankPostResult.size-1) {
                 val post = rankPostResult[postIndex]
-                val commentCount = commentRepository.selectCommentCount(post.key)
-                val likeCount = likeRepository.selectLikeCount(post.key)
-                val writer = signRepository.selectUser(post.writer.id)?:UserModel()
-                Log.i("CommunityViewModel", "rank commentCount = ${commentCount}")
-                Log.i("CommunityViewModel", "rank likeCount = ${likeCount}")
-                rankPostResult[postIndex] = rankPostResult[postIndex].copy(
-                    commentCount = commentCount,
-                    likeCount = likeCount,
-                    writer = writer)
+                commentCounts.add(commentRepository.selectCommentCount(post.key))
             }
+
+            val likeCounts = mutableListOf<Long>()
+            for(postIndex in 0..rankPostResult.size-1) {
+                val post = rankPostResult[postIndex]
+                likeCounts.add(likeRepository.selectLikeCount(post.key))
+            }
+
+            val writers = mutableListOf<UserModel>()
+            for(postIndex in 0..rankPostResult.size-1) {
+                val post = rankPostResult[postIndex]
+//                    Log.i("CommunityViewModel", "post = ${post}")
+                writers.add(signRepository.selectUser(post.writer.id))
+            }
+
+//            for(postIndex in 0..rankPostResult.size-1) {
+//                val post = rankPostResult[postIndex]
+//                val commentCount = commentRepository.selectCommentCount(post.key)
+//                val likeCount = likeRepository.selectLikeCount(post.key)
+//                val writer = signRepository.selectUser(post.writer.id)
+//                Log.i("CommunityViewModel", "rank commentCount = ${commentCount}")
+//                Log.i("CommunityViewModel", "rank likeCount = ${likeCount}")
+//                Log.i("CommunityViewModel", "writer = ${writer}")
+//                rankPostResult[postIndex] = rankPostResult[postIndex].copy(
+//                    commentCount = commentCount,
+//                    likeCount = likeCount,
+//                    writer = writer)
+//            }
 
 //            val imageUris = mutableListOf<StorageReference?>()
 //
@@ -249,15 +269,36 @@ class CommunityViewModel(private val postType: String) : ViewModel() {
 //                    postModel.likes.addAll(likeRepository.selectLikeList(postModel.key))
 //                }
 
+                val commentCounts = mutableListOf<Long>()
                 for(postIndex in 0..addedSearchResult.size-1) {
                     val post = addedSearchResult[postIndex]
-                    val commentCount = commentRepository.selectCommentCount(post.key)
-                    val likeCount = likeRepository.selectLikeCount(post.key)
-                    val writer = signRepository.selectUser(post.writer.id)?:UserModel()
+                    commentCounts.add(commentRepository.selectCommentCount(post.key))
+                }
+
+                val likeCounts = mutableListOf<Long>()
+                for(postIndex in 0..addedSearchResult.size-1) {
+                    val post = addedSearchResult[postIndex]
+                    likeCounts.add(likeRepository.selectLikeCount(post.key))
+                }
+
+                val writers = mutableListOf<UserModel>()
+
+                for(postIndex in 0..addedSearchResult.size-1) {
+                    val post = addedSearchResult[postIndex]
+                    Log.i("CommunityViewModel", "post = ${post}")
+                    writers.add(signRepository.selectUser(post.writer.id))
+                }
+
+                for(postIndex in 0..addedSearchResult.size-1) {
+//                    val post = addedSearchResult[postIndex]
+//                    val commentCount = commentRepository.selectCommentCount(post.key)
+//                    val likeCount = likeRepository.selectLikeCount(post.key)
+//                    val writer = signRepository.selectUser(post.writer.id)
+//                    Log.i("CommunityViewModel", "writer = ${writer}")
                     addedSearchResult[postIndex] = addedSearchResult[postIndex].copy(
-                        commentCount = commentCount,
-                        likeCount = likeCount,
-                        writer = writer
+                        commentCount = commentCounts[postIndex],
+                        likeCount = likeCounts[postIndex],
+                        writer = writers[postIndex]
                     )
                 }
 
@@ -326,20 +367,40 @@ class CommunityViewModel(private val postType: String) : ViewModel() {
                     }
                 }
 
+                val commentCounts = mutableListOf<Long>()
                 for(postIndex in 0..addedSearchResult.size-1) {
                     val post = addedSearchResult[postIndex]
-                    val commentCount = commentRepository.selectCommentCount(post.key)
-                    val likeCount = likeRepository.selectLikeCount(post.key)
-                    val writer = signRepository.selectUser(post.writer.id)?:UserModel()
-//                    Log.i("CommunityViewModel", "post title = ${post.title}")
-//                    Log.i("CommunityViewModel", "commentCount = ${commentCount}")
-                    addedSearchResult[postIndex] =
-                        addedSearchResult[postIndex].copy(
-                        commentCount = commentCount,
-                        likeCount = likeCount,
-                        writer = writer
-                    )
+                    commentCounts.add(commentRepository.selectCommentCount(post.key))
                 }
+
+                val likeCounts = mutableListOf<Long>()
+                for(postIndex in 0..addedSearchResult.size-1) {
+                    val post = addedSearchResult[postIndex]
+                    likeCounts.add(likeRepository.selectLikeCount(post.key))
+                }
+
+                val writers = mutableListOf<UserModel>()
+
+                for(postIndex in 0..addedSearchResult.size-1) {
+                    val post = addedSearchResult[postIndex]
+//                    Log.i("CommunityViewModel", "post = ${post}")
+                    writers.add(signRepository.selectUser(post.writer.id))
+                }
+
+//                for(postIndex in 0..addedSearchResult.size-1) {
+//                    val post = addedSearchResult[postIndex]
+//                    val commentCount = commentRepository.selectCommentCount(post.key)
+//                    val likeCount = likeRepository.selectLikeCount(post.key)
+//                    val writer = signRepository.selectUser(post.writer.id)?:UserModel()
+////                    Log.i("CommunityViewModel", "post title = ${post.title}")
+////                    Log.i("CommunityViewModel", "commentCount = ${commentCount}")
+//                    addedSearchResult[postIndex] =
+//                        addedSearchResult[postIndex].copy(
+//                        commentCount = commentCount,
+//                        likeCount = likeCount,
+//                        writer = writer
+//                    )
+//                }
 
                 searchPostResult.addAll(addedSearchResult)
 //                _searchPostWithImages.value = searchPostResult
