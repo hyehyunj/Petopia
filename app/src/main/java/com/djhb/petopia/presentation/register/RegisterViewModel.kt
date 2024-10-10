@@ -54,7 +54,7 @@ class RegisterViewModel :
     fun modifyNickname(nickname: String) {
         _userNickName.value = nickname
 
-        LoginData.loginUser?.let { user ->
+        LoginData.loginUser.let { user ->
             user.nickname = nickname
             updateUser()
         }
@@ -63,7 +63,7 @@ class RegisterViewModel :
     fun modifyPassword(password: String) {
         _userPassword.value = password
 
-        LoginData.loginUser?.let { user ->
+        LoginData.loginUser.let { user ->
             user.password = password
             updateUser()
         }
@@ -91,7 +91,7 @@ class RegisterViewModel :
     ) {
         viewModelScope.launch {
             val user = signRepository.selectUser(inputId)
-            if (user != null && user.password == inputPassword) {
+            if (user.id.isNotEmpty() && user.password == inputPassword) {
                 LoginData.loginUser = user
                 onSuccess()
             } else {
@@ -106,7 +106,7 @@ class RegisterViewModel :
     ) {
         viewModelScope.launch {
             val user = signRepository.selectUser(inputId)
-            if (user != null) {
+            if (user.id.isNotEmpty()) {
                 LoginData.loginUser = user
                 onSuccess()
             }
@@ -122,7 +122,7 @@ class RegisterViewModel :
         viewModelScope.launch {
             val user = signRepository.selectNickname(inputNickname)
 
-            if (user != null && user.email == inputEmail) {
+            if (user.nickname.isNotEmpty() && user.email == inputEmail) {
                 _userId.value = user.id
                 //닉네임으로 찾은 아이디 뷰모델에 저장
                 onSuccess()
@@ -161,7 +161,7 @@ class RegisterViewModel :
     ) {
         viewModelScope.launch {
             val user = signRepository.selectUser(id)
-            onResult(user != null)
+            onResult(user.id.isNotEmpty())
         }
     }
 
