@@ -57,7 +57,6 @@ class SignRepositoryImpl: SignRepository {
 
         override suspend fun selectUser(id: String): UserModel {
             return withContext(Dispatchers.IO) {
-    //            reference.orderByChild("id").equalTo(id).get().addOnCompleteListener { task ->
                 val snapshot = reference.whereEqualTo("id", id).get().await()
                 var user = UserModel()
                 if (snapshot.documents.size == 0 || snapshot.documents.size > 1) {
@@ -77,31 +76,23 @@ class SignRepositoryImpl: SignRepository {
 
 
 
-    override suspend fun selectNickname(nickname: String): UserModel? {
-        return suspendCancellableCoroutine { continuation ->
-//            reference.orderByChild("id").equalTo(id).get().addOnCompleteListener { task ->
-            reference.whereEqualTo("nickname", nickname).get().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val result = task.result
-//                    if (result.childrenCount.toInt() == 0 || result.childrenCount > 1) {
-                    if (result.documents.size == 0 || result.documents.size > 1) {
-                        continuation.resume(null)
-                        return@addOnCompleteListener
-                    }
-                    for (document in result.documents) {
-                        val hashMap = document.data as HashMap<*, *>
-                        val gson = Gson()
-                        val toJson = gson.toJson(hashMap)
-                        val selectNickname = gson.fromJson(toJson, UserModel::class.java)
-                        continuation.resume(selectNickname)
-                        return@addOnCompleteListener
-                    }
-                } else {
-                    continuation.resumeWithException(task.exception ?: Exception("Unknown error occurred"))
-                }
-            }.addOnFailureListener {
-                continuation.resumeWithException(it)
+
+    override suspend fun selectNickname(nickname: String): UserModel {
+        return withContext(Dispatchers.IO) {
+            val snapshot = reference.whereEqualTo("nickname", nickname).get().await()
+            var user = UserModel()
+            if (snapshot.documents.size == 0 || snapshot.documents.size > 1) {
+                return@withContext user
             }
+
+            for (document in snapshot.documents) {
+                val hashMap = document.data as HashMap<*, *>
+                val gson = Gson()
+                val toJson = gson.toJson(hashMap)
+                val selectedUser = gson.fromJson(toJson, UserModel::class.java)
+                user = selectedUser
+            }
+            user
         }
     }
 
